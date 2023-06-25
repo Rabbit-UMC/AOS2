@@ -7,7 +7,8 @@
 
 - `main` : 항상 실행 가능한 상태 유지 (최종 버전 올라가는 곳)
 - - Team Leader만 merge
-- `이름 develop` : 개인 개발용
+- `develop이니셜` : 개인 개발용
+- - developH(하나/심세원), developD(다비/이유진), developC(초코/김현지)
 - `release` : main으로 옮기기 전 검수용
 - `hotfix` : 급하게 고쳐야 하는 코드 디버기용
 
