@@ -10,7 +10,7 @@
 - `develop이니셜` : 개인 개발용
 - - **developH**(하나/심세원), **developD**(다비/이유진), **developC**(초코/김현지)
 - `release` : main으로 옮기기 전 검수용
-- `hotfix` : 급하게 고쳐야 하는 코드 디버기용
+- `hotfix` : 급하게 고쳐야 하는 코드 디버깅용
 
 <br/>
 
