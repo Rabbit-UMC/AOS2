@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_schedule"
+        android:icon="@drawable/selector_menu_schedule"
+        android:title="스케줄"
+        android:enabled="true"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/menu_mission"
+        android:icon="@drawable/selector_menu_mission"
+        android:title="즐겨찾기"
+        android:enabled="true"
+        app:showAsAction="always"
+        />
+    <item
+        android:id="@+id/menu_community"
+        android:icon="@drawable/selector_menu_community"
+        android:title="커뮤니티"
+        android:enabled="true"
+        app:showAsAction="always"
+
+        />
+    <item
+        android:id="@+id/menu_mypage"
+        android:icon="@drawable/selector_menu_mypage"
+        android:title="마이페이지"
+        android:enabled="true"
+        app:showAsAction="always"
+        />
+</menu>
