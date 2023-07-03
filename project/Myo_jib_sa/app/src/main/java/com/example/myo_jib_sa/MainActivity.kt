@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_mission -> {
-                    setFragment(MypageFragment())
+                    setFragment(MissionFragment())
                     true
                 }
                 R.id.menu_community -> {
