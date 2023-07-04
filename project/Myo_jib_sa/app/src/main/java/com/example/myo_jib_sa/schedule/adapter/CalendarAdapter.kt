@@ -19,7 +19,7 @@ data class CalendarData(
 )
 
 
-class CalendarAdapter(private val dayList:ArrayList<CalendarData>, private val onItemClickListener: OnItemClickListener):
+class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
     RecyclerView.Adapter<CalendarAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
@@ -54,7 +54,7 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>, private val o
 
         //날짜 클릭 이벤트
         holder.itemView.setOnClickListener{
-            OnItemClickListener.onItemClick(dayList[position])
+            itemClickListener.onClick(dayList[position])
 
             if(dayList[position].hasSchedule == true) {
 
@@ -68,6 +68,20 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>, private val o
 
         }
     }
+
+    //클릭 이벤트 처리 ==============================================
+    //리스너 인터페이스
+    interface  OnItemClickListener{
+        fun onClick(calendarData: CalendarData)
+
+    }
+    // (3) 외부에서 클릭 시 이벤트 설정
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemClickListener = onItemClickListener
+    }
+    // (4) setItemClickListener로 설정한 함수 실행
+    private lateinit var itemClickListener : OnItemClickListener
+    //==============================================================
 
     override fun getItemCount(): Int {
         return dayList.size
