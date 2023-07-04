@@ -19,12 +19,14 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 
-class ScheduleFragment : Fragment(), OnItemClickListener {
+class ScheduleFragment : Fragment() {
 
     lateinit var binding: FragmentScheduleBinding
+    lateinit var calendarAdapter : CalendarAdapter //calendarRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
     lateinit var selectedDate : LocalDate //오늘 날짜
     var mDataList = ArrayList<currentMissionData>() //미션 리스트 데이터
     var sDataList = ArrayList<scheduleData>() //미션 리스트 데이터
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +38,7 @@ class ScheduleFragment : Fragment(), OnItemClickListener {
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
         setMonthView()//화면 초기화
 
+        calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
 
         //CurrentMissionAdapter 리사이클러뷰 연결
         mDataList.add(currentMissionData("헬스","10","+ 5"))
@@ -90,7 +93,7 @@ class ScheduleFragment : Fragment(), OnItemClickListener {
         val dayList = dayInMonthArray(selectedDate)
 
         //CalendarAdapter리사이클러뷰 연결
-        val calendarAdapter = CalendarAdapter(dayList, this)
+        calendarAdapter = CalendarAdapter(dayList)
         binding.calendarRv.layoutManager = GridLayoutManager(getActivity(), 7)
         binding.calendarRv.adapter = calendarAdapter
     }
@@ -143,32 +146,27 @@ class ScheduleFragment : Fragment(), OnItemClickListener {
         binding.preMonthBtn.setOnClickListener{
             selectedDate = selectedDate.minusMonths(1)
             setMonthView()
+            calendarRvItemClickEvent()
         }
         //다음달로 이동
         binding.nextMonthBtn.setOnClickListener{
             selectedDate =selectedDate.plusMonths(1)
             setMonthView()
+            calendarRvItemClickEvent()
         }
     }
+//Calendar rv item클릭 이벤트--2
+    fun calendarRvItemClickEvent() {
+    calendarAdapter.setItemClickListener(object : CalendarAdapter.OnItemClickListener {
 
-    //Calendar rv item클릭 이벤트
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onItemClick(calendarData: CalendarData) {
-        Log.d("debug", "클릭!")
-        //2023년 6월 표시
-        binding.selectedYearMonthTv.text = YYYYMMFromDate(calendarData.date)
-        //6월 1일 일정 표시
-        binding.selectedMonthDayTv.text = "${MMDDFromDate(calendarData.date)} 일정"
-
-        var iYear = calendarData.date?.year
-        var iMonth = calendarData.date?.monthValue
-        var iDay = calendarData.date?.dayOfMonth
-
-        Toast.makeText(context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
-            .show()
-
-        //일정이 있는 경우에만 파란 동그라미 표시하고, 클릭이벤트 발생
-        if(calendarData.hasSchedule == true){
+        @RequiresApi(Build.VERSION_CODES.O)
+        override fun onClick(calendarData: CalendarData) {
+            // 클릭 시 이벤트 작성
+            Log.d("debug", "클릭!")
+            //2023년 6월 표시
+            binding.selectedYearMonthTv.text = YYYYMMFromDate(calendarData.date)
+            //6월 1일 일정 표시
+            binding.selectedMonthDayTv.text = "${MMDDFromDate(calendarData.date)} 일정"
 
             var iYear = calendarData.date?.year
             var iMonth = calendarData.date?.monthValue
@@ -176,8 +174,11 @@ class ScheduleFragment : Fragment(), OnItemClickListener {
 
             Toast.makeText(context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
                 .show()
+
         }
-    }
+    })
+}
+    
     //YYYY년 M월 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
     private fun YYYYMMFromDate(date : LocalDate?):String?{
