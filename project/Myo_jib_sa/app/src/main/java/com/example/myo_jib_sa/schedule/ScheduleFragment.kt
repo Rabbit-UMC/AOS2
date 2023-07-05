@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa.schedule
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -38,26 +39,30 @@ class ScheduleFragment : Fragment() {
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
         setMonthView()//화면 초기화
 
+        //2023년 6월 표시
+        binding.selectedYearMonthTv.text = YYYYMMFromDate(selectedDate)
+        //6월 1일 일정 표시
+        binding.selectedMonthDayTv.text = "${MMDDFromDate(selectedDate)} 일정"
+
         calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
 
-        //CurrentMissionAdapter 리사이클러뷰 연결
-        mDataList.add(currentMissionData("헬스","10","+ 5"))
-        mDataList.add(currentMissionData("헬스","10","- 10"))
-        mDataList.add(currentMissionData("헬스","10","- 10"))
-        val currentMissionAdapter = CurrentMissionAdapter(mDataList)
-        binding.currentMissionRv.layoutManager = LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false)
-        binding.currentMissionRv.adapter = currentMissionAdapter
+        setAdapter()//CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
 
-        //ScheduleAdaptar 리사이클러뷰 연결
-        sDataList.add(scheduleData("헬스 4일차","19:00","20:00"))
-        sDataList.add(scheduleData("헬스 5일차","19:00","20:00"))
-        sDataList.add(scheduleData("헬스 6일차","19:00","20:00"))
-        sDataList.add(scheduleData("헬스 4일차","19:00","20:00"))
-        sDataList.add(scheduleData("헬스 5일차","19:00","20:00"))
-        sDataList.add(scheduleData("헬스 6일차","19:00","20:00"))
-        val scheduleAdaptar = ScheduleAdaptar(sDataList)
-        binding.scheduleRv.layoutManager = LinearLayoutManager(getActivity())
-        binding.scheduleRv.adapter = scheduleAdaptar
+        //history누르면 HistoryActivity로 화면 전환
+        binding.historyTv.setOnClickListener{
+            var historyIntent = Intent(requireActivity(), HistoryActivity::class.java)
+            startActivity(historyIntent)
+        }
+        //미션리스트 위에 모두보기 누르면 CurrentMissionActivity로 화면 전환
+        binding.viewAllTv.setOnClickListener{
+            var missionIntent = Intent(requireActivity(), CurrentMissionActivity::class.java)
+            startActivity(missionIntent)
+        }
+        //floating button누르면 CreateScheduleActivity로 화면 전환
+        binding.newScheduleFloatingBtn.setOnClickListener{
+            var createSIntent = Intent(requireActivity(), CreateScheduleActivity::class.java)
+            startActivity(createSIntent)
+        }
 
         //noScheduleIv의 visibility설정
         if(sDataList.size == 0)
@@ -79,15 +84,31 @@ class ScheduleFragment : Fragment() {
         return binding.root
     }
 
+    private fun setAdapter(){
+        //CurrentMissionAdapter 리사이클러뷰 연결
+        mDataList.add(currentMissionData("헬스","10","+ 5"))
+        mDataList.add(currentMissionData("헬스","10","- 10"))
+        mDataList.add(currentMissionData("헬스","10","- 10"))
+        val currentMissionAdapter = CurrentMissionAdapter(mDataList)
+        binding.currentMissionRv.layoutManager = LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false)
+        binding.currentMissionRv.adapter = currentMissionAdapter
+
+        //ScheduleAdaptar 리사이클러뷰 연결
+        sDataList.add(scheduleData("헬스 4일차","19:00","20:00"))
+        sDataList.add(scheduleData("헬스 5일차","19:00","20:00"))
+        sDataList.add(scheduleData("헬스 6일차","19:00","20:00"))
+        sDataList.add(scheduleData("헬스 4일차","19:00","20:00"))
+        sDataList.add(scheduleData("헬스 5일차","19:00","20:00"))
+        sDataList.add(scheduleData("헬스 6일차","19:00","20:00"))
+        val scheduleAdaptar = ScheduleAdaptar(sDataList)
+        binding.scheduleRv.layoutManager = LinearLayoutManager(getActivity())
+        binding.scheduleRv.adapter = scheduleAdaptar
+    }
     //month화면에 보여주기
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setMonthView(){
         //month를 month text view에 보여주기 (결과: 1월)
         binding.monthTv.text = monthFromDate(selectedDate)
-        //2023년 6월 표시
-        binding.selectedYearMonthTv.text = YYYYMMFromDate(selectedDate)
-        //6월 1일 일정 표시
-        binding.selectedMonthDayTv.text = "${MMDDFromDate(selectedDate)} 일정"
 
         //이번달 날짜 가져오기
         val dayList = dayInMonthArray(selectedDate)
@@ -96,13 +117,6 @@ class ScheduleFragment : Fragment() {
         calendarAdapter = CalendarAdapter(dayList)
         binding.calendarRv.layoutManager = GridLayoutManager(getActivity(), 7)
         binding.calendarRv.adapter = calendarAdapter
-    }
-
-    //M월 형식으로 포맷
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun monthFromDate(date : LocalDate):String{
-        var formatter = DateTimeFormatter.ofPattern("M월")
-        return date.format(formatter)
     }
 
     //날짜 생성: ArrayList<CalendarData>()생성
@@ -155,7 +169,8 @@ class ScheduleFragment : Fragment() {
             calendarRvItemClickEvent()
         }
     }
-//Calendar rv item클릭 이벤트--2
+
+    //Calendar rv item클릭 이벤트--2
     fun calendarRvItemClickEvent() {
     calendarAdapter.setItemClickListener(object : CalendarAdapter.OnItemClickListener {
 
@@ -174,11 +189,16 @@ class ScheduleFragment : Fragment() {
 
             Toast.makeText(context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
                 .show()
+            }
+        })
+    }
 
-        }
-    })
-}
-    
+    //M월 형식으로 포맷
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun monthFromDate(date : LocalDate):String{
+        var formatter = DateTimeFormatter.ofPattern("M월")
+        return date.format(formatter)
+    }
     //YYYY년 M월 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
     private fun YYYYMMFromDate(date : LocalDate?):String?{
