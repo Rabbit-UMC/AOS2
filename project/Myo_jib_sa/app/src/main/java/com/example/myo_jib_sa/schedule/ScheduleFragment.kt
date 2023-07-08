@@ -15,6 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.example.myo_jib_sa.schedule.adapter.*
+import com.google.android.ads.nativetemplates.TemplateView
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdOptions
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -27,6 +31,7 @@ class ScheduleFragment : Fragment() {
     lateinit var selectedDate : LocalDate //오늘 날짜
     var mDataList = ArrayList<currentMissionData>() //미션 리스트 데이터
     var sDataList = ArrayList<scheduleData>() //미션 리스트 데이터
+    private var adLoader: AdLoader? = null //광고를 불러올 adLoader 객체
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -38,6 +43,10 @@ class ScheduleFragment : Fragment() {
 
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
         setMonthView()//화면 초기화
+
+        //애드몹 광고 표시
+        createAd()
+        adLoader?.loadAd(AdRequest.Builder().build())
 
         //2023년 6월 표시
         binding.selectedYearMonthTv.text = YYYYMMFromDate(selectedDate)
@@ -170,7 +179,7 @@ class ScheduleFragment : Fragment() {
         }
     }
 
-    //Calendar rv item클릭 이벤트--2
+    //Calendar rv item클릭 이벤트
     fun calendarRvItemClickEvent() {
     calendarAdapter.setItemClickListener(object : CalendarAdapter.OnItemClickListener {
 
@@ -191,6 +200,26 @@ class ScheduleFragment : Fragment() {
                 .show()
             }
         })
+    }
+
+    //광고 생성 메소드
+    fun createAd() {
+        MobileAds.initialize(requireActivity())
+        adLoader = AdLoader.Builder(requireActivity(), "ca-app-pub-3940256099942544/2247696110")//sample아이디
+            .forNativeAd { ad : NativeAd ->
+                val template: TemplateView = binding.myTemplate
+                template.setNativeAd(ad)
+            }
+            .withAdListener(object : AdListener() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    // Handle the failure by logging, altering the UI, and so on.
+                }
+            })
+            .withNativeAdOptions(NativeAdOptions.Builder()
+                    // Methods in the NativeAdOptions.Builder class can be
+                    // used here to specify individual options settings.
+                    .build())
+            .build()
     }
 
     //M월 형식으로 포맷
