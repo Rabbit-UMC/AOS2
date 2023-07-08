@@ -50,7 +50,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top" />
 
-    <ImageView
+    <!--ImageView
         android:id="@+id/schedule_ad_iv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -61,7 +61,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_line_v" />
+        app:layout_constraintTop_toBottomOf="@+id/top_line_v" /-->
+    <com.google.android.ads.nativetemplates.TemplateView
+        android:id="@+id/my_template"
+        app:gnt_template_type="@layout/gnt_small_template_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_line_v"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/col_layout2"
@@ -71,7 +84,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/schedule_ad_iv">
+        app:layout_constraintTop_toBottomOf="@+id/my_template">
 
 
         <TextView
@@ -276,6 +289,7 @@
         android:backgroundTint="@android:color/transparent"
         android:clickable="true"
         android:src="@drawable/ic_schedule_new_schedule"
+        android:contentDescription="Add New Schedule"
         app:borderWidth="0dp"
         app:elevation="0dp"
         app:fabCustomSize="43dp"
