@@ -2,18 +2,32 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-sdk tools:overrideLibrary="androidx.core.splashscreen" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name=".Login.KakaoApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/ic_app"
-        android:roundIcon="@drawable/ic_app"
         android:label="묘집사"
+        android:roundIcon="@drawable/ic_app"
         android:supportsRtl="true"
         android:theme="@style/Theme.Myo_jib_sa"
         tools:targetApi="31">
         <activity
+            android:name=".mypage.EditMypageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Login.MyoSignUpActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Login.KakaoLoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
