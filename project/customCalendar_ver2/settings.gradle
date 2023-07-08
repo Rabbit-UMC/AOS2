@@ -12,6 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Myo_jib_sa"
+rootProject.name = "customCalendar"
 include ':app'
-include ':nativetemplates'
