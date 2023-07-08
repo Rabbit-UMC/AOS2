@@ -33,8 +33,8 @@
 - 일정 (히스토리) *2023.8.6*
 
 ### client C
-- 커뮤니티(수다 게시판) *2023.7.9*
-- 커뮤니티(홈) *2023.7.9*
+- [커뮤니티(홈)](./H_progress/community_home.md)*2023.7.9*
+- [커뮤니티(수다 게시판)](./H_progress/community_board.md) *2023.7.9*
 - 커뮤니티(수다게시글 / 수정) *2023.7.16*
 - 커뮤니티(수다글쓰기) *2023.7.16*
 - 커뮤니티(관리자/묘방생) *2023.7.30*
@@ -52,5 +52,7 @@
 [**README**](./README.md) : 프로젝트 설명
 
 [**Git Rules**](./Git_Rules.md) : Git 관리 규칙
+
+[**Android_Rules**](./Android_Rules.md) : 안드로이드 개발 관련 규칙
 
 [**History**](./History.md) : commit history 작성
