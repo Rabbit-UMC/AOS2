@@ -216,8 +216,9 @@ class CommunityFragment : Fragment() {
     private fun setPage() {
         if (currentPage == 3)
             currentPage = 0
-        binding.homeBannerVpager.setCurrentItem(currentPage, true)
         currentPage += 1
+        binding.homeBannerVpager.setCurrentItem(currentPage, true)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
