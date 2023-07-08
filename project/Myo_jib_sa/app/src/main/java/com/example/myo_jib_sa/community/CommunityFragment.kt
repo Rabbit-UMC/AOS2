@@ -2,6 +2,9 @@ package com.example.myo_jib_sa.community
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.R
@@ -28,6 +32,7 @@ import com.example.myo_jib_sa.community.banner.Banner2Fragment
 import com.example.myo_jib_sa.community.banner.Banner3Fragment
 import com.example.myo_jib_sa.databinding.ActivityBoardArtBinding
 import com.example.myo_jib_sa.databinding.FragmentCommunityBinding
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import java.sql.Timestamp
 
@@ -83,6 +88,11 @@ class CommunityFragment : Fragment() {
         vAdapter.addFragment(Banner2Fragment())
         vAdapter.addFragment(Banner3Fragment())
 
+        val selectedColor = R.color.community_selected_color
+        val unselectedColor = R.color.community_unselected_color
+        customizeTabIconColors(binding.homeBannerTab, selectedColor, unselectedColor)
+
+
         binding.homeBannerVpager.adapter=vAdapter
         val tabLayoutMediator = TabLayoutMediator(binding.homeBannerTab, binding.homeBannerVpager) { tab, position ->
             when (position) {
@@ -97,6 +107,7 @@ class CommunityFragment : Fragment() {
                 }
             }
         }.attach()
+
 
 
 
@@ -215,5 +226,30 @@ class CommunityFragment : Fragment() {
         super.onDestroyView()
         thread.interrupt()
         handler.removeCallbacksAndMessages(null)
+    }
+
+
+    //탭 선택 리스너, (색상)
+    fun customizeTabIconColors(tabLayout: TabLayout, selectedColor: Int, unselectedColor: Int) {
+        val tabSelectedListener = object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                val tabIconColor = ContextCompat.getColor(tabLayout.context, selectedColor)
+                val colorFilter = PorterDuffColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN)
+                tab.icon?.colorFilter = colorFilter
+            }
+
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                val tabIconColor = ContextCompat.getColor(tabLayout.context, unselectedColor)
+                val colorFilter = PorterDuffColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN)
+                tab.icon?.colorFilter = colorFilter
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {
+                // 선택된 탭이 다시 선택된 경우 추가 동작을 수행할 수 있습니다.
+            }
+        }
+
+        tabLayout.addOnTabSelectedListener(tabSelectedListener)
     }
 }
