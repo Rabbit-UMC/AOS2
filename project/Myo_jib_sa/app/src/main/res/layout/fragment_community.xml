@@ -134,8 +134,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/home_banner_vpager"
 
                     app:tabGravity="center"
-                    app:tabIconTint="#848484"
-                    app:tabIndicator="@drawable/indicator_dot"
+
+                    app:tabRippleColor="@android:color/transparent"
+                    app:tabIndicator="@drawable/ic_dot"
                     app:tabIndicatorColor="#848484"
                     app:tabIndicatorHeight="0dp" />
 

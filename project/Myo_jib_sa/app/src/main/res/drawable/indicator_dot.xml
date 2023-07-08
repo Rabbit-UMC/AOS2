@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/ic_dot_selected"
+    <item android:color="#848484"
         android:state_selected="true"/>
-    <item android:drawable="@drawable/ic_dot"/>
+    <item android:color="#D9D9D9"/>
 </selector>
