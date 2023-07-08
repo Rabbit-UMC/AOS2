@@ -88,10 +88,15 @@ class CommunityFragment : Fragment() {
         vAdapter.addFragment(Banner2Fragment())
         vAdapter.addFragment(Banner3Fragment())
 
+        //아이콘 색상 설정
         val selectedColor = R.color.community_selected_color
         val unselectedColor = R.color.community_unselected_color
         customizeTabIconColors(binding.homeBannerTab, selectedColor, unselectedColor)
 
+        // 기본(default) 화면 설정
+        val defaultPosition = 0 // 기본 화면의 position을 설정합니다.
+        binding.homeBannerVpager.setCurrentItem(defaultPosition, false) // 기본 화면으로 ViewPager를 설정
+        binding.homeBannerTab.selectTab(binding.homeBannerTab.getTabAt(defaultPosition)) // 기본 화면으로 Tab을 설정
 
         binding.homeBannerVpager.adapter=vAdapter
         val tabLayoutMediator = TabLayoutMediator(binding.homeBannerTab, binding.homeBannerVpager) { tab, position ->
