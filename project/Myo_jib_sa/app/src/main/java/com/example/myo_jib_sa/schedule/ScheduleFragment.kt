@@ -30,7 +30,7 @@ class ScheduleFragment : Fragment() {
     lateinit var calendarAdapter : CalendarAdapter //calendarRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
     lateinit var selectedDate : LocalDate //오늘 날짜
     var mDataList = ArrayList<currentMissionData>() //미션 리스트 데이터
-    var sDataList = ArrayList<scheduleData>() //미션 리스트 데이터
+
     private var adLoader: AdLoader? = null //광고를 불러올 adLoader 객체
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -55,7 +55,9 @@ class ScheduleFragment : Fragment() {
 
         calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
 
-        setAdapter()//CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
+        //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
+        setCurrentMissionAdapter()
+        setScheduleAdaptarAdapter(selectedDate)
 
         //history누르면 HistoryActivity로 화면 전환
         binding.historyTv.setOnClickListener{
@@ -73,11 +75,7 @@ class ScheduleFragment : Fragment() {
             startActivity(createSIntent)
         }
 
-        //noScheduleIv의 visibility설정
-        if(sDataList.size == 0)
-            binding.noScheduleIv.visibility = View.VISIBLE
-        else
-            binding.noScheduleIv.visibility = View.GONE
+
 
         //캘린더 visible버튼
         binding.calenderVisibleBtn.setOnClickListener{
@@ -93,25 +91,43 @@ class ScheduleFragment : Fragment() {
         return binding.root
     }
 
-    private fun setAdapter(){
+    private fun setCurrentMissionAdapter() {
         //CurrentMissionAdapter 리사이클러뷰 연결
-        mDataList.add(currentMissionData("헬스","10","+ 5"))
-        mDataList.add(currentMissionData("헬스","10","- 10"))
-        mDataList.add(currentMissionData("헬스","10","- 10"))
+        mDataList.add(currentMissionData("헬스", "10", "+ 5"))
+        mDataList.add(currentMissionData("헬스", "10", "- 10"))
+        mDataList.add(currentMissionData("헬스", "10", "- 10"))
         val currentMissionAdapter = CurrentMissionAdapter(mDataList)
-        binding.currentMissionRv.layoutManager = LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false)
+        binding.currentMissionRv.layoutManager =
+            LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false)
         binding.currentMissionRv.adapter = currentMissionAdapter
 
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setScheduleAdaptarAdapter(date: LocalDate?){
+        var formatter = DateTimeFormatter.ofPattern("D")
+        var day = date?.format(formatter)
+
+
         //ScheduleAdaptar 리사이클러뷰 연결
-        sDataList.add(scheduleData("헬스 4일차","19:00","20:00"))
-        sDataList.add(scheduleData("헬스 5일차","19:00","20:00"))
-        sDataList.add(scheduleData("헬스 6일차","19:00","20:00"))
-        sDataList.add(scheduleData("헬스 4일차","19:00","20:00"))
-        sDataList.add(scheduleData("헬스 5일차","19:00","20:00"))
-        sDataList.add(scheduleData("헬스 6일차","19:00","20:00"))
+        var sDataList = ArrayList<scheduleData>() //미션 리스트 데이터
+
+        if(date?.dayOfMonth == 15) {
+            sDataList.add(scheduleData("헬스 4일차", "19:00", "20:00"))
+            sDataList.add(scheduleData("헬스 5일차", "19:00", "20:00"))
+            sDataList.add(scheduleData("헬스 6일차", "19:00", "20:00"))
+            sDataList.add(scheduleData("헬스 4일차", "19:00", "20:00"))
+            sDataList.add(scheduleData("헬스 5일차", "19:00", "20:00"))
+            sDataList.add(scheduleData("헬스 6일차", "19:00", "20:00"))
+        }
         val scheduleAdaptar = ScheduleAdaptar(sDataList)
         binding.scheduleRv.layoutManager = LinearLayoutManager(getActivity())
         binding.scheduleRv.adapter = scheduleAdaptar
+
+        //noScheduleIv의 visibility설정
+        if(sDataList.size == 0)
+            binding.noSchedule.visibility = View.VISIBLE
+        else
+            binding.noSchedule.visibility = View.GONE
     }
     //month화면에 보여주기
     @RequiresApi(Build.VERSION_CODES.O)
@@ -145,14 +161,14 @@ class ScheduleFragment : Fragment() {
             if(dayOfWeek == 7){//그 달의 첫날이 일요일일때 작동: 한칸 아래줄부터 날짜 표시되는 현상 막기위해
                 if(i>lastDay)
                     break
-                dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i)))//얘만 살리기
+                dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i)))
             }
             else if(i<=dayOfWeek || i>(lastDay + dayOfWeek)){//그 외 경우
                 dayList.add(CalendarData(null))
             }
             else{
                 //test code
-                if(i == 15)
+                if(i-dayOfWeek == 15)
                     dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek), true))//test code
                 //test code, else 바로 아래 dayList.add 코드는 살리기
                 else
@@ -198,6 +214,9 @@ class ScheduleFragment : Fragment() {
 
             Toast.makeText(context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
                 .show()
+
+            setScheduleAdaptarAdapter(calendarData.date)
+
             }
         })
     }
