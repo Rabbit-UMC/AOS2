@@ -58,10 +58,10 @@ class ScheduleAdaptar (private val scheduleList:ArrayList<scheduleData>):
     }
 
 
-
-    fun performAction(position: Int, holder: RecyclerView.ViewHolder) {
+    //swipe
+    fun swipeUpdateItem(position: Int, holder: RecyclerView.ViewHolder) {
         val sItemRectangleImg: ImageView = holder.itemView.findViewById(R.id.sechedule_rectangle_img)
-        sItemRectangleImg.setImageResource(R.drawable.ic_sechedule_delete_rectangle)
+        sItemRectangleImg.setImageResource(R.drawable.ic_schedule_delete_rectangle)
         notifyItemChanged(position)
     }
 
