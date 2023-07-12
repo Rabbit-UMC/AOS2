@@ -1,17 +1,22 @@
 package com.example.myo_jib_sa.schedule
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.example.myo_jib_sa.schedule.adapter.*
@@ -101,6 +106,7 @@ class ScheduleFragment : Fragment() {
             LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false)
         binding.currentMissionRv.adapter = currentMissionAdapter
 
+
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setScheduleAdaptarAdapter(date: LocalDate?){
@@ -128,7 +134,70 @@ class ScheduleFragment : Fragment() {
             binding.noSchedule.visibility = View.VISIBLE
         else
             binding.noSchedule.visibility = View.GONE
+
+        //rv swipe이벤트 연결
+//        val itemTouchHelper = ItemTouchHelper(RVSwipeCallback(requireActivity(), binding.scheduleRv))
+//        itemTouchHelper.attachToRecyclerView(binding.scheduleRv)
+
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return true
+            }
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+                val position = viewHolder.adapterPosition
+
+                (binding.scheduleRv.adapter as ScheduleAdaptar).performAction(position, viewHolder)
+
+                AlertDialog.Builder(requireActivity())
+                    .setTitle("Title")
+                    .setMessage("Hello, This is message")
+                    .setPositiveButton("ok", object : DialogInterface.OnClickListener {
+                        override fun onClick(dialog: DialogInterface, which: Int) {
+                            Log.d("MyTag", "positive")
+                            (binding.scheduleRv.adapter as ScheduleAdaptar).removeTask(position)
+                        }
+                    })
+                    .setNegativeButton("cancel", object : DialogInterface.OnClickListener {
+                        override fun onClick(dialog: DialogInterface, which: Int) {
+                            Log.d("MyTag", "negative")
+                        }
+                    })
+                    .setNeutralButton("neutral", object : DialogInterface.OnClickListener {
+                        override fun onClick(dialog: DialogInterface, which: Int) {
+                            Log.d("MyTag", "neutral")
+                        }
+                    })
+                    .create()
+                    .show()
+
+                // Adapter에 아이템 삭제 요청
+                //(binding.scheduleRv.adapter as ScheduleAdaptar).removeTask(viewHolder.adapterPosition)
+            }
+
+
+            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+                super.clearView(recyclerView, viewHolder)
+                val sItemRectangleImg: ImageView = viewHolder.itemView.findViewById(R.id.sechedule_rectangle_img)
+                sItemRectangleImg.setImageResource(R.drawable.ic_schedule_rectangle)
+            }
+
+            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+                super.onSelectedChanged(viewHolder, actionState)
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    val sItemRectangleImg: ImageView? = viewHolder?.itemView?.findViewById(R.id.sechedule_rectangle_img)
+                    sItemRectangleImg?.setImageResource(R.drawable.ic_schedule_delete_rectangle)
+                }
+            }
+
+        }).apply {
+            // ItemTouchHelper에 RecyclerView 설정
+            attachToRecyclerView(binding.scheduleRv)
+        }
+
     }
+
+
     //month화면에 보여주기
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setMonthView(){
@@ -193,6 +262,8 @@ class ScheduleFragment : Fragment() {
             setMonthView()
             calendarRvItemClickEvent()
         }
+
+
     }
 
     //Calendar rv item클릭 이벤트
@@ -219,7 +290,11 @@ class ScheduleFragment : Fragment() {
 
             }
         })
+
+
     }
+
+
 
     //광고 생성 메소드
     fun createAd() {
