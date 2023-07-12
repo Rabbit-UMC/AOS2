@@ -7,7 +7,7 @@
     android:layout_marginBottom="8dp">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/sechedule_rectangle_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_schedule_rectangle"

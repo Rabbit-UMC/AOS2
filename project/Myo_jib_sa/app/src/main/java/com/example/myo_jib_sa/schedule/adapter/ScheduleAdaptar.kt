@@ -4,8 +4,10 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
 
@@ -21,6 +23,7 @@ class ScheduleAdaptar (private val scheduleList:ArrayList<scheduleData>):
         val sTitle_tv: TextView = itemView.findViewById(R.id.schedule_title_tv)
         val sStartTime_tv: TextView = itemView.findViewById(R.id.schedule_start_time_tv)
         val sFinishTime_tv: TextView = itemView.findViewById(R.id.schedule_end_time_tv)
+        val sItemRectangle_img: ImageView = itemView.findViewById(R.id.sechedule_rectangle_img)
     }
 
     //화면 설정
@@ -53,6 +56,24 @@ class ScheduleAdaptar (private val scheduleList:ArrayList<scheduleData>):
 
 
     }
+
+
+
+    fun performAction(position: Int, holder: RecyclerView.ViewHolder) {
+        val sItemRectangleImg: ImageView = holder.itemView.findViewById(R.id.sechedule_rectangle_img)
+        sItemRectangleImg.setImageResource(R.drawable.ic_sechedule_delete_rectangle)
+        notifyItemChanged(position)
+    }
+
+    // 내부 데이터 값 제거
+    fun removeTask(position: Int) {
+        scheduleList.removeAt(position)
+
+        notifyDataSetChanged()
+    }
+
+
+
 
     override fun getItemCount(): Int {
         return scheduleList.size
