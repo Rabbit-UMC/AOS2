@@ -58,12 +58,8 @@ class ScheduleAdaptar (private val scheduleList:ArrayList<scheduleData>):
     }
 
 
-    //swipe
-    fun swipeUpdateItem(position: Int, holder: RecyclerView.ViewHolder) {
-        val sItemRectangleImg: ImageView = holder.itemView.findViewById(R.id.sechedule_rectangle_img)
-        sItemRectangleImg.setImageResource(R.drawable.ic_schedule_delete_rectangle)
-        notifyItemChanged(position)
-    }
+
+
 
     // 내부 데이터 값 제거
     fun removeTask(position: Int) {
@@ -71,6 +67,7 @@ class ScheduleAdaptar (private val scheduleList:ArrayList<scheduleData>):
 
         notifyDataSetChanged()
     }
+
 
 
 

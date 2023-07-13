@@ -1,20 +1,14 @@
 package com.example.myo_jib_sa.schedule
 
-import android.annotation.SuppressLint
+
+import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.ImageButton
+import android.view.*
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -24,13 +18,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.databinding.DialogScheduleDeleteBinding
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.example.myo_jib_sa.schedule.adapter.*
 import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
-import com.google.android.material.button.MaterialButton
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -150,58 +144,17 @@ class ScheduleFragment : Fragment() {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                 return true
             }
-            @SuppressLint("MissingInflatedId")
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
                 val position = viewHolder.adapterPosition
 
-                //(binding.scheduleRv.adapter as ScheduleAdaptar).swipeUpdateItem(position, viewHolder)
 
+
+
+                //2안
                 scheduleDeleteDialog(requireContext(), binding.scheduleRv.adapter as ScheduleAdaptar, position).show()
 
-//                val dialogView = layoutInflater.inflate(R.layout.dialog_schedule_delete, null)
-//                val alertDialog = AlertDialog.Builder(requireActivity())
-//                    .setView(dialogView)
-//                    .create()
-//                alertDialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
-//                //alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//                val yes_tv = dialogView.findViewById<TextView>(R.id.yes_tv)
-//                val exit_btn = dialogView.findViewById<ImageButton>(R.id.exit_btn)
-//
-//                yes_tv.setOnClickListener{
-//                    alertDialog.dismiss()
-//                    (binding.scheduleRv.adapter as ScheduleAdaptar).removeTask(position)
-//                }
-//                exit_btn.setOnClickListener {
-//                    alertDialog.dismiss()
-//                }
-//                alertDialog.show()
-
-
-//                AlertDialog.Builder(requireActivity())
-//                    .setTitle("Title")
-//                    .setMessage("Hello, This is message")
-//                    .setPositiveButton("ok", object : DialogInterface.OnClickListener {
-//                        override fun onClick(dialog: DialogInterface, which: Int) {
-//                            Log.d("MyTag", "positive")
-//                            (binding.scheduleRv.adapter as ScheduleAdaptar).removeTask(position)
-//                        }
-//                    })
-//                    .setNegativeButton("cancel", object : DialogInterface.OnClickListener {
-//                        override fun onClick(dialog: DialogInterface, which: Int) {
-//                            Log.d("MyTag", "negative")
-//                        }
-//                    })
-//                    .setNeutralButton("neutral", object : DialogInterface.OnClickListener {
-//                        override fun onClick(dialog: DialogInterface, which: Int) {
-//                            Log.d("MyTag", "neutral")
-//                        }
-//                    })
-//                    .create()
-//                    .show()
-
-                // Adapter에 아이템 삭제 요청
-                //(binding.scheduleRv.adapter as ScheduleAdaptar).removeTask(viewHolder.adapterPosition)
-            }
+              }
 
 
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
@@ -225,6 +178,7 @@ class ScheduleFragment : Fragment() {
 
     }
 
+    
 
     //month화면에 보여주기
     @RequiresApi(Build.VERSION_CODES.O)
