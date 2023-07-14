@@ -1,13 +1,11 @@
-package com.example.myo_jib_sa.schedule
+package com.example.myo_jib_sa.schedule.dialog
 
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Window
 import android.view.WindowManager
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogScheduleDeleteBinding
 import com.example.myo_jib_sa.schedule.adapter.ScheduleAdaptar
 
@@ -32,8 +30,8 @@ class scheduleDeleteDialog(
 
         val params: WindowManager.LayoutParams = getWindow()!!.getAttributes()
 
-        params.width = 700
-        params.height = 370
+        //params.width = 700
+        //params.height = 370
 
         //getWindow()?.setBackgroundDrawable(R.drawable.view_round_r15);
 

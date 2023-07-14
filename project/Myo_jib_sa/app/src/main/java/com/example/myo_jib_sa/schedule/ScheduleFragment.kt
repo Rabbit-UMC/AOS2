@@ -21,6 +21,9 @@ import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogScheduleDeleteBinding
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.example.myo_jib_sa.schedule.adapter.*
+import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
+import com.example.myo_jib_sa.schedule.dialog.ScheduleEditDialogFragment
+import com.example.myo_jib_sa.schedule.dialog.scheduleDeleteDialog
 import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
@@ -34,6 +37,8 @@ class ScheduleFragment : Fragment() {
 
     lateinit var binding: FragmentScheduleBinding
     lateinit var calendarAdapter : CalendarAdapter //calendarRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
+    lateinit var scheduleAdaptar : ScheduleAdaptar //scheduleRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
+    val scheduleDetailDialog = ScheduleDetailDialogFragment()
     lateinit var selectedDate : LocalDate //오늘 날짜
     var mDataList = ArrayList<currentMissionData>() //미션 리스트 데이터
 
@@ -59,11 +64,12 @@ class ScheduleFragment : Fragment() {
         //6월 1일 일정 표시
         binding.selectedMonthDayTv.text = "${MMDDFromDate(selectedDate)} 일정"
 
-        calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
-
         //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
         setCurrentMissionAdapter()
-        setScheduleAdaptarAdapter(selectedDate)
+        setScheduleAdaptar(selectedDate)
+
+        calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
+        scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
 
         //history누르면 HistoryActivity로 화면 전환
         binding.historyTv.setOnClickListener{
@@ -94,11 +100,14 @@ class ScheduleFragment : Fragment() {
         //캘린더에 이전달 다음달 이동 버튼 세팅
         calenderBtn()
 
+
+
+
         return binding.root
     }
 
+    //CurrentMissionAdapter 리사이클러뷰 연결
     private fun setCurrentMissionAdapter() {
-        //CurrentMissionAdapter 리사이클러뷰 연결
         mDataList.add(currentMissionData("헬스", "10", "+ 5"))
         mDataList.add(currentMissionData("헬스", "10", "- 10"))
         mDataList.add(currentMissionData("헬스", "10", "- 10"))
@@ -106,27 +115,26 @@ class ScheduleFragment : Fragment() {
         binding.currentMissionRv.layoutManager =
             LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false)
         binding.currentMissionRv.adapter = currentMissionAdapter
-
-
     }
+
+    //setScheduleAdaptarAdapter 리사이클러뷰 연결
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun setScheduleAdaptarAdapter(date: LocalDate?){
+    private fun setScheduleAdaptar(date: LocalDate?){
         var formatter = DateTimeFormatter.ofPattern("D")
         var day = date?.format(formatter)
 
-
         //ScheduleAdaptar 리사이클러뷰 연결
-        var sDataList = ArrayList<scheduleData>() //미션 리스트 데이터
+        var sDataList = ArrayList<ScheduleData>() //미션 리스트 데이터
 
         if(date?.dayOfMonth == 15) {
-            sDataList.add(scheduleData("헬스 4일차", "19:00", "20:00"))
-            sDataList.add(scheduleData("헬스 5일차", "19:00", "20:00"))
-            sDataList.add(scheduleData("헬스 6일차", "19:00", "20:00"))
-            sDataList.add(scheduleData("헬스 4일차", "19:00", "20:00"))
-            sDataList.add(scheduleData("헬스 5일차", "19:00", "20:00"))
-            sDataList.add(scheduleData("헬스 6일차", "19:00", "20:00"))
+            sDataList.add(ScheduleData("헬스 4일차", "19:00", "20:00"))
+            sDataList.add(ScheduleData("헬스 5일차", "19:00", "20:00"))
+            sDataList.add(ScheduleData("헬스 6일차", "19:00", "20:00"))
+            sDataList.add(ScheduleData("헬스 4일차", "19:00", "20:00"))
+            sDataList.add(ScheduleData("헬스 5일차", "19:00", "20:00"))
+            sDataList.add(ScheduleData("헬스 6일차", "19:00", "20:00"))
         }
-        val scheduleAdaptar = ScheduleAdaptar(sDataList)
+        scheduleAdaptar = ScheduleAdaptar(sDataList)
         binding.scheduleRv.layoutManager = LinearLayoutManager(getActivity())
         binding.scheduleRv.adapter = scheduleAdaptar
 
@@ -148,14 +156,10 @@ class ScheduleFragment : Fragment() {
 
                 val position = viewHolder.adapterPosition
 
-
-
-
                 //2안
                 scheduleDeleteDialog(requireContext(), binding.scheduleRv.adapter as ScheduleAdaptar, position).show()
 
               }
-
 
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
@@ -170,15 +174,11 @@ class ScheduleFragment : Fragment() {
                     sItemRectangleImg?.setImageResource(R.drawable.ic_schedule_delete_rectangle)
                 }
             }
-
         }).apply {
             // ItemTouchHelper에 RecyclerView 설정
             attachToRecyclerView(binding.scheduleRv)
         }
-
     }
-
-    
 
     //month화면에 보여주기
     @RequiresApi(Build.VERSION_CODES.O)
@@ -244,8 +244,6 @@ class ScheduleFragment : Fragment() {
             setMonthView()
             calendarRvItemClickEvent()
         }
-
-
     }
 
     //Calendar rv item클릭 이벤트
@@ -268,15 +266,48 @@ class ScheduleFragment : Fragment() {
             Toast.makeText(context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
                 .show()
 
-            setScheduleAdaptarAdapter(calendarData.date)
-
+            setScheduleAdaptar(calendarData.date)
             }
         })
-
-
     }
 
+    //Schedule rv item클릭 이벤트
+    fun scheduleRvItemClickEvent() {
+        scheduleAdaptar.setItemClickListener(object : ScheduleAdaptar.OnItemClickListener {
 
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onClick(scheduleData: ScheduleData) {
+                // 클릭 시 이벤트 작성
+                var bundle = Bundle()
+
+                ScheduleDetailDialogFragment().arguments = bundle
+
+
+                scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트
+                scheduleDetailDialog.show(requireActivity().supportFragmentManager, "ScheduleDetailDialog")
+            }
+        })
+    }
+
+    //scheduleDetailDialog Item클릭 이벤트
+    fun scheduleDetailDialogItemClickEvent(dialog: ScheduleDetailDialogFragment){
+        dialog.setButtonClickListener(object: ScheduleDetailDialogFragment.OnButtonClickListener{
+            override fun onClickEditBtn() {
+                val scheduleEditDialog = ScheduleEditDialogFragment()
+                scheduleEditDialogItemClickEvent(scheduleEditDialog)//scheduleEditDialog Item클릭 이벤트
+                scheduleEditDialog.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
+            }
+        })
+    }
+
+    //scheduleEditDialog Item클릭 이벤트
+    fun scheduleEditDialogItemClickEvent(dialog: ScheduleEditDialogFragment){
+        dialog.setButtonClickListener(object: ScheduleEditDialogFragment.OnButtonClickListener{
+            override fun onClickEditBtn() {
+                scheduleDetailDialog.dismiss()
+            }
+        })
+    }
 
     //광고 생성 메소드
     fun createAd() {
