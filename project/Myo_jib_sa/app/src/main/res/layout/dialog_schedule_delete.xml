@@ -4,6 +4,8 @@
     android:id="@+id/schedule_delete_dialog"
     android:layout_width="275dp"
     android:layout_height="143dp"
+    android:minWidth="275dp"
+    android:minHeight="143dp"
     android:background="@drawable/view_round_r15"
     android:orientation="vertical">
 

@@ -44,6 +44,9 @@ dependencies {
     implementation project(':nativetemplates')
     implementation 'com.google.android.gms:play-services-ads:21.1.0'
 
+    //viewpager2 Tablayout
+    implementation 'com.google.android.material:material:1.4.0'
+
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
