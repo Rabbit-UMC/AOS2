@@ -156,10 +156,16 @@ class ScheduleFragment : Fragment() {
 
                 val position = viewHolder.adapterPosition
 
-                //2안
-                scheduleDeleteDialog(requireContext(), binding.scheduleRv.adapter as ScheduleAdaptar, position).show()
-
+                //dialog연결 2안
+                var scheduleDeleteDialog= scheduleDeleteDialog(requireContext(), binding.scheduleRv.adapter as ScheduleAdaptar, position)
+                scheduleDeleteDialog.setButtonClickListener(object: scheduleDeleteDialog.OnButtonClickListener{
+                    override fun onClickExitBtn() {
+                        scheduleAdaptar.notifyItemChanged(viewHolder.getAdapterPosition());
+                    }
+                })
+                scheduleDeleteDialog.show()
               }
+
 
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
@@ -281,7 +287,6 @@ class ScheduleFragment : Fragment() {
                 var bundle = Bundle()
 
                 ScheduleDetailDialogFragment().arguments = bundle
-
 
                 scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
                 scheduleDetailDialog.show(requireActivity().supportFragmentManager, "ScheduleDetailDialog")
