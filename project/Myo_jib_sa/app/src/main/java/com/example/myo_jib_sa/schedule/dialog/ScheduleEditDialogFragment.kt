@@ -26,8 +26,13 @@ class ScheduleEditDialogFragment : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
-
+        //나가기 버튼
         binding.exitTv.setOnClickListener{
+            dismiss()
+            buttonClickListener.onClickEditBtn()
+        }
+        //수정완료 버튼
+        binding.modifyBtn.setOnClickListener{
             dismiss()
             buttonClickListener.onClickEditBtn()
         }
