@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 
 private const val NUM_TABS = 4
 
-class ScheduleSpinnerViewPagerAdapter (fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+class ScheduleSpinnerViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {

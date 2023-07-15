@@ -10,12 +10,16 @@
     android:orientation="vertical"
     tools:context=".schedule.dialog.ScheduleSpinnerDialogFragment">
 
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/spinner_tabLayout"
         android:background="@android:color/transparent"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:tabGravity="start"
+        app:tabMode="fixed"
+        app:tabIndicatorColor="@android:color/transparent"/>
 
     <FrameLayout
         android:layout_width="match_parent"
