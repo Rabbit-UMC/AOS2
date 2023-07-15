@@ -14,4 +14,13 @@
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
     </style>
+    <!-- numberpicker 테마 -->
+    <style name = "NumberPickerStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--글자크기-->
+        <item name="android:textSize">16dp</item>
+        <!--글꼴-->
+        <item name="android:fontFamily">@font/font_inter</item>
+        <!--구분선 색상 변경-->
+        <item name="android:colorControlNormal">#C6C6C6</item>
+    </style>
 </resources>

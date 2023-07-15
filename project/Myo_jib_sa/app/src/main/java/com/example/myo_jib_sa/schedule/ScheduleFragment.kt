@@ -283,7 +283,7 @@ class ScheduleFragment : Fragment() {
                 ScheduleDetailDialogFragment().arguments = bundle
 
 
-                scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트
+                scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
                 scheduleDetailDialog.show(requireActivity().supportFragmentManager, "ScheduleDetailDialog")
             }
         })
@@ -294,7 +294,7 @@ class ScheduleFragment : Fragment() {
         dialog.setButtonClickListener(object: ScheduleDetailDialogFragment.OnButtonClickListener{
             override fun onClickEditBtn() {
                 val scheduleEditDialog = ScheduleEditDialogFragment()
-                scheduleEditDialogItemClickEvent(scheduleEditDialog)//scheduleEditDialog Item클릭 이벤트
+                scheduleEditDialogItemClickEvent(scheduleEditDialog)//scheduleEditDialog Item클릭 이벤트 setting
                 scheduleEditDialog.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
             }
         })
