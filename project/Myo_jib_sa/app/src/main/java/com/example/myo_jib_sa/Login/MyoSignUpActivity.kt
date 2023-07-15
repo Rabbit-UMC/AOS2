@@ -5,11 +5,14 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.StrictMode
+import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.CompoundButton
 import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.databinding.*
+import com.kakao.sdk.user.UserApiClient
 
 class MyoSignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMyoSignUpBinding
@@ -19,6 +22,9 @@ class MyoSignUpActivity : AppCompatActivity() {
         binding = ActivityMyoSignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //카카오 이메일
+        var kakaoEmail: String? = null
+
         val ageCheckBox = binding.signUpAgeCheckBox
         val useCheckBox = binding.signUpUseCheckBox
         val privacyCheckBox = binding.signUpPrivacyCheckBox
@@ -26,7 +32,19 @@ class MyoSignUpActivity : AppCompatActivity() {
         val identifyCheckBox = binding.signUpIdentidyCheckBox
         val signUpButton = binding.signUpSignUpBtn
 
+
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e("kakao", "사용자 정보 요청 실패", error)
+            }
+            else if (user != null) {
+                kakaoEmail=user.kakaoAccount?.email
+                Log.d("kakaoM",kakaoEmail.toString())
+            }
+        }
+
         //닉네임 중복 체크
+
 
 
         //내용 보기 밑줄, 클릭 시 상세 설명 팝업
@@ -150,16 +168,62 @@ class MyoSignUpActivity : AppCompatActivity() {
             setDialogSize(this, 0.8, WindowManager.LayoutParams.WRAP_CONTENT)
         }
 
+        //가입하기 버튼
         binding.signUpSignUpBtn.setOnClickListener {
-            dialog_complete.show()
-            binding_complete.signUpCompleteBtn.setOnClickListener {
-                // 메인으로 이동
-                val intent = Intent(this, MainActivity::class.java)
+
+            if (kakaoEmail != null) {
+                // 이메일 동의 항목을 체크한 경우에 대한 처리
+                dialog_complete.show()
+                binding_complete.signUpCompleteBtn.setOnClickListener {
+                    // 메인으로 이동
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                }
+            } else {
+
+                val intent = Intent(this, AddEmailDialogActivity::class.java)
                 startActivity(intent)
+
+                /*
+
+                // 이메일 동의 항목을 체크하지 않은 경우에 대한 처리
+                val binding_addEmail = DialogSignupAddEmailBinding.inflate(layoutInflater)
+                val dialog_addEmail = Dialog(this).apply {
+                    requestWindowFeature(Window.FEATURE_NO_TITLE) // 타이틀 제거
+                    setContentView(binding_addEmail.root) // xml 레이아웃 파일과 연결
+                    // 다이얼로그의 크기 설정
+                    setDialogSize(this, 0.9, WindowManager.LayoutParams.WRAP_CONTENT)
+                }
+
+                dialog_addEmail.show()
+
+                StrictMode.setThreadPolicy(
+                    StrictMode.ThreadPolicy.Builder()
+                        .permitDiskReads()
+                        .permitDiskWrites()
+                        .permitNetwork()
+                        .build()
+                )
+                binding_addEmail.signUpAddEmailSignUpBtn.setOnClickListener {
+                    val email = binding_addEmail.signUpInputEmail.text.toString()
+                    val mailServer = SendMail()
+                    mailServer.sendSecurityCode(applicationContext,email)
+                }
+
+                binding_addEmail.signUpAddEmailSignUpBtn.setOnClickListener{
+                    dialog_complete.show()
+                    binding_complete.signUpCompleteBtn.setOnClickListener {
+                        // 메인으로 이동
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+                */
+            }
+
             }
         }
 
-    }
 
     //다이얼로그 크기 설정
     fun setDialogSize(dialog: Dialog, widthPercentage: Double, height: Int) {
@@ -174,6 +238,5 @@ class MyoSignUpActivity : AppCompatActivity() {
 
         dialog.window?.attributes = layoutParams // 속성 적용
     }
-
 
 }

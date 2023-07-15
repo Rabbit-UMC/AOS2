@@ -19,4 +19,5 @@
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_app</item>
         <item name="android:windowSplashScreenAnimationDuration">1000</item>
     </style>
+
 </resources>
