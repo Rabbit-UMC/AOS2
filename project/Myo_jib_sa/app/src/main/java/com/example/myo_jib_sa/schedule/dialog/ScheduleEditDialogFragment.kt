@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.InputFilter
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,20 +37,20 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
         //미션 제목 클릭시
         binding.missionTitleTv.setOnClickListener {
-            setSpinnerDialog()
+            setSpinnerDialog(0)
         }
 
         //날짜 클릭시
         binding.scheduleDateTv.setOnClickListener {
-            setSpinnerDialog()
+            setSpinnerDialog(1)
         }
 
         //시간 클릭시
         binding.scheduleStartTimeTv.setOnClickListener {
-            setSpinnerDialog()
+            setSpinnerDialog(2)
         }
         binding.scheduleEndTimeTv.setOnClickListener {
-            setSpinnerDialog()
+            setSpinnerDialog(3)
         }
 
        return binding.root
@@ -80,10 +81,12 @@ class ScheduleEditDialogFragment : DialogFragment() {
         } else source
     }
 
-    private fun setSpinnerDialog(){
+    private fun setSpinnerDialog(position:Int){
         var bundle = Bundle()
-        ScheduleSpinnerDialogFragment().arguments = bundle
-        ScheduleSpinnerDialogFragment().show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
+        bundle.putInt("position", position)
+        val scheduleSpinnerDialogFragment = ScheduleSpinnerDialogFragment()
+        scheduleSpinnerDialogFragment.arguments = bundle
+        scheduleSpinnerDialogFragment.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
     }
 
 
