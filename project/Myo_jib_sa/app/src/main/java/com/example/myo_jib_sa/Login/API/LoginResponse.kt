@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.Login
+package com.example.myo_jib_sa.Login.API
 
 data class LoginResponse(
     val isSucces : String,

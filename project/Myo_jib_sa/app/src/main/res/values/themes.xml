@@ -14,8 +14,17 @@
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
         <!-- splash screen. -->
-        <item name="android:windowSplashScreenBackground">#0F1C4D</item>
+<!--        <item name="android:windowSplashScreenBackground">#0F1C4D</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_app</item>
-        <item name="android:windowSplashScreenAnimationDuration">500</item>
+        <item name="android:windowSplashScreenAnimationDuration">500</item>-->
     </style>
+
+    <style name="AppTheme.PopupActivity"
+        parent="Theme.AppCompat.Light.Dialog">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item> <!-- 액션바 제거 -->
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
 </resources>

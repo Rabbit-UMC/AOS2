@@ -27,7 +27,9 @@ class KakaoLoginActivity : AppCompatActivity() {
             }
         }
 
+
     }
+
 
     val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
@@ -39,4 +41,6 @@ class KakaoLoginActivity : AppCompatActivity() {
             Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
         }
     }
+
+
 }
