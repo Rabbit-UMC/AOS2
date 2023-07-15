@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-sdk tools:overrideLibrary="androidx.core.splashscreen" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-sdk tools:overrideLibrary="androidx.core.splashscreen" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".Login.KakaoApplication"
@@ -17,6 +17,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Myo_jib_sa"
         tools:targetApi="31">
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1350635755184504~2813602960"/>
+
+        <activity
+            android:name=".schedule.CurrentMissionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".schedule.CreateScheduleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".schedule.HistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".community.BoardFreeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".community.BoardArtActivity"
+            android:exported="false" />
+        <activity
+            android:name=".community.BoardExerciseActivity"
+            android:exported="false" />
         <activity
             android:name=".Login.AddEmailDialogActivity"
             android:theme="@style/AppTheme.PopupActivity"
