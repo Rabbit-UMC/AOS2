@@ -71,6 +71,9 @@ dependencies {
     implementation project(':nativetemplates')
     implementation 'com.google.android.gms:play-services-ads:21.1.0'
 
+    //원형 이미지 뷰
+    implementation'de.hdodenhof:circleimageview:2.2.0' //원형 프로필
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'

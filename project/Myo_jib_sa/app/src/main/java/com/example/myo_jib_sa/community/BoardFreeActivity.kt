@@ -1,19 +1,15 @@
 package com.example.myo_jib_sa.community
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.Retrofit.Post.Articles
-import com.example.myo_jib_sa.community.Retrofit.Post.PostRetrofitManager
-import com.example.myo_jib_sa.community.Retrofit.communityHome.CommunityHomeManager
-import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
-import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularTopic
+import com.example.myo_jib_sa.community.Retrofit.BoardPost.Articles
+import com.example.myo_jib_sa.community.Retrofit.BoardPost.PostBoardRetrofitManager
+import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.adapter.BoardAdapter
-import com.example.myo_jib_sa.community.adapter.HomeMissionAdapter
 import com.example.myo_jib_sa.databinding.ActivityBoardFreeBinding
 
 class BoardFreeActivity : AppCompatActivity() {
@@ -29,13 +25,22 @@ class BoardFreeActivity : AppCompatActivity() {
         binding.boardFreeBackBtn.setOnClickListener {
             finish()
         }
+
+        //글쓰기
+        binding.boardPostingBtn.setOnClickListener {
+            val intent= Intent(this, WritePostingActivity::class.java)
+            val postId=Constance.FREE_ID
+            intent.putExtra("postId", postId)
+            startActivity(intent)
+        }
+
     }
 
 
     //API 연결, 리사이클러뷰 띄우기
-    private fun getBoardData(author:String){
-        val retrofitManager = PostRetrofitManager.getInstance(this)
-        retrofitManager.board(author){response ->
+    private fun getBoardData(author:String,page:Int ,id:Long){
+        val retrofitManager = PostBoardRetrofitManager.getInstance(this)
+        retrofitManager.board(author,page ,id){response ->
             if(response.isSuccess=="TRUE"){
                 val boardList:List<Articles> = response.articles
                 if(boardList.isNotEmpty()){
@@ -69,7 +74,7 @@ class BoardFreeActivity : AppCompatActivity() {
     //미션 리사이클러뷰, 어댑터 연결
     private fun linkBrecyclr(boardList:List<Articles>){
         //미션
-        val Badapter = BoardAdapter(this,boardList)
+        val Badapter = BoardAdapter(this,boardList, Constance.FREE_ID)
         val BlayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         binding.boardFreePostRecyclr.layoutManager = BlayoutManager
