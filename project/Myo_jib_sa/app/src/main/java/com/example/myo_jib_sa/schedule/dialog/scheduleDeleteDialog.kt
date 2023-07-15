@@ -41,6 +41,18 @@ class scheduleDeleteDialog(
         }
         binding.exitBtn.setOnClickListener {
             dismiss()
+            buttonClickListener.onClickExitBtn()
         }
     }
+
+    // 인터페이스
+    interface OnButtonClickListener {
+        fun onClickExitBtn()
+    }
+    // 클릭 이벤트 설정
+    fun setButtonClickListener(buttonClickListener: OnButtonClickListener) {
+        this.buttonClickListener = buttonClickListener
+    }
+    // 클릭 이벤트 실행
+    private lateinit var buttonClickListener: OnButtonClickListener
 }
