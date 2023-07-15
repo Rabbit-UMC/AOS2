@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community.Retrofit.Post
+package com.example.myo_jib_sa.community.Retrofit.BoardPost
 
 import java.sql.Timestamp
 
@@ -9,6 +9,7 @@ data class PostBoardResponse(
     val articles:List<Articles>
 )
 data class Articles(
+    val articleId:Long,
     val articleTitle:String,
     val uploadTime:Timestamp,
     val LikeCount:Int,

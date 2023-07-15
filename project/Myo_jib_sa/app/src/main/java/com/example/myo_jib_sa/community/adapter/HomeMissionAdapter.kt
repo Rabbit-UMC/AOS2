@@ -32,7 +32,7 @@ class HomeMissionAdapter(
                 Log.d("리사이클러뷰","linkMrecyclr 어댑터 뷰홀더")
                 binding.homeMissionItemNameTxt.text=item.mainMissionName
                 binding.homeMissionItemBoardNameTxt.text=item.catagoryName
-                binding.homeMissionItemDdayTxt.text=item.endTime.toString()
+                binding.homeMissionItemDdayTxt.text=item.dDay.toString()
 
                 //이미지 설정
                /* Glide.with(context)

@@ -68,15 +68,15 @@ class CommunityFragment : Fragment() {
         //서버 완성 후 getMissionData(author:String)로 대체 해야함
         //리사이클러 뷰 test 코드
         val mList = listOf(
-            MainMission("미션명 입니다", Timestamp.valueOf("2023-07-05 12:12:00"), "", "운동 게시판")
-            ,MainMission("미션명 입니다222", Timestamp.valueOf("2023-07-05 12:12:00"), "", "예술 게시판")
-            ,MainMission("미션명 입니다333", Timestamp.valueOf("2023-07-05 12:12:00"), "", "자유 게시판")
+            MainMission("미션명 입니다", "D-3", "", "운동 게시판",2)
+            ,MainMission("미션명 입니다222", "D-3", "", "예술 게시판",1)
+            ,MainMission("미션명 입니다333", "D-3", "", "자유 게시판",11)
         )
 
         val pList= listOf(
-            PopularTopic("게시물 제목", 11, 11),
-            PopularTopic("게시물 제목 22", 22, 22),
-            PopularTopic("게시물 제목 33", 33, 33)
+            PopularTopic("게시물 제목", 11, 11, 2),
+            PopularTopic("게시물 제목 22", 22, 22, 3),
+            PopularTopic("게시물 제목 33", 33, 33, 4)
         )
 
         linkMrecyclr(mList)
@@ -127,14 +127,14 @@ class CommunityFragment : Fragment() {
         retrofitManager.home(author){homeResponse ->
             if(homeResponse.isSuccess=="TRUE"){
                 val missionList:List<MainMission> = homeResponse.mainMission
-                val postList:List<PopularTopic> = homeResponse.popularTopic
+                val postList:List<PopularTopic> = homeResponse.popularArticle
                 if(missionList.isNotEmpty() || postList.isNotEmpty()){
 
                     //로그
                     Log.d("MissionList 확인", missionList[0].mainMissionName)
                     Log.d("MissionList 확인", missionList[0].catagoryName)
-                    Log.d("hMissionList 확인", missionList[0].missionImage)
-                    Log.d("MissionList 확인", missionList[0].endTime.toString())
+                    Log.d("hMissionList 확인", missionList[0].catagoryImage)
+                    Log.d("MissionList 확인", missionList[0].dDay.toString())
 
                     Log.d("PostList 확인", postList[0].topicTitle)
                     Log.d("PostList 확인", postList[0].commentCount.toString())
