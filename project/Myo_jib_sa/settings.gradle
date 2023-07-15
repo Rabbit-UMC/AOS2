@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Myo_jib_sa"
 include ':app'
+include ':nativetemplates'
