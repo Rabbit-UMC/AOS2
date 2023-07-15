@@ -36,20 +36,20 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
         //미션 제목 클릭시
         binding.missionTitleTv.setOnClickListener {
-
+            setSpinnerDialog()
         }
 
         //날짜 클릭시
         binding.scheduleDateTv.setOnClickListener {
-
+            setSpinnerDialog()
         }
 
         //시간 클릭시
         binding.scheduleStartTimeTv.setOnClickListener {
-
+            setSpinnerDialog()
         }
         binding.scheduleEndTimeTv.setOnClickListener {
-
+            setSpinnerDialog()
         }
 
        return binding.root
@@ -78,6 +78,12 @@ class ScheduleEditDialogFragment : DialogFragment() {
         if (!ps.matcher(source).matches()) {
             ""
         } else source
+    }
+
+    private fun setSpinnerDialog(){
+        var bundle = Bundle()
+        ScheduleSpinnerDialogFragment().arguments = bundle
+        ScheduleSpinnerDialogFragment().show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
     }
 
 
