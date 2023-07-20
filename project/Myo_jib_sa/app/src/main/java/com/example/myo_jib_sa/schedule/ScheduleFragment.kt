@@ -64,30 +64,14 @@ class ScheduleFragment : Fragment() {
         //6월 1일 일정 표시
         binding.selectedMonthDayTv.text = "${MMDDFromDate(selectedDate)} 일정"
 
+
+
         //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
         setCurrentMissionAdapter()
         setScheduleAdaptar(selectedDate)
 
         calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
         scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
-
-        //history누르면 HistoryActivity로 화면 전환
-        binding.historyTv.setOnClickListener{
-            var historyIntent = Intent(requireActivity(), HistoryActivity::class.java)
-            startActivity(historyIntent)
-        }
-        //미션리스트 위에 모두보기 누르면 CurrentMissionActivity로 화면 전환
-        binding.viewAllTv.setOnClickListener{
-            var missionIntent = Intent(requireActivity(), CurrentMissionActivity::class.java)
-            startActivity(missionIntent)
-        }
-        //floating button누르면 CreateScheduleActivity로 화면 전환
-        binding.newScheduleFloatingBtn.setOnClickListener{
-            var createSIntent = Intent(requireActivity(), CreateScheduleActivity::class.java)
-            startActivity(createSIntent)
-        }
-
-
 
         //캘린더 visible버튼
         binding.calenderVisibleBtn.setOnClickListener{
@@ -97,6 +81,8 @@ class ScheduleFragment : Fragment() {
                 binding.calenderLayout.visibility = View.GONE
         }
 
+        //화면전환
+        switchScreen()
         //캘린더에 이전달 다음달 이동 버튼 세팅
         calenderBtn()
 
@@ -184,6 +170,9 @@ class ScheduleFragment : Fragment() {
             // ItemTouchHelper에 RecyclerView 설정
             attachToRecyclerView(binding.scheduleRv)
         }
+
+        //캘린더 클릭할 때 마다 일정리스트가 다시 set되고, 따라서 item클릭 이벤트도 다시 연결해 주어야 함함
+       scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
     }
 
     //month화면에 보여주기
@@ -312,6 +301,25 @@ class ScheduleFragment : Fragment() {
                 scheduleDetailDialog.dismiss()
             }
         })
+    }
+
+    //화면전환 메소드
+    fun switchScreen(){
+        //history누르면 HistoryActivity로 화면 전환
+        binding.historyTv.setOnClickListener{
+            var historyIntent = Intent(requireActivity(), HistoryActivity::class.java)
+            startActivity(historyIntent)
+        }
+        //미션리스트 위에 모두보기 누르면 CurrentMissionActivity로 화면 전환
+        binding.viewAllTv.setOnClickListener{
+            var missionIntent = Intent(requireActivity(), CurrentMissionActivity::class.java)
+            startActivity(missionIntent)
+        }
+        //floating button누르면 CreateScheduleActivity로 화면 전환
+        binding.newScheduleFloatingBtn.setOnClickListener{
+            var createSIntent = Intent(requireActivity(), CreateScheduleActivity::class.java)
+            startActivity(createSIntent)
+        }
     }
 
     //광고 생성 메소드
