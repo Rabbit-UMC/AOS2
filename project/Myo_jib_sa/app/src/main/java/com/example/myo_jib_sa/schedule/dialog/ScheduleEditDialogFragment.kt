@@ -11,6 +11,14 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleEditBinding
+import com.example.myo_jib_sa.schedule.api.RetrofitClient
+import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
+import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
+import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyResponse
+import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.regex.Pattern
 
 class ScheduleEditDialogFragment : DialogFragment() {
@@ -35,6 +43,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
         binding.modifyBtn.setOnClickListener{
             dismiss()
             buttonClickListener.onClickEditBtn()
+            scheduleModifyApi()//수정완료 누르면 데이터 서버로 보내기
         }
 
         //일정 제목 특수문자 제어
@@ -101,6 +110,39 @@ class ScheduleEditDialogFragment : DialogFragment() {
         scheduleSpinnerDialogFragment.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
     }
 
+    //scheduleModify api연결
+    fun scheduleModifyApi() {
+//        val token : String = App.prefs.token.toString()
+//        Log.d("retrofit", "token = "+token+"l");
+//
+        val requestBody = ScheduleModifyRequest(
+            title = binding.missionTitleTv.text.toString(),
+            content = binding.scheduleMemoEtv.text.toString() ,//메모
+            startAt = binding.scheduleStartTimeTv.text.toString(),
+            endAt = binding.scheduleEndTimeTv.text.toString(),
+            missionId = 1 // 어떻게 처리할지 고민해보기
+        )
+
+        val service = RetrofitClient.getInstance().create(ScheduleModifyService::class.java)
+        val listCall = service.scheduleModify(requestBody)
+
+        listCall.enqueue(object : Callback<ScheduleModifyResponse> {
+            override fun onResponse(
+                call: Call<ScheduleModifyResponse>,
+                response: Response<ScheduleModifyResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("retrofit", response.body().toString());
+                }else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }}
+            override fun onFailure(call: Call<ScheduleModifyResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
 
 
 }
