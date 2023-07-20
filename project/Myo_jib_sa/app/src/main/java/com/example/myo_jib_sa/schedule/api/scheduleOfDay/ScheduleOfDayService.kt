@@ -11,7 +11,7 @@ interface ScheduleOfDayService {
 
     @GET("app/schedule/when")
     fun scheduleOfDay(
-        @Body requestBody: ScheduleOfDayRequest
+        @Body requestBody: ScheduleOfDayRequest?
     ) : Call<ScheduleOfDayResponse>
 }
 

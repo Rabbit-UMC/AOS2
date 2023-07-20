@@ -1,16 +1,19 @@
 package com.example.myo_jib_sa.schedule.api.scheduleModify
 
-import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayRequest
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 
 interface ScheduleModifyService {
-    @PATCH("app/schedule/{scheduleId}")
+    companion object {
+        private const val authKey = "" //Authorization쓰기!!
+    }
+
+    @PATCH("app/schedule/{scheduleId}?Authorization=$authKey")//?Authorization=$authKey
     fun scheduleModify(
+//        @Header("Authorization")
+//        authorization: String = authKey,
         @Body requestBody: ScheduleModifyRequest
     ) : Call<ScheduleModifyResponse>
 
