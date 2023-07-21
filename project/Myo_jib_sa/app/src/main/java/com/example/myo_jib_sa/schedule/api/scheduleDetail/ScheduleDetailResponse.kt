@@ -4,15 +4,16 @@ import com.google.gson.annotations.SerializedName
 
 
 data class ScheduleDetailResponse(
-    val code: Int,
     val isSuccess: Boolean,
+    val code: Int,
     val message: String,
     val result: Result
 )
 
 data class Result(
-    val id: Int,
-    val missionId: Int,
+    @SerializedName("id")
+    val scheduleId: Long,
+    val missionId: Long,
     val missionTitle: String,
     val scheduleTitle: String,
     val startAt: String,

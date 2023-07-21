@@ -39,7 +39,6 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 
-
         //날짜 변수에 담기
         var day = dayList[position].date
         if(day==null){

@@ -112,7 +112,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
     //scheduleModify api연결
     fun scheduleModifyApi() {
-//        val token : String = App.prefs.token.toString()
+        val token : String = ""//App.prefs.token.toString()
 //        Log.d("retrofit", "token = "+token+"l");
 //
         val requestBody = ScheduleModifyRequest(
@@ -120,11 +120,12 @@ class ScheduleEditDialogFragment : DialogFragment() {
             content = binding.scheduleMemoEtv.text.toString() ,//메모
             startAt = binding.scheduleStartTimeTv.text.toString(),
             endAt = binding.scheduleEndTimeTv.text.toString(),
-            missionId = 1 // 어떻게 처리할지 고민해보기
+            missionId = 1, // 어떻게 처리할지 고민해보기
+            scheduleWhen = binding.scheduleDateTv.text.toString()
         )
 
         val service = RetrofitClient.getInstance().create(ScheduleModifyService::class.java)
-        val listCall = service.scheduleModify(requestBody)
+        val listCall = service.scheduleModify(token, requestBody)
 
         listCall.enqueue(object : Callback<ScheduleModifyResponse> {
             override fun onResponse(

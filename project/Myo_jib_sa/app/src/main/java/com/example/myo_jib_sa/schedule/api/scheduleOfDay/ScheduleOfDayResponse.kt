@@ -8,7 +8,7 @@ data class ScheduleOfDayResponse(
     val result: List<ScheduleOfDayResult>
 )
 data class ScheduleOfDayResult(
-    val scheduleId: Int,
+    val scheduleId: Long,
     val scheduleTitle: String,
     val scheduleStart: String,
     val scheduleEnd: String,

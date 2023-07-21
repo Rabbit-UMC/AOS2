@@ -48,10 +48,12 @@ class scheduleDeleteDialog(
 
         //getWindow()?.setBackgroundDrawable(R.drawable.view_round_r15);
 
+        //확인
         binding.yesTv.setOnClickListener{
             dismiss()
-            scheduleAdaptar.removeTask(position)
+            scheduleDeleteApi()//: 일정삭제 api
         }
+        //취소
         binding.exitBtn.setOnClickListener {
             dismiss()
             buttonClickListener.onClickExitBtn()
@@ -70,21 +72,16 @@ class scheduleDeleteDialog(
     private lateinit var buttonClickListener: OnButtonClickListener
 
 
-    //scheduleDelete api연결
-    fun scheduleDeleteApi() {
-//        val token : String = App.prefs.token.toString()
-//        Log.d("retrofit", "token = "+token+"l");
-//
-//        val requestBody = ScheduleModifyRequest(
-//            title = binding.missionTitleTv.text.toString(),
-//            content = binding.scheduleMemoEtv.text.toString() ,//메모
-//            startAt = binding.scheduleStartTimeTv.text.toString(),
-//            endAt = binding.scheduleEndTimeTv.text.toString(),
-//            missionId = 1 // 어떻게 처리할지 고민해보기
-//        )
 
+
+    //scheduleDelete api연결: 일정삭제
+    fun scheduleDeleteApi() {
+        val token : String = ""//App.prefs.token.toString()
+//        Log.d("retrofit", "token = "+token+"l");
+
+        val sDataList = scheduleAdaptar.getItem()
         val service = RetrofitClient.getInstance().create(ScheduleDeleteService::class.java)
-        val listCall = service.scheduleDelete(missionId)
+        val listCall = service.scheduleDelete(token, sDataList[position].scheduleId)
 
         listCall.enqueue(object : Callback<ScheduleDeleteResponse> {
             override fun onResponse(
@@ -93,6 +90,7 @@ class scheduleDeleteDialog(
             ) {
                 if (response.isSuccessful) {
                     Log.d("retrofit", response.body().toString());
+                    scheduleAdaptar.removeTask(position)
                 }else {
                     Log.e("retrofit", "onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()

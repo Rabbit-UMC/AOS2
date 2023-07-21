@@ -2,8 +2,8 @@ package com.example.myo_jib_sa.schedule.api.scheduleHome
 
 //일정 홈 화면
 data class ScheduleHomeResponse(
-    val code: Int,
     val isSuccess: Boolean,
+    val code: Int,
     val message: String,
     val result: Result
 )

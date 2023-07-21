@@ -9,6 +9,8 @@ import retrofit2.http.Path
 interface ScheduleDetailService {
     @GET("app/schedule/{schedulId}")
     fun scheduleDelete(
+        @Header("X-ACCESS-TOKEN")
+        accessToken: String,
         @Path("scheduleId") scheduleId: Long
     ) : Call<ScheduleDetailResponse>
 }
