@@ -84,7 +84,9 @@ class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):
 
 
 
-
+    fun getItem():ArrayList<ScheduleOfDayResult> {
+        return scheduleList
+    }
 
     override fun getItemCount(): Int {
         return scheduleList.size

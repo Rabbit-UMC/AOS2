@@ -40,7 +40,6 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 
-val accessToken=""
 
 class ScheduleFragment : Fragment() {
 
@@ -98,47 +97,6 @@ class ScheduleFragment : Fragment() {
 
 
         return binding.root
-    }
-
-    //scheduleHome api연결
-    fun scheduleHomeApi() {
-//        val token : String = App.prefs.token.toString()
-//        Log.d("retrofit", "token = "+token+"l");
-//
-//        val requestBody = ProfileEditRequest(
-//            userName = binding.editId.text.toString(),
-//            userId= binding.editName.text.toString(),
-//            userIntro = binding.editInfo.text.toString(),
-//            userWebsite = ""
-//        )
-
-        val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
-        val listCall = service.scheduleHome(accessToken)
-
-        listCall.enqueue(object : Callback<ScheduleHomeResponse> {
-            override fun onResponse(
-                call: Call<ScheduleHomeResponse>,
-                response: Response<ScheduleHomeResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("retrofit", response.body().toString());
-                    val missionList = response.body()?.result?.missionList
-
-                    //미션 데이터 리스트 리사이클러뷰 연결
-                    for(i in 0 .. missionList!!.size){
-                        mDataList.add(Mission(1, missionList[i].missionTitle, missionList[i].challengerCnts, missionList[i].dday))
-                    }
-                    setCurrentMissionAdapter()
-
-                }else {
-                    Log.e("retrofit", "onResponse: Error ${response.code()}")
-                    val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse: Error Body $errorBody")
-                }}
-            override fun onFailure(call: Call<ScheduleHomeResponse>, t: Throwable) {
-                Log.e("retrofit", "onFailure: ${t.message}")
-            }
-        })
     }
 
 
@@ -318,51 +276,6 @@ class ScheduleFragment : Fragment() {
         })
     }
 
-    //scheduleOfDay api연결
-    fun scheduleOfDayApi(date: String?) {
-//        val token : String = App.prefs.token.toString()
-//        Log.d("retrofit", "token = "+token+"l");
-//
-        val requestBody = date?.let {
-            ScheduleOfDayRequest(
-                scheduleWhen = it
-            )
-        }
-
-        val service = RetrofitClient.getInstance().create(ScheduleOfDayService::class.java)
-        val listCall = service.scheduleOfDay(requestBody)
-
-        listCall.enqueue(object : Callback<ScheduleOfDayResponse> {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onResponse(
-                call: Call<ScheduleOfDayResponse>,
-                response: Response<ScheduleOfDayResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("retrofit", response.body().toString());
-                    val scheduleList = response.body()?.result
-
-                    //일정 데이터 리스트 sDataList에 추가
-                    for(i in 0 .. scheduleList!!.size){
-                        sDataList.add(ScheduleOfDayResult(
-                            scheduleList[i].scheduleId,
-                            scheduleList[i].scheduleTitle,
-                            scheduleList[i].scheduleStart,
-                            scheduleList[i].scheduleEnd,
-                            scheduleList[i].scheduleWhen
-                        ))
-                    }
-                }else {
-                    Log.e("retrofit", "onResponse: Error ${response.code()}")
-                    val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse: Error Body $errorBody")
-                }}
-            override fun onFailure(call: Call<ScheduleOfDayResponse>, t: Throwable) {
-                Log.e("retrofit", "onFailure: ${t.message}")
-            }
-        })
-    }
-
     //Schedule rv item클릭 이벤트
     fun scheduleRvItemClickEvent() {
         scheduleAdaptar.setItemClickListener(object : ScheduleAdaptar.OnItemClickListener {
@@ -422,8 +335,6 @@ class ScheduleFragment : Fragment() {
         }
     }
 
-
-
     //캘린더에 이전달 다음달 이동 버튼 세팅
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calenderBtn(){
@@ -442,6 +353,89 @@ class ScheduleFragment : Fragment() {
     }
 
 
+
+
+    //scheduleHome api연결
+    fun scheduleHomeApi() {
+        val token : String = ""//App.prefs.token.toString()
+//        Log.d("retrofit", "token = "+token+"l");
+
+        val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
+        val listCall = service.scheduleHome(token)
+
+        listCall.enqueue(object : Callback<ScheduleHomeResponse> {
+            override fun onResponse(
+                call: Call<ScheduleHomeResponse>,
+                response: Response<ScheduleHomeResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("retrofit", response.body().toString());
+                    val missionList = response.body()?.result?.missionList
+
+                    //현재 미션 데이터 리스트 리사이클러뷰 연결
+                    //디데이 얼마 안남은 미션부터 많이 남은 순으로 정렬돼 있음
+                    for(i in 0 .. missionList!!.size){
+                        mDataList.add(Mission(missionList[i].missionId, missionList[i].missionTitle, missionList[i].challengerCnts, missionList[i].dday))
+                    }
+                    setCurrentMissionAdapter()
+
+                }else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }}
+            override fun onFailure(call: Call<ScheduleHomeResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
+
+
+    //scheduleOfDay api연결
+    //calendarRvItemClickEvent()안에서만 실행
+    fun scheduleOfDayApi(date: String?) {
+//        val token : String = App.prefs.token.toString()
+//        Log.d("retrofit", "token = "+token+"l");
+//
+        val requestBody = date?.let {
+            ScheduleOfDayRequest(
+                scheduleWhen = it
+            )
+        }
+
+        val service = RetrofitClient.getInstance().create(ScheduleOfDayService::class.java)
+        val listCall = service.scheduleOfDay(requestBody)
+
+        listCall.enqueue(object : Callback<ScheduleOfDayResponse> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<ScheduleOfDayResponse>,
+                response: Response<ScheduleOfDayResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("retrofit", response.body().toString());
+                    val scheduleList = response.body()?.result
+
+                    //일정 데이터 리스트 sDataList에 추가
+                    for(i in 0 .. scheduleList!!.size){
+                        sDataList.add(ScheduleOfDayResult(
+                            scheduleList[i].scheduleId,
+                            scheduleList[i].scheduleTitle,
+                            scheduleList[i].scheduleStart,
+                            scheduleList[i].scheduleEnd,
+                            scheduleList[i].scheduleWhen
+                        ))
+                    }
+                }else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }}
+            override fun onFailure(call: Call<ScheduleOfDayResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
 
 
     //M월 형식으로 포맷
