@@ -7,19 +7,19 @@ data class ScheduleDetailResponse(
     val isSuccess: Boolean,
     val code: Int,
     val message: String,
-    val result: Result
+    val result: ScheduleDetailResult
 )
 
-data class Result(
+data class ScheduleDetailResult(
     @SerializedName("id")
-    val scheduleId: Long,
-    val missionId: Long,
-    val missionTitle: String,
-    val scheduleTitle: String,
-    val startAt: String,
-    val endAt: String,
-    val content: String,
+    var scheduleId: Long,
+    var missionId: Long,
+    var missionTitle: String,
+    var scheduleTitle: String,
+    var startAt: String,
+    var endAt: String,
+    var content: String,
     @SerializedName("when")
-    val scheduleWhen: String
+    var scheduleWhen: String
 )
 

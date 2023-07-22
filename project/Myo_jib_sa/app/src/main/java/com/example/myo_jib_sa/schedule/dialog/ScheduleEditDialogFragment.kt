@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa.schedule.dialog
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleEditBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
+import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
 import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
 import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyResponse
@@ -23,12 +25,16 @@ import java.util.regex.Pattern
 
 class ScheduleEditDialogFragment : DialogFragment() {
     private lateinit var binding: DialogFragmentScheduleEditBinding
+    private var missionId:Long = -1
+    private lateinit var scheduleData : ScheduleDetailResult
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DialogFragmentScheduleEditBinding.inflate(inflater, container, false)
+
+        setCurrentDialog()//ScheduleDetailDialog에서 보낸 데이터 바인딩하기
 
         // 레이아웃 배경을 투명하게 해줌
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -49,16 +55,16 @@ class ScheduleEditDialogFragment : DialogFragment() {
         //일정 제목 특수문자 제어
         binding.scheduleTitleEtv.filters = arrayOf(editTextFilter)
 
+
+
         //미션 제목 클릭시
         binding.missionTitleTv.setOnClickListener {
             setSpinnerDialog(0)
         }
-
         //날짜 클릭시
         binding.scheduleDateTv.setOnClickListener {
             setSpinnerDialog(1)
         }
-
         //시간 클릭시
         binding.scheduleStartTimeTv.setOnClickListener {
             setSpinnerDialog(2)
@@ -102,9 +108,67 @@ class ScheduleEditDialogFragment : DialogFragment() {
         }
     }
 
+    //ScheduleDetailDialog에서 보낸 데이터 바인딩하기
+    private fun setCurrentDialog(){
+        //sharedpreferences에서 가져오기
+        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
+            Context.MODE_PRIVATE
+        )
+        scheduleData.scheduleTitle = sharedPreference.getString("scheduleTitle", "").toString()
+        scheduleData.scheduleWhen = sharedPreference.getString("scheduleDate", "").toString()
+        scheduleData.missionTitle = sharedPreference.getString("missionTitle", "").toString()
+        scheduleData.startAt = sharedPreference.getString("scheduleStartTime", "").toString()
+        scheduleData.endAt = sharedPreference.getString("scheduleEndTime", "").toString()
+        scheduleData.content = sharedPreference.getString("scheduleMemo", "").toString()
+        scheduleData.missionId = sharedPreference.getLong("missionId", 0)
+        scheduleData.scheduleId = sharedPreference.getLong("scheduleId", 0)
+
+        //화면에 반영
+        binding.scheduleTitleEtv.setText(scheduleData.scheduleTitle)
+        binding.scheduleDateTv.text = scheduleData.scheduleWhen
+        binding.missionTitleTv.text = scheduleData.missionTitle
+        binding.scheduleStartTimeTv.text = scheduleData.startAt
+        binding.scheduleEndTimeTv.text = scheduleData.endAt
+        binding.scheduleMemoEtv.setText(scheduleData.content)
+
+
+//        val bundle = arguments
+//        binding.scheduleTitleEtv.setText(bundle?.getString("scheduleTitle"))
+//        binding.scheduleDateTv.text = bundle?.getString("scheduleDate")
+//        binding.missionTitleTv.text = bundle?.getString("missionTitle")
+//        binding.scheduleStartTimeTv.text = bundle?.getString("scheduleStartTime")
+//        binding.scheduleEndTimeTv.text = bundle?.getString("scheduleEndTime")
+//        binding.scheduleMemoEtv.setText(bundle?.getString("scheduleMemo"))
+//
+//        missionId = bundle!!.getLong("missionId")
+//        bundle?.getLong("scheduleId")
+    }
+
+
     private fun setSpinnerDialog(position:Int){
+        //sharedPreference저장
+        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
+            Context.MODE_PRIVATE
+        )
+        val editor = sharedPreference.edit()
+        editor.putString("scheduleTitle", binding.scheduleTitleEtv.text.toString())
+        editor.putString("scheduleDate", binding.scheduleDateTv.text.toString())
+        editor.putString("missionTitle", binding.missionTitleTv.text.toString())
+        editor.putString("scheduleStartTime", binding.scheduleStartTimeTv.text.toString())
+        editor.putString("scheduleEndTime", binding.scheduleEndTimeTv.text.toString())
+        editor.putString("scheduleMemo", binding.scheduleMemoEtv.text.toString())
+        editor.putLong("missionId", scheduleData.missionId)
+        editor.putLong("scheduleId", scheduleData.scheduleId)
+        editor.apply()
+
         var bundle = Bundle()
-        bundle.putInt("position", position)
+//        bundle.putInt("position", position)
+//        bundle.putString("scheduleDate", binding.scheduleDateTv.text.toString());
+//        bundle.putString("missionTitle", binding.missionTitleTv.text.toString());
+//        bundle.putLong("missionId", missionId);
+//        bundle.putString("scheduleStartTime", binding.scheduleStartTimeTv.text.toString());
+//        bundle.putString("scheduleEndTime", binding.scheduleEndTimeTv.text.toString());
+
         val scheduleSpinnerDialogFragment = ScheduleSpinnerDialogFragment()
         scheduleSpinnerDialogFragment.arguments = bundle
         scheduleSpinnerDialogFragment.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
@@ -120,7 +184,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
             content = binding.scheduleMemoEtv.text.toString() ,//메모
             startAt = binding.scheduleStartTimeTv.text.toString(),
             endAt = binding.scheduleEndTimeTv.text.toString(),
-            missionId = 1, // 어떻게 처리할지 고민해보기
+            missionId = missionId, // 어떻게 처리할지 고민해보기
             scheduleWhen = binding.scheduleDateTv.text.toString()
         )
 

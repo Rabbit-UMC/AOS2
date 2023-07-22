@@ -20,7 +20,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-var missionId:Long = -1
 
 class scheduleDeleteDialog(
     context: Context,

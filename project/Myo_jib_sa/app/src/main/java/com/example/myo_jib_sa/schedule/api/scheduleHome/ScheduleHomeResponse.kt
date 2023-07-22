@@ -5,10 +5,10 @@ data class ScheduleHomeResponse(
     val isSuccess: Boolean,
     val code: Int,
     val message: String,
-    val result: Result
+    val result: ScheduleHomeResult
 )
 
-data class Result(
+data class ScheduleHomeResult(
     val missionList: List<Mission>,
     val scheduleList: List<Schedule>
 )
