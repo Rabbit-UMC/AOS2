@@ -10,10 +10,15 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleSpinnerBinding
-import com.example.myo_jib_sa.schedule.viewpager.ScheduleSpinnerViewPagerAdapter
+import com.example.myo_jib_sa.schedule.viewpager.*
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener
@@ -37,20 +42,8 @@ class ScheduleSpinnerDialogFragment : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
-//        //viewPager 연결
-//        binding.spinnerViewPager.adapter = ScheduleSpinnerViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
-//        //TabLayout 연결
-//        TabLayoutMediator(binding.spinnerTabLayout, binding.spinnerViewPager) { tab, position ->
-//            tab.text = tabTitleArray[position]
-//        }.attach()
 
         setTablayout()
-        //position정보 전달받아 시작 포지션 설정
-//        val bundle = arguments
-//        var position = bundle!!.getInt("position")
-//        binding.spinnerViewPager.setCurrentItem(position, false)
-//        if(position == 0)
-
 
 
         //pre이동
@@ -145,6 +138,101 @@ class ScheduleSpinnerDialogFragment : DialogFragment() {
         tabLayout.addTab(tab)
 
 
+    }
+
+
+
+    //ScheduleSpinner의 ViewPagerAdapter
+    inner class ScheduleSpinnerViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle):
+        FragmentStateAdapter(fragmentManager, lifecycle) {
+        override fun getItemCount(): Int {
+            return 4
+        }
+
+        override fun createFragment(position: Int): Fragment {
+            return when (position) {
+                0 -> {
+                    val spinnerMissionFragment = SpinnerMissionFragment()
+                    val receivebundle = arguments
+
+                    val bundle = Bundle()
+                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
+                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
+                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
+                    bundle.putString(
+                        "scheduleStartTime",
+                        receivebundle!!.getString("scheduleStartTime")
+                    );
+                    bundle.putString(
+                        "scheduleEndTime",
+                        receivebundle!!.getString("scheduleEndTime")
+                    );
+                    spinnerMissionFragment.arguments = bundle
+
+                    spinnerMissionFragment
+                }
+                1 -> {
+                    val spinnerDateFragment = SpinnerDateFragment()
+                    val receivebundle = arguments
+
+                    val bundle = Bundle()
+                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
+                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
+                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
+                    bundle.putString(
+                        "scheduleStartTime",
+                        receivebundle!!.getString("scheduleStartTime")
+                    );
+                    bundle.putString(
+                        "scheduleEndTime",
+                        receivebundle!!.getString("scheduleEndTime")
+                    );
+                    spinnerDateFragment.arguments = bundle
+
+                    spinnerDateFragment
+                }
+                2 -> {
+                    val spinnerStartTimeFragment = SpinnerStartTimeFragment()
+                    val receivebundle = arguments
+
+                    val bundle = Bundle()
+                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
+                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
+                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
+                    bundle.putString(
+                        "scheduleStartTime",
+                        receivebundle!!.getString("scheduleStartTime")
+                    );
+                    bundle.putString(
+                        "scheduleEndTime",
+                        receivebundle!!.getString("scheduleEndTime")
+                    );
+                    spinnerStartTimeFragment.arguments = bundle
+
+                    spinnerStartTimeFragment
+                }
+                else -> {
+                    val spinnerEndTimeFragment = SpinnerEndTimeFragment()
+                    val receivebundle = arguments
+
+                    val bundle = Bundle()
+                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
+                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
+                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
+                    bundle.putString(
+                        "scheduleStartTime",
+                        receivebundle!!.getString("scheduleStartTime")
+                    );
+                    bundle.putString(
+                        "scheduleEndTime",
+                        receivebundle!!.getString("scheduleEndTime")
+                    );
+                    spinnerEndTimeFragment.arguments = bundle
+
+                    spinnerEndTimeFragment
+                }
+            }
+        }
     }
 
 }

@@ -284,7 +284,7 @@ class ScheduleFragment : Fragment() {
             override fun onClick(scheduleData: ScheduleOfDayResult) {
                 // 클릭 시 이벤트 작성
                 var bundle = Bundle()
-
+                bundle.putLong("scheduleId", scheduleData.scheduleId)
                 ScheduleDetailDialogFragment().arguments = bundle
 
                 scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
