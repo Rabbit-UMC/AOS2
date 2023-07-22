@@ -21,6 +21,7 @@ class SpinnerDateFragment : Fragment() {
     private lateinit var binding : FragmentSpinnerDateBinding
     private lateinit var scheduleData : ScheduleDetailResult//sharedPreferences로 받은값 저장
 
+    //처음 spinner dialog로 들어올때만 onCreateView가 실행되고 viewpager들끼리 화면 전환 할때에는 onCreateView가 실행되지 않음
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,11 +32,11 @@ class SpinnerDateFragment : Fragment() {
 
 
         //값 저장할 sharedPreference 부르기
-        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
+        val sharedPreference = requireContext().getSharedPreferences("scheduleModifiedData",
             Context.MODE_PRIVATE
         )
         val editor = sharedPreference.edit()
-
+        editor.putString("scheduleDate", scheduleData.scheduleWhen)//값 변경하지 않았을때 기본값으로 전달
 
         //year, month, day로 분리
         var date = scheduleData.scheduleWhen.split("-")

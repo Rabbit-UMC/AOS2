@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa.schedule.dialog
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -68,13 +69,31 @@ class ScheduleSpinnerDialogFragment : DialogFragment() {
         }
 
 
+
         //확인, 취소 버튼
         binding.completeBtn.setOnClickListener{
-            dismiss()
+            //확인눌렀는지 판단위해
+            val bundle = Bundle()
+            bundle.putBoolean("isEidt", true)
+
+            //ScheduleEditDialogFragment열기
+            val scheduleEditDialogFragment = ScheduleEditDialogFragment()
+            scheduleEditDialogFragment.arguments = bundle
+            scheduleEditDialogFragment.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
+            dismiss()//spinnerDialog종료
         }
         binding.cancelBtn.setOnClickListener {
-            dismiss()
+            //확인눌렀는지 판단위해
+            val bundle = Bundle()
+            bundle.putBoolean("isEidt", false)
+
+            //ScheduleEditDialogFragment열기
+            val scheduleEditDialogFragment = ScheduleEditDialogFragment()
+            scheduleEditDialogFragment.arguments = bundle
+            scheduleEditDialogFragment.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
+            dismiss()//spinnerDialog종료
         }
+
 
         return binding.root
     }
@@ -153,81 +172,81 @@ class ScheduleSpinnerDialogFragment : DialogFragment() {
             return when (position) {
                 0 -> {
                     val spinnerMissionFragment = SpinnerMissionFragment()
-                    val receivebundle = arguments
-
-                    val bundle = Bundle()
-                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
-                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
-                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
-                    bundle.putString(
-                        "scheduleStartTime",
-                        receivebundle!!.getString("scheduleStartTime")
-                    );
-                    bundle.putString(
-                        "scheduleEndTime",
-                        receivebundle!!.getString("scheduleEndTime")
-                    );
-                    spinnerMissionFragment.arguments = bundle
+//                    val receivebundle = arguments
+//
+//                    val bundle = Bundle()
+//                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
+//                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
+//                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
+//                    bundle.putString(
+//                        "scheduleStartTime",
+//                        receivebundle!!.getString("scheduleStartTime")
+//                    );
+//                    bundle.putString(
+//                        "scheduleEndTime",
+//                        receivebundle!!.getString("scheduleEndTime")
+//                    );
+//                    spinnerMissionFragment.arguments = bundle
 
                     spinnerMissionFragment
                 }
                 1 -> {
                     val spinnerDateFragment = SpinnerDateFragment()
-                    val receivebundle = arguments
-
-                    val bundle = Bundle()
-                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
-                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
-                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
-                    bundle.putString(
-                        "scheduleStartTime",
-                        receivebundle!!.getString("scheduleStartTime")
-                    );
-                    bundle.putString(
-                        "scheduleEndTime",
-                        receivebundle!!.getString("scheduleEndTime")
-                    );
-                    spinnerDateFragment.arguments = bundle
+//                    val receivebundle = arguments
+//
+//                    val bundle = Bundle()
+//                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
+//                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
+//                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
+//                    bundle.putString(
+//                        "scheduleStartTime",
+//                        receivebundle!!.getString("scheduleStartTime")
+//                    );
+//                    bundle.putString(
+//                        "scheduleEndTime",
+//                        receivebundle!!.getString("scheduleEndTime")
+//                    );
+//                    spinnerDateFragment.arguments = bundle
 
                     spinnerDateFragment
                 }
                 2 -> {
                     val spinnerStartTimeFragment = SpinnerStartTimeFragment()
-                    val receivebundle = arguments
-
-                    val bundle = Bundle()
-                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
-                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
-                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
-                    bundle.putString(
-                        "scheduleStartTime",
-                        receivebundle!!.getString("scheduleStartTime")
-                    );
-                    bundle.putString(
-                        "scheduleEndTime",
-                        receivebundle!!.getString("scheduleEndTime")
-                    );
-                    spinnerStartTimeFragment.arguments = bundle
+//                    val receivebundle = arguments
+//
+//                    val bundle = Bundle()
+//                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
+//                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
+//                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
+//                    bundle.putString(
+//                        "scheduleStartTime",
+//                        receivebundle!!.getString("scheduleStartTime")
+//                    );
+//                    bundle.putString(
+//                        "scheduleEndTime",
+//                        receivebundle!!.getString("scheduleEndTime")
+//                    );
+//                    spinnerStartTimeFragment.arguments = bundle
 
                     spinnerStartTimeFragment
                 }
                 else -> {
                     val spinnerEndTimeFragment = SpinnerEndTimeFragment()
-                    val receivebundle = arguments
-
-                    val bundle = Bundle()
-                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
-                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
-                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
-                    bundle.putString(
-                        "scheduleStartTime",
-                        receivebundle!!.getString("scheduleStartTime")
-                    );
-                    bundle.putString(
-                        "scheduleEndTime",
-                        receivebundle!!.getString("scheduleEndTime")
-                    );
-                    spinnerEndTimeFragment.arguments = bundle
+//                    val receivebundle = arguments
+//
+//                    val bundle = Bundle()
+//                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
+//                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
+//                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
+//                    bundle.putString(
+//                        "scheduleStartTime",
+//                        receivebundle!!.getString("scheduleStartTime")
+//                    );
+//                    bundle.putString(
+//                        "scheduleEndTime",
+//                        receivebundle!!.getString("scheduleEndTime")
+//                    );
+//                    spinnerEndTimeFragment.arguments = bundle
 
                     spinnerEndTimeFragment
                 }
