@@ -35,11 +35,13 @@ class SpinnerMissionFragment : Fragment() {
 
         getData()//sharedPreference로 값 받기
         //값 저장할 sharedPreference 부르기
-        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
+        val sharedPreference = requireContext().getSharedPreferences("scheduleModifiedData",
             Context.MODE_PRIVATE
         )
         val editor = sharedPreference.edit()
-
+        //값 변경하지 않았을때 기본값으로 전달
+        editor.putString("missionTitle", scheduleData.missionTitle)
+        editor.putLong("missionId", scheduleData.missionId)
 
 
         var numberpicker = binding.missionSpinner

@@ -27,15 +27,16 @@ class SpinnerEndTimeFragment : Fragment() {
         getData()//sharedPreference값 받기
 
         //값 저장할 sharedPreference 부르기
-        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
+        val sharedPreference = requireContext().getSharedPreferences("scheduleModifiedData",
             Context.MODE_PRIVATE
         )
         val editor = sharedPreference.edit()
+        editor.putString("scheduleEndTime", scheduleData.endAt)//값 변경하지 않았을때 기본값으로 전달
 
         //timepicker 초기값 설정
-        var startTime = scheduleData.startAt.split(":")
-        binding.endTimePicker.hour = startTime[0].toInt();
-        binding.endTimePicker.minute = startTime[1].toInt();
+        var endTime = scheduleData.endAt.split(":")
+        binding.endTimePicker.hour = endTime[0].toInt();
+        binding.endTimePicker.minute = endTime[1].toInt();
 
 
         binding.endTimePicker.setOnTimeChangedListener(object: TimePicker.OnTimeChangedListener {
