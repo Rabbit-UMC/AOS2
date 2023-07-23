@@ -106,7 +106,7 @@ class SpinnerMissionFragment : Fragment() {
 
     //scheduleHome api연결 for missionList받기위해
     fun scheduleHomeApi() {
-        val token : String = ""//App.prefs.token.toString()
+        val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
 //        Log.d("retrofit", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
@@ -121,7 +121,7 @@ class SpinnerMissionFragment : Fragment() {
                     Log.d("retrofit", response.body().toString());
                     missionList = response.body()?.result!!.missionList
 
-                    for(i in 0 .. missionList!!.size){
+                    for(i in 0 until missionList!!.size){
                         var title = missionTitleFormat(missionList[i])
                         missionTitleList.add(title)
                     }

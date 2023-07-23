@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule
+package com.example.myo_jib_sa.schedule.currentMissionActivity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
