@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.schedule
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -25,6 +26,7 @@ import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResponse
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayService
+import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayServiceSnyc
 import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActivity
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleEditDialogFragment
@@ -34,6 +36,7 @@ import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.gson.annotations.SerializedName
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,7 +58,6 @@ class ScheduleFragment : Fragment() {
     var sDataList = ArrayList<ScheduleOfDayResult>() //일정 리스트 데이터
 
     private var adLoader: AdLoader? = null //광고를 불러올 adLoader 객체
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,7 +68,14 @@ class ScheduleFragment : Fragment() {
 
         scheduleHomeApi()//scheduleHome api연결
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
-        setCalendarAdapter()//화면 초기화
+
+
+        calendarAdapter = CalendarAdapter(ArrayList())//임시 초기화
+        calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
+
+            setCalendarAdapter()//화면 초기화
+//            calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
+
 
         //애드몹 광고 표시
         createAd()
@@ -81,7 +90,7 @@ class ScheduleFragment : Fragment() {
         setCurrentMissionAdapter()
         setScheduleAdapter(selectedDate)
 
-        calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
+
         scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
 
         //캘린더 visible버튼
@@ -104,26 +113,39 @@ class ScheduleFragment : Fragment() {
 
 
     //month화면에 보여주기
+    @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setCalendarAdapter(){
         //month를 month text view에 보여주기 (결과: 1월)
         binding.monthTv.text = monthFromDate(selectedDate)
 
-        //이번달 날짜 가져오기
-        val dayList = dayInMonthArray(selectedDate)
 
-        //CalendarAdapter리사이클러뷰 연결
-        calendarAdapter = CalendarAdapter(dayList)
-        binding.calendarRv.layoutManager = GridLayoutManager(getActivity(), 7)
-        binding.calendarRv.adapter = calendarAdapter
+
+        CoroutineScope(Dispatchers.Main).launch {
+            setHasScheduleMap(selectedDate)
+
+            delay(1000)
+            //이번달 날짜 가져오기
+            val dayList = dayInMonthArray(selectedDate)
+
+            //CalendarAdapter리사이클러뷰 연결
+            calendarAdapter = CalendarAdapter(dayList)
+            binding.calendarRv.layoutManager = GridLayoutManager(getActivity(), 7)
+            binding.calendarRv.adapter = calendarAdapter
+
+            calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
+        }
+
     }
 
 
     //날짜 생성: ArrayList<CalendarData>()생성
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun dayInMonthArray(date: LocalDate):ArrayList<CalendarData>{
+    private fun dayInMonthArray(date: LocalDate): ArrayList<CalendarData>{
         val dayList = ArrayList<CalendarData>()
         var yearMonth = YearMonth.from(date)
+
+
 
         //해당 월의 마지막 날짜 가져오기(결과: 1월이면 31)
         var lastDay = yearMonth.lengthOfMonth()
@@ -136,15 +158,19 @@ class ScheduleFragment : Fragment() {
             if(dayOfWeek == 7){//그 달의 첫날이 일요일일때 작동: 한칸 아래줄부터 날짜 표시되는 현상 막기위해
                 if(i>lastDay)
                     break
-                var check = scheduleOfDayApiForCheck(YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i))) //넣고 일정있는지 여부 체크
-                dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i), check))
+                //var check = scheduleOfDayApiForCheck(YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i))) //넣고 일정있는지 여부 체크
+                var currentDate = YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i))
+                dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i), hasScheduleMap[currentDate]))
+                Log.d("debug", "$date checkResult = ${hasScheduleMap[currentDate]}")
             }
             else if(i<=dayOfWeek || i>(lastDay + dayOfWeek)){//그 외 경우
                 dayList.add(CalendarData(null))
             }
             else{
-                var check = scheduleOfDayApiForCheck(YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek))) //넣고 일정있는지 여부 체크
-                dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek), check))//얘만 살리기
+                //var check = scheduleOfDayApiForCheck(YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek))) //넣고 일정있는지 여부 체크
+                var currentDate = YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek))
+                dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek), hasScheduleMap[currentDate]))//얘만 살리기
+                Log.d("debug", "$currentDate checkResult = ${hasScheduleMap[currentDate]}")
             }
         }
 
@@ -344,14 +370,18 @@ class ScheduleFragment : Fragment() {
         //이전달로 이동
         binding.preMonthBtn.setOnClickListener{
             selectedDate = selectedDate.minusMonths(1)
-            setCalendarAdapter()
-            calendarRvItemClickEvent()
+            CoroutineScope(Dispatchers.Main).launch {
+                setCalendarAdapter()
+                //calendarRvItemClickEvent()
+            }
         }
         //다음달로 이동
         binding.nextMonthBtn.setOnClickListener{
             selectedDate =selectedDate.plusMonths(1)
-            setCalendarAdapter()
-            calendarRvItemClickEvent()
+            CoroutineScope(Dispatchers.Main).launch {
+                setCalendarAdapter()
+                //calendarRvItemClickEvent()
+            }
         }
     }
 
@@ -439,8 +469,38 @@ class ScheduleFragment : Fragment() {
     }
 
 
+    private var hasScheduleMap:HashMap<String?, Boolean> = HashMap()
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setHasScheduleMap(date: LocalDate) {
+        //val dayList = ArrayList<CalendarData>()
+        var yearMonth = YearMonth.from(date)
+
+        //hasScheduleMap.clear()//초기화
+
+        //해당 월의 마지막 날짜 가져오기(결과: 1월이면 31)
+        var lastDay = yearMonth.lengthOfMonth()
+        //해당 월의 첫번째 날 가져오기(결과: 2023-01-01)
+        var firstDay = selectedDate.withDayOfMonth(1)
+        //첫 번째날 요일 가져오기(결과: 월 ~일이 1~7에 대응되어 나타남)
+        var dayOfWeek = firstDay.dayOfWeek.value
+
+
+        for (i in 1..lastDay) {
+            var currentDate =
+                YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i))
+            scheduleOfDayApiForCheck(currentDate)
+        }
+
+
+        Log.d("debug", "==========================================")
+        for ((key, value) in hasScheduleMap) {
+            Log.d("debug", "dd$key -> $value")
+        }
+
+    }
+
     //scheduleOfDayApi연결 : 캘린더 파란동그라미 표시용
-    fun scheduleOfDayApiForCheck(date: String?):Boolean {
+    fun scheduleOfDayApiForCheck(date: String?) {
         var checkResult: Boolean = false
 
         val token: String =
@@ -455,41 +515,41 @@ class ScheduleFragment : Fragment() {
         val listCall = service.scheduleOfDay(token, date)
 
 
-            listCall.enqueue(object : Callback<ScheduleOfDayResponse> {
-                @RequiresApi(Build.VERSION_CODES.O)
-                override fun onResponse(
-                    call: Call<ScheduleOfDayResponse>,
-                    response: Response<ScheduleOfDayResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        Log.d("retrofit", response.body().toString());
-                        val scheduleList = response.body()?.result
+        listCall.enqueue(object : Callback<ScheduleOfDayResponse> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(
+                call: Call<ScheduleOfDayResponse>,
+                response: Response<ScheduleOfDayResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("retrofit", response.body().toString());
+                    val scheduleList = response.body()?.result
 
-                        //response에 값이 있으면 해당날짜 일정있음
-                        if (scheduleList != null) {
-                            checkResult = true
-                            Log.d("debug", "scheduleList != null")
-                        }
-                        Log.d("debug", "$date checkResult = $checkResult")
-
-
-                    } else {
-                        Log.e("retrofit", "onResponse: Error ${response.code()}")
-                        val errorBody = response.errorBody()?.string()
-                        Log.e("retrofit", "onResponse: Error Body $errorBody")
+                    //response에 값이 있으면 해당날짜 일정있음
+                    if (!scheduleList.isNullOrEmpty()) {
+                        checkResult = true
+                        Log.d("debug", "$date scheduleList != null")
                     }
+                    else{
+                        checkResult = false
+                        Log.d("debug", "$date scheduleList == null")
+                    }
+
+
+                    //Log.d("debug", "$date checkResult = $checkResult")
+                    hasScheduleMap[date] = checkResult
+
+                } else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
                 }
+            }
 
-                override fun onFailure(call: Call<ScheduleOfDayResponse>, t: Throwable) {
-                    Log.e("retrofit", "onFailure: ${t.message}")
-                }
-            })
-
-
-
-        Log.d("debug", "[outside] $date checkResult = $checkResult")
-
-        return checkResult
+            override fun onFailure(call: Call<ScheduleOfDayResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
 
     }
 
