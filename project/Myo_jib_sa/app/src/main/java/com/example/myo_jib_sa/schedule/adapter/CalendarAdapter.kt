@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter
 
 data class CalendarData(
     val date: LocalDate?,
-    var hasSchedule :Boolean = false//ture이면 일정 있음, false이면 일정 없음
+    var hasSchedule :Boolean? = false//ture이면 일정 있음, false이면 일정 없음
 )
 
 
