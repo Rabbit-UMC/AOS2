@@ -299,8 +299,11 @@ class ScheduleFragment : Fragment() {
 
             Toast.makeText(context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
                 .show()
-            scheduleOfDayApi(YYYYMMDDFromDate(calendarData.date))//scheduleOfDay api연결
-            setScheduleAdapter(calendarData.date)
+            CoroutineScope(Dispatchers.Main).launch {
+                scheduleOfDayApi(YYYYMMDDFromDate(calendarData.date))//scheduleOfDay api연결
+                delay(50)
+                setScheduleAdapter(calendarData.date)
+            }
             }
         })
     }
@@ -433,6 +436,7 @@ class ScheduleFragment : Fragment() {
 //        val requestBody = ScheduleOfDayRequest(
 //            scheduleWhen = date
 //        )
+        sDataList.removeAll(sDataList.toSet())//초기화
 
         val service = RetrofitClient.getInstance().create(ScheduleOfDayService::class.java)
         val listCall = service.scheduleOfDay(token, date)
