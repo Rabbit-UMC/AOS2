@@ -2,19 +2,18 @@ package com.example.myo_jib_sa.schedule.api.scheduleOfDay
 
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ScheduleOfDayService {
 
-    @GET("app/schedule/when")
+    @GET("app/schedule/when/{when}")
     fun scheduleOfDay(
-        @Body requestBody: ScheduleOfDayRequest?
+        @Header("X-ACCESS-TOKEN")
+        accessToken: String,
+        @Path("when") scheduleWhen: String?
     ) : Call<ScheduleOfDayResponse>
 }
 
-data class ScheduleOfDayRequest(
-    @SerializedName("when") val scheduleWhen: String,
-)
+//data class ScheduleOfDayRequest(
+//    @SerializedName("when") val scheduleWhen: String?
+//)

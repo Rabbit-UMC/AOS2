@@ -21,10 +21,11 @@ import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeService
-import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayRequest
+import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResponse
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayService
+import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActivity
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleEditDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.scheduleDeleteDialog
@@ -32,6 +33,7 @@ import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
+import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -48,6 +50,7 @@ class ScheduleFragment : Fragment() {
     lateinit var scheduleAdaptar : ScheduleAdaptar //scheduleRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
     val scheduleDetailDialog = ScheduleDetailDialogFragment()
     lateinit var selectedDate : LocalDate //오늘 날짜
+
     var mDataList = ArrayList<Mission>() //미션 리스트 데이터
     var sDataList = ArrayList<ScheduleOfDayResult>() //일정 리스트 데이터
 
@@ -63,7 +66,7 @@ class ScheduleFragment : Fragment() {
 
         scheduleHomeApi()//scheduleHome api연결
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
-        setMonthView()//화면 초기화
+        setCalendarAdapter()//화면 초기화
 
         //애드몹 광고 표시
         createAd()
@@ -102,7 +105,7 @@ class ScheduleFragment : Fragment() {
 
     //month화면에 보여주기
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun setMonthView(){
+    private fun setCalendarAdapter(){
         //month를 month text view에 보여주기 (결과: 1월)
         binding.monthTv.text = monthFromDate(selectedDate)
 
@@ -133,20 +136,20 @@ class ScheduleFragment : Fragment() {
             if(dayOfWeek == 7){//그 달의 첫날이 일요일일때 작동: 한칸 아래줄부터 날짜 표시되는 현상 막기위해
                 if(i>lastDay)
                     break
-                dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i)))
+                var check = scheduleOfDayApiForCheck(YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i))) //넣고 일정있는지 여부 체크
+                dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i), check))
             }
             else if(i<=dayOfWeek || i>(lastDay + dayOfWeek)){//그 외 경우
                 dayList.add(CalendarData(null))
             }
             else{
-                //test code
-                if(i-dayOfWeek == 15)
-                    dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek), true))//test code
-                //test code, else 바로 아래 dayList.add 코드는 살리기
-                else
-                    dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek)))//얘만 살리기
+                var check = scheduleOfDayApiForCheck(YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek))) //넣고 일정있는지 여부 체크
+                dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek), check))//얘만 살리기
             }
         }
+
+
+
         return dayList
     }
 
@@ -341,13 +344,13 @@ class ScheduleFragment : Fragment() {
         //이전달로 이동
         binding.preMonthBtn.setOnClickListener{
             selectedDate = selectedDate.minusMonths(1)
-            setMonthView()
+            setCalendarAdapter()
             calendarRvItemClickEvent()
         }
         //다음달로 이동
         binding.nextMonthBtn.setOnClickListener{
             selectedDate =selectedDate.plusMonths(1)
-            setMonthView()
+            setCalendarAdapter()
             calendarRvItemClickEvent()
         }
     }
@@ -357,7 +360,7 @@ class ScheduleFragment : Fragment() {
 
     //scheduleHome api연결
     fun scheduleHomeApi() {
-        val token : String = ""//App.prefs.token.toString()
+        val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
 //        Log.d("retrofit", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
@@ -374,7 +377,7 @@ class ScheduleFragment : Fragment() {
 
                     //현재 미션 데이터 리스트 리사이클러뷰 연결
                     //디데이 얼마 안남은 미션부터 많이 남은 순으로 정렬돼 있음
-                    for(i in 0 .. missionList!!.size){
+                    for(i in 0 until missionList!!.size){
                         mDataList.add(Mission(missionList[i].missionId, missionList[i].missionTitle, missionList[i].challengerCnts, missionList[i].dday))
                     }
                     setCurrentMissionAdapter()
@@ -394,17 +397,15 @@ class ScheduleFragment : Fragment() {
     //scheduleOfDay api연결
     //calendarRvItemClickEvent()안에서만 실행
     fun scheduleOfDayApi(date: String?) {
-//        val token : String = App.prefs.token.toString()
+        val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
 //        Log.d("retrofit", "token = "+token+"l");
 //
-        val requestBody = date?.let {
-            ScheduleOfDayRequest(
-                scheduleWhen = it
-            )
-        }
+//        val requestBody = ScheduleOfDayRequest(
+//            scheduleWhen = date
+//        )
 
         val service = RetrofitClient.getInstance().create(ScheduleOfDayService::class.java)
-        val listCall = service.scheduleOfDay(requestBody)
+        val listCall = service.scheduleOfDay(token, date)
 
         listCall.enqueue(object : Callback<ScheduleOfDayResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
@@ -417,7 +418,7 @@ class ScheduleFragment : Fragment() {
                     val scheduleList = response.body()?.result
 
                     //일정 데이터 리스트 sDataList에 추가
-                    for(i in 0 .. scheduleList!!.size){
+                    for(i in 0 until  scheduleList!!.size){
                         sDataList.add(ScheduleOfDayResult(
                             scheduleList[i].scheduleId,
                             scheduleList[i].scheduleTitle,
@@ -438,6 +439,60 @@ class ScheduleFragment : Fragment() {
     }
 
 
+    //scheduleOfDayApi연결 : 캘린더 파란동그라미 표시용
+    fun scheduleOfDayApiForCheck(date: String?):Boolean {
+        var checkResult: Boolean = false
+
+        val token: String =
+            "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
+//        Log.d("retrofit", "token = "+token+"l");
+//
+//        val requestBody = ScheduleOfDayRequest(
+//            scheduleWhen = date
+//        )
+
+        val service = RetrofitClient.getInstance().create(ScheduleOfDayService::class.java)
+        val listCall = service.scheduleOfDay(token, date)
+
+
+            listCall.enqueue(object : Callback<ScheduleOfDayResponse> {
+                @RequiresApi(Build.VERSION_CODES.O)
+                override fun onResponse(
+                    call: Call<ScheduleOfDayResponse>,
+                    response: Response<ScheduleOfDayResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.d("retrofit", response.body().toString());
+                        val scheduleList = response.body()?.result
+
+                        //response에 값이 있으면 해당날짜 일정있음
+                        if (scheduleList != null) {
+                            checkResult = true
+                            Log.d("debug", "scheduleList != null")
+                        }
+                        Log.d("debug", "$date checkResult = $checkResult")
+
+
+                    } else {
+                        Log.e("retrofit", "onResponse: Error ${response.code()}")
+                        val errorBody = response.errorBody()?.string()
+                        Log.e("retrofit", "onResponse: Error Body $errorBody")
+                    }
+                }
+
+                override fun onFailure(call: Call<ScheduleOfDayResponse>, t: Throwable) {
+                    Log.e("retrofit", "onFailure: ${t.message}")
+                }
+            })
+
+
+
+        Log.d("debug", "[outside] $date checkResult = $checkResult")
+
+        return checkResult
+
+    }
+
     //M월 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
     private fun monthFromDate(date : LocalDate):String{
@@ -456,10 +511,11 @@ class ScheduleFragment : Fragment() {
         var formatter = DateTimeFormatter.ofPattern("M월 d일")
         return date?.format(formatter)
     }
-    //YYYY년 MM월 DD일 형식으로 포맷
+    //YYYY-MM-DD 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
     private fun YYYYMMDDFromDate(date : LocalDate?):String?{
         var formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd")
         return date?.format(formatter)
     }
+
 }
