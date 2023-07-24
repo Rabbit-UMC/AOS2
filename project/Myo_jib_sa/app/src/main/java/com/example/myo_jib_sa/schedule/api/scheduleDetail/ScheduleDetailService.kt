@@ -7,7 +7,7 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 
 interface ScheduleDetailService {
-    @GET("app/schedule/{schedulId}")
+    @GET("app/schedule/{scheduleId}")
     fun scheduleDetail(
         @Header("X-ACCESS-TOKEN")
         accessToken: String,

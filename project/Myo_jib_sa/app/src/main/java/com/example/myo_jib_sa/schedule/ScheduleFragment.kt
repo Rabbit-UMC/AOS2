@@ -69,12 +69,12 @@ class ScheduleFragment : Fragment() {
         scheduleHomeApi()//scheduleHome api연결
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
 
-
-        calendarAdapter = CalendarAdapter(ArrayList())//임시 초기화
+        //calendarAdapter 임시 초기화
+        calendarAdapter = CalendarAdapter(ArrayList())
         calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
 
-            setCalendarAdapter()//화면 초기화
-//            calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
+        setCalendarAdapter()//화면 초기화
+//      calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
 
 
         //애드몹 광고 표시
@@ -89,8 +89,6 @@ class ScheduleFragment : Fragment() {
         //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
         setCurrentMissionAdapter()
         setScheduleAdapter(selectedDate)
-
-
         scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
 
         //캘린더 visible버튼
@@ -158,7 +156,6 @@ class ScheduleFragment : Fragment() {
             if(dayOfWeek == 7){//그 달의 첫날이 일요일일때 작동: 한칸 아래줄부터 날짜 표시되는 현상 막기위해
                 if(i>lastDay)
                     break
-                //var check = scheduleOfDayApiForCheck(YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i))) //넣고 일정있는지 여부 체크
                 var currentDate = YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i))
                 dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i), hasScheduleMap[currentDate]))
                 Log.d("debug", "$date checkResult = ${hasScheduleMap[currentDate]}")
@@ -167,7 +164,6 @@ class ScheduleFragment : Fragment() {
                 dayList.add(CalendarData(null))
             }
             else{
-                //var check = scheduleOfDayApiForCheck(YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek))) //넣고 일정있는지 여부 체크
                 var currentDate = YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek))
                 dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek), hasScheduleMap[currentDate]))//얘만 살리기
                 Log.d("debug", "$currentDate checkResult = ${hasScheduleMap[currentDate]}")
@@ -282,28 +278,28 @@ class ScheduleFragment : Fragment() {
 
     //Calendar rv item클릭 이벤트
     fun calendarRvItemClickEvent() {
-    calendarAdapter.setItemClickListener(object : CalendarAdapter.OnItemClickListener {
+        calendarAdapter.setItemClickListener(object : CalendarAdapter.OnItemClickListener {
 
-        @RequiresApi(Build.VERSION_CODES.O)
-        override fun onClick(calendarData: CalendarData) {
-            // 클릭 시 이벤트 작성
-            Log.d("debug", "클릭!")
-            //2023년 6월 표시
-            binding.selectedYearMonthTv.text = YYYYMMFromDate(calendarData.date)
-            //6월 1일 일정 표시
-            binding.selectedMonthDayTv.text = "${MMDDFromDate(calendarData.date)} 일정"
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onClick(calendarData: CalendarData) {
+                // 클릭 시 이벤트 작성
+                Log.d("debug", "클릭!")
+                //2023년 6월 표시
+                binding.selectedYearMonthTv.text = YYYYMMFromDate(calendarData.date)
+                //6월 1일 일정 표시
+                binding.selectedMonthDayTv.text = "${MMDDFromDate(calendarData.date)} 일정"
 
-            var iYear = calendarData.date?.year
-            var iMonth = calendarData.date?.monthValue
-            var iDay = calendarData.date?.dayOfMonth
+                var iYear = calendarData.date?.year
+                var iMonth = calendarData.date?.monthValue
+                var iDay = calendarData.date?.dayOfMonth
 
-            Toast.makeText(context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
-                .show()
-            CoroutineScope(Dispatchers.Main).launch {
-                scheduleOfDayApi(YYYYMMDDFromDate(calendarData.date))//scheduleOfDay api연결
-                delay(50)
-                setScheduleAdapter(calendarData.date)
-            }
+//                Toast.makeText(context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
+//                    .show()
+                CoroutineScope(Dispatchers.Main).launch {
+                    scheduleOfDayApi(YYYYMMDDFromDate(calendarData.date))//scheduleOfDay api연결
+                    delay(100)
+                    setScheduleAdapter(calendarData.date)
+                }
             }
         })
     }
@@ -317,7 +313,8 @@ class ScheduleFragment : Fragment() {
                 // 클릭 시 이벤트 작성
                 var bundle = Bundle()
                 bundle.putLong("scheduleId", scheduleData.scheduleId)
-                ScheduleDetailDialogFragment().arguments = bundle
+                Log.d("debug", "\"scheduleId\", ${scheduleData.scheduleId}")
+                scheduleDetailDialog.arguments = bundle
 
                 scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
                 scheduleDetailDialog.show(requireActivity().supportFragmentManager, "ScheduleDetailDialog")

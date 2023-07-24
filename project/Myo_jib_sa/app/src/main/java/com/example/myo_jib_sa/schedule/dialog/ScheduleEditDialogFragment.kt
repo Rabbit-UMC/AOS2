@@ -25,13 +25,23 @@ import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.util.regex.Pattern
 
 class ScheduleEditDialogFragment : DialogFragment() {
     private lateinit var binding: DialogFragmentScheduleEditBinding
     private var missionId:Long = -1
-    private lateinit var scheduleData : ScheduleDetailResult
-    private lateinit var getResultText: ActivityResultLauncher<Intent> //setRegisterForActivityResult에서 사용
+    private var scheduleData : ScheduleDetailResult = ScheduleDetailResult(
+        scheduleId = 0,
+        missionId = 0,
+        missionTitle = "",
+        scheduleTitle= "",
+        startAt= "",
+        endAt= "",
+        content= "",
+        scheduleWhen= ""
+    )
 
 
     override fun onCreateView(
@@ -49,12 +59,12 @@ class ScheduleEditDialogFragment : DialogFragment() {
         //나가기 버튼
         binding.exitTv.setOnClickListener{
             dismiss()
-            buttonClickListener.onClickEditBtn()
+            //buttonClickListener.onClickEditBtn()
         }
         //수정완료 버튼
         binding.modifyBtn.setOnClickListener{
             dismiss()
-            buttonClickListener.onClickEditBtn()
+            //buttonClickListener.onClickEditBtn()
             scheduleModifyApi()//수정완료 누르면 데이터 서버로 보내기
         }
 
@@ -118,37 +128,48 @@ class ScheduleEditDialogFragment : DialogFragment() {
     private fun setCurrentDialog(){
 
         val bundle = arguments
-        if (bundle != null && bundle.getBoolean("isEdit")) {//수정한 값이 있다면
+        var isEdit = bundle?.getBoolean("isEdit", false)
+
+        if (bundle != null && isEdit == true) {//수정한 값이 있다면
+            Log.d("debug", "isEdit: "+"받았다!"+bundle.getBoolean("isEdit"))
             val sharedPreferenceModified = requireContext().getSharedPreferences("scheduleModifiedData",
                 Context.MODE_PRIVATE
             )
-            scheduleData.scheduleWhen = sharedPreferenceModified.getString("scheduleDate", "").toString()
-            scheduleData.missionTitle = sharedPreferenceModified.getString("missionTitle", "").toString()
-            scheduleData.startAt = sharedPreferenceModified.getString("scheduleStartTime", "").toString()
-            scheduleData.endAt = sharedPreferenceModified.getString("scheduleEndTime", "").toString()
+            scheduleData?.scheduleWhen = sharedPreferenceModified.getString("scheduleDate", "").toString()
+            scheduleData?.missionTitle = sharedPreferenceModified.getString("missionTitle", "").toString()
+            scheduleData?.missionId = sharedPreferenceModified.getLong("missionId", 0)
+            scheduleData?.startAt = sharedPreferenceModified.getString("scheduleStartTime", "").toString()
+            scheduleData?.endAt = sharedPreferenceModified.getString("scheduleEndTime", "").toString()
         }
         else{//아니면 원래 저장 값으로
             val sharedPreference = requireContext().getSharedPreferences("scheduleData",
                 Context.MODE_PRIVATE
             )
-            scheduleData.scheduleTitle = sharedPreference.getString("scheduleTitle", "").toString()
-            scheduleData.scheduleWhen = sharedPreference.getString("scheduleDate", "").toString()
-            scheduleData.missionTitle = sharedPreference.getString("missionTitle", "").toString()
-            scheduleData.startAt = sharedPreference.getString("scheduleStartTime", "").toString()
-            scheduleData.endAt = sharedPreference.getString("scheduleEndTime", "").toString()
-            scheduleData.content = sharedPreference.getString("scheduleMemo", "").toString()
-            scheduleData.missionId = sharedPreference.getLong("missionId", 0)
-            scheduleData.scheduleId = sharedPreference.getLong("scheduleId", 0)
+            Log.d("debug", "isEdit: "+"받았다!"+isEdit)
+
+            scheduleData?.scheduleWhen = sharedPreference.getString("scheduleDate", "").toString()
+            scheduleData?.missionTitle = sharedPreference.getString("missionTitle", "").toString()
+            scheduleData?.missionId = sharedPreference.getLong("missionId", 0)
+            scheduleData?.startAt = sharedPreference.getString("scheduleStartTime", "").toString()
+            scheduleData?.endAt = sharedPreference.getString("scheduleEndTime", "").toString()
         }
 
+        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
+            Context.MODE_PRIVATE
+        )
+        scheduleData?.scheduleTitle = sharedPreference.getString("scheduleTitle", "").toString()
+        scheduleData?.content = sharedPreference.getString("scheduleMemo", "").toString()
+        scheduleData?.scheduleId = sharedPreference.getLong("scheduleId", 0)
+        Log.d("debug", "scheduleData!!.missionId: ${scheduleData?.missionId}, scheduleData!!.scheduleId: ${scheduleData?.scheduleId}")
+
         //화면에 반영
-        binding.scheduleTitleEtv.setText(scheduleData.scheduleTitle)
-        binding.scheduleDateTv.text = scheduleData.scheduleWhen
-        binding.missionTitleTv.text = scheduleData.missionTitle
-        binding.scheduleStartTimeTv.text = scheduleData.startAt
-        binding.scheduleEndTimeTv.text = scheduleData.endAt
-        binding.scheduleMemoEtv.setText(scheduleData.content)
-        missionId=scheduleData.missionId
+        binding.scheduleTitleEtv.setText(scheduleData?.scheduleTitle)
+        binding.scheduleDateTv.text = scheduleData?.scheduleWhen
+        binding.missionTitleTv.text = scheduleData?.missionTitle
+        binding.scheduleStartTimeTv.text = scheduleTimeFormatter(scheduleData?.startAt)
+        binding.scheduleEndTimeTv.text = scheduleTimeFormatter(scheduleData?.endAt)
+        binding.scheduleMemoEtv.setText(scheduleData?.content)
+        missionId= scheduleData?.missionId!!
 
     }
 
@@ -163,15 +184,15 @@ class ScheduleEditDialogFragment : DialogFragment() {
         editor.putString("scheduleTitle", binding.scheduleTitleEtv.text.toString())
         editor.putString("scheduleDate", binding.scheduleDateTv.text.toString())
         editor.putString("missionTitle", binding.missionTitleTv.text.toString())
-        editor.putString("scheduleStartTime", binding.scheduleStartTimeTv.text.toString())
-        editor.putString("scheduleEndTime", binding.scheduleEndTimeTv.text.toString())
+        editor.putString("scheduleStartTime", scheduleData?.startAt)
+        editor.putString("scheduleEndTime", scheduleData?.endAt)
         editor.putString("scheduleMemo", binding.scheduleMemoEtv.text.toString())
-        editor.putLong("missionId", scheduleData.missionId)
-        editor.putLong("scheduleId", scheduleData.scheduleId)
+        editor.putLong("missionId", scheduleData!!.missionId)
+        editor.putLong("scheduleId", scheduleData!!.scheduleId)
         editor.apply()
 
         var bundle = Bundle()
-//        bundle.putInt("position", position)
+        bundle.putInt("position", position)
 //        bundle.putString("scheduleDate", binding.scheduleDateTv.text.toString());
 //        bundle.putString("missionTitle", binding.missionTitleTv.text.toString());
 //        bundle.putLong("missionId", missionId);
@@ -192,8 +213,8 @@ class ScheduleEditDialogFragment : DialogFragment() {
         val requestBody = ScheduleModifyRequest(
             title = binding.missionTitleTv.text.toString(),
             content = binding.scheduleMemoEtv.text.toString() ,//메모
-            startAt = binding.scheduleStartTimeTv.text.toString(),
-            endAt = binding.scheduleEndTimeTv.text.toString(),
+            startAt = scheduleData.startAt,
+            endAt = scheduleData.endAt,
             missionId = missionId,
             scheduleWhen = binding.scheduleDateTv.text.toString()
         )
@@ -219,5 +240,22 @@ class ScheduleEditDialogFragment : DialogFragment() {
         })
     }
 
+
+    //startTime, endTime 포맷
+    fun scheduleTimeFormatter(startAt: String?): String {
+        val formatter = DecimalFormat("00")
+
+        val time = startAt!!.split(":")
+        val hour = time[0].toInt()
+        val minute = time[1].toInt()
+        if (hour < 12) {
+            return "오전 $startAt"
+        } else {
+            if (hour == 12)
+                return "오후 $startAt"
+            else
+                return "오후 ${formatter.format(hour - 12)}:${formatter.format(minute)}"
+        }
+    }
 
 }

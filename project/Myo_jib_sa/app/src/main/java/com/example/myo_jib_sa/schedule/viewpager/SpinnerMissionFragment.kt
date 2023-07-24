@@ -17,6 +17,10 @@ import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeService
 import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
 import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyResponse
 import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,14 +28,30 @@ import retrofit2.Response
 
 class SpinnerMissionFragment : Fragment() {
     private lateinit var binding : FragmentSpinnerMissionBinding
-    private lateinit var missionTitleList : MutableList<String>
+    private lateinit var missionTitleList : MutableList<String>//numberpicker타이틀 리스트
+    private lateinit var titleIdMap : HashMap<String, Long>//id로 찾기
+    private lateinit var titleTitleMap : HashMap<Long, String>//Title로 찾기
     private lateinit var missionList:List<Mission>
-    private lateinit var scheduleData : ScheduleDetailResult//sharedPreferences로 받은값 저장
+    private var scheduleData : ScheduleDetailResult = ScheduleDetailResult(//sharedPreferences로 받은값 저장
+        scheduleId = 0,
+        missionId = 0,
+        missionTitle = "",
+        scheduleTitle= "",
+        startAt= "",
+        endAt= "",
+        content= "",
+        scheduleWhen= ""
+    )
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSpinnerMissionBinding.inflate(inflater, container, false)
+
+        // missionTitleList 초기화
+        missionTitleList = mutableListOf()
+        titleIdMap =  hashMapOf()
+        titleTitleMap = hashMapOf()
 
         getData()//sharedPreference로 값 받기
         //값 저장할 sharedPreference 부르기
@@ -42,34 +62,38 @@ class SpinnerMissionFragment : Fragment() {
         //값 변경하지 않았을때 기본값으로 전달
         editor.putString("missionTitle", scheduleData.missionTitle)
         editor.putLong("missionId", scheduleData.missionId)
-
+        editor.apply()// data 저장!
 
         var numberpicker = binding.missionSpinner
 
         scheduleHomeApi()//api연결을 통해 missionTitleList를 setting
 
-        numberpicker.minValue = 0
-        numberpicker.maxValue = missionTitleList.size-1
-        numberpicker.value = setNumberpickerInitvalue(scheduleData.missionTitle)//초기값 설정
-        numberpicker.displayedValues = missionTitleList.toTypedArray()
-        numberpicker.wrapSelectorWheel = true //순환
-        numberpicker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS //editText가 눌리는 것을 막는다
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(50)
+            numberpicker.minValue = 0
+            numberpicker.maxValue = missionTitleList.size - 1
+            numberpicker.value = setNumberpickerInitvalue(scheduleData.missionTitle)//초기값 설정
+            numberpicker.displayedValues = missionTitleList.toTypedArray()
+            numberpicker.wrapSelectorWheel = true //순환
+            numberpicker.descendantFocusability =
+                NumberPicker.FOCUS_BLOCK_DESCENDANTS //editText가 눌리는 것을 막는다
+        }
+
         numberpicker.setOnValueChangedListener(object : NumberPicker.OnValueChangeListener {
             override fun onValueChange(picker: NumberPicker, oldVal: Int, newVal: Int) {
                 //Display the newly selected value from picker
                 //tv.setText("Selected value : " + missionTitleList.get(newVal))
                 var pickScheduleTitle = missionTitleList.get(newVal)
                 Log.d("debug", "missionTitle : $pickScheduleTitle")
-                for(i in 0 .. missionList!!.size){
-                    if(missionList[i].missionTitle == pickScheduleTitle)
-                        scheduleData.missionId = missionList[i].missionId
-                }
-                editor.putString("missionTitle", pickScheduleTitle)
+
+                scheduleData.missionId = titleIdMap[pickScheduleTitle]!!
+                Log.d("debug", "고른 미션 이름: ${titleTitleMap[scheduleData.missionId]}.${scheduleData.missionId}")
+                editor.putString("missionTitle", titleTitleMap[scheduleData.missionId])
                 editor.putLong("missionId", scheduleData.missionId)
+                editor.apply()// data 저장!
             }
         })
 
-        editor.apply()// data 저장!
         return binding.root
     }
     override fun onPause() {
@@ -96,7 +120,7 @@ class SpinnerMissionFragment : Fragment() {
     //Numberpicker 초기값 설정
     fun setNumberpickerInitvalue(missionTitle :String?):Int{
         var initValue = 0
-        for(i in 0 .. missionList!!.size){
+        for(i in 0 until missionList!!.size){
             if(missionList[i].missionTitle == missionTitle)
                 initValue = i
         }
@@ -124,6 +148,8 @@ class SpinnerMissionFragment : Fragment() {
                     for(i in 0 until missionList!!.size){
                         var title = missionTitleFormat(missionList[i])
                         missionTitleList.add(title)
+                        titleIdMap[title] = missionList[i].missionId
+                        titleTitleMap[missionList[i].missionId] = missionList[i].missionTitle
                     }
 
                 }else {

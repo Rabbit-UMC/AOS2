@@ -63,8 +63,8 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
                 var iMonth = day?.monthValue
                 var iDay = day?.dayOfMonth
 
-                Toast.makeText(holder.itemView.context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
-                    .show()
+//                Toast.makeText(holder.itemView.context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
+//                    .show()
             }
 
         }
