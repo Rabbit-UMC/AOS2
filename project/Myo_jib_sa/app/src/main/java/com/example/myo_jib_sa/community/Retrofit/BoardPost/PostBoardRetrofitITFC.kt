@@ -10,7 +10,7 @@ interface PostBoardRetrofitITFC {
     //게시판에 게시물 띄우기
     @GET("app/article")
     fun board(
-        @Header("Authorization")author:String,
+        @Header("X-ACCESS-TOKEN")author:String,
         @Query("page") page: Int,
         @Query("categoryId")categoryId: Long): Call<PostBoardResponse>
 }

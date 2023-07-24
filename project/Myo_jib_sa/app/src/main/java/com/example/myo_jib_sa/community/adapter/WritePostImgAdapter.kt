@@ -12,21 +12,25 @@ import android.widget.ImageView
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.myo_jib_sa.community.Retrofit.post.ImageList
+import com.example.myo_jib_sa.community.Retrofit.post.ImageListC
 import com.example.myo_jib_sa.community.WritePostingActivity
 import com.example.myo_jib_sa.databinding.ItemWritePostImglockBinding
 import com.example.myo_jib_sa.databinding.ItemWritePostImgplusBinding
 
 
 class WritePostImgAdapter(
-    private val context: Context)
+    private val context: Context
+    ,private val imgList:List<ImageListC>
+)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     //사진 추가, 잠김 구별 상수
     val LOCK =2
     val PLUS =0
 
-    private var imagePath: List<String?> = listOf(null, null)
-    private var ps:Int=0
+    var imagePath: List<ImageListC> = imgList
+    private var ps:Int=2
 
     companion object {
         private const val GALLERY_REQUEST_CODE = 1001
@@ -76,10 +80,10 @@ class WritePostImgAdapter(
         // 이미지 설정 로직을 추가해야 함
         if (holder is plusViewHolder) {
             val plusViewHolder = holder as plusViewHolder
-            val imagePosition = position // 이미지 위치에 해당하는 리스트 인덱스 계산
+             // 이미지 위치에 해당하는 리스트 인덱스 계산
 
-            val imagePath = imagePath.getOrNull(imagePosition)
-            ps=position-1
+            val imagePath = imagePath[position] // 해당 포지션의 이미지 경로를 가져옴
+            ps=holder.adapterPosition
 
             if (imagePath != null) {
                 // 이미지 경로가 설정되어 있으면 Glide를 사용하여 이미지 로드 및 표시
@@ -87,13 +91,9 @@ class WritePostImgAdapter(
                     .load(imagePath)
                     .into(plusViewHolder.writepostImg)
             } else {
-                // 이미지 경로가 설정되어 있지 않으면 기본 이미지 또는 표시할 내용 설정
-                // 예시로 기본 이미지를 설정하고 싶다면:
-                // plusViewHolder.imageView.setImageResource(R.drawable.default_image)
             }
 
         } else if (holder is lockViewHolder) {
-            // 이미지 설정 로직
         }
     }
 
@@ -125,9 +125,9 @@ class WritePostImgAdapter(
     fun setImagePath(path: String?) {
         val updatedList = imagePath.toMutableList()
         if (ps < updatedList.size) {
-            updatedList[ps] = path
+            updatedList[ps] = ImageListC(path.toString())
         } else {
-            updatedList.add(path)
+            updatedList.add(ImageListC(path.toString()))
         }
         imagePath = updatedList
         notifyDataSetChanged()

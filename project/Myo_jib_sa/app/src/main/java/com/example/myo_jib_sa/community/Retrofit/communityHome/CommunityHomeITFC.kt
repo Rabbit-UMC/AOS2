@@ -7,6 +7,6 @@ import retrofit2.http.Header
 interface CommunityHomeITFC {
     //홈 API
     @GET("app/home")
-    fun home(@Header("Authorization") author: String): Call<HomeResponse>
+    fun home(@Header("X-ACCESS-TOKEN") author: String): Call<HomeResponse>
 
 }

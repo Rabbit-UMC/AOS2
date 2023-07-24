@@ -15,7 +15,7 @@
         android:text="글제목"
         android:textColor="@color/black"
         android:textSize="16dp"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/postItem_uploadTime_txt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +28,7 @@
         android:layout_marginBottom="10dp"
         android:text="0"
         android:fontFamily="@font/font_inter"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         android:textSize="16dp"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,7 +43,7 @@
         android:text="0"
         android:textColor="@color/black"
         android:fontFamily="@font/font_inter"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/postItem_comment_img" />
 
@@ -78,7 +78,7 @@
         android:text="업로드 시간"
         android:textColor="#707070"
         android:textSize="10dp"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/postItem_name_txt" />

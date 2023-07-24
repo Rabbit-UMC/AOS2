@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.PopupMenu
@@ -18,10 +19,12 @@ import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.post.ArticleImage
 import com.example.myo_jib_sa.community.Retrofit.post.CommentList
+import com.example.myo_jib_sa.community.Retrofit.post.ImageList
 import com.example.myo_jib_sa.community.Retrofit.post.PostRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.post.PostViewResponse
 import com.example.myo_jib_sa.community.adapter.PostCommentAdapter
 import com.example.myo_jib_sa.community.adapter.PostImgAdapter
+import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.databinding.ActivityPostBinding
 import com.example.myo_jib_sa.mission.MissionFragment
 import com.example.myo_jib_sa.mypage.MypageFragment
@@ -35,6 +38,8 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private lateinit var heartButton: AppCompatImageButton
     private var isHearted: Boolean = false
     private var postId:Long=0
+    private var myPost:Boolean=false
+    private lateinit var imageList: List<ArticleImage>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +48,8 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
         val boardId:Int=intent.getIntExtra("boardId", 0)
         postId=intent.getLongExtra("postId", 0L)
-        //setPostData(AUTHOR, binding, boardId, postId)
+        Log.d("게시물 ID", "게시물 id : ${postId}")
+        setPostData(Constance.jwt, binding, boardId, postId)
 
 
         binding.postBackBtn.setOnClickListener {
@@ -52,7 +58,9 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
         //댓글 달기
         binding.postEnterBtn.setOnClickListener {
-            //api 연결 후 구현
+            commenting(Constance.jwt, binding.postCommentInputEtxt.text.toString(),postId)
+            binding.postCommentInputEtxt.text.clear()
+            setPostData(Constance.jwt, binding, boardId, postId)
         }
 
 
@@ -63,21 +71,13 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         setHeartButtonIcon()
         //좋아요 누르기 기능
         binding.postHeartBtn.setOnClickListener {
-            //api 연결 후 구현
             isHearted = !isHearted
             setHeartButtonIcon()
             saveState()
-            //setHeartApi() -> 토스트메시지 띄우는 부분 추가 필요
+            setHeartApi(Constance.jwt, postId)
         }
 
-        //상단 목록 메뉴 상태 지정
         //작성자, 일반 유저 별로 보이는 메뉴 다르게
-
-        //댓글 옆 버튼 유저별로 다르게 보이게 하기
-
-        //묘집사 파란 닉네임
-
-
         //메뉴 클릭
         binding.postListBtn.setOnClickListener {
             showPopup(binding.postListBtn) }
@@ -87,53 +87,109 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     }
 
     //    팝업 메뉴 보여주는 커스텀 메소드
+    //작성자 아이디와 본인 아이디 비교해서 서로 다른 메뉴를 보여주는 부분 구현 필요
     private fun showPopup(v: View) {
-        val popup = PopupMenu(this, v) // PopupMenu 객체 선언
-        popup.menuInflater.inflate(R.menu.post_writer_menu, popup.menu) // 메뉴 레이아웃 inflate
-        popup.setOnMenuItemClickListener(this) // 메뉴 아이템 클릭 리스너 달아주기
-        popup.show() // 팝업 보여주기
+        if(myPost){
+            val popup = PopupMenu(this, v) // PopupMenu 객체 선언
+            popup.menuInflater.inflate(R.menu.post_writer_menu, popup.menu) // 메뉴 레이아웃 inflate
+            popup.setOnMenuItemClickListener(this) // 메뉴 아이템 클릭 리스너 달아주기
+            popup.show() // 팝업 보여주기
+        }else{
+            val popup = PopupMenu(this, v) // PopupMenu 객체 선언
+            popup.menuInflater.inflate(R.menu.post_viewer_menu, popup.menu) // 메뉴 레이아웃 inflate
+            popup.setOnMenuItemClickListener(this) // 메뉴 아이템 클릭 리스너 달아주기
+            popup.show() // 팝업 보여주기
+        }
+
     }
 
     // 팝업 메뉴 아이템 클릭 시 실행되는 메소드
     override fun onMenuItemClick(item: MenuItem?): Boolean {
-        when (item?.itemId) { // 메뉴 아이템에 따라 동작 다르게 하기
-            R.id.postMenu_edit -> {
-                //수정 page 이동
-                val intent = Intent(this, WritePostingActivity::class.java)
-                intent.putExtra("title", binding.postPostNameTxt.text.toString())
-                intent.putExtra("postText", binding.postPostTextTxt.text.toString())
-                intent.putExtra("postId", postId)
-                //사진 리스트 첨부 intent.putExtra("")
-                startActivity(intent)
+        if(myPost){
+            when (item?.itemId) { // 메뉴 아이템에 따라 동작 다르게 하기
+                R.id.postMenu_edit -> {
+                    //수정 page 이동
+                    val intent = Intent(this, WritePostingActivity::class.java)
+                    intent.putExtra("title", binding.postPostNameTxt.text.toString())
+                    intent.putExtra("postText", binding.postPostTextTxt.text.toString())
+                    intent.putExtra("postId", postId)
+                    //사진 리스트 첨부
+                    intent.putExtra("imgList1_id", imageList[0].imageId)
+                    intent.putExtra("imgList1_path", imageList[0].filePath)
+                    intent.putExtra("imgList2_id", imageList[1].imageId)
+                    intent.putExtra("imgList2_path", imageList[1].filePath)
+                    startActivity(intent)
+                }
+                R.id.postMenu_delete -> {
+                    val DelDialog = CommunityPopupOk(this,"해당 게시물을 삭제 하나요?")
+                    DelDialog.setCustomDialogListener(object : CommunityPopupOk.CustomDialogListener {
+                        override fun onPositiveButtonClicked(value: Boolean) {
+                            if (value){
+                                //신고 재확인 팝업창 띄우고 확인 누르면 api 연결
+                                postDelete(Constance.jwt, postId)
+                                finish()
+                            }
+                        }
+                    })
+                    DelDialog.show()
+
+                }
             }
-            R.id.postMenu_delete -> {
+            return item != null // 아이템이 null이 아닌 경우 true, null인 경우 false 리턴
+        }else{
+            when (item?.itemId) { // 메뉴 아이템에 따라 동작 다르게 하기
+                R.id.postMenu_report -> {
+
+                    val DelDialog = CommunityPopupOk(this,"해당 게시물을 신고 하나요?")
+                    DelDialog.setCustomDialogListener(object : CommunityPopupOk.CustomDialogListener {
+                        override fun onPositiveButtonClicked(value: Boolean) {
+                            if (value){
+                                //신고 재확인 팝업창 띄우고 확인 누르면 api 연결
+                                postReport(Constance.jwt,postId)
+                            }
+                        }
+                    })
+                    DelDialog.show()
+
+                }
             }
+            return item != null // 아이템이 null이 아닌 경우 true, null인 경우 false 리턴
         }
-        return item != null // 아이템이 null이 아닌 경우 true, null인 경우 false 리턴
+
     }
 
 
     //API 연결, 게시물 뷰 설정, 리사이클러뷰(이미지) 띄우기
-    private fun setPostData(author:String, binding: ActivityPostBinding, boardId:Int, postId:Long){
+    private fun setPostData(author:String, binding: ActivityPostBinding,
+                            boardId:Int, postId:Long){
         val retrofitManager = PostRetrofitManager.getInstance(this)
         retrofitManager.postView(author, postId){response ->
-            if(response.isSuccess=="TRUE"){
-                val imgList:List<ArticleImage> = response.articleImage
+            if(response.isSuccess=="true"){
+                val imgList:List<ArticleImage> = response.result.articleImage
 
                 //로그
-                Log.d("List 확인", imgList[0].filePsth)
-                Log.d("List 확인", imgList[0].imageId.toString())
-                Log.d("List 확인", response.articleTitle)
+                if(imgList.isNotEmpty()){
+                    Log.d("게시글 API List 확인", imgList[0].filePath)
+                    Log.d("게시글 API List 확인", imgList[0].imageId.toString())
+                }
+                Log.d("게시글 API List 확인", response.result.articleTitle)
 
                 //콘텐츠 설정
                 setPost(response, binding, boardId)
+
+                //내 게시글인지 아닌지
+                if(Constance.USER_ID==response.result.authorId){
+                    myPost=true
+                }
+
+                imageList=imgList
 
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                 val returnCode = response.code
                 val returnMsg = response.message
-
-                Log.d("홈 API isSuccess가 false", "${returnCode}  ${returnMsg}")
+                showToast("게시물을 불러오지 못했습니다")
+                Log.d("게시글 API isSuccess가 false", "${returnCode}  ${returnMsg}")
             }
 
 
@@ -141,21 +197,22 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     }
 
     //게시물 뷰 설정
-    private fun setPost(contents:PostViewResponse, binding: ActivityPostBinding, boardId: Int){
-        binding.postWriterNameTxt.text=contents.authorName
-        binding.postPostNameTxt.text=contents.articleTitle
-        binding.postPostTextTxt.text=contents.articleContent
-        binding.postWritinTimeTxt.text=contents.uploadTime
+    private fun setPost(contents:PostViewResponse, binding: ActivityPostBinding, boardId: Int, ){
+        binding.postWriterNameTxt.text=contents.result.authorName
+        binding.postPostNameTxt.text=contents.result.articleTitle
+        binding.postPostTextTxt.text=contents.result.articleContent
+        binding.postWritinTimeTxt.text=contents.result.uploadTime
 
         //프로필 이미지 설정 필요
         Glide.with(binding.root.context)
-            .load(contents.authorProfileImage)
+            .load(contents.result.authorProfileImage)
             .into(binding.postWriterProfileImg)
 
         //이미지 리사이클러뷰
-        linkImgRecyclr(contents.articleImage)
+        linkImgRecyclr(contents.result.articleImage)
+        val isWriter:Boolean=(contents.result.authorId==Constance.USER_ID)
         //댓글 리사이클러뷰
-        linkCommentRecyclr(contents.commentList)
+        linkCommentRecyclr(contents.result.commentList,isWriter, contents.result.articleId)
 
         //게시판 이름
         when(boardId){
@@ -170,12 +227,60 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
             }
 
         }
+    }
+
+    //댓글 달기
+    private fun commenting(author: String, content:String, articleId:Long){
+        val retrofitManager = PostRetrofitManager.getInstance(this)
+        retrofitManager.postComment(author,content ,articleId){response ->
+            if(response){
+                //로그
+                Log.d("댓글 달기", "${response.toString()}")
+                //todo: 어댑터에 아이템이 바뀌었다고 알려줘야함
 
 
+            } else {
+                // API 호출은 성공했으나 isSuccess가 false인 경우 처리
+                Log.d("댓글 달기 API isSuccess가 false", "${response.toString()}")
+                showToast("댓글 달기 실패")
+            }
         }
+    }
+
+    //게시물 신고
+    private fun postReport(author:String, articleId: Long){
+        val retrofitManager = PostRetrofitManager.getInstance(this)
+        retrofitManager.postReport(author,articleId){response ->
+            if(response){
+                //로그
+                Log.d("게시물 신고", "${response.toString()}")
 
 
+            } else {
+                // API 호출은 성공했으나 isSuccess가 false인 경우 처리
+                Log.d("게시물 신고 API isSuccess가 false", "${response.toString()}")
+                showToast("게시물 신고 실패")
+            }
+        }
+    }
 
+    //게시물 삭제
+    private fun postDelete(author:String, articleId: Long){
+
+        val retrofitManager = PostRetrofitManager.getInstance(this)
+        retrofitManager.postDelete(author,articleId){response ->
+            if(response){
+                //로그
+                Log.d("게시물 삭제", "${response.toString()}")
+                finish()
+
+            } else {
+                // API 호출은 성공했으나 isSuccess가 false인 경우 처리
+                Log.d("게시물 삭제 API isSuccess가 false", "${response.toString()}")
+                showToast("게시물 삭제 실패")
+            }
+        }
+    }
 
     //이미지 리사이클러뷰, 어댑터 연결
     private fun linkImgRecyclr(list:List<ArticleImage>){
@@ -190,9 +295,9 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     }
 
     //댓글 리사이클러뷰, 어댑터 연결
-    private fun linkCommentRecyclr(list:List<CommentList>){
+    private fun linkCommentRecyclr(list:List<CommentList>, isPostWriter:Boolean, postId: Long){
         //이미지 뷰
-        val adapter = PostCommentAdapter(this,list)
+        val adapter = PostCommentAdapter(this,list,isPostWriter, postId)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.postCommentRecyclr.layoutManager = layoutManager
@@ -228,11 +333,10 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     //로그
                     Log.d("좋아요 ", "${response.toString()}")
 
-
                 } else {
                     // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                     Log.d("좋아요 API isSuccess가 false", "${response.toString()}")
-                    //토스트 메시지 띄우기
+                    showToast("좋아요 누르기 실패")
                 }
             }
         }else{
@@ -246,12 +350,16 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 } else {
                     // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                     Log.d("좋아요 삭제 API isSuccess가 false", "${response.toString()}")
-                    //토스트 메시지 띄우기
+                    showToast("좋아요 삭제 실패")
+
                 }
             }
         }
     }
 
-
+    //토스트 메시지 띄우기
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
 
 }

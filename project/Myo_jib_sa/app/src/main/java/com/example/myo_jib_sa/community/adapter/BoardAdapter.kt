@@ -27,13 +27,13 @@ class BoardAdapter(
             binding.postItemNameTxt.text=item.articleTitle
             binding.postItmeCommentCntTxt.text=item.commentCount.toString()
             binding.postItemUploadTimeTxt.text=item.uploadTime.toString()
-            binding.postItmeHeartNumTxt.text=item.LikeCount.toString()
+            binding.postItmeHeartNumTxt.text=item.likeCount.toString()
 
 
             //클릭 이벤트, 해당 게시물로 이동
            binding.root.setOnClickListener{
                val postId=item.articleId
-               val intent= Intent(binding.root.context, PostActivity::class.java)
+               val intent= Intent(context, PostActivity::class.java)
                intent.putExtra("postId", postId)
                intent.putExtra("boardId", boardId)
                binding.root.context.startActivity(intent)

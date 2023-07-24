@@ -6,12 +6,16 @@ data class PostBoardResponse(
     val isSuccess:String,
     val code:Int,
     val message:String,
+    val result: BoardResult
+)
+data class BoardResult(
+    val categoryHostId:Long,
     val articles:List<Articles>
 )
 data class Articles(
     val articleId:Long,
     val articleTitle:String,
-    val uploadTime:Timestamp,
-    val LikeCount:Int,
+    val uploadTime:String,
+    val likeCount:Int,
     val commentCount:Int
 )

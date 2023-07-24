@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.community.Retrofit.BoardPost.Articles
 import com.example.myo_jib_sa.community.Retrofit.BoardPost.PostBoardRetrofitManager
@@ -15,6 +16,7 @@ import java.sql.Timestamp
 class BoardExerciseActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityBoardExerciseBinding
+    private var hostId:Long=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,20 +35,20 @@ class BoardExerciseActivity : AppCompatActivity() {
             intent.putExtra("boardId", boardId)
             startActivity(intent)
         }
+        //게시판 화면 띄우기
+        getBoardData(Constance.jwt, 1, Constance.EXERCISE_ID.toLong())
 
-        //리사이클러뷰 테스트
-        val BList= listOf<Articles>(
-            Articles(1,"개시물 제목", Timestamp.valueOf("2023-07-05 12:12:00"), 1,1),
-            Articles(2,"개시물 제목", Timestamp.valueOf("2023-07-05 12:12:00"), 2,1),
-            Articles(3,"개시물 제목", Timestamp.valueOf("2023-07-05 12:12:00"), 3,1),
-            Articles(1,"개시물 제목", Timestamp.valueOf("2023-07-05 12:12:00"), 4,1),
-            Articles(3,"개시물 제목", Timestamp.valueOf("2023-07-05 12:12:00"), 5,1),
-            Articles(2,"개시물 제목", Timestamp.valueOf("2023-07-05 12:12:00"), 6,1),
-            Articles(4,"개시물 제목", Timestamp.valueOf("2023-07-05 12:12:00"), 7,1),
-            Articles(5,"개시물 제목", Timestamp.valueOf("2023-07-05 12:12:00"), 8,1),
-            Articles(6,"개시물 제목", Timestamp.valueOf("2023-07-05 12:12:00"), 9,1)
-            )
-        linkBrecyclr(BList)
+        //관리자 페이지 넘어가기
+        binding.boardExcsNameTxt.setOnClickListener(View.OnClickListener {
+            // TextView 클릭될 시 할 코드작성
+            if(true /*hostId==Constance.USER_ID*/){
+                val intent=Intent(this, ManagerPageActivity::class.java)
+                val boardId=Constance.EXERCISE_ID
+                intent.putExtra("boardId", boardId)
+                startActivity(intent)
+            }
+
+        })
 
     }
 
@@ -54,15 +56,16 @@ class BoardExerciseActivity : AppCompatActivity() {
     private fun getBoardData(author:String,page:Int ,id:Long){
         val retrofitManager = PostBoardRetrofitManager.getInstance(this)
         retrofitManager.board(author,page ,id){response ->
-            if(response.isSuccess=="TRUE"){
-                val boardList:List<Articles> = response.articles
-                if(boardList.isNotEmpty()){
+            if(response.isSuccess=="true"){
+                val boardList:List<Articles> = response.result.articles
+                hostId=response.result.categoryHostId
+                if(boardList?.isNotEmpty()==true){
 
                     //로그
-                    Log.d("boardList 확인", boardList[0].articleTitle)
-                    Log.d("boardList 확인", boardList[0].LikeCount.toString())
-                    Log.d("boardList 확인", boardList[0].commentCount.toString())
-                    Log.d("boardList 확인", boardList[0].uploadTime.toString())
+                    Log.d("게시판 API boardList 확인", boardList[0].articleTitle)
+                    Log.d("게시판 API boardList 확인", boardList[0].likeCount.toString())
+                    Log.d("게시판 API boardList 확인", boardList[0].commentCount.toString())
+                    Log.d("게시판 API boardList 확인", boardList[0].uploadTime.toString())
 
 
                     //리사이클러뷰 연결
@@ -70,7 +73,7 @@ class BoardExerciseActivity : AppCompatActivity() {
 
 
                 }else{
-                    Log.d("리사이클러뷰 어댑터로 리스트 전달", "List가 비었다네요")
+                    Log.d("게시판 API 리사이클러뷰 어댑터로 리스트 전달", "List가 비었다네요")
                 }
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
