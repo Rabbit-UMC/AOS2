@@ -11,7 +11,7 @@ interface ScheduleDeleteService {
     companion object {
         private const val authKey = "" //Authorization쓰기!!
     }
-    @DELETE("app/schedule/{schedulId}")
+    @DELETE("app/schedule/{scheduleId}")
     fun scheduleDelete(
         @Header("X-ACCESS-TOKEN")
         accessToken: String,

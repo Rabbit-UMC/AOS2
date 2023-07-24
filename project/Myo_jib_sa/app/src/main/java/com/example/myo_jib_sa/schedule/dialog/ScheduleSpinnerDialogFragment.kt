@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,10 +73,11 @@ class ScheduleSpinnerDialogFragment : DialogFragment() {
 
         //확인, 취소 버튼
         binding.completeBtn.setOnClickListener{
+
+
             //확인눌렀는지 판단위해
             val bundle = Bundle()
-            bundle.putBoolean("isEidt", true)
-
+            bundle.putBoolean("isEdit", true)
             //ScheduleEditDialogFragment열기
             val scheduleEditDialogFragment = ScheduleEditDialogFragment()
             scheduleEditDialogFragment.arguments = bundle
@@ -83,10 +85,11 @@ class ScheduleSpinnerDialogFragment : DialogFragment() {
             dismiss()//spinnerDialog종료
         }
         binding.cancelBtn.setOnClickListener {
+
+
             //확인눌렀는지 판단위해
             val bundle = Bundle()
-            bundle.putBoolean("isEidt", false)
-
+            bundle.putBoolean("isEdit", false)
             //ScheduleEditDialogFragment열기
             val scheduleEditDialogFragment = ScheduleEditDialogFragment()
             scheduleEditDialogFragment.arguments = bundle

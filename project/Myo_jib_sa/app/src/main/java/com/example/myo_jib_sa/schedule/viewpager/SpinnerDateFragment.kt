@@ -19,7 +19,16 @@ import java.util.*
 class SpinnerDateFragment : Fragment() {
 
     private lateinit var binding : FragmentSpinnerDateBinding
-    private lateinit var scheduleData : ScheduleDetailResult//sharedPreferences로 받은값 저장
+    private var scheduleData : ScheduleDetailResult = ScheduleDetailResult(//sharedPreferences로 받은값 저장
+        scheduleId = 0,
+        missionId = 0,
+        missionTitle = "",
+        scheduleTitle= "",
+        startAt= "",
+        endAt= "",
+        content= "",
+        scheduleWhen= ""
+    )
 
     //처음 spinner dialog로 들어올때만 onCreateView가 실행되고 viewpager들끼리 화면 전환 할때에는 onCreateView가 실행되지 않음
     @RequiresApi(Build.VERSION_CODES.O)
@@ -37,22 +46,23 @@ class SpinnerDateFragment : Fragment() {
         )
         val editor = sharedPreference.edit()
         editor.putString("scheduleDate", scheduleData.scheduleWhen)//값 변경하지 않았을때 기본값으로 전달
+        editor.apply()// data 저장!
 
         //year, month, day로 분리
         var date = scheduleData.scheduleWhen.split("-")
 
         //datePicker초기값 설정
-        binding.scheduleDatePicker.updateDate(date[0].toInt(), date[1].toInt(), date[2].toInt());
+        binding.scheduleDatePicker.updateDate(date[0].toInt(), date[1].toInt()-1, date[2].toInt());
 
         binding.scheduleDatePicker.setOnDateChangedListener(object: DatePicker.OnDateChangedListener{
             override fun onDateChanged(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
                 //month+1이 실제 month
                 Log.d("debug", "$year.${month+1}.$dayOfMonth")
                 editor.putString("scheduleDate", "$year-${month+1}-$dayOfMonth")
+                editor.apply()// data 저장!
             }
         })
 
-        editor.apply()// data 저장!
         return binding.root
     }
 
