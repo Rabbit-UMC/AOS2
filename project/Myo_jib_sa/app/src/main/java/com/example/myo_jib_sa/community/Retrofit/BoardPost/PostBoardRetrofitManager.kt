@@ -37,7 +37,7 @@ class PostBoardRetrofitManager(context: Context) {
                 Log.d("Post 게시판 api", "RetrofitManager profile onResponse \t :${response.message()} ")
                 val response: PostBoardResponse? = response?.body() //LoginResponse 형식의 응답 받음
                 if (response != null) {
-                    if (response.isSuccess=="TRUE") {
+                    if (response.isSuccess=="true") {
                         Log.d("Post 게시판 api",
                             "RetrofitManager Post 게시판 is Success\t :${response.code} ")
                         completion(response)

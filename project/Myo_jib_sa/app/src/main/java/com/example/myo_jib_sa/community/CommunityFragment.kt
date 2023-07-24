@@ -21,9 +21,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.communityHome.CommunityHomeManager
 import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
-import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularTopic
+import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularArticle
 import com.example.myo_jib_sa.community.adapter.BannerViewpagerAdapter
 import com.example.myo_jib_sa.community.adapter.HomeMissionAdapter
 import com.example.myo_jib_sa.community.adapter.HomePostAdapter
@@ -60,27 +61,13 @@ class CommunityFragment : Fragment() {
             startActivity(intent)
         }
 
-        //더보기 터치 시 이동 구현 필요
+        //TODO:더보기 터치 시 이동 구현 필요
        /* binding.homePulsTxt.setOnClickListener {
             //베스트 게시물 엑티비티 이동
         }*/
 
-        //서버 완성 후 getMissionData(author:String)로 대체 해야함
-        //리사이클러 뷰 test 코드
-        val mList = listOf(
-            MainMission("미션명 입니다", "D-3", "", "운동 게시판",2)
-            ,MainMission("미션명 입니다222", "D-3", "", "예술 게시판",1)
-            ,MainMission("미션명 입니다333", "D-3", "", "자유 게시판",11)
-        )
-
-        val pList= listOf(
-            PopularTopic("게시물 제목", 11, 11, 2),
-            PopularTopic("게시물 제목 22", 22, 22, 3),
-            PopularTopic("게시물 제목 33", 33, 33, 4)
-        )
-
-        linkMrecyclr(mList)
-        linkePrecyclr(pList)
+        //api 연결, 뷰 띄우기
+        getMissionData(Constance.jwt, binding)
 
         //배너 연결
         val vAdapter=BannerViewpagerAdapter(this)
@@ -125,25 +112,25 @@ class CommunityFragment : Fragment() {
     private fun getMissionData(author:String, binding:FragmentCommunityBinding){
         val retrofitManager =CommunityHomeManager.getInstance(requireContext())
         retrofitManager.home(author){homeResponse ->
-            if(homeResponse.isSuccess=="TRUE"){
-                val missionList:List<MainMission> = homeResponse.mainMission
-                val postList:List<PopularTopic> = homeResponse.popularArticle
-                if(missionList.isNotEmpty() || postList.isNotEmpty()){
+            if(homeResponse.isSuccess=="true"){
+                val missionList:List<MainMission> = homeResponse.result.mainMission
+                val postList:List<PopularArticle> = homeResponse.result.popularArticle
+                if(missionList?.isNotEmpty() == true || postList?.isNotEmpty() == true){
 
                     //로그
-                    Log.d("MissionList 확인", missionList[0].mainMissionName)
-                    Log.d("MissionList 확인", missionList[0].catagoryName)
-                    Log.d("hMissionList 확인", missionList[0].catagoryImage)
-                    Log.d("MissionList 확인", missionList[0].dDay.toString())
+                    Log.d("MissionList 확인", missionList[0].mainMissionTitle)
+                    Log.d("MissionList 확인", missionList[0].categoryName)
+                    Log.d("hMissionList 확인", missionList[0].categoryImage)
+                    Log.d("MissionList 확인", missionList[0].dday.toString())
 
-                    Log.d("PostList 확인", postList[0].topicTitle)
+                    Log.d("PostList 확인", postList[0].articleTitle)
                     Log.d("PostList 확인", postList[0].commentCount.toString())
                     Log.d("PostList 확인", postList[0].likeCount.toString())
 
 
                     //리사이클러뷰 연결
-                    //linkMrecyclr(missionList)
-                    //linkePrecyclr(postList)
+                    linkMrecyclr(missionList)
+                    linkePrecyclr(postList)
 
 
                 }else{
@@ -178,7 +165,7 @@ class CommunityFragment : Fragment() {
     }
 
     //베스트 게시글 리사이클러뷰, 어댑터 연결
-    private fun linkePrecyclr(postList:List<PopularTopic>){
+    private fun linkePrecyclr(postList:List<PopularArticle>){
 
         val Padapter = HomePostAdapter(requireContext(),postList)
         val PlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

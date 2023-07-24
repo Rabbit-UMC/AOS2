@@ -7,6 +7,9 @@ data class PostViewResponse(
     val isSuccess:String,
     val code:Int,
     val message:String,
+    val result:PostResult
+)
+data class PostResult(
     val articleId:Long,
     val authorId:Long,
     val authorProfileImage:String,
@@ -19,18 +22,20 @@ data class PostViewResponse(
 )
 data class ArticleImage(
     val imageId:Long,
-    val filePsth:String
+    val filePath:String
 )
 data class CommentList(
+    val commentUserId:Long,
     val commentId:Long,
     val commentAuthorProfileImage:String,
     val commentAuthorName:String,
-    val commentContent:String
+    val commentContent:String,
+    val userPermission: String //묘집사 HOST, 유저 USER
 )
 
 
-//31번 api 게시물 삭제 data class
-data class PostDeleteResponse(
+//31번 api 게시물, 댓글 삭제 data class
+data class SimpleResponse(
     val isSuccess:String,
     val code:Int,
     val message: String,
@@ -42,7 +47,10 @@ data class PostDeleteResponse(
 data class PostCreateRequest(
     val articleTitle: String,
     val articleContent:String,
-    val imageList:List<String>
+    val imageList:List<ImageListC>
+)
+data class ImageListC(
+    val filePath:String
 )
 data class PostisSuccessResponse(
     val isSuccess: String,
@@ -58,8 +66,9 @@ data class PostEditRequest(
 )
 data class ImageList(
     val id:Long,
-    val filePath:String
+    var filePath:String
 )
+
 
 
 //34번 api 게시물 신고

@@ -38,7 +38,7 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 조회", "RetrofitManager 게시물 조회 onResponse \t :${response.message()} ")
                 val response: PostViewResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="TRUE") {
+                    if (response.isSuccess=="true") {
                         Log.d("게시물 조회",
                             "RetrofitManager 게시물 조회 is Success\t :${response.code} ")
                         completion(response)
@@ -60,18 +60,18 @@ class PostRetrofitManager (context: Context){
 
 
     //게시물 삭제, 삭제 완료제지 봔환 (boolean)
-    fun postEdit(author:String, articleId: Long,completion: (isSucces:Boolean) -> Unit){
-        val call: Call<PostDeleteResponse> = retrofit?.postDelete(author,articleId) ?: return
+    fun postDelete(author:String, articleId: Long,completion: (isSucces:Boolean) -> Unit){
+        val call: Call<SimpleResponse> = retrofit?.postDelete(author,articleId) ?: return
 
-        call.enqueue(object : retrofit2.Callback<PostDeleteResponse> {
+        call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
-                call: Call<PostDeleteResponse>,
-                response: Response<PostDeleteResponse>
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
             ) {
                 Log.d("게시물 삭제", "RetrofitManager 게시물 삭제 onResponse \t :${response.message()} ")
-                val response: PostDeleteResponse? = response?.body()
+                val response: SimpleResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="TRUE") {
+                    if (response.isSuccess=="true") {
                         Log.d("게시물 삭제",
                             "RetrofitManager 게시물 삭제 is Success\t :${response.code} ")
                         completion(true)
@@ -85,7 +85,7 @@ class PostRetrofitManager (context: Context){
                 }
             }
 
-            override fun onFailure(call: Call<PostDeleteResponse>, t: Throwable) {
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
                 Log.d("게시물 삭제", "RetrofitManager 게시물 삭제 onFailure \t :$t ")
             }
         })
@@ -103,7 +103,7 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 생성", "RetrofitManager 게시물 생성 onResponse \t :${response.message()} ")
                 val response: PostisSuccessResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="TRUE") {
+                    if (response.isSuccess=="true") {
                         Log.d("게시물 생성",
                             "RetrofitManager 게시물 생성 is Success\t :${response.code} ")
                         completion(true)
@@ -136,7 +136,7 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 수정", "RetrofitManager 게시물 수정 onResponse \t :${response.message()} ")
                 val response: PostisSuccessResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="TRUE") {
+                    if (response.isSuccess=="true") {
                         Log.d("게시물 수정",
                             "RetrofitManager 게시물 수정 is Success\t :${response.code} ")
                         completion(true)
@@ -169,7 +169,7 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 신고", "RetrofitManager 게시물 신고 onResponse \t :${response.message()} ")
                 val response: PostisSuccessResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="TRUE") {
+                    if (response.isSuccess=="true") {
                         Log.d("게시물 신고",
                             "RetrofitManager 게시물 신고 is Success\t :${response.code} ")
                         completion(true)
@@ -202,7 +202,7 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 좋아요", "RetrofitManager 게시물 좋아요 onResponse \t :${response.message()} ")
                 val response: PostisSuccessResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="TRUE") {
+                    if (response.isSuccess=="true") {
                         Log.d("게시물 좋아요",
                             "RetrofitManager 게시물 종아요 is Success\t :${response.code} ")
                         completion(true)
@@ -234,7 +234,7 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 좋아요 취소", "RetrofitManager 게시물 좋아요 취소 onResponse \t :${response.message()} ")
                 val response: PostisSuccessResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="TRUE") {
+                    if (response.isSuccess=="true") {
                         Log.d("게시물 좋아요 취소",
                             "RetrofitManager 게시물 종아요 취소 is Success\t :${response.code} ")
                         completion(true)
@@ -266,7 +266,7 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 댓글 달기", "RetrofitManager 게시물 댓글 달기 onResponse \t :${response.message()} ")
                 val response: PostisSuccessResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="TRUE") {
+                    if (response.isSuccess=="true") {
                         Log.d("게시물 댓글 달기",
                             "RetrofitManager 게시물 댓글 달기 is Success\t :${response.code} ")
                         completion(true)
@@ -288,19 +288,21 @@ class PostRetrofitManager (context: Context){
 
     //게시글 댓글 삭제
     fun postCommentDelete(author: String,articleId: Long,commentId:Long, completion: (isSucces:Boolean) -> Unit){
-        val call: Call<PostisSuccessResponse> = retrofit?.postCommentDelete(author, articleId, commentId) ?: return
+        val call: Call<SimpleResponse> = retrofit?.postCommentDelete(author, articleId, commentId) ?: return
 
-        call.enqueue(object : retrofit2.Callback<PostisSuccessResponse> {
+        call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
-                call: Call<PostisSuccessResponse>,
-                response: Response<PostisSuccessResponse>
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
             ) {
                 Log.d("게시물 댓글 삭제", "RetrofitManager 게시물 댓글 삭제 onResponse \t :${response.message()} ")
-                val response: PostisSuccessResponse? = response?.body()
+                val response: SimpleResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="TRUE") {
+                    if (response.isSuccess=="true") {
                         Log.d("게시물 댓글 삭제",
                             "RetrofitManager 게시물 댓글 삭제 is Success\t :${response.code} ")
+                        Log.d("게시물 댓글 삭제",
+                            "RetrofitManager 게시물 댓글 삭제 is Success\t :${response.result} ")
                         completion(true)
                     } else {
                         Log.d("게시물 댓글 삭제",
@@ -311,7 +313,7 @@ class PostRetrofitManager (context: Context){
                     Log.d("게시물 댓글 삭제", "RetrofitManager 게시물 댓글 삭제 null")
                 }
             }
-            override fun onFailure(call: Call<PostisSuccessResponse>, t: Throwable) {
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
                 Log.d("게시물 댓글 삭제", "RetrofitManager 게시물 댓글 삭제 onFailure \t :$t ")
             }
         })

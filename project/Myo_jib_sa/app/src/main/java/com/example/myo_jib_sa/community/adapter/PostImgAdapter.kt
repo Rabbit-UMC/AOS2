@@ -27,7 +27,7 @@ class PostImgAdapter(
 
             //이미지 설정
             Glide.with(context)
-                .load(item.filePsth)
+                .load(item.filePath)
                 .into(binding.postImgImg)
 
             //클릭 이벤트

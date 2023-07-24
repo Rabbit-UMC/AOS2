@@ -24,7 +24,7 @@
             android:textColor="#707070"
             android:textSize="16dp"
             android:fontFamily="@font/font_inter"
-            android:textStyle="bold|italic"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@
             android:textColor="#234BD9"
             android:textSize="16dp"
             android:fontFamily="@font/font_inter"
-            android:textStyle="bold|italic"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -70,8 +70,9 @@
    <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/boardArt_post_recyclr"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="10dp"
+            android:foregroundGravity="top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/board_linearLayout" />
