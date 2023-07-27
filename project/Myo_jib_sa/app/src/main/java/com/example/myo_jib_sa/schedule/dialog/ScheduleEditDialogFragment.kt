@@ -31,7 +31,6 @@ import java.util.regex.Pattern
 
 class ScheduleEditDialogFragment : DialogFragment() {
     private lateinit var binding: DialogFragmentScheduleEditBinding
-    private var missionId:Long = -1
     private var scheduleData : ScheduleDetailResult = ScheduleDetailResult(
         scheduleId = 0,
         missionId = 0,
@@ -169,7 +168,6 @@ class ScheduleEditDialogFragment : DialogFragment() {
         binding.scheduleStartTimeTv.text = scheduleTimeFormatter(scheduleData?.startAt)
         binding.scheduleEndTimeTv.text = scheduleTimeFormatter(scheduleData?.endAt)
         binding.scheduleMemoEtv.setText(scheduleData?.content)
-        missionId= scheduleData?.missionId!!
 
     }
 
@@ -215,7 +213,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
             content = binding.scheduleMemoEtv.text.toString() ,//메모
             startAt = scheduleData.startAt,
             endAt = scheduleData.endAt,
-            missionId = missionId,
+            missionId = scheduleData.missionId,
             scheduleWhen = binding.scheduleDateTv.text.toString()
         )
 
