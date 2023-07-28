@@ -11,11 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
 
-//data class ScheduleData(
-//    val sTitle:String,
-//    val sStartTime:String,
-//    val sFinishTime:String
-//)
+
 class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):
     RecyclerView.Adapter<ScheduleAdaptar.ItemViewHolder>() {
 
