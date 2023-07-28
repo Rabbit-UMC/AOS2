@@ -4,19 +4,14 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
 
-//data class currentMissionData(
-//    val mTitle:String,
-//    val mNum:String,
-//    val mDDay:String
-//)
+
 class CurrentMissionAdapter(private val missionList:ArrayList<Mission>):
     RecyclerView.Adapter<CurrentMissionAdapter.ItemViewHolder>() {
 
