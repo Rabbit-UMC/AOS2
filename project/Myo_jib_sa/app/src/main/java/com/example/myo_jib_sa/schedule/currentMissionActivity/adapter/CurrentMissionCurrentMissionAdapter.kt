@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
@@ -37,6 +38,13 @@ class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<Cur
         holder.itemView.setOnClickListener {
             itemClickListener.onClick(missionList[position])
         }
+
+        //미션 롱클릭 이벤트
+        holder.itemView.setOnLongClickListener {
+            // 사용자 정의 동작 구현
+            itemClickListener.onLongClick(position)
+            true // 반드시 true를 반환해야 합니다.
+        }
     }
 
     class ViewHolder(private val binding: ItemCurrentMissionBinding) :
@@ -51,9 +59,9 @@ class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<Cur
 
     //클릭 이벤트 처리 ==============================================
     //리스너 인터페이스
-    interface  OnItemClickListener{
+    interface OnItemClickListener{
         fun onClick(currentMissionData: CurrentMissionData)
-
+        fun onLongClick(position: Int)
     }
     // (3) 외부에서 클릭 시 이벤트 설정
     fun setItemClickListener(onItemClickListener: OnItemClickListener) {
@@ -62,6 +70,8 @@ class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<Cur
     // (4) setItemClickListener로 설정한 함수 실행
     private lateinit var itemClickListener : OnItemClickListener
     //==============================================================
+
+
 
     override fun getItemCount(): Int {
         return missionList.size
