@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
 import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularTopic
 import com.example.myo_jib_sa.databinding.ItemCommunityMissionBinding

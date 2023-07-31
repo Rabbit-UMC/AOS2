@@ -1,60 +1,50 @@
 package com.example.myo_jib_sa.mission
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.databinding.FragmentMissionBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MissionFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MissionFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var missionAdapter: MissionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mission, container, false)
-    }
+        val binding = FragmentMissionBinding.inflate(inflater, container, false)
+        recyclerView = binding.missionMissionRecycler
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MissionFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MissionFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        // 데이터 리스트 생성 -> api연결시 api response data로 바꾸기
+        val dataList = listOf(
+            RecyclerMissionData("필라테스", "건강을 위하여", R.drawable.ic_mission_exercise,10,"07.10","08.01"),
+            RecyclerMissionData("크로키", "함께 크로키로 해요!", R.drawable.ic_mission_art,15,"07.15","08.01"),
+            RecyclerMissionData("넷플릭스 도장깨기", "넷플 시리즈 같이 봐요", R.drawable.ic_mission_free,30,"07.15","09.30")
+        )
+
+        // 어댑터 생성 및 리사이클러뷰에 설정
+        missionAdapter = MissionAdapter(requireContext(), dataList)
+        recyclerView.adapter = missionAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        // 아이템 간격 설정 (옵션)
+        missionAdapter.setItemSpacing(recyclerView,15)
+
+        //floating 버튼 설정
+        binding.newMissionFloatingBtn.setOnClickListener{
+
+            val intent = Intent(activity, MissionWriteMissionActivity::class.java)
+            startActivity(intent)
+        }
+
+        return binding.root
     }
 }

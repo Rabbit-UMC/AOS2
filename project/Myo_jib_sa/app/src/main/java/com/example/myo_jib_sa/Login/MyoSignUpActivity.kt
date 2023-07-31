@@ -1,29 +1,47 @@
 package com.example.myo_jib_sa.Login
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.StrictMode
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.CompoundButton
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import com.example.myo_jib_sa.Login.API.*
 import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.databinding.*
 import com.kakao.sdk.user.UserApiClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MyoSignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMyoSignUpBinding
+    private var returnMsg: String? = null
+    // Retrofit 객체 가져오기
+    val retrofit = RetrofitInstance.getInstance().create(LoginITFC::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMyoSignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         //카카오 이메일
         var kakaoEmail: String? = null
+
+        //jwt 토큰
+        var jwtToken: String? = null
+        val userNickname =binding.signUpInputUserName.toString()
 
         val ageCheckBox = binding.signUpAgeCheckBox
         val useCheckBox = binding.signUpUseCheckBox
@@ -32,6 +50,7 @@ class MyoSignUpActivity : AppCompatActivity() {
         val identifyCheckBox = binding.signUpIdentidyCheckBox
         val signUpButton = binding.signUpSignUpBtn
 
+        var userEmail=intent.getStringExtra("email").toString()
 
         UserApiClient.instance.me { user, error ->
             if (error != null) {
@@ -43,8 +62,66 @@ class MyoSignUpActivity : AppCompatActivity() {
             }
         }
 
-        //닉네임 중복 체크
+        //로그인 api 연결
+        // 카카오 로그인 API 호출
+        val clientId = "4d27e2c3e437fa46e403f80e72efe932"
+        val redirectUri = "http://localhost:8080/kakao-login"
+        val responseType = "code"
 
+        //Login API 연결
+        retrofit.Login(clientId, redirectUri, responseType).enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                if (response.isSuccessful) {
+                    val loginResponse = response.body()
+                    loginResponse?.let {
+                        Log.d("LoginResponse", "isSuccess: ${it.isSucces}")
+                        Log.d("LoginResponse", "code: ${it.code}")
+                        Log.d("LoginResponse", "message: ${it.message}")
+                        it.result?.let { loginResult ->
+                            jwtToken = loginResult.jwtToken
+                            Log.d("LoginResponse", "id: ${loginResult.id}")
+                            Log.d("LoginResponse", "jwt: ${jwtToken}")
+
+                            // jwtToken을 sharedPreference에 저장하기
+                        }
+                    }
+                } else {
+                    Log.e("LoginResponse", "API 호출 실패: ${response.code()}, ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("LoginResponse", "API 호출 실패: ${t.message}")
+            }
+        })
+
+
+      //카카오 이메일 입력 받지 않은 경우는 따로 입력 받은 이메일 넣어주기
+        if (kakaoEmail != null){
+            jwtToken?.let { signUpUser(it,userEmail,userNickname) }
+        }
+        //카카오 이메일 입력 받은 경우 카카오 이메일 넣어주기
+        else{
+            jwtToken?.let { signUpUser(it,userEmail,userNickname) }
+        }
+
+        //닉네임 중복 체크
+        //returnMsg가 "중복된 닉네임입니다." 일 경우에는 중복됐다고 알려주기
+        //binding.signUpCheckUserName 색이랑 문구 바꿔주기
+        //정상일 경우: #FF8EBE59 사용가능합니다.
+        //중복일 경우: #FFE93425 중복됐습니다.
+        //중복일 경우는 닉네임 다시 입력 받고 api에 올려주기(while문 사용해서 사용가능 뜰 때까지 반복)
+        if (returnMsg !== "중복된 닉네임입니다.") {
+            // 정상일 경우
+            binding.signUpCheckUserName.setText("사용 가능합니다.");
+            binding.signUpCheckUserName.setTextColor(0xFF8EBE59.toInt())
+        } else {
+            // 중복일 경우
+            binding.signUpCheckUserName.setText("중복됐습니다.");
+            binding.signUpCheckUserName.setTextColor(0xFFE93425.toInt())
+            // 닉네임 재입력 로직 구현
+            // 예시: 사용자로부터 새로운 닉네임을 입력받고, 다시 API에 올려주는 로직 등을 구현해야 합니다.
+        }
 
 
         //내용 보기 밑줄, 클릭 시 상세 설명 팝업
@@ -171,58 +248,56 @@ class MyoSignUpActivity : AppCompatActivity() {
         //가입하기 버튼
         binding.signUpSignUpBtn.setOnClickListener {
 
-            if (kakaoEmail != null) {
-                // 이메일 동의 항목을 체크한 경우에 대한 처리
-                dialog_complete.show()
-                binding_complete.signUpCompleteBtn.setOnClickListener {
-                    // 메인으로 이동
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                }
-            } else {
-
-                val intent = Intent(this, AddEmailDialogActivity::class.java)
+            dialog_complete.show()
+            binding_complete.signUpCompleteBtn.setOnClickListener {
+                // 메인으로 이동
+                val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
-
-                /*
-
-                // 이메일 동의 항목을 체크하지 않은 경우에 대한 처리
-                val binding_addEmail = DialogSignupAddEmailBinding.inflate(layoutInflater)
-                val dialog_addEmail = Dialog(this).apply {
-                    requestWindowFeature(Window.FEATURE_NO_TITLE) // 타이틀 제거
-                    setContentView(binding_addEmail.root) // xml 레이아웃 파일과 연결
-                    // 다이얼로그의 크기 설정
-                    setDialogSize(this, 0.9, WindowManager.LayoutParams.WRAP_CONTENT)
-                }
-
-                dialog_addEmail.show()
-
-                StrictMode.setThreadPolicy(
-                    StrictMode.ThreadPolicy.Builder()
-                        .permitDiskReads()
-                        .permitDiskWrites()
-                        .permitNetwork()
-                        .build()
-                )
-                binding_addEmail.signUpAddEmailSignUpBtn.setOnClickListener {
-                    val email = binding_addEmail.signUpInputEmail.text.toString()
-                    val mailServer = SendMail()
-                    mailServer.sendSecurityCode(applicationContext,email)
-                }
-
-                binding_addEmail.signUpAddEmailSignUpBtn.setOnClickListener{
-                    dialog_complete.show()
-                    binding_complete.signUpCompleteBtn.setOnClickListener {
-                        // 메인으로 이동
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                    }
-                }
-                */
             }
 
             }
         }
+
+    fun signUpUser(jwtToken:String,email: String?, nickName: String?) {
+
+        // returnMsg가 null이면 기본 메시지를 설정
+        val message = returnMsg ?: "메시지가 없습니다."
+
+        // SignUpRequest 객체 생성 및 데이터 설정
+        val signUpRequest = SignUpRequest(
+            email ?: "",
+            nickName ?: "",)
+
+        // Retrofit을 사용한 API 호출
+        val call = retrofit.SignUp(jwtToken,signUpRequest)
+        call.enqueue(object : Callback<SignUpResponse> {
+            @SuppressLint("SuspiciousIndentation")
+            override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
+                val signUpResponse = response.body()
+                if (response.isSuccessful) {
+                    if (signUpResponse != null) {
+                        returnMsg = signUpResponse.message
+
+                        // 응답 데이터 처리
+                        Toast.makeText(this@MyoSignUpActivity, returnMsg, Toast.LENGTH_SHORT).show()
+
+                        Log.d("Retrofit", message)
+                        Log.d("signUp", "userEmail: ${email}")
+                        Log.d("signUp", "userNickName: ${nickName}")
+                    }
+                } else {
+                    // 에러 처리
+                    val returnMsg =signUpResponse?.message
+                    Log.d("Retrofit", returnMsg.toString())
+                }
+            }
+
+            override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
+                // 네트워크 요청 실패 처리
+                Toast.makeText(this@MyoSignUpActivity, "네트워크 요청 실패!", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 
 
     //다이얼로그 크기 설정

@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <uses-sdk tools:overrideLibrary="androidx.core.splashscreen" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".Login.KakaoApplication"
@@ -17,10 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Myo_jib_sa"
         tools:targetApi="31">
+        <activity
+            android:name=".mission.MissionWriteMissionActivity"
+            android:exported="false" />
         <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-1350635755184504~2813602960"/>
+            android:value="ca-app-pub-1350635755184504~2813602960" />
 
         <activity
             android:name=".schedule.CurrentMissionActivity"
@@ -42,8 +45,8 @@
             android:exported="false" />
         <activity
             android:name=".Login.AddEmailDialogActivity"
-            android:theme="@style/AppTheme.PopupActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme.PopupActivity" />
         <activity
             android:name=".mypage.EditMypageActivity"
             android:exported="false" />
