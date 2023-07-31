@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="345dp"
+    android:layout_height="57dp"
+    android:padding="5dp"
+    android:layout_marginBottom="20dp"
+    android:layout_marginLeft="60dp"
+    android:layout_marginRight="15dp"
+    android:background="@drawable/view_round_r10_stroke">
+
+    <TextView
+        android:id="@+id/scheduleTitle_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="left"
+        android:text="TextView"
+        android:fontFamily="@font/font_inter"
+        android:textColor="#707070"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/scheduleDate_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="bottom|right"
+        android:text="TextView"
+        android:fontFamily="@font/font_inter"
+        android:textColor="#707070"
+        android:textSize="12sp"
+        android:textStyle="bold"/>
+
+
+</FrameLayout>
