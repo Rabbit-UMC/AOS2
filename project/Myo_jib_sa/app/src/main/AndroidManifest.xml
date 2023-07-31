@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Myo_jib_sa"
         tools:targetApi="31">
         <activity
-            android:name=".DeleteCurrentMissionActivity"
+            android:name=".schedule.currentMissionActivity.DeleteCurrentMissionActivity"
             android:exported="false" />
         <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
