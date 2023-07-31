@@ -1,6 +1,8 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log

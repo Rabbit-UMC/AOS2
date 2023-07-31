@@ -2,6 +2,7 @@ package com.example.myo_jib_sa.schedule.currentMissionActivity
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.*
 import android.util.Log
 import android.view.MotionEvent
@@ -10,6 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityDeleteCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
@@ -38,15 +40,8 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
 
         setCurrentMissionScheduleDeleteAdapter(missionList[position].missionTitle)        //CurrentMissionScheduleDeleteAdapter 연결
 
-        // 2초동안 액션 없으면 작동  ------------1안
-        //handlerDelayStart(MESSAGE_WHAT_TIMER, LIMIT_TIME);
 
-        // 2초동안 액션 없으면 작동  ------------2안
-        //buttonControl()
-
-        // 2초동안 액션 없으면 작동  ------------3안
-        //TouchListener()
-
+        // 2초동안 액션 없으면 작동|핸들러에 메세지 보내기
         handlerDelayStart(MESSAGE_WHAT_TIMER, LIMIT_TIME)
 
     }
@@ -169,125 +164,34 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
     }
 
 
-//    // =====================================================------------1안
-//    //2초동안 동작 없으면
-//    override fun onTouchEvent(event: MotionEvent): Boolean {
-//        super.onTouchEvent(event)
-//        if (event.getAction() === MotionEvent.ACTION_DOWN) {
-//            Log.d("handler", "scroll action")
-//            handlerDelayStop(MESSAGE_WHAT_TIMER)
-//            handlerDelayStart(MESSAGE_WHAT_TIMER, LIMIT_TIME)
-//            return true
-//        }
-//        return false
-//    }
-//
-//    private var MESSAGE_WHAT_TIMER = 1
-//    private var LIMIT_TIME = 2000 //2초
-//
-//    // 2초동안 동작 없으면 제어하는 핸들러
-//    var mHandler = Handler(Looper.getMainLooper()) {
-//        fun handleMessage(msg: Message) {
-//
-//            // 타이머 진행
-//            if (msg.what === MESSAGE_WHAT_TIMER) {
-//                Log.d("handler", " : MESSAGE_WHAT_TIMER ")
-//                //LIMIT_TIME동안 동작이 없으면 할 거 적성
-//                binding.deleteFbtn.visibility = View.VISIBLE
-//
-//            }
-//            // else if(msg.what == MESSAGE_WHAT_CANCEL){
-//            //     Log.d("MESSAGE_WHAT_CANCEL", " : MESSAGE_WHAT_CANCEL ");
-//            //     removeMessages(MESSAGE_WHAT_TIMER);
-//            //
-//            // }
-//        }
-//
-//        true
-//    }
-//
-//    private fun handlerDelayStop(what: Int) {
-//        Log.d("handler", " : handlerDelayStop ")
-//        mHandler.removeMessages(what)
-//
-//    }
-//    private fun handlerDelayStart(what: Int, time: Int) {
-//        Log.d("handler", " : handlerDelayStart ")
-//        mHandler.sendEmptyMessageDelayed(what, time.toLong())
-//    }
 
 
 
-
-//    // =====================================================------------2안
-//    private val inactivityTimeout = 2000L // 5초 (버튼이 나타날 때까지의 대기 시간)
-//    private val handler = Handler(Looper.getMainLooper())
-//    private var isButtonVisible = false
-//
-//    @SuppressLint("ClickableViewAccessibility")
-//    fun buttonControl(){
-//        // 사용자의 터치 이벤트를 감지하기 위해 루트 뷰에 onTouchListener를 설정합니다.
-//        binding.root.setOnTouchListener { _, event ->
-//            when (event.action) {
-//                MotionEvent.ACTION_DOWN -> {
-//                    // 사용자가 화면을 터치함, 버튼을 나타냄
-//                    showButton()
-//                    // 비활동 핸들러를 리셋
-//                    handler.removeCallbacks(showButtonRunnable)
-//                    handler.postDelayed(showButtonRunnable, inactivityTimeout)
-//                }
-//                MotionEvent.ACTION_MOVE -> {
-//                    // 사용자가 화면에 상호 작용함, 비활동 핸들러를 리셋
-////                    handler.removeCallbacks(showButtonRunnable)
-////                    handler.postDelayed(showButtonRunnable, inactivityTimeout)
-//                }
-//                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-//                    // 사용자가 터치를 놓거나 취소함, 비활동 핸들러를 리셋
-////                    handler.removeCallbacks(showButtonRunnable)
-////                    handler.postDelayed(showButtonRunnable, inactivityTimeout)
-//                }
-//            }
-//            true // 터치 이벤트를 소비하기 위해 'true'를 반환
-//        }
-//    }
-//
-//    // 버튼을 나타내는 Runnable
-//    private val showButtonRunnable = Runnable {
-//        showButton()
-//    }
-//
-//    // 버튼을 보이게 함
-//    private fun showButton() {
-//        if (!isButtonVisible) {
-//            binding.deleteFbtn.visibility = View.VISIBLE
-//            isButtonVisible = true
-//        }
-//    }
-//    // 버튼을 숨김
-//    private fun hideButton() {
-//        if (isButtonVisible) {
-//            binding.deleteFbtn.visibility = View.GONE
-//            isButtonVisible = false
-//        }
-//    }
-
-
-
-    //3안
-    var started = true
+    //2초동안 동작 없으면 삭제 버튼 보여주기==============================================================
     private var MESSAGE_WHAT_TIMER = 1
     private var LIMIT_TIME = 2000 //2초
+    private var isButtonVisible = false //버튼 보이는지
 
-
-        //2초동안 동작 없으면
-
+    //2초동안 동작 없으면
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         val userAction = event.action
         when (userAction) {
             MotionEvent.ACTION_DOWN -> {
-                Log.d("handler_debug", "scroll action")
-                handlerDelayStop(MESSAGE_WHAT_TIMER)
-                handlerDelayStart(MESSAGE_WHAT_TIMER, LIMIT_TIME)
+                if(!isButtonVisible) {
+                    Log.d("handler_debug", "scroll action")
+                    handlerDelayStop(MESSAGE_WHAT_TIMER)
+                    handlerDelayStart(MESSAGE_WHAT_TIMER, LIMIT_TIME)
+                }
+                else {
+                    if (isInsideButton(event)) {
+                        showButton()
+                    } else {
+                        // 터치된 위치에 버튼이 없을 경우 버튼을 숨김
+                        hideButton()
+                        handlerDelayStop(MESSAGE_WHAT_TIMER)
+                        handlerDelayStart(MESSAGE_WHAT_TIMER, LIMIT_TIME)
+                    }
+                }
             }
             MotionEvent.ACTION_MOVE -> {
                 // 사용자가 화면에 상호 작용함, 비활동 핸들러를 리셋
@@ -303,55 +207,76 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(event)
     }
 
+    //핸들러
     private val handler = @SuppressLint("HandlerLeak")
     object: Handler(Looper.getMainLooper()){
         override fun handleMessage(msg: Message) {
-            //binding.textTimer.text = formatTime(msg.arg1)
             when(msg.what){
                 MESSAGE_WHAT_TIMER -> {
-                     Log.d("handler_debug", " : MESSAGE_WHAT_TIMER ")
-
-                    binding.deleteFbtn.visibility = View.VISIBLE
+                    Log.d("handler_debug", " : MESSAGE_WHAT_TIMER ")
+                    showButton()
                 }
             }
         }
     }
 
-    fun start(){
 
-        started = true
-        //sub thread
-        var total = LIMIT_TIME
-        thread(start = true){
-            while(true){
-                if(!started||total == 0) break
-
-                total --
-
-                val msg = Message()
-                if(total == 0)
-                    msg.what = MESSAGE_WHAT_TIMER//명령어 저장
-                msg.arg1 = total
-                handler.sendMessage(msg)
-
-//                runOnUiThread {
-//                    binding.textTimer.text = formatTime(total)
-//                }
-            }
-        }
-
-    }
-
-        private fun handlerDelayStop(what: Int) {
+    //핸들러 stop
+    private fun handlerDelayStop(what: Int) {
         Log.d("handler_debug", " : handlerDelayStop ")
         handler.removeMessages(what)
 
     }
+    //핸들러에 time후에 메세지 보냄
     private fun handlerDelayStart(what: Int, time: Int) {
         Log.d("handler_debug", " : handlerDelayStart ")
         handler.sendEmptyMessageDelayed(what, time.toLong())
     }
 
+    // 버튼을 보이게 함
+    private fun showButton() {
+        if (!isButtonVisible) {
+            binding.deleteFbtn.visibility = View.VISIBLE
+            isButtonVisible = true
+        }
+    }
+    // 버튼을 숨김
+    private fun hideButton() {
+        if (isButtonVisible) {
+            binding.deleteFbtn.visibility = View.GONE
+            isButtonVisible = false
+        }
+    }
+
+    // 버튼 영역을 터치했는지 확인
+    private fun isInsideButton(event: MotionEvent): Boolean {
+        val buttonRect = Rect()
+        binding.deleteFbtn.getGlobalVisibleRect(buttonRect)
+        return buttonRect.contains(event.rawX.toInt(), event.rawY.toInt())
+    }
+    //2초동안 동작 없으면 삭제 버튼 보여주기========================================================여기까지
+
+
+//    private fun slidingUpPanelControl(){
+//        binding.scheduleListRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                // 최상단에 도달했을 때 SlidingUpPanelLayout 내리기
+//                if (!binding.scheduleListRv.canScrollVertically(-1)) { //rv 최상단 도달
+//                    Log.i("rv_debug", "Top of list");
+//                    binding.slidingUpPanelLayout.setPanelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+//                    binding.slidingUpPanelLayout.
+//                } else if (!binding.scheduleListRv.canScrollVertically(1)) {//rv 최하단 도달
+//                    Log.i("rv_debug", "End of list");
+//                    binding.slidingUpPanelLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+//
+//                } else {
+//                    Log.i("rv_debug", "idle");
+//                }
+//
+//            }
+//        })
+//    }
 
 
 }
