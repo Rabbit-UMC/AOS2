@@ -11,7 +11,6 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat.startActivities
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.BoardArtActivity
 import com.example.myo_jib_sa.community.BoardExerciseActivity

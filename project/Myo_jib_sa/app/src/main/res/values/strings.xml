@@ -506,4 +506,5 @@ Rabbit-UMC 은(는) 정보주체의 이용정보를 저장하고 수시로 불�
 다양한 정보를 이메일, 묘집사 앱으로 받아보실 수 있습니다. 일부 서비스(별도 회원 체계로 운영하거나 중앙일보 가입 이후 추가 가입하여 이용하는 서비스 등)의 경우, 개별 서비스에 대해 별도 수신 동의를 받을 수 있으며, 이때에도 수신 동의에 대해 별도로 안내하고 동의를 받습니다.</string>
     <string name="sineUp_identify_title">본인 확인 정보 수집 및 저장</string>
     <string name="sineUp_identidy_content">필수 : 닉네임, 프로필 사진, 이메일\n목적 : 유료 상품 구매 등 실명 기반 서비스 이용 시, 사용자 식별 목적</string>
+    <string name="signUp_see_content"><u>내용보기</u></string>
 </resources>

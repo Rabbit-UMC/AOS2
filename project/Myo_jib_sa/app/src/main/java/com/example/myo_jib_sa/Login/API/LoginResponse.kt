@@ -8,6 +8,5 @@ data class LoginResponse(
 )
 data class LoginResult(
     val id:Long,
-    val userEmail: Int,
-    val userName: String
+    val jwtToken:String
 )

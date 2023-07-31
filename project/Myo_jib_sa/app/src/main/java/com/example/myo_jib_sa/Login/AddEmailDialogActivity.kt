@@ -19,6 +19,7 @@ import com.example.myo_jib_sa.databinding.DialogSignupCompleteBinding
 class AddEmailDialogActivity : AppCompatActivity() {
     private lateinit var binding:ActivityAddEmailDialogBinding
     private var emailCode: String = ""
+    private var email: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,22 +33,12 @@ class AddEmailDialogActivity : AppCompatActivity() {
         window.setLayout(width, height)
 
 
-
-        //가입 완료 dialog 설정
-        val binding_complete = DialogSignupCompleteBinding.inflate(layoutInflater)
-        val dialog_complete = Dialog(this).apply {
-            requestWindowFeature(Window.FEATURE_NO_TITLE) // 타이틀 제거
-            setContentView(binding_complete.root) // xml 레이아웃 파일과 연결
-            // 다이얼로그의 크기 설정
-            setDialogSize(this, 0.8, WindowManager.LayoutParams.WRAP_CONTENT)
-        }
-
         // 가입하기 버튼 초기 상태 설정 (비활성화)
         binding.signUpAddEmailSignUpBtn.isEnabled = false
         binding.signUpAddEmailSignUpBtn.setBackgroundColor(Color.GRAY)
 
         binding.signUpAddEmailSendCodeBtn.setOnClickListener {
-            val email = binding.signUpInputEmail.text.toString()
+            email = binding.signUpInputEmail.text.toString()
                 // 이메일 보내기
             emailCode = createEmailCode()
             GMailSender(emailCode).sendEmail(email)
@@ -69,12 +60,12 @@ class AddEmailDialogActivity : AppCompatActivity() {
         }
 
         binding.signUpAddEmailSignUpBtn.setOnClickListener{
-            dialog_complete.show()
-            binding_complete.signUpCompleteBtn.setOnClickListener {
-                // 메인으로 이동
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            }
+            // 묘집사 페이지로 이동
+            //이메일 함께 담아서 보내기
+            val intent = Intent(this, MyoSignUpActivity::class.java)
+            intent.putExtra("email", email)
+            Log.d("email", "email: ${email}")
+            startActivity(intent)
         }
 
     }
@@ -107,17 +98,5 @@ class AddEmailDialogActivity : AppCompatActivity() {
 
         return
     }
-
-    fun setDialogSize(dialog: Dialog, widthPercentage: Double, height: Int) {
-        val layoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(dialog.window?.attributes) // 기존 속성 복사
-
-        // 원하는 크기로 설정
-        val displayMetrics = resources.displayMetrics
-        val dialogWidth = (displayMetrics.widthPixels * widthPercentage).toInt() // 너비를 화면 너비의 특정 비율로 설정
-        layoutParams.width = dialogWidth
-        layoutParams.height = height
-
-        dialog.window?.attributes = layoutParams // 속성 적용
-    }
+    
 }

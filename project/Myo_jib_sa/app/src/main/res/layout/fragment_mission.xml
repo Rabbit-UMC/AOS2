@@ -1,14 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".mission.MissionFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/home_appName_txt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:paddingLeft="20dp"
+            android:text="집사 미션"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mission_list_constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#F1F1F1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_appName_txt">
+
+        <Button
+            android:id="@+id/mission_board_all"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent="0.5"
+            android:gravity="center"
+            android:background="@null"
+            android:backgroundTint="#F1F1F1"
+            android:stateListAnimator="@null"
+            android:text="#전체"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold|italic"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/mission_board_free" />
+
+        <Button
+            android:id="@+id/mission_board_free"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:background="@null"
+            android:backgroundTint="#F1F1F1"
+            android:stateListAnimator="@null"
+            android:text="#자유"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold|italic"
+            app:layout_constraintStart_toEndOf="@id/mission_board_all"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/mission_board_excs" />
+
+        <Button
+            android:id="@+id/mission_board_excs"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:background="@null"
+            android:backgroundTint="#F1F1F1"
+            android:stateListAnimator="@null"
+            android:text="#운동"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold|italic"
+            app:layout_constraintStart_toEndOf="@id/mission_board_free"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/mission_board_art" />
+
+        <Button
+            android:id="@+id/mission_board_art"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:background="@null"
+            android:backgroundTint="#F1F1F1"
+            android:stateListAnimator="@null"
+            android:text="#예술"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold|italic"
+            app:layout_constraintStart_toEndOf="@id/mission_board_excs"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="mission" />
+        android:layout_gravity="top"
+        android:layout_marginTop="78dp"
+        android:fillViewport="true"
+        android:scrollbars="none">
 
-</FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mission_mission_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="15dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mission_list_constraintLayout" />
+    </ScrollView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/new_mission_floatingBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="@android:color/transparent"
+        android:clickable="true"
+        android:src="@drawable/ic_schedule_new_schedule_blue"
+        android:contentDescription="Add New Schedule"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
+        app:fabCustomSize="43dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="43dp"
+        app:tint="@null" />
+</androidx.constraintlayout.widget.ConstraintLayout>

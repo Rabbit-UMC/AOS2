@@ -10,8 +10,8 @@ import javax.mail.internet.MimeMessage
 
 class GMailSender(val emailCode:String) : Authenticator() {
     // 보내는 사람 이메일과 비밀번호
-    val fromEmail = "wlslwlsl060@gmail.com" // 보내는 계정의 ID
-    val password = "zuwlymcwsbfkaegl" // 보내는 계정의 비밀번호
+    val fromEmail = "rabbitcommunity2023@gmail.com" // 보내는 계정의 ID
+    val password = "raoanpxhvjctxoce" // 보내는 계정의 비밀번호
 
     // 보내는 사람 계정 확인
     override fun getPasswordAuthentication(): PasswordAuthentication {
@@ -38,7 +38,7 @@ class GMailSender(val emailCode:String) : Authenticator() {
             val message = MimeMessage(session)
             message.sender = InternetAddress(fromEmail)                                 // 보내는 사람 설정
             message.addRecipient(Message.RecipientType.TO, InternetAddress(toEmail))    // 받는 사람 설정
-            message.subject = "묘집사 인증 코드 입니다"                                              // 이메일 제목
+            message.subject = "묘집사 인증 코드 입니다."                                     // 이메일 제목
             message.setText("다음 인증코드를 입력하세요.\n" +
                     " ${emailCode}")                                               // 이메일 내용
 
