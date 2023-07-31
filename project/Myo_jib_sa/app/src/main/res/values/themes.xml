@@ -26,5 +26,23 @@
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+    <!-- numberpicker 테마 -->
+    <style name = "NumberPickerStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--글자크기-->
+        <item name="android:textSize">16dp</item>
+        <!--글꼴-->
+        <item name="android:fontFamily">@font/font_inter</item>
+        <!--구분선 색상 변경-->
+        <item name="android:colorControlNormal">#C6C6C6</item>
+    </style>
+    <!-- TabLayout 텍스트 테마 -->
+    <style name="schedule_tablayout_style" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/font_inter</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:paddingTop">30dp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
 
 </resources>
