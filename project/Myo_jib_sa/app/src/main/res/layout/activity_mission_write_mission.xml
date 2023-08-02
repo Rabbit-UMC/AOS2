@@ -149,7 +149,6 @@
             android:id="@+id/layout_start_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -224,11 +223,11 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 />
-    <!--        <Space
+          <View
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="1dp"
                 android:layout_weight="1" />
--->
+
             <ImageButton
                 android:id="@+id/calender_start_date_check_btn"
                 android:layout_width="wrap_content"
@@ -322,11 +321,11 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 />
-          <!--  <Space
+            <View
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="1dp"
                 android:layout_weight="1" />
--->
+
             <ImageButton
                 android:id="@+id/calender_end_date_check_btn"
                 android:layout_width="wrap_content"

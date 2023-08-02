@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.mission
+package com.example.myo_jib_sa.mission.Dialog
 
 import android.app.Dialog
 import android.os.Bundle
