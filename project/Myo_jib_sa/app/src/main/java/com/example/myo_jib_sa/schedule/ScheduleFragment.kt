@@ -8,14 +8,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.example.myo_jib_sa.schedule.adapter.*
@@ -23,11 +21,10 @@ import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeService
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResponse
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayService
-import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayServiceSnyc
+import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActivity
 import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActivity
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleEditDialogFragment
@@ -36,7 +33,6 @@ import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
-import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
