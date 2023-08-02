@@ -39,7 +39,7 @@ class MypageFragment : Fragment() {
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             val badgeDrawable = tab.orCreateBadge
-            badgeDrawable.backgroundColor = Color.parseColor("FF2D4AD0")
+            badgeDrawable.backgroundColor = Color.parseColor("#FF2D4AD0")
             when (position) {
                 0 -> {
                     tab.text = "프로필"

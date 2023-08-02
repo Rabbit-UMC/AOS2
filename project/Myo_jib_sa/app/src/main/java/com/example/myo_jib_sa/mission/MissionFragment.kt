@@ -31,12 +31,26 @@ class MissionFragment : Fragment() {
         )
 
         // 어댑터 생성 및 리사이클러뷰에 설정
-        missionAdapter = MissionAdapter(requireContext(), dataList)
+        val missionAdapter = MissionAdapter(
+            requireContext(),
+            dataList,
+            onItemLongClickListener = object : MissionAdapter.OnItemLongClickListener {
+                override fun onItemLongClick(item: RecyclerMissionData) {
+                    showReportDialog(item)
+                }
+            },
+            onItemClickListener = object : MissionAdapter.OnItemClickListener {
+                override fun onItemClick(item: RecyclerMissionData) {
+                    showDetailDialog(item)
+                }
+            }
+        )
         recyclerView.adapter = missionAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // 아이템 간격 설정 (옵션)
         missionAdapter.setItemSpacing(recyclerView,15)
+
 
         //floating 버튼 설정
         binding.newMissionFloatingBtn.setOnClickListener{
@@ -45,6 +59,21 @@ class MissionFragment : Fragment() {
             startActivity(intent)
         }
 
+
         return binding.root
     }
+
+    private fun showReportDialog(item: RecyclerMissionData) {
+        val reportDialog = MissionReportDialogFragment()
+        reportDialog.show(requireActivity().supportFragmentManager, "mission_report_dialog")
+
+    }
+
+   private fun showDetailDialog(item: RecyclerMissionData) {
+       val detailDialog = MissionDetailDialogFragment()
+       detailDialog.show(requireActivity().supportFragmentManager, "mission_detail_dialog")
+   }
+
+
+
 }
