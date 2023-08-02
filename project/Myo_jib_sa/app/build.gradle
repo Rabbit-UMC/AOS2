@@ -3,6 +3,13 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+// local.properties에서 선언한 값 부르기 위해
+//def localProperties = new Properties()
+//localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+
 android {
     namespace 'com.example.myo_jib_sa'
     compileSdk 33
@@ -19,6 +26,16 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // 타입 - 키 - 값
+        //애드몹 광고 아이디 - 변경필요
+        buildConfigField "String", "AD_UNIT_ID", properties['adUnitId']
+
+        //키 - 값
+        // 매니페스트에서 사용 가능
+        //애드몹: 앱 아이디
+        manifestPlaceholders["AD_APP_ID"] = properties.getProperty('adAppId')
+
     }
 
     buildTypes {

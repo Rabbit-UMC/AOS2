@@ -8,7 +8,7 @@ interface ScheduleOfDayServiceSnyc {
 
     @GET("app/schedule/when/{when}")
     fun scheduleOfDay(
-        @Header("X-ACCESS-TOKEN")
+        @Header("Authorization")
         accessToken: String,
         @Path("when") scheduleWhen: String?
     ) : Call<ScheduleOfDayResponse>
