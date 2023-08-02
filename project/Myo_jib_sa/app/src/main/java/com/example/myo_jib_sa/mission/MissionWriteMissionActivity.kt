@@ -9,6 +9,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myo_jib_sa.databinding.ActivityMissionWriteMissionBinding
+import com.example.myo_jib_sa.mission.Dialog.DataTransferInterface
+import com.example.myo_jib_sa.mission.Dialog.MissionReportDialogFragment
+import com.example.myo_jib_sa.mission.Dialog.MissionSubjectDialogFragment
 import com.example.myo_jib_sa.schedule.ScheduleFragment
 import com.example.myo_jib_sa.schedule.adapter.CalendarAdapter
 import com.example.myo_jib_sa.schedule.adapter.CalendarData
@@ -20,7 +23,8 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
-class MissionWriteMissionActivity : AppCompatActivity() {
+
+class MissionWriteMissionActivity : AppCompatActivity(),DataTransferInterface {
     private lateinit var binding:ActivityMissionWriteMissionBinding
     lateinit var calendarAdapter : CalendarAdapter //calendarRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
     lateinit var selectedDate : LocalDate //오늘 날짜
@@ -42,7 +46,6 @@ class MissionWriteMissionActivity : AppCompatActivity() {
         setCalendarAdapter()//화면 초기화
         //calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
 
-
         //캘린더에 이전달 다음달 이동 버튼 세팅
         calenderBtn()
 
@@ -56,6 +59,11 @@ class MissionWriteMissionActivity : AppCompatActivity() {
             //api연결
             finish()
         }
+        //주제 누르면 주제 dialog
+        binding.selectSubjectTxt.setOnClickListener {
+            val subjectDialog = MissionSubjectDialogFragment(this)
+            subjectDialog.show(supportFragmentManager, "mission_subject_dialog")
+        }
 
         //공유 switch 버튼
         binding.shareSwitchBtn.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -65,6 +73,15 @@ class MissionWriteMissionActivity : AppCompatActivity() {
         }
 
     }
+
+    // 인터페이스 메서드 구현
+    override fun onDataTransfer(subject: String) {
+        // Dialog에서 전달된 선택 주제를 기존화면 주제에 연결
+        binding.selectSubjectTxt.text = subject
+        Log.d("subject", "Received data: $subject")
+    }
+
+
 
     //날짜 생성: ArrayList<CalendarData>()생성
     @RequiresApi(Build.VERSION_CODES.O)
