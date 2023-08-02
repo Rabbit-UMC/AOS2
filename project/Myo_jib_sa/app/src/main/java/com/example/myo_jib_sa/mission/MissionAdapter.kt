@@ -1,33 +1,48 @@
 package com.example.myo_jib_sa.mission
 
+import android.app.Dialog
 import android.content.Context
 import android.graphics.Rect
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemMissionMissionBinding
+class MissionAdapter(
+    private val context: Context,
+    private val dataList: List<RecyclerMissionData>,
+    private val onItemClickListener: OnItemClickListener,
+    private val onItemLongClickListener: OnItemLongClickListener
+) : RecyclerView.Adapter<MissionAdapter.ViewHolder>() {
 
-class MissionAdapter  (private val context: Context,
-                       private val dataList:List<RecyclerMissionData>)
-        : RecyclerView.Adapter<MissionAdapter.ViewHolder>(){
 
-    //뷰홀더
+    interface OnItemLongClickListener {
+        fun onItemLongClick(item: RecyclerMissionData)
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(item: RecyclerMissionData)
+    }
+
     inner class ViewHolder(
         private val binding: ItemMissionMissionBinding
-    ): RecyclerView.ViewHolder(binding.root){
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: RecyclerMissionData){
-            binding.missionTitleTxt.text=item.title
-            binding.missionIntroTxt.text=item.intro
+        fun bind(item: RecyclerMissionData) {
+            binding.missionTitleTxt.text = item.title
+            binding.missionIntroTxt.text = item.intro
             binding.missionImg.setImageResource(item.imageSrc)
-            binding.missionStartTimeTxt.text=item.start
-            binding.missionEndTimeTxt.text=item.end
+            binding.missionStartTimeTxt.text = item.start
+            binding.missionEndTimeTxt.text = item.end
 
-            //클릭 이벤트
-            binding.root.setOnClickListener{
-                //클릭 이벤트 처리
-                //클릭시 해당 게시글 이동
+            // 롱클릭 이벤트 처리
+            binding.root.setOnLongClickListener {
+                onItemLongClickListener.onItemLongClick(item)
+                true // 이벤트가 소비되었음을 반환
+            }
+
+            // 간단한 클릭 이벤트 처리
+            binding.root.setOnClickListener {
+                onItemClickListener.onItemClick(item)
             }
         }
     }
@@ -60,5 +75,6 @@ class MissionAdapter  (private val context: Context,
     fun setItemSpacing(recyclerView: RecyclerView, spacing: Int) {
         recyclerView.addItemDecoration(CustomItemDecoration(spacing))
     }
+
 
 }

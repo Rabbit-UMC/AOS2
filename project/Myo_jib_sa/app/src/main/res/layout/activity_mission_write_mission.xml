@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".mission.MissionWriteMissionActivity">
 
+    <!--상단바 레이아웃 -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout01"
         android:layout_width="match_parent"
@@ -52,16 +53,347 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout01"/>
 
-    <EditText
-        android:layout_width="280dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:hint="미션명을 입력하세요."
-        android:textColorHint="#707070"
+        android:layout_marginHorizontal="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout01"/>
+        app:layout_constraintTop_toBottomOf="@id/view01">
+
+        <EditText
+            android:id="@+id/mission_missionName_input"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="미션명을 입력하세요."
+            android:textColorHint="#707070"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/selected_month_day_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="미션명 중복체크"
+            android:fontFamily="@font/font_inter"
+            android:textColor="#848484"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mission_missionName_input" />
+
+
+        <!-- calendar -->
+        <LinearLayout
+            android:id="@+id/calender_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selected_month_day_tv">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <ImageButton
+                    android:id="@+id/preMonth_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="18dp"
+                    android:background="@android:color/transparent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_schedule_calendar_left" />
+
+                <TextView
+                    android:id="@+id/month_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6월"
+                    android:fontFamily="@font/font_inter"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    />
+
+                <ImageButton
+                    android:id="@+id/nextMonth_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="18dp"
+                    android:background="@android:color/transparent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_schedule_calendar_right" />
+
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/calendar_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+             />
+
+        </LinearLayout>
+        <!--시작일 layout-->
+        <LinearLayout
+            android:id="@+id/layout_start_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/calender_layout"
+            >
+            <TextView
+                android:id="@+id/start_date_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="35dp"
+                android:text="시작일"
+                android:fontFamily="@font/font_inter"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/start_year_txt"
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:text="2023"
+                android:layout_marginEnd="5dp"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="년"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/start_month_txt"
+                android:layout_width="22dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="6"
+                android:fontFamily="@font/font_inter"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="18dp"
+                android:text="월"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/start_day_txt"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="7"
+                android:fontFamily="@font/font_inter"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="일"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                />
+    <!--        <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+-->
+            <ImageButton
+                android:id="@+id/calender_start_date_check_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingStart="10dp"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_schedule_calendar" />
+
+        </LinearLayout>
+
+        <!--종료일 layout-->
+        <LinearLayout
+            android:id="@+id/layout_end_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_start_day"
+            >
+            <TextView
+                android:id="@+id/end_date_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="35dp"
+                android:text="종료일"
+                android:fontFamily="@font/font_inter"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/end_year_txt"
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:text="2023"
+                android:layout_marginEnd="5dp"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="년"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/end_month_txt"
+                android:layout_width="22dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="6"
+                android:fontFamily="@font/font_inter"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="18dp"
+                android:text="월"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/end_day_txt"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="7"
+                android:fontFamily="@font/font_inter"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="일"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                />
+          <!--  <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+-->
+            <ImageButton
+                android:id="@+id/calender_end_date_check_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingStart="10dp"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_schedule_calendar" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/select_subject_txt"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingVertical="5dp"
+            android:background="@drawable/view_round_r5_gray"
+            android:text="주제"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_end_day"/>
+
+        <!--편집예정-->
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/share_switch_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:thumb="@drawable/ic_mission_share_switch_thumb"
+            app:track="@drawable/ic_mission_share_switch_track"
+            app:thumbTextPadding="20dp"
+            app:switchMinWidth="0dp"
+            android:textOff="비공유  "
+            android:textOn="공유  "
+            android:background="@color/white"
+            android:lineSpacingExtra="6.4sp"
+            android:text="공유  "
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_end_day" />
+
+        <!--편집예정-->
+        <EditText
+            android:id="@+id/sub_memo_et"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/view_round_r5_gray"
+            android:hint="메모📌"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:padding="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/select_subject_txt" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 

@@ -386,8 +386,6 @@ class ScheduleFragment : Fragment() {
     }
 
 
-
-
     //scheduleHome api연결
     fun scheduleHomeApi() {
         val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
