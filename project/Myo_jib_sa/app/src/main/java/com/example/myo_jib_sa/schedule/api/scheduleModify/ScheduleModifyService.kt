@@ -13,7 +13,7 @@ interface ScheduleModifyService {
 
     @PATCH("app/schedule/{scheduleId}")//?Authorization=$authKey
     fun scheduleModify(
-        @Header("X-ACCESS-TOKEN")
+        @Header("Authorization")
         accessToken: String,
         @Body requestBody: ScheduleModifyRequest
     ) : Call<ScheduleModifyResponse>

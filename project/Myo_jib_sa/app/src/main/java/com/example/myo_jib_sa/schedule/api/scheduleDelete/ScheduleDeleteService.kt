@@ -13,7 +13,7 @@ interface ScheduleDeleteService {
     }
     @DELETE("app/schedule/{scheduleId}")
     fun scheduleDelete(
-        @Header("X-ACCESS-TOKEN")
+        @Header("Authorization")
         accessToken: String,
         @Path("scheduleId") scheduleId: Long
     ) : Call<ScheduleDeleteResponse>

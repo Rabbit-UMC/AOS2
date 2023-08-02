@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.example.myo_jib_sa.schedule.adapter.*
@@ -58,6 +59,7 @@ class ScheduleFragment : Fragment() {
     var sDataList = ArrayList<ScheduleOfDayResult>() //일정 리스트 데이터
 
     private var adLoader: AdLoader? = null //광고를 불러올 adLoader 객체
+    //val AD_UNIT_ID = BuildConfig.AD_UNIT_ID
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -177,7 +179,7 @@ class ScheduleFragment : Fragment() {
 
 
     //광고 생성 메소드
-    fun createAd() {
+    private fun createAd() {
         MobileAds.initialize(requireActivity())
         adLoader = AdLoader.Builder(requireActivity(), "ca-app-pub-3940256099942544/2247696110")//sample아이디
             .forNativeAd { ad : NativeAd ->
