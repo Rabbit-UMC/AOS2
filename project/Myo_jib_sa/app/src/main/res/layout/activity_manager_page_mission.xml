@@ -162,7 +162,7 @@
                 android:layout_marginEnd="5dp"
                 android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold|italic"
+                android:textStyle="bold"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -182,7 +182,7 @@
                 android:fontFamily="@font/font_inter"
                 android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold|italic"
+                android:textStyle="bold"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -202,7 +202,7 @@
                 android:fontFamily="@font/font_inter"
                 android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold|italic"
+                android:textStyle="bold"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -260,7 +260,7 @@
                 android:layout_marginEnd="5dp"
                 android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold|italic"
+                android:textStyle="bold"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -280,7 +280,7 @@
                 android:fontFamily="@font/font_inter"
                 android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold|italic"
+                android:textStyle="bold"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -300,7 +300,7 @@
                 android:fontFamily="@font/font_inter"
                 android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold|italic"
+                android:textStyle="bold"
                 />
             <TextView
                 android:layout_width="wrap_content"
