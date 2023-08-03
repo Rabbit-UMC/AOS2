@@ -34,7 +34,6 @@ data class CommentList(
 )
 
 
-//31번 api 게시물, 댓글 삭제 data class
 data class SimpleResponse(
     val isSuccess:String,
     val code:Int,

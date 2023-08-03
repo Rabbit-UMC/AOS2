@@ -23,7 +23,7 @@ interface PostRetrofitITFC {
         @Header("X-ACCESS-TOKEN")author:String,
         @Body request:PostCreateRequest,
         @Query("categoryId") categoryId:Long):
-            Call <PostisSuccessResponse>
+            Call <SimpleResponse>
 
     //게시물 수정
     @PATCH("app/article/{articleID}")
@@ -32,32 +32,32 @@ interface PostRetrofitITFC {
         @Body request:PostEditRequest,
         @Query("articleId") articleId:Long
         ,@Path("articleId") articleID: Long):
-            Call<PostisSuccessResponse>
+            Call<SimpleResponse>
 
     //게시물 신고
     @POST("app/article/{articleId}/report")
     fun postReport(@Header("X-ACCESS-TOKEN")author:String
                    ,@Path("articleId") articleId: Long):
-            Call<PostisSuccessResponse>
+            Call<SimpleResponse>
 
     //좋아요 누르기
     @POST("app/article/{articleId}/like")
     fun postLike(@Header("X-ACCESS-TOKEN")author:String
                  ,@Path("articleId") articleId: Long):
-            Call<PostisSuccessResponse>
+            Call<SimpleResponse>
 
     //좋아요 취소
     @DELETE("app/article/{articleId}/unlike")
     fun postUnlike(@Header("X-ACCESS-TOKEN")author:String
                    ,@Path("articleId") articleId: Long):
-            Call<PostisSuccessResponse>
+            Call<SimpleResponse>
 
     //게시글 댓글 작성
     @POST("app/comments/{articleId}")
     fun postComment(@Header("X-ACCESS-TOKEN")author:String
                 ,@Body content:String
                 ,@Path("articleId") articleId: Long):
-            Call<PostisSuccessResponse>
+            Call<SimpleResponse>
 
     //게시글 댓글 삭제
     @DELETE("app/comments/{articleId}/{commentsId}")

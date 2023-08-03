@@ -58,9 +58,14 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
         //댓글 달기
         binding.postEnterBtn.setOnClickListener {
-            commenting(Constance.jwt, binding.postCommentInputEtxt.text.toString(),postId)
-            binding.postCommentInputEtxt.text.clear()
-            setPostData(Constance.jwt, binding, boardId, postId)
+            commenting(Constance.jwt, binding.postCommentInputEtxt.text.toString(),postId){isSuccess->
+                if(isSuccess){
+                    setPostData(Constance.jwt, binding, boardId, postId)
+                }else{
+                    showToast("댓글 달기 실패")
+                }
+                binding.postCommentInputEtxt.text.clear()
+            }
         }
 
 
@@ -71,10 +76,13 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         setHeartButtonIcon()
         //좋아요 누르기 기능
         binding.postHeartBtn.setOnClickListener {
-            isHearted = !isHearted
-            setHeartButtonIcon()
-            saveState()
-            setHeartApi(Constance.jwt, postId)
+            setHeartApi(Constance.jwt, postId){ isSuccess->
+                if(isSuccess){
+                    isHearted = !isHearted
+                    setHeartButtonIcon()
+                    saveState()
+                }
+            }
         }
 
         //작성자, 일반 유저 별로 보이는 메뉴 다르게
@@ -230,19 +238,19 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     }
 
     //댓글 달기
-    private fun commenting(author: String, content:String, articleId:Long){
+    private fun commenting(author: String, content:String, articleId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = PostRetrofitManager.getInstance(this)
         retrofitManager.postComment(author,content ,articleId){response ->
             if(response){
                 //로그
                 Log.d("댓글 달기", "${response.toString()}")
-                //todo: 어댑터에 아이템이 바뀌었다고 알려줘야함
+                callback(true)
 
 
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                 Log.d("댓글 달기 API isSuccess가 false", "${response.toString()}")
-                showToast("댓글 달기 실패")
+                callback(false)
             }
         }
     }
@@ -324,19 +332,21 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         editor.apply()
     }
     //하트 api 연결
-    private fun setHeartApi(author:String, postId:Long){
+    private fun setHeartApi(author:String, postId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = PostRetrofitManager.getInstance(this)
-        if(isHearted){
+        if(!isHearted){
             //좋아요 api 연결
             retrofitManager.postLike(author, postId){response ->
                 if(response){
                     //로그
                     Log.d("좋아요 ", "${response.toString()}")
+                    callback(true)
 
                 } else {
                     // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                     Log.d("좋아요 API isSuccess가 false", "${response.toString()}")
                     showToast("좋아요 누르기 실패")
+                    callback(false)
                 }
             }
         }else{
@@ -345,13 +355,13 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 if(response){
                     //로그
                     Log.d("좋아요 삭제", "${response.toString()}")
-
+                    callback(true)
 
                 } else {
                     // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                     Log.d("좋아요 삭제 API isSuccess가 false", "${response.toString()}")
                     showToast("좋아요 삭제 실패")
-
+                    callback(false)
                 }
             }
         }

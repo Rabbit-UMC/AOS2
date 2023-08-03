@@ -40,7 +40,7 @@ class WritePostImgAdapter(
     inner class plusViewHolder(
         private val binding: ItemWritePostImgplusBinding
     ): RecyclerView.ViewHolder(binding.root){
-        val writepostImg: ImageView = binding.writePostImg
+        val writepostImg: ImageView = binding.missionCertImg
         init {
             binding.writePostPlusBtn.setOnClickListener {
                 // 갤러리에서 이미지 선택하기

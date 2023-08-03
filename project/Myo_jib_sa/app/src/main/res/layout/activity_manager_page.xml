@@ -86,6 +86,7 @@
         android:layout_height="330dp"
         android:layout_marginTop="30dp"
         android:background="#F1F1F1"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/managerPage_imgEdit_btn">
 
@@ -119,7 +120,7 @@
                 android:text="유저이름"
                 android:textColor="@color/black"
                 android:textSize="16dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
 
@@ -136,7 +137,7 @@
                 android:id="@+id/managerPage_radditCry_img"
                 android:layout_width="wrap_content"
                 android:layout_height="150dp"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="17dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -182,8 +183,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            app:layout_constraintStart_toEndOf="@+id/managerPage_const_layout1">
+            app:layout_constraintStart_toEndOf="@+id/managerPage_const_layout1"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
             <ImageView
                 android:id="@+id/managerPage_rabbitSmail_img"
@@ -205,8 +206,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/managerPage_rabbitSmail_img"/>
-
+                app:layout_constraintTop_toBottomOf="@+id/managerPage_rabbitSmail_img" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

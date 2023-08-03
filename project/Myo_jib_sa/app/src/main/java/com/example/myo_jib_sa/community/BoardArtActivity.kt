@@ -11,12 +11,14 @@ import com.example.myo_jib_sa.community.Retrofit.BoardPost.Articles
 import com.example.myo_jib_sa.community.Retrofit.BoardPost.PostBoardRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.adapter.BoardAdapter
+import com.example.myo_jib_sa.community.missionCert.MissionCertificationActivity
 import com.example.myo_jib_sa.databinding.ActivityBoardArtBinding
 
 class BoardArtActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityBoardArtBinding
     private var hostId:Long=0
+    private var missionId:Long=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,9 @@ class BoardArtActivity : AppCompatActivity() {
             finish()
         }
 
+        //게시판 화면 띄우기
+        getBoardData(Constance.jwt, 1, Constance.ART_ID.toLong())
+
         //글쓰기
         binding.boardPostingBtn.setOnClickListener {
             val intent= Intent(this, WritePostingActivity::class.java)
@@ -35,8 +40,6 @@ class BoardArtActivity : AppCompatActivity() {
             intent.putExtra("boardId", postId)
             startActivity(intent)
         }
-        //게시판 화면 띄우기
-        getBoardData(Constance.jwt, 1, Constance.ART_ID.toLong())
 
         //관리자 페이지 넘어가기
         binding.boardArtNameTxt.setOnClickListener(View.OnClickListener {
@@ -49,6 +52,16 @@ class BoardArtActivity : AppCompatActivity() {
             }
         })
 
+        //미션 인증 페이지 넘어가기
+        //todo: missionId 값 인텐트로 넘겨주기
+        binding.boardArtMissiomTxt.setOnClickListener {
+            missionId=1
+            val intent=Intent(this, MissionCertificationActivity::class.java)
+            intent.putExtra("missionId", missionId)
+            intent.putExtra("boardId", Constance.ART_ID)
+            startActivity(intent)
+        }
+
     }
 
     //API 연결, 리사이클러뷰 띄우기
@@ -58,7 +71,7 @@ class BoardArtActivity : AppCompatActivity() {
             if(response.isSuccess=="true"){
                 val boardList:List<Articles> = response.result.articles
                 hostId=response.result.categoryHostId
-                if(boardList.isNotEmpty()){
+                if(boardList?.isNotEmpty()==true){
 
                     //로그
                     Log.d("게시판 API boardList 확인", boardList[0].articleTitle)

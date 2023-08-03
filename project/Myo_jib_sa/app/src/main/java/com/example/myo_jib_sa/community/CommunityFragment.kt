@@ -120,7 +120,7 @@ class CommunityFragment : Fragment() {
                     //로그
                     Log.d("MissionList 확인", missionList[0].mainMissionTitle)
                     Log.d("MissionList 확인", missionList[0].categoryName)
-                    Log.d("hMissionList 확인", missionList[0].categoryImage)
+                    Log.d("hMissionList 확인", missionList[1].categoryImage)
                     Log.d("MissionList 확인", missionList[0].dday.toString())
 
                     Log.d("PostList 확인", postList[0].articleTitle)
@@ -129,8 +129,8 @@ class CommunityFragment : Fragment() {
 
 
                     //리사이클러뷰 연결
-                    linkMrecyclr(missionList)
-                    linkePrecyclr(postList)
+                    linkMrecyclr(requireContext(), missionList)
+                    linkePrecyclr(requireContext(), postList)
 
 
                 }else{
@@ -149,12 +149,12 @@ class CommunityFragment : Fragment() {
     }
 
     //미션 리사이클러뷰, 어댑터 연결
-    private fun linkMrecyclr(missionList:List<MainMission>){
+    private fun linkMrecyclr(context: Context,missionList:List<MainMission>){
         Log.d("리사이클러뷰","linkMrecyclr(mList) 시작")
         Log.d("리사이클러뷰","${missionList.size}")
         //미션
-        val Madapter = HomeMissionAdapter(requireContext(),missionList)
-        val MlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val Madapter = HomeMissionAdapter(context,missionList)
+        val MlayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         binding.homeMissionRecyclr.layoutManager = MlayoutManager
         Log.d("리사이클러뷰","binding.homeMissionRecyclr.layoutManager 시작")
@@ -165,10 +165,10 @@ class CommunityFragment : Fragment() {
     }
 
     //베스트 게시글 리사이클러뷰, 어댑터 연결
-    private fun linkePrecyclr(postList:List<PopularArticle>){
+    private fun linkePrecyclr(context: Context,postList:List<PopularArticle>){
 
-        val Padapter = HomePostAdapter(requireContext(),postList)
-        val PlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val Padapter = HomePostAdapter(context,postList)
+        val PlayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         binding.homeBestPostRecyclr.layoutManager = PlayoutManager
         binding.homeBestPostRecyclr.adapter = Padapter
