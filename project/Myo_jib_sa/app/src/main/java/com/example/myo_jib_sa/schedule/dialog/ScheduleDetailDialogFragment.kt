@@ -95,6 +95,7 @@ class ScheduleDetailDialogFragment : DialogFragment() {
                 result?.scheduleId?.let { it1 -> editor.putLong("scheduleId", it1) }
                 editor.apply()
 
+                Log.d("timeDebug", "scheduleStartTime = ${result?.startAt}")
 
 //            var bundle = Bundle()
 //            bundle.putString("scheduleTitle", binding.scheduleTitleTv.text.toString())
