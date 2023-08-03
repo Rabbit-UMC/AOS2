@@ -204,7 +204,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
     }
 
     //scheduleModify api연결
-    fun scheduleModifyApi() {
+    private fun scheduleModifyApi() {
         val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
 //        Log.d("retrofit", "token = "+token+"l");
 //
@@ -240,7 +240,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
 
     //startTime, endTime 포맷
-    fun scheduleTimeFormatter(startAt: String?): String {
+    private fun scheduleTimeFormatter(startAt: String?): String {
         val formatter = DecimalFormat("00")
 
         val time = startAt!!.split(":")

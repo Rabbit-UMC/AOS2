@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa.schedule.createScheduleActivity
 
+import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,8 +12,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
+import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.CreateScheduleCalendarAdapter
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDateData
+import com.example.myo_jib_sa.schedule.createScheduleActivity.spinner.ScheduleCreateSpinnerDialogFragment
+import com.example.myo_jib_sa.schedule.dialog.ScheduleSpinnerDialogFragment
+import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -28,6 +33,16 @@ class CreateScheduleActivity : AppCompatActivity() {
     private var isClickCalendarImgBtn = false //달력이미지버튼 클릭에서 사용
     private var selectedDateIndex : Int = 0//referenceDate의 dayList에서 index값 //달력이미지버튼 클릭에서 사용
 
+    private var scheduleData : ScheduleDetailResult = ScheduleDetailResult(
+        scheduleId = 0,
+        missionId = 0,
+        missionTitle = "",
+        scheduleTitle= "",
+        startAt= "08:00",
+        endAt= "09:00",
+        content= "",
+        scheduleWhen= ""
+    )
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,9 +146,6 @@ class CreateScheduleActivity : AppCompatActivity() {
                 var iMonth = selectDateData.date?.monthValue
                 var iDay = selectDateData.date?.dayOfMonth
 
-//                Toast.makeText(this@CreateScheduleActivity, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
-//                    .show()
-
 
                 //화면에 표시
                 binding.scheduleYearTv.text = iYear.toString()
@@ -200,8 +212,68 @@ class CreateScheduleActivity : AppCompatActivity() {
             }
         }
 
+        //시간|미션 클릭
+        binding.missionSelectLayout.setOnClickListener {
+            setSpinnerDialog(0)
+        }
+        binding.scheduleStartAtTv.setOnClickListener{
+            setSpinnerDialog(1)
+        }
+        binding.scheduleEndAtTv.setOnClickListener{
+            setSpinnerDialog(2)
+        }
+
     }
 
+    private fun setSpinnerDialog(position:Int){
+        //sharedPreference저장
+        val sharedPreference = getSharedPreferences("scheduleData",
+            Context.MODE_PRIVATE
+        )
+        val editor = sharedPreference.edit()
+        editor.putString("scheduleTitle", binding.scheduleTitleEtv.text.toString())
+        editor.putString("scheduleDate", getScheduleDate())
+        editor.putString("missionTitle", binding.missionTitleTv.text.toString())
+        editor.putString("scheduleStartTime", scheduleData?.startAt)
+        editor.putString("scheduleEndTime", scheduleData?.endAt)
+        editor.putString("scheduleMemo", binding.scheduleMemoEtv.text.toString())
+        editor.putLong("missionId", scheduleData!!.missionId)
+        editor.putLong("scheduleId", scheduleData!!.scheduleId)
+        editor.apply()
+
+        var bundle = Bundle()
+        bundle.putInt("position", position)
+
+        val scheduleSpinnerDialogFragment = ScheduleCreateSpinnerDialogFragment()
+        scheduleSpinnerDialogFragment.arguments = bundle
+        scheduleSpinnerDialogFragment.show(supportFragmentManager, "ScheduleEditDialog")
+
+        // 데이터 받아 오는 부분
+        scheduleSpinnerDialogFragment.setFragmentInterface(object : ScheduleCreateSpinnerDialogFragment.FragmentInterface {
+            override fun onBtnClick(isComplete: Boolean) {
+               if(isComplete){ //확인 눌렀을때만 값가져오기
+                   val sharedPreference = getSharedPreferences("scheduleModifiedData", MODE_PRIVATE)
+                   if (sharedPreference.contains("scheduleStartTime")){//데이터 있는지 확인
+                       scheduleData.startAt = sharedPreference.getString("scheduleStartTime", "").toString()
+                       scheduleData.endAt = sharedPreference.getString("scheduleEndTime", "").toString()
+                       scheduleData.missionTitle = sharedPreference.getString("missionTitle", "").toString()
+                       scheduleData.missionId = sharedPreference.getLong("missionId", -1)
+
+                       binding.scheduleStartAtTv.text = scheduleTimeFormatter(scheduleData?.startAt)
+                       binding.scheduleEndAtTv.text = scheduleTimeFormatter(scheduleData?.endAt)
+                       binding.missionTitleTv.text = scheduleData.missionTitle
+                   }
+               }
+            }
+        })
+    }
+
+    fun getScheduleDate() : String{
+        var year = binding.scheduleYearTv.text.toString()
+        var month = binding.scheduleMonthTv.text.toString()
+        var day = binding.scheduleDayTv.text.toString()
+        return "$year-$month-$day"
+    }
 
     /**
     1. 정규식 패턴 ^[a-z] : 영어 소문자 허용
@@ -221,6 +293,23 @@ class CreateScheduleActivity : AppCompatActivity() {
             source
         } else {
             ""
+        }
+    }
+
+    //startTime, endTime 포맷
+    private fun scheduleTimeFormatter(startAt: String?): String {
+        val formatter = DecimalFormat("00")
+
+        val time = startAt!!.split(":")
+        val hour = time[0].toInt()
+        val minute = time[1].toInt()
+        if (hour < 12) {
+            return "오전 ${formatter.format(hour)}:${formatter.format(minute)}"
+        } else {
+            if (hour == 12)
+                return "오후 ${formatter.format(hour)}:${formatter.format(minute)}"
+            else
+                return "오후 ${formatter.format(hour - 12)}:${formatter.format(minute)}"
         }
     }
 
