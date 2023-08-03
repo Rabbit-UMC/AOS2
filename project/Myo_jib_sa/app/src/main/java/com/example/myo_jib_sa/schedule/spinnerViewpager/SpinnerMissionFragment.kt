@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.viewpager
+package com.example.myo_jib_sa.schedule.spinnerViewpager
 
 import android.content.Context
 import android.os.Bundle
@@ -14,9 +14,6 @@ import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
 import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeService
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyResponse
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

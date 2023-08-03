@@ -110,7 +110,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
     5. 정규식 패턴 ^[ ] or ^[\\s] : 공백 허용
      **/
     private val editTextFilter = InputFilter { source, start, end, dest, dstart, dend ->
-        val ps = Pattern.compile("[ㄱ-ㅎㅏ-ㅣ가-힣a-z-A-Z0-9()&_\\s-]+")
+        val ps = Pattern.compile("[ㄱ-ㅎㅏ-ㅣ가-힣a-z-A-Z0-9\\s-]+")
         val input = dest.subSequence(0, dstart).toString() + source.subSequence(start, end) + dest.subSequence(dend, dest.length).toString()
         val matcher = ps.matcher(input)
 

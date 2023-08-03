@@ -257,26 +257,6 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
     //2초동안 동작 없으면 삭제 버튼 보여주기========================================================여기까지
 
 
-//    private fun slidingUpPanelControl(){
-//        binding.scheduleListRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                // 최상단에 도달했을 때 SlidingUpPanelLayout 내리기
-//                if (!binding.scheduleListRv.canScrollVertically(-1)) { //rv 최상단 도달
-//                    Log.i("rv_debug", "Top of list");
-//                    binding.slidingUpPanelLayout.setPanelState = SlidingUpPanelLayout.PanelState.COLLAPSED
-//                    binding.slidingUpPanelLayout.
-//                } else if (!binding.scheduleListRv.canScrollVertically(1)) {//rv 최하단 도달
-//                    Log.i("rv_debug", "End of list");
-//                    binding.slidingUpPanelLayout.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
-//
-//                } else {
-//                    Log.i("rv_debug", "idle");
-//                }
-//
-//            }
-//        })
-//    }
 
 
 }

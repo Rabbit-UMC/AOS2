@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/complete_tv" />
 
     <EditText
-        android:id="@+id/missionTitle_etv"
+        android:id="@+id/scheduleTitle_etv"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="58dp"
@@ -53,6 +53,8 @@
         android:gravity="center"
         android:hint="일정명을 입력하세요."
         android:inputType="textPersonName"
+        android:maxLength="10"
+        android:maxLines="1"
         android:textColor="#000000"
         android:textColorHint="#707070"
         android:textSize="16sp"
@@ -69,7 +71,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/missionTitle_etv">
+        app:layout_constraintTop_toBottomOf="@+id/scheduleTitle_etv">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -147,7 +149,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="32dp"
         android:fontFamily="@font/font_inter"
         android:text="날짜"
         android:textColor="#000000"
@@ -161,7 +162,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="32dp"
         android:fontFamily="@font/font_inter"
         android:text="2023"
         android:textColor="#000000"
@@ -174,7 +174,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="32dp"
         android:fontFamily="@font/font_inter"
         android:text="년"
         android:textColor="#000000"
@@ -188,7 +187,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
         android:fontFamily="@font/font_inter"
         android:text="6"
         android:textColor="#000000"
@@ -201,7 +199,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="32dp"
         android:fontFamily="@font/font_inter"
         android:text="월"
         android:textColor="#000000"
@@ -215,7 +212,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
         android:fontFamily="@font/font_inter"
         android:text="7"
         android:textColor="#000000"
@@ -229,7 +225,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="32dp"
         android:fontFamily="@font/font_inter"
         android:text="일"
         android:textColor="#000000"
@@ -239,11 +234,10 @@
         app:layout_constraintTop_toBottomOf="@+id/calendar_layout" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/calendar_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
         android:adjustViewBounds="true"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
@@ -305,7 +299,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView17"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+        app:layout_constraintTop_toBottomOf="@+id/calendar_btn" />
 
     <TextView
         android:id="@+id/textView20"

@@ -1,10 +1,8 @@
 package com.example.myo_jib_sa.schedule.dialog
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,17 +11,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleSpinnerBinding
-import com.example.myo_jib_sa.schedule.viewpager.*
+import com.example.myo_jib_sa.schedule.spinnerViewpager.*
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener
 
 
 class ScheduleSpinnerDialogFragment : DialogFragment() {
