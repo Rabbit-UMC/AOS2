@@ -38,14 +38,8 @@ class scheduleDeleteDialog(
 
     private fun initViews() {
 
-        getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        val params: WindowManager.LayoutParams = getWindow()!!.getAttributes()
-
-        //params.width = 700
-        //params.height = 370
-
-        //getWindow()?.setBackgroundDrawable(R.drawable.view_round_r15);
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        
 
         //확인
         binding.yesTv.setOnClickListener{

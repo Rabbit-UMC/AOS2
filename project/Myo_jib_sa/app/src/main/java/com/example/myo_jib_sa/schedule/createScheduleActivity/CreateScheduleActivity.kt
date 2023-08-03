@@ -18,6 +18,7 @@ import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDate
 import com.example.myo_jib_sa.schedule.createScheduleActivity.spinner.ScheduleCreateSpinnerDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleSpinnerDialogFragment
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -136,7 +137,6 @@ class CreateScheduleActivity : AppCompatActivity() {
                 //오늘날짜 파란 동그라미 없애기
                 val temp = dayList[selectedDateIndex]
                 if(temp.isSelected){//temp.isSelected == true일때만 false로 변경
-                    Log.d("onClickDebug", "selectDateData = ${selectDateData.date}, dayList = ${dayList[selectedDateIndex].date}")
                     dayList[selectedDateIndex] = SelectDateData(temp.date, false)
                     calendarAdapter.notifyItemChanged(selectedDateIndex)
                 }
@@ -169,14 +169,17 @@ class CreateScheduleActivity : AppCompatActivity() {
 
         //완료 버튼
         binding.completeTv.setOnClickListener {
+            if (binding.scheduleTitleEtv.text.isEmpty() || scheduleData.startAt >= scheduleData.endAt) {//제목이 공백이거나 시간이 잘못되면
+                Log.d("exitDebug", "no!!")
+                val errorDialogFragment = ErrorDialogFragment()
+                errorDialogFragment.show(supportFragmentManager, "ErrorDialogFragment")
 
-            if (binding.scheduleTitleEtv.text.isEmpty()) {//제목이 공백 &&
 
             } else {
+                Log.d("exitDebug", "yes!!")
                 finish()
             }
         }
-
 
         //이전달로 이동
         binding.preMonthBtn.setOnClickListener {
@@ -295,6 +298,7 @@ class CreateScheduleActivity : AppCompatActivity() {
             ""
         }
     }
+
 
     //startTime, endTime 포맷
     private fun scheduleTimeFormatter(startAt: String?): String {
