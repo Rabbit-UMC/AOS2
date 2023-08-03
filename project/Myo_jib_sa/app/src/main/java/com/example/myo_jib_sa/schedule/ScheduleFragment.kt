@@ -244,7 +244,7 @@ class ScheduleFragment : Fragment() {
                 var scheduleDeleteDialog= scheduleDeleteDialog(requireContext(), binding.scheduleRv.adapter as ScheduleAdaptar, position)
                 scheduleDeleteDialog.setButtonClickListener(object: scheduleDeleteDialog.OnButtonClickListener{
                     override fun onClickExitBtn() {
-                        scheduleAdaptar.notifyItemChanged(viewHolder.getAdapterPosition());
+                        scheduleAdaptar.notifyItemChanged(viewHolder.adapterPosition);
                     }
                 })
                 scheduleDeleteDialog.show()
