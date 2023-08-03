@@ -93,15 +93,15 @@ class PostRetrofitManager (context: Context){
 
     //게시물 생성, 생성 완료인지 반환(boolean)
     fun postCreate(author:String,request:PostCreateRequest, categoryId:Long, completion: (isSucces:Boolean) -> Unit){
-        val call: Call<PostisSuccessResponse> = retrofit?.postCreate(author, request, categoryId) ?: return
+        val call: Call<SimpleResponse> = retrofit?.postCreate(author, request, categoryId) ?: return
 
-        call.enqueue(object : retrofit2.Callback<PostisSuccessResponse> {
+        call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
-                call: Call<PostisSuccessResponse>,
-                response: Response<PostisSuccessResponse>
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
             ) {
                 Log.d("게시물 생성", "RetrofitManager 게시물 생성 onResponse \t :${response.message()} ")
-                val response: PostisSuccessResponse? = response?.body()
+                val response: SimpleResponse? = response?.body()
                 if (response != null) {
                     if (response.isSuccess=="true") {
                         Log.d("게시물 생성",
@@ -117,7 +117,7 @@ class PostRetrofitManager (context: Context){
                 }
             }
 
-            override fun onFailure(call: Call<PostisSuccessResponse>, t: Throwable) {
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
                 Log.d("게시물 생성", "RetrofitManager 게시물 조회 onFailure \t :$t ")
             }
         })
@@ -126,15 +126,15 @@ class PostRetrofitManager (context: Context){
 
     //게시물 수정, 수정 완료인지 봔환 (boolean)
     fun postEdit(author:String,request:PostEditRequest, articleId:Long,articleID: Long, completion: (isSucces:Boolean) -> Unit){
-        val call: Call<PostisSuccessResponse> = retrofit?.postEdit(author, request, articleId, articleID) ?: return
+        val call: Call<SimpleResponse> = retrofit?.postEdit(author, request, articleId, articleID) ?: return
 
-        call.enqueue(object : retrofit2.Callback<PostisSuccessResponse> {
+        call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
-                call: Call<PostisSuccessResponse>,
-                response: Response<PostisSuccessResponse>
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
             ) {
                 Log.d("게시물 수정", "RetrofitManager 게시물 수정 onResponse \t :${response.message()} ")
-                val response: PostisSuccessResponse? = response?.body()
+                val response: SimpleResponse? = response?.body()
                 if (response != null) {
                     if (response.isSuccess=="true") {
                         Log.d("게시물 수정",
@@ -150,7 +150,7 @@ class PostRetrofitManager (context: Context){
                 }
             }
 
-            override fun onFailure(call: Call<PostisSuccessResponse>, t: Throwable) {
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
                 Log.d("게시물 수정", "RetrofitManager 게시물 수정 onFailure \t :$t ")
             }
         })
@@ -159,15 +159,15 @@ class PostRetrofitManager (context: Context){
 
     //게시물 신고, 신고 완료인지 반환(Boolean)
     fun postReport(author: String, articleId: Long, completion: (isSucces:Boolean) -> Unit){
-        val call: Call<PostisSuccessResponse> = retrofit?.postReport(author, articleId) ?: return
+        val call: Call<SimpleResponse> = retrofit?.postReport(author, articleId) ?: return
 
-        call.enqueue(object : retrofit2.Callback<PostisSuccessResponse> {
+        call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
-                call: Call<PostisSuccessResponse>,
-                response: Response<PostisSuccessResponse>
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
             ) {
                 Log.d("게시물 신고", "RetrofitManager 게시물 신고 onResponse \t :${response.message()} ")
-                val response: PostisSuccessResponse? = response?.body()
+                val response: SimpleResponse? = response?.body()
                 if (response != null) {
                     if (response.isSuccess=="true") {
                         Log.d("게시물 신고",
@@ -183,7 +183,7 @@ class PostRetrofitManager (context: Context){
                 }
             }
 
-            override fun onFailure(call: Call<PostisSuccessResponse>, t: Throwable) {
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
                 Log.d("게시물 신고", "RetrofitManager 게시물 신고 onFailure \t :$t ")
             }
         })
@@ -192,15 +192,15 @@ class PostRetrofitManager (context: Context){
 
     //게시물 좋아요, 좋아요 완료인지 반환(Boolean)
     fun postLike(author: String, articleId: Long, completion: (isSucces:Boolean) -> Unit){
-        val call: Call<PostisSuccessResponse> = retrofit?.postLike(author, articleId) ?: return
+        val call: Call<SimpleResponse> = retrofit?.postLike(author, articleId) ?: return
 
-        call.enqueue(object : retrofit2.Callback<PostisSuccessResponse> {
+        call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
-                call: Call<PostisSuccessResponse>,
-                response: Response<PostisSuccessResponse>
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
             ) {
                 Log.d("게시물 좋아요", "RetrofitManager 게시물 좋아요 onResponse \t :${response.message()} ")
-                val response: PostisSuccessResponse? = response?.body()
+                val response: SimpleResponse? = response?.body()
                 if (response != null) {
                     if (response.isSuccess=="true") {
                         Log.d("게시물 좋아요",
@@ -216,7 +216,7 @@ class PostRetrofitManager (context: Context){
                 }
             }
 
-            override fun onFailure(call: Call<PostisSuccessResponse>, t: Throwable) {
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
                 Log.d("게시물 좋아요", "RetrofitManager 게시물 좋아요 onFailure \t :$t ")
             }
         })
@@ -224,15 +224,15 @@ class PostRetrofitManager (context: Context){
 
     //게시물 좋아요 취소,완료인지 반환(Boolean)
     fun postUnlike(author: String, articleId: Long, completion: (isSucces:Boolean) -> Unit){
-        val call: Call<PostisSuccessResponse> = retrofit?.postUnlike(author, articleId) ?: return
+        val call: Call<SimpleResponse> = retrofit?.postUnlike(author, articleId) ?: return
 
-        call.enqueue(object : retrofit2.Callback<PostisSuccessResponse> {
+        call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
-                call: Call<PostisSuccessResponse>,
-                response: Response<PostisSuccessResponse>
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
             ) {
                 Log.d("게시물 좋아요 취소", "RetrofitManager 게시물 좋아요 취소 onResponse \t :${response.message()} ")
-                val response: PostisSuccessResponse? = response?.body()
+                val response: SimpleResponse? = response?.body()
                 if (response != null) {
                     if (response.isSuccess=="true") {
                         Log.d("게시물 좋아요 취소",
@@ -248,7 +248,7 @@ class PostRetrofitManager (context: Context){
                 }
             }
 
-            override fun onFailure(call: Call<PostisSuccessResponse>, t: Throwable) {
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
                 Log.d("게시물 좋아요 취소", "RetrofitManager 게시물 좋아요 취소 onFailure \t :$t ")
             }
         })
@@ -256,15 +256,15 @@ class PostRetrofitManager (context: Context){
 
     //게시물 댓글 작성 ,완료인지 반환(Boolean)
     fun postComment(author: String,content:String ,articleId: Long, completion: (isSucces:Boolean) -> Unit){
-        val call: Call<PostisSuccessResponse> = retrofit?.postComment(author, content,articleId) ?: return
+        val call: Call<SimpleResponse> = retrofit?.postComment(author, content,articleId) ?: return
 
-        call.enqueue(object : retrofit2.Callback<PostisSuccessResponse> {
+        call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
-                call: Call<PostisSuccessResponse>,
-                response: Response<PostisSuccessResponse>
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
             ) {
                 Log.d("게시물 댓글 달기", "RetrofitManager 게시물 댓글 달기 onResponse \t :${response.message()} ")
-                val response: PostisSuccessResponse? = response?.body()
+                val response: SimpleResponse? = response?.body()
                 if (response != null) {
                     if (response.isSuccess=="true") {
                         Log.d("게시물 댓글 달기",
@@ -280,7 +280,7 @@ class PostRetrofitManager (context: Context){
                 }
             }
 
-            override fun onFailure(call: Call<PostisSuccessResponse>, t: Throwable) {
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
                 Log.d("게시물 댓글 달기", "RetrofitManager 게시물 댓글 달기 onFailure \t :$t ")
             }
         })

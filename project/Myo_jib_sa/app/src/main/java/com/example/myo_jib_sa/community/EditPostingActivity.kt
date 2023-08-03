@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,11 +27,6 @@ class EditPostingActivity : AppCompatActivity() {
 
     companion object {
         private const val GALLERY_REQUEST_CODE = 1001
-    }
-
-    private val writePostImgRecycr: RecyclerView by lazy {
-        // 리사이클러뷰 초기화 코드
-        findViewById(R.id.writrPost_img_recycr)
     }
 
 
@@ -80,14 +76,16 @@ class EditPostingActivity : AppCompatActivity() {
 
         }
 
-        //어댑터 연결
-        val adapter = WritePostImgAdapter(this, imgList)
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        //이미지뷰 터치시 갤러리로 가서 사진 선택 후 해당 이미지 뷰에 뷰 설정
+        binding.missionCertImg.setOnClickListener {
+            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
+        }
 
-        binding.writrPostImgRecycr.layoutManager = layoutManager
-        binding.writrPostImgRecycr.adapter = adapter
-
-        adapter.setItemSpacing(binding.writrPostImgRecycr, 15)
+        binding.missionCertImg1.setOnClickListener {
+            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
+        }
 
         //뒤로가기 버튼
         binding.postWriteBackBtn.setOnClickListener {
@@ -100,33 +98,16 @@ class EditPostingActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             val selectedImageUri: Uri? = data.data
-            val imagePath: String? = getRealPathFromURI(selectedImageUri)
-
-            // imagePath를 WritePostImgAdapter로 전달하는 작업 수행
-            val adapter = writePostImgRecycr.adapter as WritePostImgAdapter
-            adapter.setImagePath(imagePath)
-
-            imgLists[0].filePath=adapter.imagePath[0].toString()
-            imgLists[1].filePath=adapter.imagePath[1].toString()
-        }
-    }
-
-    //fun getRealPathFromURI() 이미지 url을 실제 파일 경로로 변환
-    private fun getRealPathFromURI(uri: Uri?): String? {
-        if (uri == null) return null
-
-        var realPath: String? = null
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = this.contentResolver.query(uri, projection, null, null, null)
-        cursor?.let {
-            if (it.moveToFirst()) {
-                val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                realPath = it.getString(columnIndex)
+            // 선택한 이미지를 해당 이미지뷰에 표시
+            selectedImageUri?.let { uri ->
+                val imageView: ImageView = binding.missionCertImg
+                imageView.setImageURI(uri)
+                // todo:이미지를 서버로 전송하거나 파일 경로로 변환하여 api에 전달할 수 있습니다.
+                // 선택한 이미지를 서버로 전송하는 부분은 retrofitManager.postImageUpload(author, uri) 등의 메소드를 활용하여 구현하면 됩니다.
             }
-            it.close()
         }
-        return realPath
     }
+
 
 
     private fun editing(author:String, request: PostEditRequest, postId:Long){

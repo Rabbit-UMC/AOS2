@@ -11,6 +11,7 @@ import com.example.myo_jib_sa.community.Retrofit.BoardPost.Articles
 import com.example.myo_jib_sa.community.Retrofit.BoardPost.PostBoardRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.adapter.BoardAdapter
+import com.example.myo_jib_sa.community.missionCert.MissionCertificationActivity
 import com.example.myo_jib_sa.databinding.ActivityBoardFreeBinding
 
 
@@ -18,6 +19,7 @@ class BoardFreeActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityBoardFreeBinding
     private var hostId:Long=0
+    private var missionId:Long=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding= ActivityBoardFreeBinding.inflate(layoutInflater)
@@ -29,6 +31,9 @@ class BoardFreeActivity : AppCompatActivity() {
             finish()
         }
 
+        //게시판 화면 띄우기
+        getBoardData(Constance.jwt, 1, Constance.FREE_ID.toLong())
+
         //글쓰기
         binding.boardPostingBtn.setOnClickListener {
             val intent= Intent(this, WritePostingActivity::class.java)
@@ -36,8 +41,7 @@ class BoardFreeActivity : AppCompatActivity() {
             intent.putExtra("boardId", boardId)
             startActivity(intent)
         }
-        //게시판 화면 띄우기
-        getBoardData(Constance.jwt, 1, Constance.FREE_ID.toLong())
+
 
         //관리자 페이지 넘어가기
         binding.boardFreeNameTxt.setOnClickListener(View.OnClickListener {
@@ -46,10 +50,20 @@ class BoardFreeActivity : AppCompatActivity() {
                 val intent=Intent(this, ManagerPageActivity::class.java)
                 val boardId=Constance.FREE_ID
                 intent.putExtra("boardId", boardId)
+                intent.putExtra("boardId", Constance.FREE_ID)
                 startActivity(intent)
             }
 
         })
+
+        //미션 인증 페이지 넘어가기
+        //todo: missionId 값 인텐트로 넘겨주기
+        binding.boardFreeMissiomTxt.setOnClickListener {
+            missionId=1
+            val intent=Intent(this, MissionCertificationActivity::class.java)
+            intent.putExtra("missionId", missionId)
+            startActivity(intent)
+        }
 
     }
 
@@ -61,7 +75,7 @@ class BoardFreeActivity : AppCompatActivity() {
             if(response.isSuccess=="true"){
                 val boardList:List<Articles> = response.result.articles
                 hostId=response.result.categoryHostId
-                if(boardList.isNotEmpty()){
+                if(boardList?.isNotEmpty()==true){
 
                     //로그
                     Log.d("게시판 API boardList 확인", boardList[0].articleTitle)

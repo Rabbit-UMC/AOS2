@@ -58,6 +58,13 @@
             android:name=".community.BoardExerciseActivity"
             android:exported="false" />
         <activity
+            android:name=".community.missionCert.MissionCertificationActivity"
+            android:label="Mission Certification Activity" >
+        </activity>
+        <activity
+            android:name="com.example.myo_jib_sa.community.missionCert.MissionCertificationWriteActivity"
+            android:label="MissionCertificationWriteActivity" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

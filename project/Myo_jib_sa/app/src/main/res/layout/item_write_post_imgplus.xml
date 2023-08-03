@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/ic_plus" />
 
     <ImageView
-        android:id="@+id/writePost_img"
+        android:id="@+id/missionCert_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

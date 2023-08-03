@@ -121,23 +121,133 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="30dp"
         android:fontFamily="@font/font_inter"
-        android:textStyle="bold"
         android:text="사진"
         android:textColor="@color/black"
         android:textSize="16dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/postWrite_postText_Etxt" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/writrPost_img_recycr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/writePost_PlusImg_layout"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/background_post"
+        android:backgroundTint="#F1F1F1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+
+        <ImageButton
+            android:id="@+id/writePost_plus_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_plus" />
+
+        <ImageView
+            android:id="@+id/missionCert_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/background_post" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/writePost_PlusImg_layout1"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:background="@drawable/background_post"
+        android:backgroundTint="#F1F1F1"
+        app:layout_constraintEnd_toStartOf="@+id/writePost_lockImg_layout"
+        app:layout_constraintStart_toEndOf="@+id/writePost_PlusImg_layout"
+        app:layout_constraintTop_toTopOf="@+id/writePost_PlusImg_layout">
+
+
+        <ImageButton
+            android:id="@+id/writePost_plus_btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_plus" />
+
+        <ImageView
+            android:id="@+id/missionCert_img1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/background_post" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/writePost_lockImg_layout"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:background="@drawable/background_post"
+        android:backgroundTint="#F1F1F1"
+        app:layout_constraintEnd_toStartOf="@+id/writePost_lockImg_layout1"
+        app:layout_constraintStart_toEndOf="@+id/writePost_PlusImg_layout1"
+        app:layout_constraintTop_toTopOf="@+id/writePost_PlusImg_layout">
+
+
+        <TextView
+            android:id="@+id/writePost_lock_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_inter"
+            android:text="잠김"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/writePost_lockImg_layout1"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/background_post"
+        android:backgroundTint="#F1F1F1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/writePost_PlusImg_layout">
+
+
+        <TextView
+            android:id="@+id/writePost_lock_txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_inter"
+            android:text="잠김"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
