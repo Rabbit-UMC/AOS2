@@ -193,27 +193,50 @@ class ManagerPageMissionActivity : AppCompatActivity(), DataTransferInterface {
     }
 
     //시작, 종료일 형식 확인
-    //todo: 시작 종료일 차이 30일 이내
-    //todo: 시작일 현재 날짜보다 과거면 안됨
+    //todo: 시작 종료일 차이 30일 이상이면 false
+    //todo: 시작일 현재 날짜보다 과거면 false
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun checkDate(callback: (Boolean) -> Unit){
-        var end=binding.endYearTxt.text.toString().toIntOrNull()
-        var start=binding.startYearTxt.toString().toIntOrNull()
-        if(end == null || start == null ||end>start){
+        val endYear=binding.endYearTxt.text.toString().toIntOrNull()
+        val startYear=binding.startYearTxt.text.toString().toIntOrNull()
+        println("시작년도 : $startYear")
+        println("종료년도  : $endYear")
+        if(endYear == null || startYear == null ||endYear<startYear){
             callback(false)
             return
         }
-        end=binding.endMonthTxt.text.toString().toIntOrNull()
-        start=binding.startMonthTxt.text.toString().toIntOrNull()
-        if(end == null || start == null ||end>start){
+        val endMonth=binding.endMonthTxt.text.toString().toIntOrNull()
+        val startMonth=binding.startMonthTxt.text.toString().toIntOrNull()
+        println("시작년도 : $startMonth")
+        println("종료년도  : $endMonth")
+        if(endMonth == null || startMonth == null ||endMonth<startMonth){
             callback(false)
             return
         }
-        end=binding.endDayTxt.text.toString().toIntOrNull()
-        start=binding.startDayTxt.text.toString().toIntOrNull()
-        if(end == null || start == null ||end>start){
+        val endDay=binding.endDayTxt.text.toString().toIntOrNull()
+        val startDay=binding.startDayTxt.text.toString().toIntOrNull()
+        println("시작년도 : $startDay")
+        println("종료년도  : $endDay")
+        if(endDay == null || startDay == null ||endDay<startDay){
             callback(false)
             return
         }
+        // 시작일과 종료일의 차이가 30일 이상인지 확인
+        val startDate = LocalDate.of(startYear, startMonth, startDay)
+        val endDate = LocalDate.of(endYear, endMonth, endDay)
+        val difference = endDate.toEpochDay() - startDate.toEpochDay()
+        if (difference >= 30) {
+            callback(false)
+            return
+        }
+
+        // 시작일이 현재 날짜보다 과거인지 확인
+        val currentDate = LocalDate.now()
+        if (startDate.isBefore(currentDate)) {
+            callback(false)
+            return
+        }
+
         callback(true)
     }
 
