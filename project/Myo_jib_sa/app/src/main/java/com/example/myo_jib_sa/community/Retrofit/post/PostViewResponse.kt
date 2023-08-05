@@ -16,7 +16,7 @@ data class PostResult(
     val authorName:String,
     val uploadTime:String,
     val articleTitle:String,
-    val articleContent:String,
+        val articleContent:String,
     val articleImage:List<ArticleImage>,
     val commentList:List<CommentList>
 )

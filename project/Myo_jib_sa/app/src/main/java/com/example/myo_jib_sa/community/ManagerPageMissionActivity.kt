@@ -193,8 +193,6 @@ class ManagerPageMissionActivity : AppCompatActivity(), DataTransferInterface {
     }
 
     //시작, 종료일 형식 확인
-    //todo: 시작 종료일 차이 30일 이상이면 false
-    //todo: 시작일 현재 날짜보다 과거면 false
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkDate(callback: (Boolean) -> Unit){
         val endYear=binding.endYearTxt.text.toString().toIntOrNull()
