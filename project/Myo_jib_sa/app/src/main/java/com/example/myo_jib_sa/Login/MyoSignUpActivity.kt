@@ -14,6 +14,7 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.Login.API.*
 import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.databinding.*
@@ -64,8 +65,8 @@ class MyoSignUpActivity : AppCompatActivity() {
 
         //로그인 api 연결
         // 카카오 로그인 API 호출
-        val clientId = "4d27e2c3e437fa46e403f80e72efe932"
-        val redirectUri = "http://localhost:8080/kakao-login"
+        val clientId = BuildConfig.KAKAO_API_KEY
+        val redirectUri = "http://3.39.96.137/app/users/kakao-login"
         val responseType = "code"
 
         //Login API 연결
@@ -122,6 +123,7 @@ class MyoSignUpActivity : AppCompatActivity() {
             // 닉네임 재입력 로직 구현
             // 예시: 사용자로부터 새로운 닉네임을 입력받고, 다시 API에 올려주는 로직 등을 구현해야 합니다.
         }
+
 
 
         //내용 보기 밑줄, 클릭 시 상세 설명 팝업

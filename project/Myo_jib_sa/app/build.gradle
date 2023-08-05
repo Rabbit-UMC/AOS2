@@ -18,6 +18,9 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField("String", "KAKAO_API_KEY", KAKAO_API_KEY)
+        buildConfigField("String", "Redirect_URI", Redirect_URI)
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

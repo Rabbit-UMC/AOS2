@@ -17,11 +17,6 @@ class MissionSubjectDialogFragment(private val dataTransferListener: DataTransfe
     private lateinit var binding:DialogMissionSubjectFragmentBinding
     private val subjectArr = arrayListOf("자유","운동","예술")
 
-    // 다이얼로그에서 값 리턴하기 위한 인터페이스 객체
-/*    private lateinit var subjectCallback: SelectedSubjectInterface
-    interface SelectedSubjectInterface {
-        fun onSelectedSubject(subject: String)
-    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
