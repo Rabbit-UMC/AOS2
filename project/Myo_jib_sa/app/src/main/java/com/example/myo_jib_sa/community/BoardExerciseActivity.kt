@@ -69,7 +69,7 @@ class BoardExerciseActivity : AppCompatActivity() {
         val retrofitManager = PostBoardRetrofitManager.getInstance(this)
         retrofitManager.board(author,page ,id){response ->
             if(response.isSuccess=="true"){
-                val boardList:List<Articles> = response.result.articles
+                val boardList:List<Articles> = response.result.articleLists
                 hostId=response.result.categoryHostId
                 if(boardList?.isNotEmpty()==true){
 
@@ -110,4 +110,6 @@ class BoardExerciseActivity : AppCompatActivity() {
 
         Badapter.setItemSpacing(binding.boardExcsPostRecyclr, 15)
     }
+
+
 }

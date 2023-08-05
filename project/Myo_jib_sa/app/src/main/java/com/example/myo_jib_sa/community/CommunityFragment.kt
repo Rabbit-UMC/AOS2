@@ -106,6 +106,13 @@ class CommunityFragment : Fragment() {
         return binding.root
     }
 
+    //다시 돌아올 때 뷰 업데이트
+    override fun onResume() {
+
+        super.onResume()
+        getMissionData(Constance.jwt, binding)
+    }
+
 
 
     //API 연결, 리사이클러뷰 띄우기

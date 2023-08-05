@@ -209,6 +209,8 @@ class PostRetrofitManager (context: Context){
                     } else {
                         Log.d("게시물 좋아요",
                             "RetrofitManager 게시물 좋아요 is NOT Success\t :${response.code} ")
+                        Log.d("게시물 좋아요",
+                            "RetrofitManager 게시물 좋아요 is NOT Success\t :${response.result} ")
                         completion(false)
                     }
                 } else {

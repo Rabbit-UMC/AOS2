@@ -10,7 +10,7 @@ data class PostBoardResponse(
 )
 data class BoardResult(
     val categoryHostId:Long,
-    val articles:List<Articles>
+    val articleLists:List<Articles>
 )
 data class Articles(
     val articleId:Long,

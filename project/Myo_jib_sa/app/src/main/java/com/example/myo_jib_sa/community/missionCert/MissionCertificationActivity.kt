@@ -18,6 +18,10 @@ class MissionCertificationActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityMissionCertificationBinding
     val mAdapter=MissionCertViewpagerAdapter(this)
+    var missionId:Long=0
+    var boardId:Int=0
+    var testDay:Int=0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +30,9 @@ class MissionCertificationActivity: AppCompatActivity() {
 
 
         //todo: 인증 이미지시 포스팅 이후, 뷰 업데이트 (라이프사이클)
-        val missionId:Long=intent.getLongExtra("missionId",0)
-        val boardId:Int=intent.getIntExtra("boardId", 0)
-        val testDay=5 //todo: 미션 몇일차 인지 어딘가에서 알아와야함 일단 teatday 사용
+        missionId=intent.getLongExtra("missionId",0)
+        boardId=intent.getIntExtra("boardId", 0)
+        testDay=5 //todo: 미션 몇일차 인지 어딘가에서 알아와야함 일단 teatday 사용
 
 
         //게시판 이름
@@ -42,7 +46,6 @@ class MissionCertificationActivity: AppCompatActivity() {
             Constance.EXERCISE_ID-> {
                 binding.missionCertBoardNameTxt.text="운동 게시판"
             }
-
         }
 
         //뷰페이져 어댑터 연결
@@ -72,6 +75,17 @@ class MissionCertificationActivity: AppCompatActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    //인증 이미지시 포스팅 이후, 뷰 업데이트
+    override fun onResume() {
+        super.onResume()
+        //뷰페이져 어댑터 연결
+        binding.missionCertVpr2.adapter=mAdapter
+        for (i in 1..testDay){
+            setMissionCertFrag(Constance.jwt, i, missionId)
+        }
+
     }
 
 
