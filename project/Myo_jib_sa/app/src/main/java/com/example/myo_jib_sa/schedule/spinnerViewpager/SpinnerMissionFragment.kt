@@ -127,7 +127,7 @@ class SpinnerMissionFragment : Fragment() {
 
     //scheduleHome api연결 for missionList받기위해
     private fun scheduleHomeApi() {
-        val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
+        val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTEwNjUyNzMsImV4cCI6MTY5MjUzNjUwMn0.1eJEJKnwJ0WJ2dYAIePi5QqmOPYmXbSLF5PICYYG5rE"//App.prefs.token.toString()
 //        Log.d("retrofit", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)

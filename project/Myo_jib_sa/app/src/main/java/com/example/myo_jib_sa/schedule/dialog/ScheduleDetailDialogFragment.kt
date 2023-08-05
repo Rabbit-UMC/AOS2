@@ -132,7 +132,7 @@ class ScheduleDetailDialogFragment : DialogFragment() {
     //scheduleDetail api연결
     fun scheduleDetailApi(scheduleId: Long) {
         val token: String =
-            "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
+            "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTEwNjUyNzMsImV4cCI6MTY5MjUzNjUwMn0.1eJEJKnwJ0WJ2dYAIePi5QqmOPYmXbSLF5PICYYG5rE"//App.prefs.token.toString()
         Log.d("debug", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(ScheduleDetailService::class.java)
