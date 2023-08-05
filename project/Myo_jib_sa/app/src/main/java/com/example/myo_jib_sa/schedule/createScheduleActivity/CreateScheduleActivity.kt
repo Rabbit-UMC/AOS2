@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
@@ -33,6 +34,8 @@ class CreateScheduleActivity : AppCompatActivity() {
 
     private var isClickCalendarImgBtn = false //달력이미지버튼 클릭에서 사용
     private var selectedDateIndex : Int = 0//referenceDate의 dayList에서 index값 //달력이미지버튼 클릭에서 사용
+
+    private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils//키보드 유틸
 
     private var scheduleData : ScheduleDetailResult = ScheduleDetailResult(
         scheduleId = 0,
@@ -69,7 +72,26 @@ class CreateScheduleActivity : AppCompatActivity() {
 
         calendarRvItemClickEvent()//캘린더 아이템 클릭이벤트
 
+        //키보드 유틸 : edittext
+        binding.scheduleMemoEtv.setOnFocusChangeListener (object : View.OnFocusChangeListener {
+            override fun onFocusChange(view: View, hasFocus: Boolean) {
+                if (hasFocus) {
+                    //  .. 포커스시
+                    //binding.textView22.visibility = View.INVISIBLE
+//                    keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
+//                        { keyboardHeight ->
+//                            binding.root.run {
+//                                smoothScrollTo(scrollX, scrollY + keyboardHeight)
+//                            }
+//                        })
+                } else {
+                    //  .. 포커스 뺏겼을 때
+                    //binding.textView22.visibility = View.VISIBLE
 
+                    //onShowKeyboard =
+                }
+            }
+        })
 
     }
 
@@ -271,7 +293,10 @@ class CreateScheduleActivity : AppCompatActivity() {
         })
     }
 
-    fun getScheduleDate() : String{
+
+
+    //sharedPreference에 저장할때 사용용
+    private fun getScheduleDate() : String{
         var year = binding.scheduleYearTv.text.toString()
         var month = binding.scheduleMonthTv.text.toString()
         var day = binding.scheduleDayTv.text.toString()
