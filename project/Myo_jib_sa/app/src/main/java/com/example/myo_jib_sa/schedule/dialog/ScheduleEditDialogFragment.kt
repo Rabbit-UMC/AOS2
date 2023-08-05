@@ -15,6 +15,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleEditBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
@@ -205,7 +206,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
     //scheduleModify api연결
     private fun scheduleModifyApi() {
-        val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTEwNjUyNzMsImV4cCI6MTY5MjUzNjUwMn0.1eJEJKnwJ0WJ2dYAIePi5QqmOPYmXbSLF5PICYYG5rE"//App.prefs.token.toString()
+        val token : String = BuildConfig.KAKAO_API_KEY
 //        Log.d("retrofit", "token = "+token+"l");
 //
         val requestBody = ScheduleModifyRequest(

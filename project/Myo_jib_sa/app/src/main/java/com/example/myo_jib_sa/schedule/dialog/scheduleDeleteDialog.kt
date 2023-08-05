@@ -69,7 +69,6 @@ class scheduleDeleteDialog(
 
     //scheduleDelete api연결: 일정삭제
     fun scheduleDeleteApi() {
-        val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTEwNjUyNzMsImV4cCI6MTY5MjUzNjUwMn0.1eJEJKnwJ0WJ2dYAIePi5QqmOPYmXbSLF5PICYYG5rE"//App.prefs.token.toString()
 //        Log.d("retrofit", "token = "+token+"l");
 
         val sDataList = scheduleAdaptar.getItem()
