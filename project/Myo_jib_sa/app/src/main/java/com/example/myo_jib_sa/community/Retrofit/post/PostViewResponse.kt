@@ -46,7 +46,7 @@ data class SimpleResponse(
 data class PostCreateRequest(
     val articleTitle: String,
     val articleContent:String,
-    val imageList:List<ImageListC>
+    val imageList:List<String>
 )
 data class ImageListC(
     val filePath:String

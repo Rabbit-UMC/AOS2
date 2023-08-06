@@ -26,7 +26,7 @@ import java.io.ByteArrayOutputStream
 class ManagerPageEditActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityManagerPageEditBinding
-    private var imgPath:String=""
+    private var imgUri:Uri= Uri.EMPTY
 
     //갤러리 REQUEST_CODE
     companion object {
@@ -45,7 +45,7 @@ class ManagerPageEditActivity : AppCompatActivity() {
             setPhoto(Constance.jwt, boardId){isSuccess->
                 if(isSuccess){ //저장 성공 시에만 종료
                     val resultIntent = Intent()
-                    resultIntent.putExtra("imgPath", imgPath)
+                    resultIntent.putExtra("imgPath", imgUri)
                     setResult(Activity.RESULT_OK, resultIntent)
                     finish()
                 }else{
@@ -67,7 +67,9 @@ class ManagerPageEditActivity : AppCompatActivity() {
     //사진 저장 api
     private fun setPhoto(author:String, boardId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = ManagerRetrofitManager.getInstance(this)
-        retrofitManager.missionImgEdit(author,imgPath ,boardId){response ->
+        val imgpath = getRealPathFromURI(imgUri)
+        val base64Img = encodeImageToBase64(imgpath.toString())
+        retrofitManager.missionImgEdit(author,base64Img.toString() ,boardId){response ->
             if(response){
                 callback(true)
             } else {
@@ -86,9 +88,7 @@ class ManagerPageEditActivity : AppCompatActivity() {
             selectedImageUri?.let { uri ->
                 val imageView: ImageView = binding.managerPageImg
                 imageView.setImageURI(uri)
-                // todo:이미지를 서버로 전송하거나 파일 경로로 변환하여 api에 전달할 수 있습니다.
-                // 선택한 이미지를 서버로 전송하는 부분은 retrofitManager.postImageUpload(author, uri) 등의 메소드를 활용하여 구현하면 됩니다.
-                imgPath=uri.toString()
+                imgUri=uri
             }
         }
     }
@@ -108,6 +108,18 @@ class ManagerPageEditActivity : AppCompatActivity() {
             it.close()
         }
         return realPath
+    }
+
+    //Base64로 인코딩하기
+    fun encodeImageToBase64(imagePath: String): String? {
+        val bitmap = BitmapFactory.decodeFile(imagePath)
+        if (bitmap != null) {
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val byteArray = baos.toByteArray()
+            return Base64.encodeToString(byteArray, Base64.DEFAULT)
+        }
+        return null
     }
 
     //토스트 메시지 띄우기

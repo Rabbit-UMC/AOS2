@@ -53,7 +53,8 @@ class ManagerPageActivity : AppCompatActivity() {
 
         //묘방생 페이지로 이동
         binding.managerPageByeBtn.setOnClickListener {
-            val intent=Intent(this, ManagerPageByeActivity::class.java)
+            val intent=Intent(this, ManagerPageMissionActivity::class.java)
+            intent.putExtra("isBye", true)
             startActivity(intent)
         }
 
@@ -71,33 +72,15 @@ class ManagerPageActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            val selectedImageUri: Uri? = data.data
-            val imagePath: String? = getRealPathFromURI(selectedImageUri)
+            val imgPath = data?.getStringExtra("imgPath")
+            val imageUri = Uri.parse(imgPath)
 
-            // imagePath로 이미지를 설정
-            // 이제 선택한 이미지를 "managerPageImg" ImageView에 설정
-            Glide.with(this)
-                .load(imagePath)
-                .into(binding.managerPageImg)
+            binding.managerPageImg.setImageURI(imageUri)
+
         }
     }
 
-    //fun getRealPathFromURI() 이미지 url을 실제 파일 경로로 변환
-    private fun getRealPathFromURI(uri: Uri?): String? {
-        if (uri == null) return null
 
-        var realPath: String? = null
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = this.contentResolver.query(uri, projection, null, null, null)
-        cursor?.let {
-            if (it.moveToFirst()) {
-                val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                realPath = it.getString(columnIndex)
-            }
-            it.close()
-        }
-        return realPath
-    }
 
 
 }

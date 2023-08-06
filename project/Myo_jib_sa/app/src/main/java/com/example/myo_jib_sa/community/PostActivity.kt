@@ -126,6 +126,8 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     intent.putExtra("imgList1_path", imageList[0].filePath)
                     intent.putExtra("imgList2_id", imageList[1].imageId)
                     intent.putExtra("imgList2_path", imageList[1].filePath)
+                    //수정인지 구별
+                    intent.putExtra("isEdit", true)
                     startActivity(intent)
                 }
                 R.id.postMenu_delete -> {
@@ -134,8 +136,14 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                         override fun onPositiveButtonClicked(value: Boolean) {
                             if (value){
                                 //신고 재확인 팝업창 띄우고 확인 누르면 api 연결
-                                postDelete(Constance.jwt, postId)
-                                finish()
+                                postDelete(Constance.jwt, postId){isSuccess->
+                                    if(isSuccess){
+                                        finish()
+                                    }else{
+                                        showToast("게시글 삭제 실패")
+                                    }
+                                }
+
                             }
                         }
                     })
@@ -153,7 +161,13 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                         override fun onPositiveButtonClicked(value: Boolean) {
                             if (value){
                                 //신고 재확인 팝업창 띄우고 확인 누르면 api 연결
-                                postReport(Constance.jwt,postId)
+                                postReport(Constance.jwt,postId){isSuccess->
+                                    if(isSuccess){
+                                        showToast("해당 게시글이 신고 되었습니다")
+                                    }else{
+                                        showToast("신고 실패했습니다")
+                                    }
+                                }
                             }
                         }
                     })
@@ -256,36 +270,37 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     }
 
     //게시물 신고
-    private fun postReport(author:String, articleId: Long){
+    private fun postReport(author:String, articleId: Long, callback: (Boolean) -> Unit){
         val retrofitManager = PostRetrofitManager.getInstance(this)
         retrofitManager.postReport(author,articleId){response ->
             if(response){
                 //로그
                 Log.d("게시물 신고", "${response.toString()}")
-
+                callback(true)
 
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                 Log.d("게시물 신고 API isSuccess가 false", "${response.toString()}")
                 showToast("게시물 신고 실패")
+                callback(false)
             }
         }
     }
 
     //게시물 삭제
-    private fun postDelete(author:String, articleId: Long){
+    private fun postDelete(author:String, articleId: Long, callback: (Boolean) -> Unit){
 
         val retrofitManager = PostRetrofitManager.getInstance(this)
         retrofitManager.postDelete(author,articleId){response ->
             if(response){
                 //로그
                 Log.d("게시물 삭제", "${response.toString()}")
-                finish()
+                callback(true)
 
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                 Log.d("게시물 삭제 API isSuccess가 false", "${response.toString()}")
-                showToast("게시물 삭제 실패")
+                callback(false)
             }
         }
     }
