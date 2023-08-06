@@ -7,7 +7,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
-    app:umanoDragView="@id/slidingUp_panel"
+    app:umanoShadowHeight="0dp"
+    app:umanoOverlay="true"
+    app:umanoScrollableView="@id/scheduleList_rv"
+    app:umanoDragView="@id/slidingUp_panel_layout"
     app:umanoPanelHeight = "50dp"
     app:umanoFadeColor = "@android:color/transparent"
     tools:context=".schedule.currentMissionActivity.CurrentMissionActivity"
@@ -58,12 +61,15 @@
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <LinearLayout
-        android:id="@+id/slidingUp_panel"
+        android:id="@+id/slidingUp_panel_layout"
         android:layout_width="match_parent"
         android:layout_height="590dp"
         android:orientation="vertical"
         android:background="@drawable/view_round_r20_gray">
+
+
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
@@ -82,5 +88,6 @@
             />
 
     </LinearLayout>
+
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

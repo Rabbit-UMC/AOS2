@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.viewpager
+package com.example.myo_jib_sa.schedule.spinnerViewpager
 
 import android.content.Context
 import android.os.Bundle
@@ -8,8 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TimePicker
-import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.databinding.FragmentSpinnerDateBinding
 import com.example.myo_jib_sa.databinding.FragmentSpinnerEndTimeBinding
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
 

@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.viewpager
+package com.example.myo_jib_sa.schedule.spinnerViewpager
 
 import android.content.Context
 import android.os.Bundle
@@ -8,15 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.databinding.FragmentSpinnerMissionBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
 import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeService
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyResponse
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -69,9 +67,9 @@ class SpinnerMissionFragment : Fragment() {
         scheduleHomeApi()//api연결을 통해 missionTitleList를 setting
 
         CoroutineScope(Dispatchers.Main).launch {
-            delay(50)
+            delay(70)
             numberpicker.minValue = 0
-            numberpicker.maxValue = missionTitleList.size - 1
+            numberpicker.maxValue = missionTitleList.size -1
             numberpicker.value = setNumberpickerInitvalue(scheduleData.missionTitle)//초기값 설정
             numberpicker.displayedValues = missionTitleList.toTypedArray()
             numberpicker.wrapSelectorWheel = true //순환
@@ -118,19 +116,19 @@ class SpinnerMissionFragment : Fragment() {
     }
 
     //Numberpicker 초기값 설정
-    fun setNumberpickerInitvalue(missionTitle :String?):Int{
+    private fun setNumberpickerInitvalue(missionTitle :String?):Int{
         var initValue = 0
         for(i in 0 until missionList!!.size){
             if(missionList[i].missionTitle == missionTitle)
-                initValue = i
+                initValue = i+1
         }
         return initValue
     }
 
 
     //scheduleHome api연결 for missionList받기위해
-    fun scheduleHomeApi() {
-        val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
+    private fun scheduleHomeApi() {
+        val token : String = BuildConfig.KAKAO_API_KEY
 //        Log.d("retrofit", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
@@ -145,12 +143,17 @@ class SpinnerMissionFragment : Fragment() {
                     Log.d("retrofit", response.body().toString());
                     missionList = response.body()?.result!!.missionList
 
+                    missionTitleList.add("없음")
+                    titleIdMap["없음"] = -1 //-1 = missionId
+                    titleTitleMap[-1] = missionList[0].missionTitle
+
                     for(i in 0 until missionList!!.size){
                         var title = missionTitleFormat(missionList[i])
                         missionTitleList.add(title)
                         titleIdMap[title] = missionList[i].missionId
                         titleTitleMap[missionList[i].missionId] = missionList[i].missionTitle
                     }
+
 
                 }else {
                     Log.e("retrofit", "onResponse: Error ${response.code()}")

@@ -21,7 +21,7 @@
         android:theme="@style/Theme.Myo_jib_sa"
         tools:targetApi="31">
         <activity
-            android:name=".schedule.adapter.DeleteCurrentMissionActivity"
+            android:name=".schedule.currentMissionActivity.DeleteCurrentMissionActivity"
             android:exported="false" />
         <activity
             android:name=".mission.MissionWriteMissionActivity"
@@ -30,13 +30,16 @@
         <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="${AD_APP_ID}" />
             android:value="ca-app-pub-1350635755184504~2813602960"/>
 
         <activity
             android:name=".schedule.currentMissionActivity.CurrentMissionActivity"
             android:exported="false" />
         <activity
-            android:name=".schedule.CreateScheduleActivity"
+            android:name=".schedule.createScheduleActivity.CreateScheduleActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".schedule.HistoryActivity"
