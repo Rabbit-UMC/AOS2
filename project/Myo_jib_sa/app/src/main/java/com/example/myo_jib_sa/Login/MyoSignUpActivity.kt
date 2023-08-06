@@ -22,8 +22,6 @@ import com.kakao.sdk.user.UserApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MyoSignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMyoSignUpBinding
@@ -66,7 +64,7 @@ class MyoSignUpActivity : AppCompatActivity() {
         //로그인 api 연결
         // 카카오 로그인 API 호출
         val clientId = BuildConfig.KAKAO_API_KEY
-        val redirectUri = "http://3.39.96.137/app/users/kakao-login"
+        val redirectUri = BuildConfig.Redirect_URI
         val responseType = "code"
 
         //Login API 연결
@@ -92,7 +90,7 @@ class MyoSignUpActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.e("LoginResponse", "API 호출 실패: ${t.message}")
+                Log.e("LoginResponse1", "API 호출 실패: ${t.message}")
             }
         })
 
@@ -283,7 +281,7 @@ class MyoSignUpActivity : AppCompatActivity() {
                         // 응답 데이터 처리
                         Toast.makeText(this@MyoSignUpActivity, returnMsg, Toast.LENGTH_SHORT).show()
 
-                        Log.d("Retrofit", message)
+                        Log.d("signUp", message)
                         Log.d("signUp", "userEmail: ${email}")
                         Log.d("signUp", "userNickName: ${nickName}")
                     }
