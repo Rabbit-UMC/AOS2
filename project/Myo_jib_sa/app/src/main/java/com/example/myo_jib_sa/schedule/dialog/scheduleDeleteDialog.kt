@@ -44,7 +44,7 @@ class scheduleDeleteDialog(
         //확인
         binding.yesTv.setOnClickListener{
             dismiss()
-           // scheduleDeleteApi()//: 일정삭제 api
+            //scheduleDeleteApi()//: 일정삭제 api
         }
         //취소
         binding.exitBtn.setOnClickListener {
@@ -68,7 +68,7 @@ class scheduleDeleteDialog(
 
 
     //scheduleDelete api연결: 일정삭제
-/*    fun scheduleDeleteApi() {
+   /* fun scheduleDeleteApi() {
 //        Log.d("retrofit", "token = "+token+"l");
 
         val sDataList = scheduleAdaptar.getItem()
