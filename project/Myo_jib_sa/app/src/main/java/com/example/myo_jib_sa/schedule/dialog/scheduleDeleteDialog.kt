@@ -38,14 +38,8 @@ class scheduleDeleteDialog(
 
     private fun initViews() {
 
-        getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val params: WindowManager.LayoutParams = getWindow()!!.getAttributes()
-
-        //params.width = 700
-        //params.height = 370
-
-        //getWindow()?.setBackgroundDrawable(R.drawable.view_round_r15);
 
         //확인
         binding.yesTv.setOnClickListener{
@@ -75,7 +69,6 @@ class scheduleDeleteDialog(
 
     //scheduleDelete api연결: 일정삭제
     fun scheduleDeleteApi() {
-        val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
 //        Log.d("retrofit", "token = "+token+"l");
 
         val sDataList = scheduleAdaptar.getItem()

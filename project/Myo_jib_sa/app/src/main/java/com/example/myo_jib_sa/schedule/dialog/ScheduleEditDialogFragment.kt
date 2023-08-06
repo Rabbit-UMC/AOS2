@@ -15,6 +15,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleEditBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
@@ -110,7 +111,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
     5. 정규식 패턴 ^[ ] or ^[\\s] : 공백 허용
      **/
     private val editTextFilter = InputFilter { source, start, end, dest, dstart, dend ->
-        val ps = Pattern.compile("[ㄱ-ㅎㅏ-ㅣ가-힣a-z-A-Z0-9()&_\\s-]+")
+        val ps = Pattern.compile("[ㄱ-ㅎㅏ-ㅣ가-힣a-z-A-Z0-9\\s-]+")
         val input = dest.subSequence(0, dstart).toString() + source.subSequence(start, end) + dest.subSequence(dend, dest.length).toString()
         val matcher = ps.matcher(input)
 
@@ -204,8 +205,8 @@ class ScheduleEditDialogFragment : DialogFragment() {
     }
 
     //scheduleModify api연결
-    fun scheduleModifyApi() {
-        val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
+    private fun scheduleModifyApi() {
+        val token : String = BuildConfig.KAKAO_API_KEY
 //        Log.d("retrofit", "token = "+token+"l");
 //
         val requestBody = ScheduleModifyRequest(
@@ -240,7 +241,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
 
     //startTime, endTime 포맷
-    fun scheduleTimeFormatter(startAt: String?): String {
+    private fun scheduleTimeFormatter(startAt: String?): String {
         val formatter = DecimalFormat("00")
 
         val time = startAt!!.split(":")

@@ -7,7 +7,7 @@ import retrofit2.http.Header
 interface ScheduleHomeService {
     @GET("app/schedule")
     fun scheduleHome(
-        @Header("X-ACCESS-TOKEN")
+        @Header("Authorization")
         accessToken: String,
     ) : Call<ScheduleHomeResponse>
 }

@@ -8,13 +8,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.example.myo_jib_sa.schedule.adapter.*
@@ -22,11 +22,10 @@ import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeService
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResponse
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayService
-import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayServiceSnyc
+import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActivity
 import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActivity
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleEditDialogFragment
@@ -35,7 +34,6 @@ import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
-import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -58,6 +56,7 @@ class ScheduleFragment : Fragment() {
     var sDataList = ArrayList<ScheduleOfDayResult>() //일정 리스트 데이터
 
     private var adLoader: AdLoader? = null //광고를 불러올 adLoader 객체
+    //val AD_UNIT_ID = BuildConfig.AD_UNIT_ID
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -177,7 +176,7 @@ class ScheduleFragment : Fragment() {
 
 
     //광고 생성 메소드
-    fun createAd() {
+    private fun createAd() {
         MobileAds.initialize(requireActivity())
         adLoader = AdLoader.Builder(requireActivity(), "ca-app-pub-3940256099942544/2247696110")//sample아이디
             .forNativeAd { ad : NativeAd ->
@@ -246,7 +245,7 @@ class ScheduleFragment : Fragment() {
                 var scheduleDeleteDialog= scheduleDeleteDialog(requireContext(), binding.scheduleRv.adapter as ScheduleAdaptar, position)
                 scheduleDeleteDialog.setButtonClickListener(object: scheduleDeleteDialog.OnButtonClickListener{
                     override fun onClickExitBtn() {
-                        scheduleAdaptar.notifyItemChanged(viewHolder.getAdapterPosition());
+                        scheduleAdaptar.notifyItemChanged(viewHolder.adapterPosition);
                     }
                 })
                 scheduleDeleteDialog.show()
@@ -388,7 +387,7 @@ class ScheduleFragment : Fragment() {
 
     //scheduleHome api연결
     fun scheduleHomeApi() {
-        val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
+        val token : String = BuildConfig.KAKAO_API_KEY
 //        Log.d("retrofit", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
@@ -425,7 +424,7 @@ class ScheduleFragment : Fragment() {
     //scheduleOfDay api연결
     //calendarRvItemClickEvent()안에서만 실행
     fun scheduleOfDayApi(date: String?) {
-        val token : String = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
+        val token : String = BuildConfig.KAKAO_API_KEY
 //        Log.d("retrofit", "token = "+token+"l");
 //
 //        val requestBody = ScheduleOfDayRequest(
@@ -502,8 +501,7 @@ class ScheduleFragment : Fragment() {
     fun scheduleOfDayApiForCheck(date: String?) {
         var checkResult: Boolean = false
 
-        val token: String =
-            "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
+          val token = BuildConfig.KAKAO_API_KEY
 //        Log.d("retrofit", "token = "+token+"l");
 //
 //        val requestBody = ScheduleOfDayRequest(

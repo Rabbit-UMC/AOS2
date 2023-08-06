@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.databinding.DialogFragmentCurrentMissionDetailBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResponse
@@ -80,8 +81,7 @@ class CurrentMissionDetailDialogFragment : DialogFragment() {
 
     //scheduleDetail api연결
     fun scheduleDetailApi(scheduleId: Long) {
-        val token: String =
-            "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2ODk2NjAwMTEsImV4cCI6MTY5MTEzMTI0MH0.pXVAYqUF29f4lcDPHUR44FK-AfolwSj73Fd6yz3272Y"//App.prefs.token.toString()
+        val token: String = BuildConfig.KAKAO_API_KEY
         Log.d("debug", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(ScheduleDetailService::class.java)
