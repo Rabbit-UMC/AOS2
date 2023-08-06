@@ -1,19 +1,21 @@
 package com.example.myo_jib_sa.community.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.community.Retrofit.Post.Articles
-import com.example.myo_jib_sa.community.Retrofit.Post.PostBoardResponse
-import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularTopic
+import com.example.myo_jib_sa.community.PostActivity
+import com.example.myo_jib_sa.community.Retrofit.BoardPost.Articles
+import com.example.myo_jib_sa.databinding.ActivityPostBinding
 import com.example.myo_jib_sa.databinding.ItemPostBinding
 
 class BoardAdapter(
     private val context: Context,
-    private val dataList:List<Articles>)
+    private val dataList:List<Articles>,
+    private val boardId:Int)
     : RecyclerView.Adapter<BoardAdapter.ViewHolder>(){
 
     //뷰홀더
@@ -25,13 +27,17 @@ class BoardAdapter(
             binding.postItemNameTxt.text=item.articleTitle
             binding.postItmeCommentCntTxt.text=item.commentCount.toString()
             binding.postItemUploadTimeTxt.text=item.uploadTime.toString()
-            binding.postItmeHeartNumTxt.text=item.LikeCount.toString()
+            binding.postItmeHeartNumTxt.text=item.likeCount.toString()
 
-            //클릭 이벤트
-           /* binding.root.setOnClickListener{
-                //클릭 이벤트 처리
-                //클릭시 해당 게시글 이동
-            }*/
+
+            //클릭 이벤트, 해당 게시물로 이동
+           binding.root.setOnClickListener{
+               val postId=item.articleId
+               val intent= Intent(context, PostActivity::class.java)
+               intent.putExtra("postId", postId)
+               intent.putExtra("boardId", boardId)
+               binding.root.context.startActivity(intent)
+            }
         }
     }
 

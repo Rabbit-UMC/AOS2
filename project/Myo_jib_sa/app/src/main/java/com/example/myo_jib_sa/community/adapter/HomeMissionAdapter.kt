@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Rect
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -29,21 +30,32 @@ class HomeMissionAdapter(
         :RecyclerView.ViewHolder(binding.root){
             fun bind(item:MainMission){
                 Log.d("리사이클러뷰","linkMrecyclr 어댑터 뷰홀더")
-                binding.homeMissionItemNameTxt.text=item.mainMissionName
-                binding.homeMissionItemBoardNameTxt.text=item.catagoryName
-                binding.homeMissionItemDdayTxt.text=item.endTime.toString()
+                binding.homeMissionItemNameTxt.text=item.mainMissionTitle
+                binding.homeMissionItemBoardNameTxt.text=item.categoryName
+                binding.homeMissionItemDdayTxt.text=item.dday
 
                 //이미지 설정
-               /* Glide.with(context)
-                    .load(item.missionImage)
-                    .into(binding.homeMissionItemImgImg)*/
+               Glide.with(context)
+                    .load(item.categoryImage)
+                    .into(binding.homeMissionItemImgImg)
 
                 //클릭 이벤트
                 binding.MissionItemConstraintLayout.setOnClickListener{
                     //클릭 이벤트 처리
                     //미션 터치시 해당 게시판 이동
-                    boardMove(item.catagoryName, binding.homeMissionItemImgImg)
+                    boardMove(item.categoryName, binding.homeMissionItemImgImg)
                }
+                //클릭이벤트
+                binding.MissionItemConstraintLayout.setOnTouchListener { view, event ->
+                    when (event.action) {
+                        MotionEvent.ACTION_UP -> {
+                            // 터치 다운 이벤트 처리
+                            boardMove(item.categoryName, binding.homeMissionItemImgImg)
+                            true // 이벤트 소비됨
+                        }
+                        else -> false // 다른 이벤트 무시
+                    }
+                }
         }
     }
 
@@ -90,6 +102,18 @@ class HomeMissionAdapter(
                 imageView.context.startActivity(intent)
             }
             "자유 게시판"-> {
+                val intent = Intent(imageView.context, BoardFreeActivity::class.java )
+                imageView.context.startActivity(intent)
+            }
+            "예술"-> {
+                val intent = Intent(imageView.context, BoardArtActivity::class.java )
+                imageView.context.startActivity(intent)
+            }
+            "운동"-> {
+                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                imageView.context.startActivity(intent)
+            }
+            "자유"-> {
                 val intent = Intent(imageView.context, BoardFreeActivity::class.java )
                 imageView.context.startActivity(intent)
             }

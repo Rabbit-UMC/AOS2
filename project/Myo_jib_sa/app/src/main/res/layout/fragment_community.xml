@@ -21,32 +21,34 @@
             android:text="묘집사"
             android:textColor="@color/black"
             android:textSize="16dp"
-            android:textStyle="bold|italic"
+            android:fontFamily="@font/font_inter"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_constraintLayout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#F1F1F1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/home_appName_txt">
+
             <Button
                 android:id="@+id/community_board_free"
                 android:layout_width="100dp"
-                android:layout_height="36dp"
+                android:layout_height="38dp"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:background="@null"
-                android:backgroundTint="#F1F1F1"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="@font/font_inter"
+                android:gravity="center"
                 android:stateListAnimator="@null"
                 android:text="자유"
                 android:textColor="@color/black"
                 android:textSize="12dp"
-                android:textStyle="bold|italic"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/community_board_excs"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,16 +57,17 @@
             <Button
                 android:id="@+id/community_board_excs"
                 android:layout_width="100dp"
-                android:layout_height="36dp"
+                android:layout_height="38dp"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:background="@null"
-                android:backgroundTint="#F1F1F1"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="@font/font_inter"
+                android:gravity="center"
                 android:stateListAnimator="@null"
                 android:text="운동"
                 android:textColor="@color/black"
                 android:textSize="12dp"
-                android:textStyle="bold|italic"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -73,21 +76,35 @@
             <Button
                 android:id="@+id/community_board_art"
                 android:layout_width="100dp"
-                android:layout_height="36dp"
+                android:layout_height="38dp"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:background="@null"
-                android:backgroundTint="#F1F1F1"
+                android:backgroundTint="@android:color/transparent"
+                android:fontFamily="@font/font_inter"
+                android:gravity="center"
                 android:stateListAnimator="@null"
                 android:text="예술"
                 android:textColor="@color/black"
                 android:textSize="12dp"
-                android:textStyle="bold|italic"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/community_board_excs"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/community_line_layout"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#F1F1F1"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <!--접히게 하기 만들어-->
         <!-- 스크롤되는 뷰들 -->
@@ -95,125 +112,121 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="top"
-            android:layout_marginTop="78dp"
+            android:layout_marginTop="80dp"
             android:fillViewport="true"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_constraintLayout">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/home_banner_vpager"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="302dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
-                    android:background="#F1F1F1"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    android:scaleType="fitXY"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="wrap_content">
 
-                </androidx.viewpager2.widget.ViewPager2>
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/home_banner_vpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="240dp"
+                        android:layout_gravity="center"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:scaleType="fitXY"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/home_banner_tab"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_banner_vpager"
-
-                    app:tabGravity="center"
-
-                    app:tabIconTint="#D9D9D9"
-                    app:tabRippleColor="@android:color/transparent"
-                    app:tabIndicator="@drawable/ic_dot"
-                    app:tabIndicatorHeight="0dp" />
+                    </androidx.viewpager2.widget.ViewPager2>
 
 
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/home_banner_tab"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
 
-                <TextView
-                    android:id="@+id/home_missionName_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="13dp"
-                    android:layout_marginTop="40dp"
-                    android:text="달토끼 미션"
-                    android:textColor="@color/black"
-                    android:textSize="16dp"
-                    android:textStyle="bold|italic"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_banner_vpager" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/home_banner_vpager"
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/home_mission_recyclr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="15dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_missionName_txt" />
+                        app:tabGravity="center"
 
-                <TextView
-                    android:id="@+id/home_bestPostName_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="13dp"
-                    android:layout_marginTop="40dp"
-                    android:text="전체 인기글"
-                    android:textColor="@color/black"
-                    android:textSize="16dp"
-                    android:textStyle="bold|italic"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_mission_recyclr" />
+                        app:tabIconTint="#D9D9D9"
+                        app:tabIndicator="@drawable/ic_dot"
+                        app:tabIndicatorHeight="0dp"
+                        app:tabRippleColor="@android:color/transparent" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_bestPostName_txt">
+
+                    <TextView
+                        android:id="@+id/home_missionName_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="13dp"
+                        android:layout_marginTop="40dp"
+                        android:fontFamily="@font/font_inter"
+                        android:text="달토끼 미션"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/home_banner_vpager" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/home_mission_recyclr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="15dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/home_missionName_txt" />
+
+                    <TextView
+                        android:id="@+id/home_bestPostName_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="13dp"
+                        android:layout_marginTop="40dp"
+                        android:fontFamily="@font/font_inter"
+                        android:text="전체 인기글"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/home_mission_recyclr" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/home_bestPost_recyclr"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/home_bestPostName_txt" />
-                </LinearLayout>
 
 
-                <TextView
-                    android:id="@+id/home_puls_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginEnd="13dp"
-                    android:text="더보기"
-                    android:textColor="#234BD9"
-                    android:textSize="12dp"
-                    android:textStyle="italic|bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_mission_recyclr" />
+                    <TextView
+                        android:id="@+id/home_puls_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginEnd="13dp"
+                        android:fontFamily="@font/font_inter"
+                        android:text="더보기"
+                        android:textColor="#234BD9"
+                        android:textSize="12dp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/home_mission_recyclr" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </LinearLayout>
+            </LinearLayout>
         </ScrollView>
 
 

@@ -1,36 +1,33 @@
-package com.example.myo_jib_sa.community.Retrofit.Post
+package com.example.myo_jib_sa.community.Retrofit.BoardPost
 
 import android.content.Context
 import android.util.Log
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.RetrofitClient
-import com.example.myo_jib_sa.community.Retrofit.communityHome.CommunityHomeITFC
-import com.example.myo_jib_sa.community.Retrofit.communityHome.CommunityHomeManager
-import com.example.myo_jib_sa.community.Retrofit.communityHome.HomeResponse
 import retrofit2.Call
 import retrofit2.Response
 
-class PostRetrofitManager(context: Context) {
+class PostBoardRetrofitManager(context: Context) {
     //레트로핏 인터페이스 가져오기기
-    private val retrofit : PostRetrofitITFC? = RetrofitClient.getClient(Constance.BASEURL)?.create(
-        PostRetrofitITFC::class.java)
+    private val retrofit : PostBoardRetrofitITFC? = RetrofitClient.getClient(Constance.BASEURL)?.create(
+        PostBoardRetrofitITFC::class.java)
 
     companion object {
-        private var instance: PostRetrofitManager? = null
+        private var instance: PostBoardRetrofitManager? = null
 
         // 싱글톤 인스턴스를 가져오는 메서드
-        fun getInstance(context: Context): PostRetrofitManager {
+        fun getInstance(context: Context): PostBoardRetrofitManager {
             if (instance == null) {
-                instance = PostRetrofitManager(context)
+                instance = PostBoardRetrofitManager(context)
             }
-            return instance as PostRetrofitManager
+            return instance as PostBoardRetrofitManager
         }
 
     }
 
     //PostBoardResponse를 반환
-    fun board(author:String, completion: (PostBoardResponse) -> Unit){
-        val call: Call<PostBoardResponse> = retrofit?.board(author) ?: return
+    fun board(author:String,page:Int,categoryId:Long, completion: (PostBoardResponse) -> Unit){
+        val call: Call<PostBoardResponse> = retrofit?.board(author,page,categoryId) ?: return
 
         call.enqueue(object : retrofit2.Callback<PostBoardResponse> {
             override fun onResponse(
@@ -40,7 +37,7 @@ class PostRetrofitManager(context: Context) {
                 Log.d("Post 게시판 api", "RetrofitManager profile onResponse \t :${response.message()} ")
                 val response: PostBoardResponse? = response?.body() //LoginResponse 형식의 응답 받음
                 if (response != null) {
-                    if (response.isSuccess=="TRUE") {
+                    if (response.isSuccess=="true") {
                         Log.d("Post 게시판 api",
                             "RetrofitManager Post 게시판 is Success\t :${response.code} ")
                         completion(response)
