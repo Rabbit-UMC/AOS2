@@ -19,13 +19,17 @@ class BoardExerciseActivity : AppCompatActivity() {
     private lateinit var binding:ActivityBoardExerciseBinding
     private var hostId:Long=0
     private var missionId:Long=0
+    private var boardId:Int=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityBoardExerciseBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        boardId=intent.getIntExtra("boardId", 0)
+
         //게시판 화면 띄우기
-        getBoardData(Constance.jwt, 1, Constance.EXERCISE_ID.toLong())
+        getBoardData(Constance.jwt, 1, boardId.toLong())
 
         //뒤로가기 버튼
         binding.boardExcsBackBtn.setOnClickListener {
@@ -35,7 +39,6 @@ class BoardExerciseActivity : AppCompatActivity() {
         //글쓰기
         binding.boardPostingBtn.setOnClickListener {
             val intent= Intent(this, WritePostingActivity::class.java)
-            val boardId=Constance.EXERCISE_ID
             intent.putExtra("boardId", boardId)
             startActivity(intent)
         }
@@ -45,7 +48,6 @@ class BoardExerciseActivity : AppCompatActivity() {
             // TextView 클릭될 시 할 코드작성 todo: 주석 제거 하기
             if(true /*hostId==Constance.USER_ID*/){
                 val intent=Intent(this, ManagerPageActivity::class.java)
-                val boardId=Constance.EXERCISE_ID
                 intent.putExtra("boardId", boardId)
                 startActivity(intent)
             }
@@ -58,7 +60,7 @@ class BoardExerciseActivity : AppCompatActivity() {
             missionId=1
             val intent=Intent(this, MissionCertificationActivity::class.java)
             intent.putExtra("missionId", missionId)
-            intent.putExtra("boardId", Constance.EXERCISE_ID)
+            intent.putExtra("boardId", boardId)
             startActivity(intent)
         }
 
@@ -66,6 +68,21 @@ class BoardExerciseActivity : AppCompatActivity() {
 
     //API 연결, 리사이클러뷰 띄우기
     private fun getBoardData(author:String,page:Int ,id:Long){
+
+        //게시판 이름
+        when(id.toInt()){
+            Constance.ART_ID-> {
+                binding.boardExcsNameTxt.text="예술 게시판"
+            }
+            Constance.FREE_ID-> {
+                binding.boardExcsNameTxt.text="자유 게시판"
+            }
+            Constance.EXERCISE_ID-> {
+                binding.boardExcsNameTxt.text="운동 게시판"
+            }
+        }
+
+
         val retrofitManager = PostBoardRetrofitManager.getInstance(this)
         retrofitManager.board(author,page ,id){response ->
             if(response.isSuccess=="true"){
@@ -102,14 +119,20 @@ class BoardExerciseActivity : AppCompatActivity() {
     //미션 리사이클러뷰, 어댑터 연결
     private fun linkBrecyclr(boardList:List<Articles>){
         //미션
-        val Badapter = BoardAdapter(this,boardList, Constance.EXERCISE_ID)
+        val Badapter = BoardAdapter(this,boardList, boardId)
         val BlayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.boardExcsPostRecyclr.layoutManager = BlayoutManager
         binding.boardExcsPostRecyclr.adapter = Badapter
 
-        Badapter.setItemSpacing(binding.boardExcsPostRecyclr, 15)
+        //Badapter.setItemSpacing(binding.boardExcsPostRecyclr, 15)
     }
 
+    override fun onResume() {
+        super.onResume()
+        //게시판 화면 띄우기
+        getBoardData(Constance.jwt, 1, boardId.toLong())
+
+    }
 
 }

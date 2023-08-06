@@ -320,4 +320,36 @@ class PostRetrofitManager (context: Context){
             }
         })
     }
+
+    fun postCommentLock(author: String,commentId:Long, completion: (isSucces:Boolean) -> Unit){
+        val call: Call<SimpleResponse> = retrofit?.commentLock(author, commentId) ?: return
+
+        call.enqueue(object : retrofit2.Callback<SimpleResponse> {
+            override fun onResponse(
+                call: Call<SimpleResponse>,
+                response: Response<SimpleResponse>
+            ) {
+                Log.d("게시물 댓글 락", "RetrofitManager 게시물 댓글 락 onResponse \t :${response.message()} ")
+                val response: SimpleResponse? = response?.body()
+                if (response != null) {
+                    if (response.isSuccess=="true") {
+                        Log.d("게시물 댓글 락",
+                            "RetrofitManager 게시물 댓글 락 is Success\t :${response.code} ")
+                        Log.d("게시물 댓글 락",
+                            "RetrofitManager 게시물 댓글 락 is Success\t :${response.result} ")
+                        completion(true)
+                    } else {
+                        Log.d("게시물 댓글 락",
+                            "RetrofitManager 게시물 댓글 락 is NOT Success\t :${response.code} ")
+                        completion(false)
+                    }
+                } else {
+                    Log.d("게시물 댓글 락", "RetrofitManager 게시물 댓글 락 null")
+                }
+            }
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+                Log.d("게시물 댓글 락", "RetrofitManager 게시물 댓글 락 onFailure \t :$t ")
+            }
+        })
+    }
 }

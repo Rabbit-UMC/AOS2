@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
+import com.example.myo_jib_sa.community.Retrofit.imgUploadRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.post.ImageList
 import com.example.myo_jib_sa.community.Retrofit.post.ImageListC
 import com.example.myo_jib_sa.community.Retrofit.post.PostCreateRequest
@@ -26,6 +27,7 @@ import com.example.myo_jib_sa.community.adapter.PostImgAdapter
 import com.example.myo_jib_sa.community.adapter.WritePostImgAdapter
 import com.example.myo_jib_sa.databinding.ActivityWritePostingBinding
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 class WritePostingActivity : AppCompatActivity() {
 
@@ -143,14 +145,17 @@ class WritePostingActivity : AppCompatActivity() {
                 val imageView: ImageView = binding.missionCertImg
                 imageView.setImageURI(uri)
                 val imgPath = getRealPathFromURI(uri)
-                val base63Img = encodeImageToBase64(imgPath.toString())
+                var imageUrl:String=""
+                ImgUploadResponse(imgPath.toString()){ url->
+                    imageUrl=url
+                }
                 if(requestCode == GALLERY_REQUEST_CODE1){
                     imgList = imgList.toMutableList().apply {
-                        set(0, base63Img.toString())
+                        set(0, imageUrl)
                     }
                 }else{
                     imgList = imgList.toMutableList().apply {
-                        set(1, base63Img.toString())
+                        set(1, imageUrl)
                     }
                 }
             }
@@ -223,6 +228,35 @@ class WritePostingActivity : AppCompatActivity() {
             it.close()
         }
         return realPath
+    }
+
+    //이미지 업로드 api
+    private fun ImgUploadResponse(imgPath:String, callback: (String) -> Unit){
+        val imageFile = File(imgPath) // 이미지 파일 경로
+
+        val imgUploadRetrofitManager = imgUploadRetrofitManager(this)
+        imgUploadRetrofitManager.uploadImage(imageFile) { response ->
+            if (response != null) {
+                val imageUrl = response.imageUrl
+                val isSuccess = response.success
+                val message = response.message
+                Log.d("이미지 업로드 결과", "$message")
+                Log.d("이미지 업로드 결과", "$imageUrl")
+                if(isSuccess){
+                    Log.d("이미지 업로드 결과", "isSuccess")
+                    callback(imageUrl)
+
+                }else{
+                    Log.d("이미지 업로드 결과", "isSuccess이 false")
+                    callback("")
+                }
+
+            } else {
+                // TODO: 이미지 업로드 실패 처리 로직 추가
+                Log.d("이미지 업로드 결과", "실패")
+                callback("")
+            }
+        }
     }
 
     //Base64로 인코딩하기

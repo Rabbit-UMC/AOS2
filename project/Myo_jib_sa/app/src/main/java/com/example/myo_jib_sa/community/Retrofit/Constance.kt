@@ -10,7 +10,7 @@ object Constance {
     const val author="Authorization"
 
     //유저 id 13인 토큰
-    const val jwt:String= BuildConfig.API_KEY
+    const val jwt:String= "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxMywiaWF0IjoxNjkxMjk4NjA1LCJleHAiOjE2OTI3Njk4MzR9.D198cUO6Gh9eDIXGLfJfuMLHVYHU0jugAAyhI5pO6Ck"
     const val USER_ID:Long=13
 }
 

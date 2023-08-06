@@ -38,6 +38,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private lateinit var heartButton: AppCompatImageButton
     private var isHearted: Boolean = false
     private var postId:Long=0
+    private var boardId:Long=0
     private var myPost:Boolean=false
     private lateinit var imageList: List<ArticleImage>
 
@@ -46,10 +47,10 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         binding = ActivityPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val boardId:Int=intent.getIntExtra("boardId", 0)
+        boardId=intent.getIntExtra("boardId", 0).toLong()
         postId=intent.getLongExtra("postId", 0L)
         Log.d("게시물 ID", "게시물 id : ${postId}")
-        setPostData(Constance.jwt, binding, boardId, postId)
+        setPostData(Constance.jwt, binding, boardId.toInt(), postId)
 
 
         binding.postBackBtn.setOnClickListener {
@@ -60,7 +61,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         binding.postEnterBtn.setOnClickListener {
             commenting(Constance.jwt, binding.postCommentInputEtxt.text.toString(),postId){isSuccess->
                 if(isSuccess){
-                    setPostData(Constance.jwt, binding, boardId, postId)
+                    setPostData(Constance.jwt, binding, boardId.toInt(), postId)
                 }else{
                     showToast("댓글 달기 실패")
                 }
@@ -320,7 +321,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     //댓글 리사이클러뷰, 어댑터 연결
     private fun linkCommentRecyclr(list:List<CommentList>, isPostWriter:Boolean, postId: Long){
         //이미지 뷰
-        val adapter = PostCommentAdapter(this,list,isPostWriter, postId)
+        val adapter = PostCommentAdapter(this,list,isPostWriter, postId, Constance.jwt)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.postCommentRecyclr.layoutManager = layoutManager

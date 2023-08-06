@@ -29,7 +29,7 @@ class MissionCertificationActivity: AppCompatActivity() {
         setContentView(binding.root)
 
 
-        //todo: 인증 이미지시 포스팅 이후, 뷰 업데이트 (라이프사이클)
+        // todo: 인증 이미지시 포스팅 이후, 뷰 업데이트 (라이프사이클)
         missionId=intent.getLongExtra("missionId",0)
         boardId=intent.getIntExtra("boardId", 0)
         testDay=5 //todo: 미션 몇일차 인지 어딘가에서 알아와야함 일단 teatday 사용
