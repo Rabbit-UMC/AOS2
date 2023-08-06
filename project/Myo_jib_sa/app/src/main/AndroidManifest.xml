@@ -9,6 +9,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- 인터넷 접근 권한 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 외부 저장소 접근 권한 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".Login.KakaoApplication"
         android:allowBackup="true"
@@ -21,6 +25,21 @@
         android:theme="@style/Theme.Myo_jib_sa"
         tools:targetApi="31">
         <activity
+            android:name=".community.ManagerPageMissionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".community.ManagerPageByeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".community.ManagerPageEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".community.ManagerPageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".community.WritePostingActivity"
+            android:exported="false" /> <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <activity
             android:name=".schedule.currentMissionActivity.DeleteCurrentMissionActivity"
             android:exported="false" />
         <activity
@@ -31,7 +50,6 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="${AD_APP_ID}" />
-            android:value="ca-app-pub-1350635755184504~2813602960"/>
 
         <activity
             android:name=".schedule.currentMissionActivity.CurrentMissionActivity"
@@ -45,6 +63,11 @@
             android:name=".schedule.HistoryActivity"
             android:exported="false" />
         <activity
+            android:name=".community.PostActivity"
+            android:exported="false"
+            android:label="@string/title_activity_post"
+            android:theme="@style/Theme.Myo_jib_sa.NoActionBar"/>
+        <activity
             android:name=".community.BoardFreeActivity"
             android:exported="false" />
         <activity
@@ -53,6 +76,13 @@
         <activity
             android:name=".community.BoardExerciseActivity"
             android:exported="false" />
+        <activity
+            android:name=".community.missionCert.MissionCertificationActivity"
+            android:label="Mission Certification Activity" >
+        </activity>
+        <activity
+            android:name="com.example.myo_jib_sa.community.missionCert.MissionCertificationWriteActivity"
+            android:label="MissionCertificationWriteActivity" />
         <activity
             android:name=".Login.AddEmailDialogActivity"
             android:exported="false"

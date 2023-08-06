@@ -6,18 +6,23 @@ data class HomeResponse(
     val isSuccess:String,
     val code:Int,
     val message:String,
+    val result: HomeResult
+)
+data class HomeResult(
     val mainMission:List<MainMission>,
-    val popularTopic:List<PopularTopic>
-
+    val popularArticle:List<PopularArticle>
 )
 data class MainMission(
-    val mainMissionName:String,
-    val endTime:Timestamp,
-    val missionImage:String,
-    val catagoryName:String
+    val mainMissionTitle:String,
+    val dday:String,
+    val categoryImage:String,
+    val categoryName:String,
+    val mainMissionId:Long
 )
-data class PopularTopic(
-    val topicTitle:String,
+data class PopularArticle(
+    val articleTitle:String,
     val likeCount:Int,
-    val commentCount:Int
+    val commentCount:Int,
+    val articleId:Long,
+    val uploadTime:String
 )

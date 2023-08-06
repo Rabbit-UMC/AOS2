@@ -34,11 +34,12 @@ class CommunityHomeManager(context: Context) {
                 response: Response<HomeResponse>
             ) {
                 Log.d("홈 api", "RetrofitManager profile onResponse \t :${response.message()} ")
-                val response: HomeResponse? = response?.body() //LoginResponse 형식의 응답 받음
+                val response: HomeResponse? = response?.body() //response 형식의 응답 받음
                 if (response != null) {
-                    if (response.isSuccess=="TRUE") {
+                    if (response.isSuccess=="true") {
                         Log.d("홈 api",
                             "RetrofitManager 커뮤니티 홈 is Success\t :${response.code} ")
+
                         completion(response)
                     } else {
                         Log.d("홈 api",

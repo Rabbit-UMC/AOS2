@@ -23,11 +23,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:layout_marginEnd="7dp"
+            android:layout_marginEnd="8dp"
             android:text="D-0"
             android:textColor="@color/black"
             android:textSize="12dp"
-            android:textStyle="bold|italic"
+            android:fontFamily="@font/font_inter"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,7 +41,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_app" />
+            app:layout_constraintVertical_bias="0.69"
+            app:srcCompat="@drawable/ic_lock" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -52,7 +54,8 @@
         android:text="미션 이름"
         android:textColor="@color/black"
         android:textSize="12dp"
-        android:textStyle="bold|italic"
+        android:fontFamily="@font/font_inter"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -64,7 +67,8 @@
         android:text="게시판 이름"
         android:textColor="@color/black"
         android:textSize="12dp"
-        android:textStyle="bold|italic"
+        android:fontFamily="@font/font_inter"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MissionItem_constraintLayout" />

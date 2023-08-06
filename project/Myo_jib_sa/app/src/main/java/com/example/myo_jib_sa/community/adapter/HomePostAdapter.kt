@@ -1,19 +1,22 @@
 package com.example.myo_jib_sa.community.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.myo_jib_sa.community.PostActivity
 import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
-import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularTopic
+import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularArticle
 import com.example.myo_jib_sa.databinding.ItemCommunityMissionBinding
 import com.example.myo_jib_sa.databinding.ItemPostBinding
 
 class HomePostAdapter (
     private val context: Context,
-    private val dataList:List<PopularTopic>)
+    private val dataList:List<PopularArticle>)
     : RecyclerView.Adapter<HomePostAdapter.ViewHolder>(){
 
         //뷰홀더
@@ -21,16 +24,22 @@ class HomePostAdapter (
             private val binding: ItemPostBinding
         ): RecyclerView.ViewHolder(binding.root){
 
-            fun bind(item: PopularTopic){
-                binding.postItemNameTxt.text=item.topicTitle
+            fun bind(item: PopularArticle){
+                binding.postItemNameTxt.text=item.articleTitle
                 binding.postItmeCommentCntTxt.text=item.commentCount.toString()
-                binding.postItemUploadTimeTxt.text=""
+                binding.postItemUploadTimeTxt.text=item.uploadTime
                 binding.postItmeHeartNumTxt.text=item.likeCount.toString()
 
                 //클릭 이벤트
                 binding.root.setOnClickListener{
                     //클릭 이벤트 처리
                     //클릭시 해당 게시글 이동
+                    val postId=item.articleId
+                    //todo:val boardId=item.boardId
+                    val intent= Intent(binding.root.context, PostActivity::class.java)
+                    intent.putExtra("postId", postId)
+                    //todo:intent.putExtra("boardId", boardId)
+                    binding.root.context.startActivity(intent)
                 }
             }
         }
