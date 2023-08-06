@@ -49,15 +49,18 @@ class CommunityFragment : Fragment() {
 
         //터치시 게시판 이동
         binding.communityBoardArt.setOnClickListener {
-            val intent=Intent(requireActivity(), BoardArtActivity::class.java )
+            val intent=Intent(requireActivity(), BoardExerciseActivity::class.java )
+            intent.putExtra("boardId", Constance.ART_ID)
             startActivity(intent)
         }
         binding.communityBoardExcs.setOnClickListener {
             val intent=Intent(requireActivity(), BoardExerciseActivity::class.java )
+            intent.putExtra("boardId", Constance.EXERCISE_ID)
             startActivity(intent)
         }
         binding.communityBoardFree.setOnClickListener {
-            val intent=Intent(requireActivity(), BoardFreeActivity::class.java )
+            val intent=Intent(requireActivity(), BoardExerciseActivity::class.java )
+            intent.putExtra("boardId", Constance.FREE_ID)
             startActivity(intent)
         }
 
@@ -180,7 +183,7 @@ class CommunityFragment : Fragment() {
         binding.homeBestPostRecyclr.layoutManager = PlayoutManager
         binding.homeBestPostRecyclr.adapter = Padapter
 
-        Padapter.setItemSpacing(binding.homeBestPostRecyclr, 15)
+        //Padapter.setItemSpacing(binding.homeBestPostRecyclr, 15)
     }
 
 

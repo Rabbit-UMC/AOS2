@@ -67,5 +67,12 @@ interface PostRetrofitITFC {
                       ,@Path("commentsId") commentsId:Long):
             Call<SimpleResponse>
 
+    //게시글 댓글 잠그기
+    @PATCH("/app/comments/{commentsId}/lock")
+    fun commentLock(
+        @Header(Constance.author)author:String
+        ,@Path("commentsId") commentsId: Long
+    ):Call<SimpleResponse>
+
 
 }

@@ -15,6 +15,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
+import com.example.myo_jib_sa.community.Retrofit.imgUploadRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.manager.ManagerRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.post.ArticleImage
 import com.example.myo_jib_sa.community.Retrofit.post.PostRetrofitManager
@@ -22,6 +23,7 @@ import com.example.myo_jib_sa.community.adapter.WritePostImgAdapter
 import com.example.myo_jib_sa.databinding.ActivityManagerPageBinding
 import com.example.myo_jib_sa.databinding.ActivityManagerPageEditBinding
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 class ManagerPageEditActivity : AppCompatActivity() {
 
@@ -68,8 +70,11 @@ class ManagerPageEditActivity : AppCompatActivity() {
     private fun setPhoto(author:String, boardId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = ManagerRetrofitManager.getInstance(this)
         val imgpath = getRealPathFromURI(imgUri)
-        val base64Img = encodeImageToBase64(imgpath.toString())
-        retrofitManager.missionImgEdit(author,base64Img.toString() ,boardId){response ->
+        var imgUrl:String=""
+            ImgUploadResponse(imgpath.toString()){url->
+                imgUrl=url
+            }
+        retrofitManager.missionImgEdit(author,imgUrl.toString() ,boardId){response ->
             if(response){
                 callback(true)
             } else {
@@ -121,6 +126,36 @@ class ManagerPageEditActivity : AppCompatActivity() {
         }
         return null
     }
+
+    //이미지 업로드 api
+    private fun ImgUploadResponse(imgPath:String, callback: (String) -> Unit){
+        val imageFile = File(imgPath) // 이미지 파일 경로
+
+        val imgUploadRetrofitManager = imgUploadRetrofitManager(this)
+        imgUploadRetrofitManager.uploadImage(imageFile) { response ->
+            if (response != null) {
+                val imageUrl = response.imageUrl
+                val isSuccess = response.success
+                val message = response.message
+                Log.d("이미지 업로드 결과", "$message")
+                Log.d("이미지 업로드 결과", "$imageUrl")
+                if(isSuccess){
+                    Log.d("이미지 업로드 결과", "isSuccess")
+                    callback(imageUrl)
+
+                }else{
+                    Log.d("이미지 업로드 결과", "isSuccess이 false")
+                    callback("")
+                }
+
+            } else {
+                // TODO: 이미지 업로드 실패 처리 로직 추가
+                Log.d("이미지 업로드 결과", "실패")
+                callback("")
+            }
+        }
+    }
+
 
     //토스트 메시지 띄우기
     private fun showToast(message: String) {
