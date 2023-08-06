@@ -41,7 +41,7 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
 
     val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
-            Log.e(TAG, "카카오계정으로 로그인 실패", error)
+            Log.e("LOGIN", "카카오계정으로 로그인 실패", error)
         } else if (token != null) {
             UserApiClient.instance.me { user, error ->
                 if (error != null) {
@@ -60,7 +60,7 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                     }
                 }
             }
-            Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+            Log.i("LOGIN", "카카오계정으로 로그인 성공 ${token.accessToken}")
         }
     }
 

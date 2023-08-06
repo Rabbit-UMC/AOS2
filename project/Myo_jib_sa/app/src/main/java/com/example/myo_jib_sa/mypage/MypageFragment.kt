@@ -65,10 +65,10 @@ class MypageFragment : Fragment() {
                     badgeDrawable.isVisible = true // 탭이 선택되면 뱃지를 보이도록 설정
 
                     // 뱃지 크기 조절
-                    val badgeSize = resources.getDimensionPixelSize(R.dimen.custom_badge_size) // 원하는 크기로 변경
+                    //val badgeSize = resources.getDimensionPixelSize(R.dimen.custom_badge_size) // 원하는 크기로 변경
                     val layoutParams = badgeDrawable.bounds // 기존 뱃지의 bounds 가져오기
-                    layoutParams.right = layoutParams.left + badgeSize // 너비 조절
-                    layoutParams.bottom = layoutParams.top + badgeSize // 높이 조절
+                    //layoutParams.right = layoutParams.left + badgeSize // 너비 조절
+                    //layoutParams.bottom = layoutParams.top + badgeSize // 높이 조절
                     badgeDrawable.bounds = layoutParams // 크기 조절된 bounds 적용
                 }
             }

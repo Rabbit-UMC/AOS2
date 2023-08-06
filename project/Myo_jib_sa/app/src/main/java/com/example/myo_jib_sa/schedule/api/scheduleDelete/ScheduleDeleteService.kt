@@ -10,7 +10,7 @@ import retrofit2.http.Path
 
 interface ScheduleDeleteService {
     companion object {
-        private const val authKey =  //Authorization쓰기!!
+        //private const val authKey =  //Authorization쓰기!!
     }
     @DELETE("app/schedule/{scheduleId}")
     fun scheduleDelete(
