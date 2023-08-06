@@ -93,8 +93,6 @@ class LoginAddEmailDialogFragment(private val onEmailEnteredListener: OnEmailEnt
         return
     }
 
-
-
     //다이얼로그 설정
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)

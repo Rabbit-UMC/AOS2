@@ -14,6 +14,7 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.Login.API.*
 import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.databinding.*
@@ -64,8 +65,8 @@ class MyoSignUpActivity : AppCompatActivity() {
 
         //로그인 api 연결
         // 카카오 로그인 API 호출
-        val clientId = "9229a8cac4400f8ce4b3af38e28a0ccc"
-        val redirectUri = "http://3.39.96.137/app/users/kakao-login"
+        val clientId = BuildConfig.KAKAO_API_KEY
+        val redirectUri = BuildConfig.Redirect_URI
         val responseType = "code"
 
         //Login API 연결

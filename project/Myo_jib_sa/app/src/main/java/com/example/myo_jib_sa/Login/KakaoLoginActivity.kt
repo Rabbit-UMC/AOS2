@@ -30,7 +30,6 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
             */
 
             //kakao로그인
-
              if (UserApiClient.instance.isKakaoTalkLoginAvailable(this@KakaoLoginActivity)) {
                  UserApiClient.instance.loginWithKakaoTalk(this@KakaoLoginActivity, callback = callback)
              } else {
