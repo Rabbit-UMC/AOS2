@@ -23,6 +23,7 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
         setContentView(binding.root)
 
         binding.kakaoLoginBtn.setOnClickListener {
+
             /*
             val intent = Intent(this@KakaoLoginActivity, MainActivity::class.java)
             startActivity(intent)
@@ -41,7 +42,7 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
 
     val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
-            Log.e("LOGIN", "카카오계정으로 로그인 실패", error)
+            Log.e(TAG, "카카오계정으로 로그인 실패", error)
         } else if (token != null) {
             UserApiClient.instance.me { user, error ->
                 if (error != null) {
@@ -60,7 +61,7 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                     }
                 }
             }
-            Log.i("LOGIN", "카카오계정으로 로그인 성공 ${token.accessToken}")
+            Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
         }
     }
 

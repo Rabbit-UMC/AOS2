@@ -4,6 +4,11 @@
 
     <uses-sdk tools:overrideLibrary="androidx.core.splashscreen" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- 인터넷 접근 권한 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 외부 저장소 접근 권한 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -33,7 +38,7 @@
             android:exported="false" />
         <activity
             android:name=".community.WritePostingActivity"
-            android:exported="false" />
+            android:exported="false" /> <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <activity
             android:name=".schedule.currentMissionActivity.DeleteCurrentMissionActivity"
             android:exported="false" />
@@ -41,9 +46,10 @@
             android:name=".mission.MissionWriteMissionActivity"
             android:windowSoftInputMode="adjustPan"
             />
+        <!--  ${AD_APP_ID} Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="${AD_APP_ID}" />
+            android:value="ca-app-pub-1350635755184504~2813602960" />
 
         <activity
             android:name=".schedule.currentMissionActivity.CurrentMissionActivity"
@@ -95,10 +101,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
-                <data android:host="oauth"
-                    android:scheme="kakao${NATIVE_APP_KEY}" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
