@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
+import com.example.myo_jib_sa.schedule.adapter.CalendarData
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.CreateScheduleCalendarAdapter
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDateData
@@ -34,8 +35,6 @@ class CreateScheduleActivity : AppCompatActivity() {
 
     private var isClickCalendarImgBtn = false //달력이미지버튼 클릭에서 사용
     private var selectedDateIndex : Int = 0//referenceDate의 dayList에서 index값 //달력이미지버튼 클릭에서 사용
-
-    private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils//키보드 유틸
 
     private var scheduleData : ScheduleDetailResult = ScheduleDetailResult(
         scheduleId = 0,
@@ -72,26 +71,7 @@ class CreateScheduleActivity : AppCompatActivity() {
 
         calendarRvItemClickEvent()//캘린더 아이템 클릭이벤트
 
-        //키보드 유틸 : edittext
-        binding.scheduleMemoEtv.setOnFocusChangeListener (object : View.OnFocusChangeListener {
-            override fun onFocusChange(view: View, hasFocus: Boolean) {
-                if (hasFocus) {
-                    //  .. 포커스시
-                    //binding.textView22.visibility = View.INVISIBLE
-//                    keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
-//                        { keyboardHeight ->
-//                            binding.root.run {
-//                                smoothScrollTo(scrollX, scrollY + keyboardHeight)
-//                            }
-//                        })
-                } else {
-                    //  .. 포커스 뺏겼을 때
-                    //binding.textView22.visibility = View.VISIBLE
 
-                    //onShowKeyboard =
-                }
-            }
-        })
 
     }
 
@@ -112,7 +92,7 @@ class CreateScheduleActivity : AppCompatActivity() {
         dayInMonthArray(referenceDate)
 
         //리사이클러뷰 연결
-        calendarAdapter = CreateScheduleCalendarAdapter(dayList, isClickCalendarImgBtn)
+        calendarAdapter = CreateScheduleCalendarAdapter(dayList)
         binding.calendarRv.layoutManager = GridLayoutManager(this, 7)
         binding.calendarRv.adapter = calendarAdapter
     }
@@ -131,18 +111,31 @@ class CreateScheduleActivity : AppCompatActivity() {
         var dayOfWeek = firstDay.dayOfWeek.value
 
         for(i in 1..42){
-            if(i<=dayOfWeek || i>(lastDay + dayOfWeek)){
+
+            if(dayOfWeek == 7){//그 달의 첫날이 일요일일때 작동: 한칸 아래줄부터 날짜 표시되는 현상 막기위해
+                if(i>lastDay)
+                    break
+                if(i == referenceDate.dayOfMonth) {//referenceDate의 dayList에서 index값
+                    selectedDateIndex = i - 1
+                }
+                if(selectedDate == LocalDate.of(referenceDate.year, referenceDate.monthValue, i) ){ //현재 선택한 date
+                    dayList.add(SelectDateData(LocalDate.of(referenceDate.year, referenceDate.monthValue, i), true))
+                } else{
+                    dayList.add(SelectDateData(LocalDate.of(referenceDate.year, referenceDate.monthValue, i)))
+                }
+            }
+            else if(i<=dayOfWeek || i>(lastDay + dayOfWeek)){//그 외 경우
                 dayList.add(SelectDateData(null))
-            }else{
+            }
+            else{
                 if(i-dayOfWeek == referenceDate.dayOfMonth) {//referenceDate의 dayList에서 index값
                     selectedDateIndex = i - 1
                 }
-                if( selectedDate == LocalDate.of(referenceDate.year, referenceDate.monthValue, i-dayOfWeek) && isClickCalendarImgBtn){ //현재 선택한 date
+                if( selectedDate == LocalDate.of(referenceDate.year, referenceDate.monthValue, i-dayOfWeek) ){ //현재 선택한 date
                     dayList.add(SelectDateData(LocalDate.of(referenceDate.year, referenceDate.monthValue, i-dayOfWeek), true))
                 } else{
                     dayList.add(SelectDateData(LocalDate.of(referenceDate.year, referenceDate.monthValue, i-dayOfWeek)))
                 }
-
             }
         }
 
@@ -163,6 +156,7 @@ class CreateScheduleActivity : AppCompatActivity() {
                     calendarAdapter.notifyItemChanged(selectedDateIndex)
                 }
 
+                selectedDate = selectDateData.date!!
 
                 var iYear = selectDateData.date?.year
                 var iMonth = selectDateData.date?.monthValue
@@ -205,40 +199,34 @@ class CreateScheduleActivity : AppCompatActivity() {
 
         //이전달로 이동
         binding.preMonthBtn.setOnClickListener {
-            if (isClickCalendarImgBtn) {
                 referenceDate = referenceDate.minusMonths(1)
                 setMonthView()
                 calendarRvItemClickEvent()
-            }
         }
         //다음달로 이동
         binding.nextMonthBtn.setOnClickListener {
-            if (isClickCalendarImgBtn) {
                 referenceDate = referenceDate.plusMonths(1)
                 setMonthView()
                 calendarRvItemClickEvent()
-            }
         }
 
         //달력이미지 클릭
         binding.calendarBtn.setOnClickListener {
-            if (!isClickCalendarImgBtn) {
+            if (!isClickCalendarImgBtn) {//캘린더 보이게
+                binding.calendarLayout.visibility = View.VISIBLE
+                binding.calendarBtn.setImageResource(R.drawable.ic_schedule_calendar)
                 isClickCalendarImgBtn = true
-                val temp = dayList[selectedDateIndex]
-                dayList[selectedDateIndex] = SelectDateData(temp.date, true)
-                selectedDate = temp.date!!
-                //calendarAdapter.notifyDataSetChanged()
+            }
+            else{//캘린더 안보이게
+                binding.calendarLayout.visibility = View.GONE
+                binding.calendarBtn.setImageResource(R.drawable.ic_schedule_calendar_black)
+                isClickCalendarImgBtn = false
 
-                //캘린더 다시 구성
-                calendarAdapter = CreateScheduleCalendarAdapter(dayList, isClickCalendarImgBtn)
-                binding.calendarRv.layoutManager = GridLayoutManager(this, 7)
-                binding.calendarRv.adapter = calendarAdapter
-                calendarRvItemClickEvent()
             }
         }
 
         //시간|미션 클릭
-        binding.missionSelectLayout.setOnClickListener {
+        binding.missionTitleTv.setOnClickListener {
             setSpinnerDialog(0)
         }
         binding.scheduleStartAtTv.setOnClickListener{

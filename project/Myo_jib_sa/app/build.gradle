@@ -31,6 +31,9 @@ android {
         //애드몹 광고 아이디 - 변경필요
         buildConfigField "String", "AD_UNIT_ID", properties['adUnitId']
 
+        buildConfigField "String", "API_TOKEN", properties['apiToken']
+
+
         //키 - 값
         // 매니페스트에서 사용 가능
         //애드몹: 앱 아이디

@@ -132,7 +132,7 @@ class ScheduleDetailDialogFragment : DialogFragment() {
 
     //scheduleDetail api연결
     fun scheduleDetailApi(scheduleId: Long) {
-        val token: String = BuildConfig.KAKAO_API_KEY
+        val token: String = BuildConfig.API_TOKEN
         Log.d("debug", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(ScheduleDetailService::class.java)

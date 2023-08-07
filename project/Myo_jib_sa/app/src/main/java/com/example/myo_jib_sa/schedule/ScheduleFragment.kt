@@ -389,7 +389,7 @@ class ScheduleFragment : Fragment() {
 
     //scheduleHome api연결
     fun scheduleHomeApi() {
-        val token : String = BuildConfig.KAKAO_API_KEY
+        val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
@@ -426,7 +426,7 @@ class ScheduleFragment : Fragment() {
     //scheduleOfDay api연결
     //calendarRvItemClickEvent()안에서만 실행
     fun scheduleOfDayApi(date: String?) {
-        val token : String = BuildConfig.KAKAO_API_KEY
+        val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 //
 //        val requestBody = ScheduleOfDayRequest(
@@ -503,7 +503,7 @@ class ScheduleFragment : Fragment() {
     fun scheduleOfDayApiForCheck(date: String?) {
         var checkResult: Boolean = false
 
-          val token = BuildConfig.KAKAO_API_KEY
+          val token = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 //
 //        val requestBody = ScheduleOfDayRequest(
