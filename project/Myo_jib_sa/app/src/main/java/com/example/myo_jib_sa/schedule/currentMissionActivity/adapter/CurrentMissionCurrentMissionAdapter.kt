@@ -3,6 +3,8 @@ package com.example.myo_jib_sa.schedule.currentMissionActivity.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.adapter.CalendarData
@@ -15,7 +17,8 @@ data class CurrentMissionData(
     var missionId:Long
 )
 
-class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<CurrentMissionData>):
+class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<CurrentMissionData>,
+                                           private val width:Int, private val height:Int):
     RecyclerView.Adapter<CurrentMissionCurrentMissionAdapter.ViewHolder>() {
 
 
@@ -26,6 +29,8 @@ class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<Cur
     ): ViewHolder {
         val binding =
             ItemCurrentMissionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding.root.layoutParams = ConstraintLayout.LayoutParams((width*0.46).toInt(), (width*0.46*1.2).toInt())
+        //binding.frameLayout.layoutParams = ConstraintLayout.LayoutParams((width*0.40).toInt(), (height*0.16).toInt())
         return ViewHolder(binding)
     }
 
@@ -50,6 +55,7 @@ class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<Cur
     class ViewHolder(private val binding: ItemCurrentMissionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: CurrentMissionData) {
+
             binding.missionTitleTv.text = data.missionTitle
             binding.missionDdayTv.text = data.missionDday
             binding.missionChallengerTv.text = "${data.missionChallengerCnt}명"
