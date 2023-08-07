@@ -219,7 +219,7 @@
                 android:background="@android:color/transparent"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_schedule_calendar_left" />
+                app:srcCompat="@drawable/ic_schedule_calendar_left_black" />
 
             <TextView
                 android:id="@+id/month_tv"
@@ -240,7 +240,7 @@
                 android:background="@android:color/transparent"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_schedule_calendar_right" />
+                app:srcCompat="@drawable/ic_schedule_calendar_right_black" />
 
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView

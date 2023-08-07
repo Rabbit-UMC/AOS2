@@ -1,12 +1,15 @@
 package com.example.myo_jib_sa.schedule.createScheduleActivity
 
 import android.content.Context
+import android.graphics.Point
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
@@ -25,6 +28,7 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
+import kotlin.math.roundToInt
 
 class CreateScheduleActivity : AppCompatActivity() {
     private lateinit var binding : ActivityCreateScheduleBinding
@@ -280,6 +284,7 @@ class CreateScheduleActivity : AppCompatActivity() {
             }
         })
     }
+
 
 
 

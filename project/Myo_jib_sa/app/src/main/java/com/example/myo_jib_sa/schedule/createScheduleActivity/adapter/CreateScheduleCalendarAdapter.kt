@@ -43,6 +43,8 @@ class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(dayList[position])
 
+
+
         if(!dayList[position].isSelected) {
             //날짜 클릭 이벤트
             holder.itemView.setOnClickListener {
@@ -67,6 +69,8 @@ class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData
         RecyclerView.ViewHolder(binding.root) {
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(data: SelectDateData) {
+
+
 
             //날짜 변수에 담기
             if(data.date==null){

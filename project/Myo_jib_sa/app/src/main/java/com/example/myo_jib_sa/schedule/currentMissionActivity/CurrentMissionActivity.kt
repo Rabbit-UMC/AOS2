@@ -1,8 +1,6 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -60,7 +58,7 @@ class CurrentMissionActivity : AppCompatActivity() {
         missionList.add(CurrentMissionData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
 
 
-        currentMissionAdapter = CurrentMissionCurrentMissionAdapter(missionList)
+        currentMissionAdapter = CurrentMissionCurrentMissionAdapter(missionList, getDisplayWidthSize(), getDisplayHeightSize())
         binding.missionListRv.layoutManager = GridLayoutManager(this, 2)
         binding.missionListRv.adapter = currentMissionAdapter
     }
@@ -124,5 +122,33 @@ class CurrentMissionActivity : AppCompatActivity() {
 
             }
         })
+    }
+
+    fun getDisplayWidthSize(): Int {
+
+        val display = this.applicationContext?.resources?.displayMetrics
+
+        return display?.widthPixels!!
+    }
+    fun getDisplayHeightSize(): Int {
+
+        //statusbarHeight
+        var statusbarHeight = 0
+        val resourceId: Int = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            statusbarHeight = resources.getDimensionPixelSize(resourceId)
+        }
+
+        //navigationbarHeight
+        val resourceId2 = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        var navigationbarHeight = 0
+        if (resourceId2 > 0) {
+            navigationbarHeight = resources.getDimensionPixelSize(resourceId)
+        }
+
+        val display = this.applicationContext?.resources?.displayMetrics
+
+        return display?.heightPixels!! + statusbarHeight + navigationbarHeight
+
     }
 }
