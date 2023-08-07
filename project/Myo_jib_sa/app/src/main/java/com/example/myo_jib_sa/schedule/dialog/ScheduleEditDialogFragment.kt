@@ -206,7 +206,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
     //scheduleModify api연결
     private fun scheduleModifyApi() {
-        val token : String = BuildConfig.KAKAO_API_KEY
+        val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 //
         val requestBody = ScheduleModifyRequest(

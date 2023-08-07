@@ -28,7 +28,7 @@
         <activity
             android:name=".schedule.createScheduleActivity.CreateScheduleActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:exported="false" />
         <activity
             android:name=".schedule.HistoryActivity"

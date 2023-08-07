@@ -128,7 +128,7 @@ class SpinnerMissionFragment : Fragment() {
 
     //scheduleHome api연결 for missionList받기위해
     private fun scheduleHomeApi() {
-        val token : String = BuildConfig.KAKAO_API_KEY
+        val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
