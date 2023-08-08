@@ -6,42 +6,52 @@ import android.graphics.Rect
 import android.view.*
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.databinding.ItemMissionMissionBinding
+import com.example.myo_jib_sa.mission.API.Home
+import com.example.myo_jib_sa.mission.API.MissionHomeResponse
+
 class MissionAdapter(
     private val context: Context,
-    private val dataList: List<RecyclerMissionData>,
+    private val dataList: List<Home>,
     private val onItemClickListener: OnItemClickListener,
     private val onItemLongClickListener: OnItemLongClickListener
 ) : RecyclerView.Adapter<MissionAdapter.ViewHolder>() {
 
 
     interface OnItemLongClickListener {
-        fun onItemLongClick(item: RecyclerMissionData)
+        fun onItemLongClick(item:Home)
     }
 
     interface OnItemClickListener {
-        fun onItemClick(item: RecyclerMissionData)
+        fun onItemClick(item:Home)
     }
 
     inner class ViewHolder(
         private val binding: ItemMissionMissionBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: RecyclerMissionData) {
+        fun bind(item: Home) {
             binding.missionTitleTxt.text = item.title
-            binding.missionIntroTxt.text = item.intro
-            binding.missionImg.setImageResource(item.imageSrc)
-            binding.missionStartTimeTxt.text = item.start
-            binding.missionEndTimeTxt.text = item.end
+            binding.missionIntroTxt.text = item.content
+            Glide.with(binding.root.context)
+                .load(item.image)
+                .into(binding.missionImg)
+            binding.missionStartTimeTxt.text = item.startAt
+            binding.missionEndTimeTxt.text = item.endAt
+            binding.missionChallengerTxt.text=item.challengerCnt.toString()
 
-            // 롱클릭 이벤트 처리
+            // 롱클릭 이벤트 처리(신고)
             binding.root.setOnLongClickListener {
+                //클릭된 아이템의 위치 가져오기
+                val item = dataList[adapterPosition]
                 onItemLongClickListener.onItemLongClick(item)
                 true // 이벤트가 소비되었음을 반환
             }
 
-            // 간단한 클릭 이벤트 처리
+            // 간단한 클릭 이벤트 처리(미션 상세보기)
             binding.root.setOnClickListener {
+                val item = dataList[adapterPosition]
                 onItemClickListener.onItemClick(item)
             }
         }

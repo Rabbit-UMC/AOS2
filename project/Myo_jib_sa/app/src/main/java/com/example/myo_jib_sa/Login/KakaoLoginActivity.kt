@@ -24,10 +24,10 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
 
         binding.kakaoLoginBtn.setOnClickListener {
 
-            /*
-            val intent = Intent(this@KakaoLoginActivity, MainActivity::class.java)
-            startActivity(intent)
-            */
+
+/*            val intent = Intent(this@KakaoLoginActivity, MyoSignUpActivity::class.java)
+            startActivity(intent)*/
+
 
             //kakao로그인
              if (UserApiClient.instance.isKakaoTalkLoginAvailable(this@KakaoLoginActivity)) {

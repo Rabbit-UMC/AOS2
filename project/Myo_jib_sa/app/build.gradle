@@ -30,6 +30,8 @@ android {
         buildConfigField "String", "KAKAO_API_KEY", properties['KAKAO_API_KEY']
         buildConfigField "String", "Redirect_URI", properties['Redirect_URI']
 
+        buildConfigField "String", "jwt", properties['jwt']
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // 타입 - 키 - 값
