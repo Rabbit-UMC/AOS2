@@ -21,7 +21,7 @@ class MissionReportDialogFragment : DialogFragment() {
         }
 
         binding.reportCheckTxt.setOnClickListener {
-            // 신고 api 연결 로직
+            // 신고 api 연결
             dismiss()
         }
 
