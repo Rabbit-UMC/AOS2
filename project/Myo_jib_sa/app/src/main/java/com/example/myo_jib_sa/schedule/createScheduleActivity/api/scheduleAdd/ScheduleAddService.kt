@@ -6,14 +6,15 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.PATCH
+import retrofit2.http.POST
 
 interface ScheduleAddService {
     companion object {
         private const val authKey = "" //Authorization쓰기!!
     }
 
-    @PATCH("app/schedule/{scheduleId}")//?Authorization=$authKey
-    fun scheduleModify(
+    @POST("app/schedule")//?Authorization=$authKey
+    fun scheduleAdd(
         @Header("X-ACCESS-TOKEN")
         accessToken: String,
         @Body requestBody: ScheduleAddRequest
@@ -26,7 +27,8 @@ data class ScheduleAddRequest(
     val content: String,
     val startAt: String,
     val endAt: String,
-    val missionId: Long,
     @SerializedName("when")
-    val scheduleWhen: String
+    val scheduleWhen: String,
+    val missionId: Long
+
 )

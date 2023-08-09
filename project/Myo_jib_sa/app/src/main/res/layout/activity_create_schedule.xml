@@ -364,15 +364,13 @@
     <LinearLayout
         android:id="@+id/calendar_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/view_round_r20_indigo"
-
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
+        android:weightSum="20"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.39"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <RelativeLayout
@@ -436,7 +434,7 @@
                 app:srcCompat="@drawable/ic_schedule_calendar_right" />
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/calendarComplete_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -453,10 +451,10 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/calendar_rv"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp" />
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"/>
 
     </LinearLayout>
 
