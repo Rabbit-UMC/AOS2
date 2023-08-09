@@ -78,7 +78,7 @@ class CurrentMissionActivity : AppCompatActivity() {
         scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29"))
 
 
-        val scheduleAdapter = CurrentMissionScheduleAdapter(scheduleList)
+        val scheduleAdapter = CurrentMissionScheduleAdapter(scheduleList, getDisplayHeightSize())
         binding.scheduleListRv.layoutManager = LinearLayoutManager(this)
         binding.scheduleListRv.adapter = scheduleAdapter
     }

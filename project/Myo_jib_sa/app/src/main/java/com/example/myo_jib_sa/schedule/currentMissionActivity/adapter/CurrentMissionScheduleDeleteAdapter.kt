@@ -15,7 +15,8 @@ data class ScheduleDeleteAdapterData(
     var selected:Boolean = false
 )
 
-class CurrentMissionScheduleDeleteAdapter(private val missionList:ArrayList<ScheduleDeleteAdapterData>):
+class CurrentMissionScheduleDeleteAdapter(private val missionList:ArrayList<ScheduleDeleteAdapterData>,
+                                          private val height:Int):
     RecyclerView.Adapter<CurrentMissionScheduleDeleteAdapter.ViewHolder>() {
 
 
@@ -30,6 +31,7 @@ class CurrentMissionScheduleDeleteAdapter(private val missionList:ArrayList<Sche
                 parent,
                 false
             )
+        binding.root.layoutParams.height = (height*0.088).toInt()
         return ViewHolder(binding)
     }
 

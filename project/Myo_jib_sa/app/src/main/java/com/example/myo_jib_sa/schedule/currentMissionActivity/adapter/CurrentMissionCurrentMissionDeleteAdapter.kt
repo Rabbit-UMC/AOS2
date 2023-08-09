@@ -3,6 +3,7 @@ package com.example.myo_jib_sa.schedule.currentMissionActivity.adapter
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionDeleteBinding
 
@@ -15,7 +16,8 @@ data class CurrentMissionDeleteData(
     var selected:Boolean = false
 )
 
-class CurrentMissionCurrentMissionDeleteAdapter (private val missionList:ArrayList<CurrentMissionDeleteData>):
+class CurrentMissionCurrentMissionDeleteAdapter (private val missionList:ArrayList<CurrentMissionDeleteData>,
+                                                 private val width:Int):
     RecyclerView.Adapter<CurrentMissionCurrentMissionDeleteAdapter.ViewHolder>() {
 
 
@@ -26,6 +28,7 @@ class CurrentMissionCurrentMissionDeleteAdapter (private val missionList:ArrayLi
     ): ViewHolder {
         val binding =
             ItemCurrentMissionDeleteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding.root.layoutParams = ConstraintLayout.LayoutParams((width*0.46).toInt(), (width*0.46*1.2).toInt())
         return ViewHolder(binding)
     }
 
