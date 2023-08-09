@@ -67,7 +67,7 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
         missionList.add(CurrentMissionDeleteData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
 
 
-        currentMissionDeleteAdapter = CurrentMissionCurrentMissionDeleteAdapter(missionList)
+        currentMissionDeleteAdapter = CurrentMissionCurrentMissionDeleteAdapter(missionList, getDisplayWidthSize())
         binding.missionListRv.layoutManager = GridLayoutManager(this, 2)
         binding.missionListRv.adapter = currentMissionDeleteAdapter
     }
@@ -88,7 +88,7 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
         scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29", 1))
 
 
-        scheduleDeleteAdapter = CurrentMissionScheduleDeleteAdapter(scheduleList)
+        scheduleDeleteAdapter = CurrentMissionScheduleDeleteAdapter(scheduleList, getDisplayHeightSize())
         binding.scheduleListRv.layoutManager = LinearLayoutManager(this)
         binding.scheduleListRv.adapter = scheduleDeleteAdapter
     }
@@ -163,7 +163,35 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
 
     }
 
+    //화면 width구하기
+    fun getDisplayWidthSize(): Int {
 
+        val display = this.applicationContext?.resources?.displayMetrics
+
+        return display?.widthPixels!!
+    }
+    //화면 height구하기
+    private fun getDisplayHeightSize(): Int {
+
+        //statusbarHeight
+        var statusbarHeight = 0
+        val resourceId: Int = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            statusbarHeight = resources.getDimensionPixelSize(resourceId)
+        }
+
+        //navigationbarHeight
+        val resourceId2 = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        var navigationbarHeight = 0
+        if (resourceId2 > 0) {
+            navigationbarHeight = resources.getDimensionPixelSize(resourceId)
+        }
+
+        val display = this.applicationContext?.resources?.displayMetrics
+
+        return display?.heightPixels!! + statusbarHeight + navigationbarHeight
+
+    }
 
 
 
