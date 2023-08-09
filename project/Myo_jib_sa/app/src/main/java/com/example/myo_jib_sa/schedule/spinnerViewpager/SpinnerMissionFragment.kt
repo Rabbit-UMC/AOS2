@@ -48,12 +48,13 @@ class SpinnerMissionFragment : Fragment() {
 
         // missionTitleList 초기화
         missionTitleList = mutableListOf()
-        titleIdMap =  hashMapOf()
+        titleIdMap = hashMapOf()
         titleTitleMap = hashMapOf()
 
         getData()//sharedPreference로 값 받기
         //값 저장할 sharedPreference 부르기
-        val sharedPreference = requireContext().getSharedPreferences("scheduleModifiedData",
+        val sharedPreference = requireContext().getSharedPreferences(
+            "scheduleModifiedData",
             Context.MODE_PRIVATE
         )
         val editor = sharedPreference.edit()
@@ -69,29 +70,32 @@ class SpinnerMissionFragment : Fragment() {
         CoroutineScope(Dispatchers.Main).launch {
             delay(70)
             numberpicker.minValue = 0
-            numberpicker.maxValue = missionTitleList.size -1
+            numberpicker.maxValue = missionTitleList.size - 1
             numberpicker.value = setNumberpickerInitvalue(scheduleData.missionTitle)//초기값 설정
             numberpicker.displayedValues = missionTitleList.toTypedArray()
             numberpicker.wrapSelectorWheel = true //순환
             numberpicker.descendantFocusability =
                 NumberPicker.FOCUS_BLOCK_DESCENDANTS //editText가 눌리는 것을 막는다
+
+
+            numberpicker.setOnValueChangedListener(object : NumberPicker.OnValueChangeListener {
+                override fun onValueChange(picker: NumberPicker, oldVal: Int, newVal: Int) {
+                    //Display the newly selected value from picker
+                    //tv.setText("Selected value : " + missionTitleList.get(newVal))
+                    var pickScheduleTitle = missionTitleList.get(newVal)
+                    Log.d("debug", "missionTitle : $pickScheduleTitle")
+
+                    scheduleData.missionId = titleIdMap[pickScheduleTitle]!!
+                    Log.d(
+                        "debug",
+                        "고른 미션 이름: ${titleTitleMap[scheduleData.missionId]}.${scheduleData.missionId}"
+                    )
+                    editor.putString("missionTitle", titleTitleMap[scheduleData.missionId])
+                    editor.putLong("missionId", scheduleData.missionId)
+                    editor.apply()// data 저장!
+                }
+            })
         }
-
-        numberpicker.setOnValueChangedListener(object : NumberPicker.OnValueChangeListener {
-            override fun onValueChange(picker: NumberPicker, oldVal: Int, newVal: Int) {
-                //Display the newly selected value from picker
-                //tv.setText("Selected value : " + missionTitleList.get(newVal))
-                var pickScheduleTitle = missionTitleList.get(newVal)
-                Log.d("debug", "missionTitle : $pickScheduleTitle")
-
-                scheduleData.missionId = titleIdMap[pickScheduleTitle]!!
-                Log.d("debug", "고른 미션 이름: ${titleTitleMap[scheduleData.missionId]}.${scheduleData.missionId}")
-                editor.putString("missionTitle", titleTitleMap[scheduleData.missionId])
-                editor.putLong("missionId", scheduleData.missionId)
-                editor.apply()// data 저장!
-            }
-        })
-
         return binding.root
     }
     override fun onPause() {

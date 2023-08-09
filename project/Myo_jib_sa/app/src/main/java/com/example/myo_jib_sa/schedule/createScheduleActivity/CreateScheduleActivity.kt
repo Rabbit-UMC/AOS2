@@ -13,15 +13,25 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.adapter.CalendarData
+import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
+import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
+import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyResponse
+import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.CreateScheduleCalendarAdapter
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDateData
+import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddRequest
+import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddService
 import com.example.myo_jib_sa.schedule.createScheduleActivity.spinner.ScheduleCreateSpinnerDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleSpinnerDialogFragment
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -117,15 +127,40 @@ class CreateScheduleActivity : AppCompatActivity() {
         for(i in 1..42){
 
             if(dayOfWeek == 7){//그 달의 첫날이 일요일일때 작동: 한칸 아래줄부터 날짜 표시되는 현상 막기위해
-                if(i>lastDay)
-                    break
-                if(i == referenceDate.dayOfMonth) {//referenceDate의 dayList에서 index값
-                    selectedDateIndex = i - 1
+                if(i>lastDay) {
+                    //break
+                    dayList.add(SelectDateData(null))
                 }
-                if(selectedDate == LocalDate.of(referenceDate.year, referenceDate.monthValue, i) ){ //현재 선택한 date
-                    dayList.add(SelectDateData(LocalDate.of(referenceDate.year, referenceDate.monthValue, i), true))
-                } else{
-                    dayList.add(SelectDateData(LocalDate.of(referenceDate.year, referenceDate.monthValue, i)))
+                else {
+                    if (i == referenceDate.dayOfMonth) {//referenceDate의 dayList에서 index값
+                        selectedDateIndex = i - 1
+                    }
+                    if (selectedDate == LocalDate.of(
+                            referenceDate.year,
+                            referenceDate.monthValue,
+                            i
+                        )
+                    ) { //현재 선택한 date
+                        dayList.add(
+                            SelectDateData(
+                                LocalDate.of(
+                                    referenceDate.year,
+                                    referenceDate.monthValue,
+                                    i
+                                ), true
+                            )
+                        )
+                    } else {
+                        dayList.add(
+                            SelectDateData(
+                                LocalDate.of(
+                                    referenceDate.year,
+                                    referenceDate.monthValue,
+                                    i
+                                )
+                            )
+                        )
+                    }
                 }
             }
             else if(i<=dayOfWeek || i>(lastDay + dayOfWeek)){//그 외 경우
@@ -193,25 +228,31 @@ class CreateScheduleActivity : AppCompatActivity() {
                 Log.d("exitDebug", "no!!")
                 val errorDialogFragment = ErrorDialogFragment()
                 errorDialogFragment.show(supportFragmentManager, "ErrorDialogFragment")
-
-
-            } else {
+            } else {//정상적일때
                 Log.d("exitDebug", "yes!!")
+                SchduleAddApi()
                 finish()
             }
         }
 
-        //이전달로 이동
+        //캘린더: 이전달로 이동
         binding.preMonthBtn.setOnClickListener {
                 referenceDate = referenceDate.minusMonths(1)
                 setMonthView()
                 calendarRvItemClickEvent()
         }
-        //다음달로 이동
+        //캘린더: 다음달로 이동
         binding.nextMonthBtn.setOnClickListener {
                 referenceDate = referenceDate.plusMonths(1)
                 setMonthView()
                 calendarRvItemClickEvent()
+        }
+
+        //캘린더에서 완료 버튼 클릭
+        binding.calendarCompleteTv.setOnClickListener {
+            binding.calendarLayout.visibility = View.GONE
+            binding.calendarBtn.setImageResource(R.drawable.ic_schedule_calendar_black)
+            isClickCalendarImgBtn = false
         }
 
         //달력이미지 클릭
@@ -285,7 +326,40 @@ class CreateScheduleActivity : AppCompatActivity() {
         })
     }
 
+    private fun SchduleAddApi(){
+        val token : String = BuildConfig.API_TOKEN
+//        Log.d("retrofit", "token = "+token+"l");
+//
+        val requestBody = ScheduleAddRequest(
+            title = binding.scheduleTitleEtv.text.toString(),
+            content = binding.scheduleMemoEtv.text.toString() ,//메모
+            startAt = scheduleData.startAt,
+            endAt = scheduleData.endAt,
+            missionId = scheduleData.missionId,
+            scheduleWhen = scheduleDateFormatter()
+        )
+        Log.d("retrofit", "ScheduleAddRequest: $requestBody");
 
+        val service = RetrofitClient.getInstance().create(ScheduleAddService::class.java)
+        val listCall = service.scheduleAdd(token, requestBody)
+
+        listCall.enqueue(object : Callback<ScheduleModifyResponse> {
+            override fun onResponse(
+                call: Call<ScheduleModifyResponse>,
+                response: Response<ScheduleModifyResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("retrofit", response.body().toString());
+                }else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }}
+            override fun onFailure(call: Call<ScheduleModifyResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
 
 
     //sharedPreference에 저장할때 사용용
@@ -333,6 +407,13 @@ class CreateScheduleActivity : AppCompatActivity() {
             else
                 return "오후 ${formatter.format(hour - 12)}:${formatter.format(minute)}"
         }
+    }
+
+    //화면의 날짜를 yyyy-mm-dd형식으로 포맷
+    private fun scheduleDateFormatter():String{
+        val formatter = DecimalFormat("00")
+
+        return "${binding.scheduleYearTv.text}-${formatter.format(binding.scheduleMonthTv.text.toString().toInt())}-${formatter.format(binding.scheduleDayTv.text.toString().toInt())}"
     }
 
     //M월 형식으로 포맷

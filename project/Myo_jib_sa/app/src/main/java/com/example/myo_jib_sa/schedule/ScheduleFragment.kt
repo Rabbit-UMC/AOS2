@@ -153,11 +153,29 @@ class ScheduleFragment : Fragment() {
 
         for(i in 1..42){
             if(dayOfWeek == 7){//그 달의 첫날이 일요일일때 작동: 한칸 아래줄부터 날짜 표시되는 현상 막기위해
-                if(i>lastDay)
-                    break
-                var currentDate = YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i))
-                dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i), hasScheduleMap[currentDate]))
-                Log.d("debug", "$date checkResult = ${hasScheduleMap[currentDate]}")
+                if(i>lastDay) {
+                    //break
+                    dayList.add(CalendarData(null))
+                }
+                else {
+                    var currentDate = YYYYMMDDFromDate(
+                        LocalDate.of(
+                            selectedDate.year,
+                            selectedDate.monthValue,
+                            i
+                        )
+                    )
+                    dayList.add(
+                        CalendarData(
+                            LocalDate.of(
+                                selectedDate.year,
+                                selectedDate.monthValue,
+                                i
+                            ), hasScheduleMap[currentDate]
+                        )
+                    )
+                    Log.d("debug", "$date checkResult = ${hasScheduleMap[currentDate]}")
+                }
             }
             else if(i<=dayOfWeek || i>(lastDay + dayOfWeek)){//그 외 경우
                 dayList.add(CalendarData(null))
@@ -168,7 +186,6 @@ class ScheduleFragment : Fragment() {
                 Log.d("debug", "$currentDate checkResult = ${hasScheduleMap[currentDate]}")
             }
         }
-
 
 
         return dayList
