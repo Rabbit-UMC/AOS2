@@ -405,7 +405,7 @@ class ScheduleFragment : Fragment() {
 
 
     //scheduleHome api연결
-    fun scheduleHomeApi() {
+    private fun scheduleHomeApi() {
         val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 

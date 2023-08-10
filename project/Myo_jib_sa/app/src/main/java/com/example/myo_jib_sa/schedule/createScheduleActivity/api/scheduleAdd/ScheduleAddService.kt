@@ -18,7 +18,7 @@ interface ScheduleAddService {
         @Header("X-ACCESS-TOKEN")
         accessToken: String,
         @Body requestBody: ScheduleAddRequest
-    ) : Call<ScheduleModifyResponse>
+    ) : Call<ScheduleAddResponse>
 }
 
 

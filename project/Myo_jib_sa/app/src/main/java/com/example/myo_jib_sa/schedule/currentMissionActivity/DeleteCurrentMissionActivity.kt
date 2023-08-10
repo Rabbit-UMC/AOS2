@@ -12,9 +12,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityDeleteCurrentMissionBinding
+import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResponse
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import kotlin.concurrent.thread
 
 
@@ -31,14 +39,16 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
         binding = ActivityDeleteCurrentMissionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        currentMissionApi()//currentMission api연결
         setCurrentMissionCurrentMissionDeleteAdapter()        //CurrentMissionCurrentMissionDeleteAdapter 연결
         currentMissionCurrentMissionDeleteRvItemClickEvent()        //currentMissionCurrentMissionDeleteRv item클릭 이벤트
 
 
-        setActivity()//화면 셋팅
+//        setActivity()//화면 셋팅
         setButton()//버튼 셋팅
 
-        setCurrentMissionScheduleDeleteAdapter(missionList[position].missionTitle)        //CurrentMissionScheduleDeleteAdapter 연결
+        //setCurrentMissionScheduleDeleteAdapter(missionList[position].missionTitle)        //CurrentMissionScheduleDeleteAdapter 연결
 
 
         // 2초동안 액션 없으면 작동|핸들러에 메세지 보내기
@@ -55,16 +65,16 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
     }
     //CurrentMissionCurrentMissionAdapter 연결
     private fun setCurrentMissionCurrentMissionDeleteAdapter(){
-
-        missionList.add(CurrentMissionDeleteData("헬스1", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
-        missionList.add(CurrentMissionDeleteData("헬스2", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목3", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목4", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목5", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목6", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//
+//        missionList.add(CurrentMissionDeleteData("헬스1", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
+//        missionList.add(CurrentMissionDeleteData("헬스2", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목3", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목4", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목5", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목6", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
 
 
         currentMissionDeleteAdapter = CurrentMissionCurrentMissionDeleteAdapter(missionList, getDisplayWidthSize())
@@ -104,7 +114,7 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
             override fun onClick(currentMissionData: CurrentMissionDeleteData) {
                 if (System.currentTimeMillis() > delay) {
                     //한번 클릭 동작
-                    setCurrentMissionScheduleDeleteAdapter(currentMissionData.missionTitle)
+                    setCurrentMissionScheduleDeleteAdapter(currentMissionData.currentMissionResult.missionTitle)
 
 
                     delay = System.currentTimeMillis()+200
@@ -114,8 +124,8 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
                     //두번 클릭 동작
                     // 미션 상세 다이어로그 띄우기
                     var bundle = Bundle()
-                    bundle.putLong("scheduleId", currentMissionData.missionId)
-                    Log.d("debug", "\"scheduleId\", ${currentMissionData.missionId}")
+                    bundle.putLong("missionId", currentMissionData.currentMissionResult.missionId)
+                    Log.d("debug", "\"scheduleId\", ${currentMissionData.currentMissionResult.missionId}")
                     val currentMissionDetailDialogFragment = CurrentMissionDetailDialogFragment()
                     currentMissionDetailDialogFragment.arguments = bundle
 
@@ -161,6 +171,44 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
 
         //삭제 버튼 클릭
 
+    }
+
+    //currentMission api연결
+    fun currentMissionApi() {
+        val token: String = BuildConfig.API_TOKEN
+        Log.d("debug", "token = "+token+"l");
+
+        missionList = ArrayList<CurrentMissionDeleteData>()
+
+        val service = RetrofitClient.getInstance().create(CurrentMissionService::class.java)
+        val listCall = service.currentMission(token)
+
+        listCall.enqueue(object : Callback<CurrentMissionResponse> {
+            override fun onResponse(
+                call: Call<CurrentMissionResponse>,
+                response: Response<CurrentMissionResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("debug", "retrofit: "+response.body().toString());
+                    val result = response.body()!!.result
+
+                    for(element in result) {
+                        missionList.add(CurrentMissionDeleteData(element))
+                    }
+                    setCurrentMissionCurrentMissionDeleteAdapter()//CurrentMission rv 연결
+                    setCurrentMissionScheduleDeleteAdapter(missionList[0].currentMissionResult.missionTitle)//schedule rv연결
+                    currentMissionCurrentMissionDeleteRvItemClickEvent()        //currentMissionCurrentMissionDeleteRv item클릭 이벤트
+                    setActivity()//화면 셋팅
+                } else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }
+            }
+            override fun onFailure(call: Call<CurrentMissionResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
     }
 
     //화면 width구하기

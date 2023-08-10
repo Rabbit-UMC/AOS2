@@ -26,6 +26,7 @@ import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.CreateScheduleCalendarAdapter
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDateData
 import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddRequest
+import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddResponse
 import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddService
 import com.example.myo_jib_sa.schedule.createScheduleActivity.spinner.ScheduleCreateSpinnerDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleSpinnerDialogFragment
@@ -259,11 +260,13 @@ class CreateScheduleActivity : AppCompatActivity() {
         binding.calendarBtn.setOnClickListener {
             if (!isClickCalendarImgBtn) {//캘린더 보이게
                 binding.calendarLayout.visibility = View.VISIBLE
+                binding.guidebanner.visibility = View.GONE
                 binding.calendarBtn.setImageResource(R.drawable.ic_schedule_calendar)
                 isClickCalendarImgBtn = true
             }
             else{//캘린더 안보이게
                 binding.calendarLayout.visibility = View.GONE
+                binding.guidebanner.visibility = View.VISIBLE
                 binding.calendarBtn.setImageResource(R.drawable.ic_schedule_calendar_black)
                 isClickCalendarImgBtn = false
 
@@ -343,10 +346,10 @@ class CreateScheduleActivity : AppCompatActivity() {
         val service = RetrofitClient.getInstance().create(ScheduleAddService::class.java)
         val listCall = service.scheduleAdd(token, requestBody)
 
-        listCall.enqueue(object : Callback<ScheduleModifyResponse> {
+        listCall.enqueue(object : Callback<ScheduleAddResponse> {
             override fun onResponse(
-                call: Call<ScheduleModifyResponse>,
-                response: Response<ScheduleModifyResponse>
+                call: Call<ScheduleAddResponse>,
+                response: Response<ScheduleAddResponse>
             ) {
                 if (response.isSuccessful) {
                     Log.d("retrofit", response.body().toString());
@@ -355,7 +358,7 @@ class CreateScheduleActivity : AppCompatActivity() {
                     val errorBody = response.errorBody()?.string()
                     Log.e("retrofit", "onResponse: Error Body $errorBody")
                 }}
-            override fun onFailure(call: Call<ScheduleModifyResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ScheduleAddResponse>, t: Throwable) {
                 Log.e("retrofit", "onFailure: ${t.message}")
             }
         })
