@@ -8,28 +8,38 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
-import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.CurrentMissionCurrentMissionAdapter
-import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.CurrentMissionData
-import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.CurrentMissionScheduleAdapter
-import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.ScheduleAdapterData
+import com.example.myo_jib_sa.schedule.api.RetrofitClient
+import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResponse
+import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailService
+import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResponse
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class CurrentMissionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCurrentMissionBinding
     private lateinit var currentMissionAdapter : CurrentMissionCurrentMissionAdapter
-    private var missionList = ArrayList<CurrentMissionData>()
+    private var missionList = ArrayList<CurrentMissionResult>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCurrentMissionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setCurrentMissionCurrentMissionAdapter()    //CurrentMissionCurrentMissionAdapter 연결
-        setCurrentMissionScheduleAdapter(missionList[0].missionTitle)    //CurrentMissionScheduleAdapter 연결
 
-        //currentMissionCurrentMissionRv item클릭 이벤트
-        currentMissionCurrentMissionRvItemClickEvent()
+        currentMissionApi()//currentMission api연결
+
+        setCurrentMissionCurrentMissionAdapter()    //CurrentMissionCurrentMissionAdapter 연결
+        //setCurrentMissionScheduleAdapter(missionList[0].missionTitle)    //CurrentMissionScheduleAdapter 연결
+
+
+        currentMissionCurrentMissionRvItemClickEvent()//currentMissionCurrentMissionRv item클릭 이벤트
 
         //뒤로가기 버튼 클릭
         binding.goBackBtn.setOnClickListener {
@@ -45,17 +55,17 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     //CurrentMissionCurrentMissionAdapter 연결
     private fun setCurrentMissionCurrentMissionAdapter(){
-        missionList = ArrayList<CurrentMissionData>()
+//        missionList = ArrayList<CurrentMissionResult>()
 
-        missionList.add(CurrentMissionData("헬스1", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
-        missionList.add(CurrentMissionData("헬스2", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
-        missionList.add(CurrentMissionData("미션 제목3", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionData("미션 제목4", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionData("미션 제목5", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionData("미션 제목6", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionData("헬스1", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
+//        missionList.add(CurrentMissionData("헬스2", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
+//        missionList.add(CurrentMissionData("미션 제목3", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionData("미션 제목4", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionData("미션 제목5", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionData("미션 제목6", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
 
 
         currentMissionAdapter = CurrentMissionCurrentMissionAdapter(missionList, getDisplayWidthSize(), getDisplayHeightSize())
@@ -92,7 +102,7 @@ class CurrentMissionActivity : AppCompatActivity() {
             var delay:Long = 0//클릭 간격
 
             @RequiresApi(Build.VERSION_CODES.O)
-            override fun onClick(currentMissionData: CurrentMissionData) {
+            override fun onClick(currentMissionData: CurrentMissionResult) {
                 if (System.currentTimeMillis() > delay) {
                     //한번 클릭 동작
                     setCurrentMissionScheduleAdapter(currentMissionData.missionTitle)
@@ -105,8 +115,8 @@ class CurrentMissionActivity : AppCompatActivity() {
                     //두번 클릭 동작
                     // 미션 상세 다이어로그 띄우기
                     var bundle = Bundle()
-                    bundle.putLong("scheduleId", currentMissionData.missionId)
-                    Log.d("debug", "\"scheduleId\", ${currentMissionData.missionId}")
+                    bundle.putLong("missionId", currentMissionData.missionId)
+                    Log.d("debug", "\"missionId\", ${currentMissionData.missionId}")
                     val currentMissionDetailDialogFragment = CurrentMissionDetailDialogFragment()
                     currentMissionDetailDialogFragment.arguments = bundle
 
@@ -124,13 +134,54 @@ class CurrentMissionActivity : AppCompatActivity() {
         })
     }
 
-    fun getDisplayWidthSize(): Int {
+
+    //currentMission api연결
+    fun currentMissionApi() {
+        val token: String = BuildConfig.API_TOKEN
+        Log.d("debug", "token = "+token+"l");
+
+        missionList = ArrayList<CurrentMissionResult>()
+
+        val service = RetrofitClient.getInstance().create(CurrentMissionService::class.java)
+        val listCall = service.currentMission(token)
+
+        listCall.enqueue(object : Callback<CurrentMissionResponse> {
+            override fun onResponse(
+                call: Call<CurrentMissionResponse>,
+                response: Response<CurrentMissionResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("debug", "retrofit: "+response.body().toString());
+                    val result = response.body()!!.result
+
+                    for(i in 0 until result.size) {
+                        missionList.add(result[i])
+                    }
+                    setCurrentMissionCurrentMissionAdapter()//CurrentMission rv 연결
+                    setCurrentMissionScheduleAdapter(missionList[0].missionTitle)//schedule rv연결
+                    currentMissionCurrentMissionRvItemClickEvent()
+
+                } else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }
+            }
+            override fun onFailure(call: Call<CurrentMissionResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
+
+    //화면 width
+    private fun getDisplayWidthSize(): Int {
 
         val display = this.applicationContext?.resources?.displayMetrics
 
         return display?.widthPixels!!
     }
-    fun getDisplayHeightSize(): Int {
+    //화면 height
+    private fun getDisplayHeightSize(): Int {
 
         //statusbarHeight
         var statusbarHeight = 0

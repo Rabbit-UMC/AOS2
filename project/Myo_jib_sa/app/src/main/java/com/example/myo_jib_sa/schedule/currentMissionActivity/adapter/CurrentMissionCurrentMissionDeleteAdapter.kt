@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionDeleteBinding
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
 
 data class CurrentMissionDeleteData(
-    var missionTitle:String,
-    var missionDday:String,
-    var missionChallengerCnt:Int,
-    var missionImg:Int,
-    var missionId:Long,
+    var currentMissionResult: CurrentMissionResult,
     var selected:Boolean = false
 )
 
@@ -55,10 +54,15 @@ class CurrentMissionCurrentMissionDeleteAdapter (private val missionList:ArrayLi
     inner class ViewHolder(private val binding: ItemCurrentMissionDeleteBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: CurrentMissionDeleteData) {
-            binding.missionTitleTv.text = data.missionTitle
-            binding.missionDdayTv.text = data.missionDday
-            binding.missionChallengerTv.text = "${data.missionChallengerCnt}명"
-            binding.missionImg.setImageResource(data.missionImg)  //이미지 설정
+            binding.missionTitleTv.text = data.currentMissionResult.missionTitle
+            binding.missionDdayTv.text = data.currentMissionResult.dday
+            binding.missionChallengerTv.text = "${data.currentMissionResult.challengerCnt}명"
+            Glide.with(itemView)
+                .load(data.currentMissionResult.image)
+                .error(R.drawable.ic_currentmission_free) //에러시 보여줄 이미지
+                .fallback(R.drawable.ic_currentmission_free) //load할 url이 비어있을 경우 보여줄 이미지
+                .into(binding.missionImg)//이미지 설정
+
             //체크박스 설정
             if(data.selected){
                 binding.seletedV.setBackgroundColor(Color.parseColor("#C7DAFA"))
@@ -108,7 +112,7 @@ class CurrentMissionCurrentMissionDeleteAdapter (private val missionList:ArrayLi
         var j = 0 //selectedItemPosition의 index
         for(i in 0 until missionList.size){
             if(missionList[i].selected){
-                selectedItemPosition[j] = missionList[i].missionId
+                selectedItemPosition[j] = missionList[i].currentMissionResult.missionId
                 j++
             }
         }

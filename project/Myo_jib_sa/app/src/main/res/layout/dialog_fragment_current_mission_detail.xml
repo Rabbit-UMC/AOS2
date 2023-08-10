@@ -52,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/missionTitle_tv" />
 
     <TextView
-        android:id="@+id/subject_tv"
+        android:id="@+id/missionCategory_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -75,7 +75,7 @@
         android:background="#D9D9D9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subject_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/missionCategory_tv" />
 
     <TextView
         android:id="@+id/missionStartDate_tv"
@@ -89,13 +89,13 @@
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/missionDday_tv"
+        app:layout_constraintEnd_toStartOf="@+id/missionPeriod_tv"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view3" />
 
     <TextView
-        android:id="@+id/missionDday_tv"
+        android:id="@+id/missionPeriod_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -121,7 +121,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/missionDday_tv"
+        app:layout_constraintStart_toEndOf="@+id/missionPeriod_tv"
         app:layout_constraintTop_toBottomOf="@+id/view3" />
 
     <View
@@ -132,7 +132,7 @@
         android:background="#D9D9D9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/missionDday_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/missionPeriod_tv" />
 
     <TextView
         android:id="@+id/textView2"
@@ -149,7 +149,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view4" />
 
     <TextView
-        android:id="@+id/scheduleMemo_tv"
+        android:id="@+id/missionMemo_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
