@@ -1,7 +1,6 @@
 package com.example.myo_jib_sa.community.Retrofit.missionCert
 
 data class MissionResponse(
-
     val isSuccess:String,
     val code:Int,
     val message:String,

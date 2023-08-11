@@ -10,13 +10,14 @@ data class PostViewResponse(
     val result:PostResult
 )
 data class PostResult(
+    val categoryName:String,
     val articleId:Long,
     val authorId:Long,
     val authorProfileImage:String,
     val authorName:String,
     val uploadTime:String,
     val articleTitle:String,
-        val articleContent:String,
+    val articleContent:String,
     val articleImage:List<ArticleImage>,
     val commentList:List<CommentList>
 )

@@ -15,6 +15,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
+import com.example.myo_jib_sa.community.Retrofit.ImgPath
 import com.example.myo_jib_sa.community.Retrofit.imgUploadRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.manager.ManagerRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.post.ArticleImage
@@ -29,6 +30,7 @@ class ManagerPageEditActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityManagerPageEditBinding
     private var imgUri:Uri= Uri.EMPTY
+    private var imgUrl:String=""
 
     //갤러리 REQUEST_CODE
     companion object {
@@ -51,7 +53,7 @@ class ManagerPageEditActivity : AppCompatActivity() {
                     setResult(Activity.RESULT_OK, resultIntent)
                     finish()
                 }else{
-                    showToast("바꾼 사진을 저장하지 못했습니다.")
+                    showToast("사진을 저장하지 못했습니다.")
                 }
 
             }
@@ -70,18 +72,19 @@ class ManagerPageEditActivity : AppCompatActivity() {
     private fun setPhoto(author:String, boardId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = ManagerRetrofitManager.getInstance(this)
         val imgpath = getRealPathFromURI(imgUri)
-        var imgUrl:String=""
-            ImgUploadResponse(imgpath.toString()){url->
-                imgUrl=url
-            }
-        retrofitManager.missionImgEdit(author,imgUrl.toString() ,boardId){response ->
-            if(response){
-                callback(true)
-            } else {
+
+        ImgUpload(imgpath.toString()){isSuccess->
+            if(isSuccess){
+                retrofitManager.missionImgEdit(author,imgUrl ,boardId){response ->
+                    if(response){
+                        callback(true)
+                    } else {
+                        callback(false)
+                    }
+                }
+            }else{
                 callback(false)
             }
-
-
         }
     }
 
@@ -128,30 +131,30 @@ class ManagerPageEditActivity : AppCompatActivity() {
     }
 
     //이미지 업로드 api
-    private fun ImgUploadResponse(imgPath:String, callback: (String) -> Unit){
+    private fun ImgUpload(imgPath:String, callback: (Boolean) -> Unit){
         val imageFile = File(imgPath) // 이미지 파일 경로
 
         val imgUploadRetrofitManager = imgUploadRetrofitManager(this)
-        imgUploadRetrofitManager.uploadImage(imageFile) { response ->
+        imgUploadRetrofitManager.uploadImage(imageFile, ImgPath.CATEGORY) { response ->
             if (response != null) {
-                val imageUrl = response.imageUrl
-                val isSuccess = response.success
+                val imageUrl = response.result[0]
+                val isSuccess = response.isSuccess
                 val message = response.message
                 Log.d("이미지 업로드 결과", "$message")
                 Log.d("이미지 업로드 결과", "$imageUrl")
-                if(isSuccess){
+                if(isSuccess=="true"){
                     Log.d("이미지 업로드 결과", "isSuccess")
-                    callback(imageUrl)
+                    imgUrl=imageUrl
+                    callback(true)
 
                 }else{
                     Log.d("이미지 업로드 결과", "isSuccess이 false")
-                    callback("")
+                    callback(false)
                 }
 
             } else {
-                // TODO: 이미지 업로드 실패 처리 로직 추가
                 Log.d("이미지 업로드 결과", "실패")
-                callback("")
+                callback(false)
             }
         }
     }

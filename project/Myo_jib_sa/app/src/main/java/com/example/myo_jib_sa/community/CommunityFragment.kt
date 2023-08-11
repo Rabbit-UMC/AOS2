@@ -31,7 +31,6 @@ import com.example.myo_jib_sa.community.adapter.HomePostAdapter
 import com.example.myo_jib_sa.community.banner.Banner1Fragment
 import com.example.myo_jib_sa.community.banner.Banner2Fragment
 import com.example.myo_jib_sa.community.banner.Banner3Fragment
-import com.example.myo_jib_sa.databinding.ActivityBoardArtBinding
 import com.example.myo_jib_sa.databinding.FragmentCommunityBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -40,12 +39,15 @@ import java.sql.Timestamp
 class CommunityFragment : Fragment() {
 
     private lateinit var binding:FragmentCommunityBinding
+    private lateinit var retrofitManager: CommunityHomeManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding=FragmentCommunityBinding.inflate(inflater, container, false)
+
+        retrofitManager = CommunityHomeManager.getInstance(requireContext())
 
         //터치시 게시판 이동
         binding.communityBoardArt.setOnClickListener {
@@ -70,7 +72,7 @@ class CommunityFragment : Fragment() {
         }*/
 
         //api 연결, 뷰 띄우기
-        getMissionData(Constance.jwt, binding)
+        getMissionData(Constance.jwt, requireContext())
 
         //배너 연결
         val vAdapter=BannerViewpagerAdapter(this)
@@ -111,16 +113,15 @@ class CommunityFragment : Fragment() {
 
     //다시 돌아올 때 뷰 업데이트
     override fun onResume() {
-
         super.onResume()
-        getMissionData(Constance.jwt, binding)
+        retrofitManager = CommunityHomeManager.getInstance(requireContext())
+        getMissionData(Constance.jwt, requireContext())
     }
 
 
 
     //API 연결, 리사이클러뷰 띄우기
-    private fun getMissionData(author:String, binding:FragmentCommunityBinding){
-        val retrofitManager =CommunityHomeManager.getInstance(requireContext())
+    private fun getMissionData(author:String, context: Context){
         retrofitManager.home(author){homeResponse ->
             if(homeResponse.isSuccess=="true"){
                 val missionList:List<MainMission> = homeResponse.result.mainMission
@@ -139,8 +140,8 @@ class CommunityFragment : Fragment() {
 
 
                     //리사이클러뷰 연결
-                    linkMrecyclr(requireContext(), missionList)
-                    linkePrecyclr(requireContext(), postList)
+                    linkMrecyclr(context, missionList)
+                    linkePrecyclr(context, postList)
 
 
                 }else{

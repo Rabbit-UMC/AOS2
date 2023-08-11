@@ -17,6 +17,7 @@ class ManagerPageActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityManagerPageBinding
     private val REQUEST_CODE=1
+    private
 
     companion object {
         private const val GALLERY_REQUEST_CODE = 1001
@@ -27,6 +28,7 @@ class ManagerPageActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //todo: 게시판 이미지 설정해주기
+
 
         //관리자 페이지 이름 설정
         val boardId= intent.getIntExtra("boardId",0)
@@ -64,6 +66,11 @@ class ManagerPageActivity : AppCompatActivity() {
             val intent=Intent(this, ManagerPageMissionActivity::class.java)
             intent.putExtra("boardId", boardId)
             startActivity(intent)
+        }
+
+        //뒤로가기
+        binding.managerPageBackBtn.setOnClickListener {
+            finish()
         }
 
     }

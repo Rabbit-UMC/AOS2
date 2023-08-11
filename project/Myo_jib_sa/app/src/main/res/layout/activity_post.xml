@@ -61,15 +61,7 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/board_linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="#F1F1F1"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/board_cntLayout"></LinearLayout>
+
 
     <ImageView
         android:id="@+id/post_writerProfile_img"

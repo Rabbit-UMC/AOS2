@@ -200,6 +200,9 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 //콘텐츠 설정
                 setPost(response, binding, boardId)
 
+                val boardName=response.result.categoryName
+                binding.postNameTxt.text="$boardName 게시판"
+
                 //내 게시글인지 아닌지
                 if(Constance.USER_ID==response.result.authorId){
                     myPost=true
