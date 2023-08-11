@@ -13,17 +13,16 @@ import java.io.File
 
 class imgUploadRetrofitManager(context: Context) {
 
-
         private val retrofit: ImgUploadRetrofitITFC? = RetrofitClient.getClient(Constance.BASEURL)?.create(
             ImgUploadRetrofitITFC::class.java
         )
 
         // 이미지 업로드 메서드 추가
-        fun uploadImage(imageFile: File, completion: (ImageUploadResponse?) -> Unit) {
+        fun uploadImage(imageFile: File, path:String,completion: (ImageUploadResponse?) -> Unit) {
             val requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile)
             val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, requestFile)
 
-            val call = retrofit?.uploadImage(imagePart)
+            val call = retrofit?.uploadImage(imagePart, path)
             call?.enqueue(object : Callback<ImageUploadResponse> {
                 override fun onResponse(call: Call<ImageUploadResponse>, response: Response<ImageUploadResponse>) {
                     if (response.isSuccessful) {

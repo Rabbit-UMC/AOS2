@@ -7,6 +7,7 @@
     tools:context=".community.BoardExerciseActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/board_cntLayout"
+        android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,26 +56,15 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/board_linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="#F1F1F1"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/board_cntLayout"></LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/boardExcs_post_recyclr"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
         android:foregroundGravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/board_linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/board_cntLayout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/board_posting_btn"
@@ -85,7 +75,7 @@
         android:layout_marginBottom="30dp"
         android:clickable="true"
         android:contentDescription="Add New Post"
-        android:src="@drawable/ic_schedule_new_schedule"
+        android:src="@drawable/ic_community_posting_btn"
         app:borderWidth="0dp"
         app:elevation="0dp"
         app:fabCustomSize="43dp"

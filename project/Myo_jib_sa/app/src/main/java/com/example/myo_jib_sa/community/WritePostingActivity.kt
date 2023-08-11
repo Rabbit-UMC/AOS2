@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
+import com.example.myo_jib_sa.community.Retrofit.ImgPath
 import com.example.myo_jib_sa.community.Retrofit.imgUploadRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.post.ImageList
 import com.example.myo_jib_sa.community.Retrofit.post.ImageListC
@@ -84,11 +85,20 @@ class WritePostingActivity : AppCompatActivity() {
 
         //게시글 쓰기, 수정 완료
         binding.postWriteCompleteBtn.setOnClickListener {
+            var imgUrl1=""
+            var imgUrl2=""
+            ImgUpload(imgList[0]){url->
+                imgUrl1=url
+            }
+            ImgUpload(imgList[1]){url->
+                imgUrl2=url
+            }
+            val imgUrlList= listOf<String>(imgUrl1, imgUrl2)
             if(!isEdit){
                 val request=PostCreateRequest(
                     binding.postWriteNameTxt.text.toString(),
                     binding.postWritePostTextEtxt.text.toString(),
-                    imgList //이미지 리스트 넣음
+                    imgUrlList //이미지 리스트 넣음
                 )
                 posting(Constance.jwt,request, boardId.toLong()){isSuccess->
                     if(isSuccess){
@@ -98,8 +108,8 @@ class WritePostingActivity : AppCompatActivity() {
                     }
                 }
             }else{
-                imgListEdit[0].filePath=imgList[0]
-                imgListEdit[1].filePath=imgList[1]
+                imgListEdit[0].filePath=imgUrlList[0]
+                imgListEdit[1].filePath=imgUrlList[1]
 
                 val request= PostEditRequest(
                     binding.postWritePostTextEtxt.text.toString()
@@ -142,20 +152,17 @@ class WritePostingActivity : AppCompatActivity() {
             val selectedImageUri: Uri? = data.data
             // 선택한 이미지를 해당 이미지뷰에 표시
             selectedImageUri?.let { uri ->
-                val imageView: ImageView = binding.missionCertImg
-                imageView.setImageURI(uri)
+
                 val imgPath = getRealPathFromURI(uri)
-                var imageUrl:String=""
-                ImgUploadResponse(imgPath.toString()){ url->
-                    imageUrl=url
-                }
-                if(requestCode == GALLERY_REQUEST_CODE1){
+                if(requestCode== GALLERY_REQUEST_CODE1){
+                    binding.missionCertImg.setImageURI(uri)
                     imgList = imgList.toMutableList().apply {
-                        set(0, imageUrl)
+                        set(0, imgPath.toString())
                     }
                 }else{
+                    binding.missionCertImg1.setImageURI(uri)
                     imgList = imgList.toMutableList().apply {
-                        set(1, imageUrl)
+                        set(1, imgPath.toString())
                     }
                 }
             }
@@ -231,18 +238,18 @@ class WritePostingActivity : AppCompatActivity() {
     }
 
     //이미지 업로드 api
-    private fun ImgUploadResponse(imgPath:String, callback: (String) -> Unit){
+    private fun ImgUpload(imgPath:String, callback: (String) -> Unit){
         val imageFile = File(imgPath) // 이미지 파일 경로
 
         val imgUploadRetrofitManager = imgUploadRetrofitManager(this)
-        imgUploadRetrofitManager.uploadImage(imageFile) { response ->
+        imgUploadRetrofitManager.uploadImage(imageFile, ImgPath.POST) { response ->
             if (response != null) {
-                val imageUrl = response.imageUrl
-                val isSuccess = response.success
+                val imageUrl = response.result[0]
+                val isSuccess = response.isSuccess
                 val message = response.message
                 Log.d("이미지 업로드 결과", "$message")
                 Log.d("이미지 업로드 결과", "$imageUrl")
-                if(isSuccess){
+                if(isSuccess=="true"){
                     Log.d("이미지 업로드 결과", "isSuccess")
                     callback(imageUrl)
 
@@ -252,13 +259,11 @@ class WritePostingActivity : AppCompatActivity() {
                 }
 
             } else {
-                // TODO: 이미지 업로드 실패 처리 로직 추가
                 Log.d("이미지 업로드 결과", "실패")
                 callback("")
             }
         }
     }
-
     //Base64로 인코딩하기
     fun encodeImageToBase64(imagePath: String): String? {
         val bitmap = BitmapFactory.decodeFile(imagePath)
