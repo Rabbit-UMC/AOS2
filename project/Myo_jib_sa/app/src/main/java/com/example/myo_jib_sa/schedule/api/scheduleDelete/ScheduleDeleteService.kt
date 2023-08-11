@@ -3,10 +3,7 @@ package com.example.myo_jib_sa.schedule.api.scheduleDelete
 import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
 import retrofit2.Call
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface ScheduleDeleteService {
     companion object {
@@ -17,5 +14,13 @@ interface ScheduleDeleteService {
         @Header("X-ACCESS-TOKEN")
         accessToken: String,
         @Path("scheduleId") scheduleId: Long
+    ) : Call<ScheduleDeleteResponse>
+
+
+    @DELETE//("app/schedule/{scheduleId}")
+    fun scheduleDeleteModifyVer(
+        @Header("X-ACCESS-TOKEN")
+        accessToken: String,
+        @Url url: String
     ) : Call<ScheduleDeleteResponse>
 }

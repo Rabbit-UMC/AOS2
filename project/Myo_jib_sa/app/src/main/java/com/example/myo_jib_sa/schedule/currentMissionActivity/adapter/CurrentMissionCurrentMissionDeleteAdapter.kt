@@ -107,13 +107,14 @@ class CurrentMissionCurrentMissionDeleteAdapter (private val missionList:ArrayLi
     }
 
     //선택된 아이템 미션id 반환--나중에 반환값 변경
-    private fun getSelectedItemPosition(): MutableList<Long>{
+    fun getSelectedItemMissionId(): MutableList<Long>{
         var selectedItemPosition : MutableList<Long> = mutableListOf()
         var j = 0 //selectedItemPosition의 index
         for(i in 0 until missionList.size){
             if(missionList[i].selected){
-                selectedItemPosition[j] = missionList[i].currentMissionResult.missionId
-                j++
+                //selectedItemPosition[j] = missionList[i].currentMissionResult.missionId
+                selectedItemPosition.add(missionList[i].currentMissionResult.missionId)
+                //j++
             }
         }
         return selectedItemPosition
