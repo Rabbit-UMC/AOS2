@@ -3,6 +3,7 @@ package com.example.myo_jib_sa.Login
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MyoSignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMyoSignUpBinding
     private var returnMsg: String? = null
+
     // Retrofit 객체 가져오기
     val retrofit = RetrofitInstance.getInstance().create(LoginITFC::class.java)
 
@@ -63,14 +65,20 @@ class MyoSignUpActivity : AppCompatActivity() {
             }
         }
 
+
+
+
         //로그인 api 연결
         // 카카오 로그인 API 호출
         val clientId = BuildConfig.KAKAO_API_KEY
         val redirectUri = BuildConfig.Redirect_URI
         val responseType = "code"
 
+        //앞에서 bundle로 넘겨주는 걸로 변경
+        val accessToken = "UzH3V7Bi04pDMtnfThiV0go2ayPMpF8BTILfy9cVCj1y6wAAAYnkWW2l"
+
         //Login API 연결
-        retrofit.Login(clientId, redirectUri, responseType).enqueue(object : Callback<LoginResponse> {
+        retrofit.Login(accessToken,clientId, redirectUri, responseType).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
@@ -79,7 +87,7 @@ class MyoSignUpActivity : AppCompatActivity() {
                         Log.d("LoginResponse", "code: ${it.code}")
                         Log.d("LoginResponse", "message: ${it.message}")
                         it.result?.let { loginResult ->
-                            jwtToken = loginResult.jwtToken
+                            jwtToken = loginResult.jwtAccessToken
                             Log.d("LoginResponse", "id: ${loginResult.id}")
                             Log.d("LoginResponse", "jwt: ${jwtToken}")
 
@@ -87,24 +95,26 @@ class MyoSignUpActivity : AppCompatActivity() {
                         }
                     }
                 } else {
+                    val errorBody = response.errorBody()?.string()
                     Log.e("LoginResponse", "API 호출 실패: ${response.code()}, ${response.message()}")
-                }
+                    Log.e("LoginResponse", "Error Body: $errorBody")}
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.e("LoginResponse", "API 호출 실패: ${t.message}")
+                Log.e("LoginResponse", "onFail API 호출 실패: ${t.message}")
             }
         })
 
+        Log.d("LoginResponse",jwtToken.toString())
 
       //카카오 이메일 입력 받지 않은 경우는 따로 입력 받은 이메일 넣어주기
-        if (kakaoEmail != null){
-            jwtToken?.let { signUpUser(it,userEmail,userNickname) }
+        /*if (kakaoEmail != null){
+            jwtToken.toString()?.let { signUpUser(jwtToken.toString(),userEmail,userNickname) }
         }
         //카카오 이메일 입력 받은 경우 카카오 이메일 넣어주기
         else{
-            jwtToken?.let { signUpUser(it,userEmail,userNickname) }
-        }
+            jwtToken.toString()?.let { signUpUser(jwtToken.toString(),userEmail,userNickname) }
+        }*/
 
         //닉네임 중복 체크
         //returnMsg가 "중복된 닉네임입니다." 일 경우에는 중복됐다고 알려주기

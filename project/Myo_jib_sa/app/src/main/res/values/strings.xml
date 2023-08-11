@@ -11,7 +11,6 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="kakao_native_key">f17ddd306837f60bb0197f273296be1f</string>
     <string name="sineUp_use_title">이용약관</string>
     <string name="sineUp_use_content">제 1장 총칙
 

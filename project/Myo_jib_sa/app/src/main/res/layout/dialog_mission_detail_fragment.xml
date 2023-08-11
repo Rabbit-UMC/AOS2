@@ -24,7 +24,7 @@
         android:fontFamily="@font/font_inter"
         android:text="주제"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dialog_exit_btn"
@@ -48,7 +48,7 @@
         android:fontFamily="@font/font_inter"
         android:text="카테고리"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view01"
@@ -73,7 +73,7 @@
         android:fontFamily="@font/font_inter"
         android:text="2023.07.01"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/view02"
         app:layout_constraintStart_toStartOf="parent"/>
     <TextView
@@ -86,7 +86,7 @@
         android:text="32일"
         android:fontFamily="@font/font_inter"
         android:textColor="#707070"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/view02"
         app:layout_constraintStart_toEndOf="@id/mission_start_date_txt"
         app:layout_constraintEnd_toStartOf="@id/mission_end_date_txt"/>
@@ -101,7 +101,7 @@
         android:fontFamily="@font/font_inter"
         android:text="2023.08.01"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/view02"
         app:layout_constraintEnd_toEndOf="parent"/>
     <View
@@ -123,7 +123,7 @@
         android:fontFamily="@font/font_inter"
         android:text="메모📌"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view03"/>
@@ -137,19 +137,19 @@
         android:fontFamily="@font/font_inter"
         android:text="메모 내용"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mission_memoTitle_txt"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/mission_with_btn"
-        android:layout_width="140dp"
-        android:layout_height="40dp"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="30dp"
         android:text="같이하기"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:background="@drawable/mypage_edit_btn"

@@ -24,19 +24,20 @@ interface MissionITFC {
     //미션 상세보기
     @GET("app/mission/{missionId}")
     fun MissionDetail(
-        @Header("X-ACCESS-TOKEN")
-        accessToken: String,
-        @Path("id") id: Long
-    )
+        @Header("X-ACCESS-TOKEN") accessToken: String,
+        @Path("missionId") missionId: Long
+    ): Call<MissionDetailResponse>
+
     //신고하기
     @POST("app/mission/report/{missionId}")
     fun MissionReport(
-        @Query ("missionId") missionId:Long
+        @Path ("missionId") missionId:Long
     ): Call<MissionReportResponse>
 
     //미션 같이하기
     @POST("app/mission/{missionId}")
     fun MissionWith(
-        @Query ("missionId") missionId:Long
+        @Header("X-ACCESS-TOKEN") accessToken: String,
+        @Path ("missionId") missionId:Long
     ): Call<MissionWithResponse>
 }

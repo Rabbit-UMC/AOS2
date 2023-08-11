@@ -3,6 +3,7 @@ package com.example.myo_jib_sa.mission
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Rect
+import android.util.Log
 import android.view.*
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
@@ -32,27 +33,43 @@ class MissionAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Home) {
+
             binding.missionTitleTxt.text = item.title
-            binding.missionIntroTxt.text = item.content
+
+            //메모 15자 이내로 보이도록 설정
+            val maxLength = 15
+            val content = item.content // 원본 문자열
+
+            val truncatedContent = if (content.length > maxLength) {
+                content.substring(0, maxLength) + " ···" // 최대 길이까지 잘라서 '···' 추가
+            } else {
+                content // 원본 문자열 그대로 사용
+            }
+
+            binding.missionIntroTxt.text = truncatedContent
             Glide.with(binding.root.context)
                 .load(item.image)
                 .into(binding.missionImg)
             binding.missionStartTimeTxt.text = item.startAt
             binding.missionEndTimeTxt.text = item.endAt
-            binding.missionChallengerTxt.text=item.challengerCnt.toString()
+            binding.missionChallengerTxt.text="${item.challengerCnt} 명"
+
+            Log.d("home",item.missionId.toString())
 
             // 롱클릭 이벤트 처리(신고)
             binding.root.setOnLongClickListener {
                 //클릭된 아이템의 위치 가져오기
-                val item = dataList[adapterPosition]
-                onItemLongClickListener.onItemLongClick(item)
+                val itemPosition = dataList[adapterPosition]
+                onItemLongClickListener.onItemLongClick(itemPosition)
+                Log.d("home","report ID: {$itemPosition.id.toString()}")
                 true // 이벤트가 소비되었음을 반환
             }
 
             // 간단한 클릭 이벤트 처리(미션 상세보기)
             binding.root.setOnClickListener {
-                val item = dataList[adapterPosition]
-                onItemClickListener.onItemClick(item)
+                val itemPosition = dataList[adapterPosition]
+                onItemClickListener.onItemClick(itemPosition)
+                Log.d("home","detail ID: {$itemPosition.id.toString()}")
             }
         }
     }
@@ -85,6 +102,5 @@ class MissionAdapter(
     fun setItemSpacing(recyclerView: RecyclerView, spacing: Int) {
         recyclerView.addItemDecoration(CustomItemDecoration(spacing))
     }
-
 
 }

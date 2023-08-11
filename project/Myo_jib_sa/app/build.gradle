@@ -29,8 +29,9 @@ android {
         //카카오 로그인 API 연결 
         buildConfigField "String", "KAKAO_API_KEY", properties['KAKAO_API_KEY']
         buildConfigField "String", "Redirect_URI", properties['Redirect_URI']
+        buildConfigField "String", "NATIVE_APP_KEY", properties['NATIVE_APP_KEY']
 
-        buildConfigField "String", "jwt", properties['jwt']
+        buildConfigField "String", "JWT", properties['JWT']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -64,6 +65,10 @@ android {
 }
 
 dependencies {
+
+    //API 연결 에러 확인
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+
     //마테리얼 디자인
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'com.google.android.material:material:1.3.0-alpha03'
