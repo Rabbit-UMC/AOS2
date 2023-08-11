@@ -7,6 +7,7 @@ interface LoginITFC {
 
     @GET("app/users/kakao-login")
     fun Login(
+        @Header("Authorization") accessToken: String,
         @Query("client_id") clientId: String,
         @Query("redirect_uri") redirectUri: String,
         @Query("response_type") responseType: String
@@ -18,5 +19,6 @@ interface LoginITFC {
         accessToken: String,
         @Body requestBody: SignUpRequest
     ): Call<SignUpResponse>
+
 
 }

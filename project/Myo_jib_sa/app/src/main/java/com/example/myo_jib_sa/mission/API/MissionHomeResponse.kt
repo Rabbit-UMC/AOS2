@@ -5,7 +5,7 @@ data class MissionHomeResponse(
 )
 
 data class Home(
-    val id: Long,
+    val missionId: Long,
     val title: String,
     val challengerCnt: Int,
     val startAt: String,

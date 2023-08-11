@@ -9,9 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.Login.API.LoginResponse
 import com.example.myo_jib_sa.Login.API.RetrofitInstance
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.FragmentMissionBinding
 import com.example.myo_jib_sa.mission.API.Home
 import com.example.myo_jib_sa.mission.API.MissionHomeResponse
@@ -43,21 +41,33 @@ class MissionFragment : Fragment() {
                     val missionHomeResponse = response.body()
                     val dataList = missionHomeResponse?.result ?: emptyList()
 
+                    Log.d("home", "MissionHomeResponse data count: ${dataList.size}")
+                    for (item in dataList) {
+                        Log.d("home", "Mission id: ${item.missionId}")
+                    }
+
                     // 어댑터 생성 및 리사이클러뷰에 설정
                      missionAdapter = MissionAdapter(
                         requireContext(),
                         dataList,
                         onItemLongClickListener = object : MissionAdapter.OnItemLongClickListener {
-                            override fun onItemLongClick(item: Home) {
-                                showReportDialog(item)
+                            override fun onItemLongClick(reportItem: Home) {
+                                showReportDialog(reportItem)
                             }
                         },
                         onItemClickListener = object : MissionAdapter.OnItemClickListener {
-                            override fun onItemClick(item: Home) {
-                                showDetailDialog(item)
+                            override fun onItemClick(detailItem: Home) {
+                                showDetailDialog(detailItem)
                             }
                         }
                     )
+
+                    recyclerView.adapter = missionAdapter
+                    recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+                    // 아이템 간격 설정 (옵션)
+                    missionAdapter.setItemSpacing(recyclerView,15)
+
                 } else {
                     // API 요청 실패 처리
                 }
@@ -68,12 +78,6 @@ class MissionFragment : Fragment() {
             }
         })
 
-
-        recyclerView.adapter = missionAdapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        // 아이템 간격 설정 (옵션)
-        missionAdapter.setItemSpacing(recyclerView,15)
 
 
         //floating 버튼 설정
@@ -87,14 +91,16 @@ class MissionFragment : Fragment() {
         return binding.root
     }
 
-    private fun showReportDialog(item: Home) {
-        val reportDialog = MissionReportDialogFragment()
+    private fun showReportDialog(reportItem: Home) {
+        val reportDialog = MissionReportDialogFragment(reportItem)
+        Log.d("home","Mreport ID: {$reportItem.id.toString()}")
         reportDialog.show(requireActivity().supportFragmentManager, "mission_report_dialog")
 
     }
 
-   private fun showDetailDialog(item: Home) {
-       val detailDialog = MissionDetailDialogFragment()
+   private fun showDetailDialog(detailItem: Home) {
+       val detailDialog = MissionDetailDialogFragment(detailItem)
+       Log.d("home","Mdetail ID: {$detailItem.id.toString()}")
        detailDialog.show(requireActivity().supportFragmentManager, "mission_detail_dialog")
    }
 
