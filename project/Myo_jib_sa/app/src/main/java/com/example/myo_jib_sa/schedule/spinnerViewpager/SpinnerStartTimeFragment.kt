@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TimePicker
 import com.example.myo_jib_sa.databinding.FragmentSpinnerStartTimeBinding
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
+import java.text.DecimalFormat
 
 
 class SpinnerStartTimeFragment : Fragment() {
@@ -48,8 +49,9 @@ class SpinnerStartTimeFragment : Fragment() {
 
         binding.startTimePicker.setOnTimeChangedListener(object: TimePicker.OnTimeChangedListener {
             override fun onTimeChanged(view: TimePicker?, hourOfDay: Int, minute: Int) {
-                Log.d("debug", "startTime : 시:분 | $hourOfDay : $minute")
-                editor.putString("scheduleStartTime", "$hourOfDay:$minute")
+                val formatter = DecimalFormat("00")
+                Log.d("debug", "startTime : 시:분 | ${formatter.format(hourOfDay)} : ${formatter.format(minute)}")
+                editor.putString("scheduleStartTime", "${formatter.format(hourOfDay)}:${formatter.format(minute)}")
                 editor.apply()// data 저장!
             }
         })

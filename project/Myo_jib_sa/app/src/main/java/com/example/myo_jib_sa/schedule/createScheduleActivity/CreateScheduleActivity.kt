@@ -298,7 +298,7 @@ class CreateScheduleActivity : AppCompatActivity() {
         editor.putString("scheduleStartTime", scheduleData?.startAt)
         editor.putString("scheduleEndTime", scheduleData?.endAt)
         editor.putString("scheduleMemo", binding.scheduleMemoEtv.text.toString())
-        editor.putLong("missionId", scheduleData!!.missionId)
+        scheduleData!!.missionId?.let { editor.putLong("missionId", it) }
         editor.putLong("scheduleId", scheduleData!!.scheduleId)
         editor.apply()
 

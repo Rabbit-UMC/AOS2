@@ -12,6 +12,7 @@ import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import com.example.myo_jib_sa.databinding.FragmentSpinnerDateBinding
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
+import java.text.DecimalFormat
 import java.util.*
 
 
@@ -56,8 +57,9 @@ class SpinnerDateFragment : Fragment() {
         binding.scheduleDatePicker.setOnDateChangedListener(object: DatePicker.OnDateChangedListener{
             override fun onDateChanged(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
                 //month+1이 실제 month
-                Log.d("debug", "$year.${month+1}.$dayOfMonth")
-                editor.putString("scheduleDate", "$year-${month+1}-$dayOfMonth")
+                val formatter = DecimalFormat("00")
+                Log.d("debug", "$year.${formatter.format ( month + 1 )}.${formatter.format(dayOfMonth)}")
+                editor.putString("scheduleDate", "$year-${formatter.format ( month + 1 )}-${formatter.format(dayOfMonth)}")
                 editor.apply()// data 저장!
             }
         })

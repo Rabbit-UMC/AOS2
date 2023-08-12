@@ -5,6 +5,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.PATCH
+import retrofit2.http.Path
 
 interface ScheduleModifyService {
     companion object {
@@ -15,6 +16,7 @@ interface ScheduleModifyService {
     fun scheduleModify(
         @Header("X-ACCESS-TOKEN")
         accessToken: String,
+        @Path("scheduleId") scheduleId: Long,
         @Body requestBody: ScheduleModifyRequest
     ) : Call<ScheduleModifyResponse>
 
@@ -26,7 +28,7 @@ data class ScheduleModifyRequest(
     val content: String,
     val startAt: String,
     val endAt: String,
-    val missionId: Long,
     @SerializedName("when")
-    val scheduleWhen: String
+    val scheduleWhen: String,
+    val missionId: Long?
 )

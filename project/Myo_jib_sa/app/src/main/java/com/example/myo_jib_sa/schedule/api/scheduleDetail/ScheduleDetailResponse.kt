@@ -13,7 +13,7 @@ data class ScheduleDetailResponse(
 data class ScheduleDetailResult(
     @SerializedName("id")
     var scheduleId: Long,
-    var missionId: Long,
+    var missionId: Long?,
     var missionTitle: String,
     var scheduleTitle: String,
     var startAt: String,
