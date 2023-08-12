@@ -56,22 +56,81 @@ class ScheduleEditDialogFragment : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
-        //나가기 버튼
-        binding.exitTv.setOnClickListener{
-            dismiss()
-            //buttonClickListener.onClickEditBtn()
-        }
-        //수정완료 버튼
-        binding.modifyBtn.setOnClickListener{
-            dismiss()
-            //buttonClickListener.onClickEditBtn()
-            scheduleModifyApi()//수정완료 누르면 데이터 서버로 보내기
-        }
+        setButton() //버튼 클릭 sest
+
 
         //일정 제목 특수문자 제어
         binding.scheduleTitleEtv.filters = arrayOf(editTextFilter)
 
 
+
+
+
+       return binding.root
+    }
+
+
+
+    //ScheduleDetailDialog에서 보낸 데이터 바인딩하기
+    private fun setCurrentDialog() {
+
+//        val bundle = arguments
+//        var isEdit = bundle?.getBoolean("isEdit", false)
+//
+//        if (bundle != null && isEdit == true) {//수정한 값이 있다면
+//            Log.d("debug", "isEdit: "+"받았다!"+bundle.getBoolean("isEdit"))
+//            val sharedPreferenceModified = requireContext().getSharedPreferences("scheduleModifiedData",
+//                Context.MODE_PRIVATE
+//            )
+//            scheduleData?.scheduleWhen = sharedPreferenceModified.getString("scheduleDate", "").toString()
+//            scheduleData?.missionTitle = sharedPreferenceModified.getString("missionTitle", "").toString()
+//            scheduleData?.missionId = sharedPreferenceModified.getLong("missionId", -1)
+//            scheduleData?.startAt = sharedPreferenceModified.getString("scheduleStartTime", "").toString()
+//            scheduleData?.endAt = sharedPreferenceModified.getString("scheduleEndTime", "").toString()
+//        }
+        //else{//아니면 원래 저장 값으로
+        val sharedPreference =
+            requireContext().getSharedPreferences("scheduleData", Context.MODE_PRIVATE)
+        //Log.d("debug", "isEdit: "+"받았다!"+isEdit)
+
+        scheduleData?.scheduleWhen = sharedPreference.getString("scheduleDate", "").toString()
+        scheduleData?.missionTitle = sharedPreference.getString("missionTitle", "").toString()
+        scheduleData?.missionId = sharedPreference.getLong("missionId", -1)
+        scheduleData?.startAt = sharedPreference.getString("scheduleStartTime", "").toString()
+        scheduleData?.endAt = sharedPreference.getString("scheduleEndTime", "").toString()
+        //}
+
+//        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
+//            Context.MODE_PRIVATE
+//        )
+        scheduleData?.scheduleTitle = sharedPreference.getString("scheduleTitle", "").toString()
+        scheduleData?.content = sharedPreference.getString("scheduleMemo", "").toString()
+        scheduleData?.scheduleId = sharedPreference.getLong("scheduleId", 0)
+        Log.d("debug", "EditDialog$scheduleData")
+
+        //화면에 반영
+        binding.scheduleTitleEtv.setText(scheduleData?.scheduleTitle)
+        binding.scheduleDateTv.text = scheduleData?.scheduleWhen
+        binding.missionTitleTv.text = scheduleData?.missionTitle
+        binding.scheduleStartTimeTv.text = scheduleTimeFormatter(scheduleData?.startAt)
+        binding.scheduleEndTimeTv.text = scheduleTimeFormatter(scheduleData?.endAt)
+        binding.scheduleMemoEtv.setText(scheduleData?.content)
+
+    }
+
+
+    private fun setButton(){
+        //나가기 버튼
+        binding.exitTv.setOnClickListener{
+            dismiss()
+        }
+        //수정완료 버튼
+        binding.modifyBtn.setOnClickListener{
+            saveData()//scheduleData&sharedPreference에 저장
+            buttonClickListener.onClickEditBtn(scheduleData)
+            scheduleModifyApi()//수정완료 누르면 데이터 서버로 보내기
+            dismiss()
+        }
 
         //미션 제목 클릭시
         binding.missionTitleTv.setOnClickListener {
@@ -88,13 +147,131 @@ class ScheduleEditDialogFragment : DialogFragment() {
         binding.scheduleEndTimeTv.setOnClickListener {
             setSpinnerDialog(3)
         }
-
-       return binding.root
     }
 
-    // 인터페이스
+    //scheduleData&sharedPreference에 저장
+    private fun saveData(){
+        scheduleData.scheduleTitle = binding.scheduleTitleEtv.text.toString()
+        scheduleData.content = binding.scheduleMemoEtv.text.toString()
+
+        val sharedPreference = requireContext().getSharedPreferences("scheduleData",Context.MODE_PRIVATE)
+        val editor = sharedPreference.edit()
+        editor.putString("scheduleTitle", scheduleData.scheduleTitle)
+        editor.putString("scheduleDate", scheduleData.scheduleWhen)
+        editor.putString("missionTitle", scheduleData.missionTitle)
+        editor.putString("scheduleStartTime", scheduleData.startAt)
+        editor.putString("scheduleEndTime", scheduleData.endAt)
+        editor.putString("scheduleMemo", scheduleData.content)
+        if(scheduleData.missionId == null){
+            editor.putLong("missionId", -1)
+        }else{
+            editor.putLong("missionId", scheduleData.missionId!!)
+        }
+        editor.putLong("scheduleId", scheduleData.scheduleId)
+        editor.apply()
+
+    }
+
+    private fun setSpinnerDialog(position:Int){
+        //sharedPreference저장
+        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
+            Context.MODE_PRIVATE
+        )
+        val editor = sharedPreference.edit()
+        editor.putString("scheduleTitle", binding.scheduleTitleEtv.text.toString())
+        editor.putString("scheduleDate", binding.scheduleDateTv.text.toString())
+        editor.putString("missionTitle", binding.missionTitleTv.text.toString())
+        editor.putString("scheduleStartTime", scheduleData?.startAt)
+        editor.putString("scheduleEndTime", scheduleData?.endAt)
+        editor.putString("scheduleMemo", binding.scheduleMemoEtv.text.toString())
+        if(scheduleData.missionId == null){
+            editor.putLong("missionId", -1)
+        }else{
+            editor.putLong("missionId", scheduleData.missionId!!)
+        }
+        editor.putLong("scheduleId", scheduleData!!.scheduleId)
+        editor.apply()
+
+        var bundle = Bundle()
+        bundle.putInt("position", position)
+
+        val scheduleSpinnerDialogFragment = ScheduleSpinnerDialogFragment()
+        scheduleSpinnerDialogFragment.arguments = bundle
+        scheduleSpinnerDialogItemClickEvent(scheduleSpinnerDialogFragment)//scheduleSpinnerDialogFragment Item클릭 이벤트 setting
+        scheduleSpinnerDialogFragment.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
+
+        //dismiss()//editDialog종료
+    }
+
+    private fun scheduleSpinnerDialogItemClickEvent(dialog: ScheduleSpinnerDialogFragment){
+        dialog.setButtonClickListener(object: ScheduleSpinnerDialogFragment.OnButtonClickListener{
+            override fun onClickCompeleteBtn(isEdit: Boolean) {
+                if (isEdit) {//수정한 값이 있다면
+                    //Log.d("debug", "isEdit: "+"받았다!"+bundle.getBoolean("isEdit"))
+                    val sharedPreferenceModified = requireContext().getSharedPreferences("scheduleModifiedData",
+                        Context.MODE_PRIVATE
+                    )
+                    scheduleData?.scheduleWhen = sharedPreferenceModified.getString("scheduleDate", "").toString()
+                    scheduleData?.missionTitle = sharedPreferenceModified.getString("missionTitle", "").toString()
+                    scheduleData?.missionId = sharedPreferenceModified.getLong("missionId", -1)
+                    scheduleData?.startAt = sharedPreferenceModified.getString("scheduleStartTime", "").toString()
+                    scheduleData?.endAt = sharedPreferenceModified.getString("scheduleEndTime", "").toString()
+
+                    //화면에 반영
+                    binding.scheduleDateTv.text = scheduleData?.scheduleWhen
+                    binding.missionTitleTv.text = scheduleData?.missionTitle
+                    binding.scheduleStartTimeTv.text = scheduleTimeFormatter(scheduleData?.startAt)
+                    binding.scheduleEndTimeTv.text = scheduleTimeFormatter(scheduleData?.endAt)
+                }
+            }
+        })
+    }
+
+    //scheduleModify api연결
+    private fun scheduleModifyApi() {
+        val token : String = BuildConfig.API_TOKEN
+//        Log.d("retrofit", "token = "+token+"l");
+//
+        if(scheduleData.missionId == -1L){
+            scheduleData.missionId = null
+        }
+
+        val requestBody = ScheduleModifyRequest(
+            title = binding.scheduleTitleEtv.text.toString(),
+            content = binding.scheduleMemoEtv.text.toString() ,//메모
+            startAt = scheduleData.startAt,
+            endAt = scheduleData.endAt,
+            missionId = scheduleData.missionId,
+            scheduleWhen = binding.scheduleDateTv.text.toString()
+        )
+
+        Log.d("debug", requestBody.toString())
+        val service = RetrofitClient.getInstance().create(ScheduleModifyService::class.java)
+        val listCall = service.scheduleModify(token, scheduleData.scheduleId, requestBody)
+
+        listCall.enqueue(object : Callback<ScheduleModifyResponse> {
+            override fun onResponse(
+                call: Call<ScheduleModifyResponse>,
+                response: Response<ScheduleModifyResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("retrofit", response.body().toString());
+                }else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }}
+            override fun onFailure(call: Call<ScheduleModifyResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
+
+
+
+    //scheduleFragment에 값을 넘겨주기 위한 인터페이스
     interface OnButtonClickListener {
-        fun onClickEditBtn()
+        fun onClickEditBtn(scheduleData:ScheduleDetailResult)
     }
     // 클릭 이벤트 설정
     fun setButtonClickListener(buttonClickListener: OnButtonClickListener) {
@@ -102,6 +279,9 @@ class ScheduleEditDialogFragment : DialogFragment() {
     }
     // 클릭 이벤트 실행
     private lateinit var buttonClickListener: OnButtonClickListener
+    //====================================================================
+
+
 
     /**
     1. 정규식 패턴 ^[a-z] : 영어 소문자 허용
@@ -124,122 +304,6 @@ class ScheduleEditDialogFragment : DialogFragment() {
         }
     }
 
-    //ScheduleDetailDialog에서 보낸 데이터 바인딩하기
-    private fun setCurrentDialog(){
-
-        val bundle = arguments
-        var isEdit = bundle?.getBoolean("isEdit", false)
-
-        if (bundle != null && isEdit == true) {//수정한 값이 있다면
-            Log.d("debug", "isEdit: "+"받았다!"+bundle.getBoolean("isEdit"))
-            val sharedPreferenceModified = requireContext().getSharedPreferences("scheduleModifiedData",
-                Context.MODE_PRIVATE
-            )
-            scheduleData?.scheduleWhen = sharedPreferenceModified.getString("scheduleDate", "").toString()
-            scheduleData?.missionTitle = sharedPreferenceModified.getString("missionTitle", "").toString()
-            scheduleData?.missionId = sharedPreferenceModified.getLong("missionId", 0)
-            scheduleData?.startAt = sharedPreferenceModified.getString("scheduleStartTime", "").toString()
-            scheduleData?.endAt = sharedPreferenceModified.getString("scheduleEndTime", "").toString()
-        }
-        else{//아니면 원래 저장 값으로
-            val sharedPreference = requireContext().getSharedPreferences("scheduleData",
-                Context.MODE_PRIVATE
-            )
-            Log.d("debug", "isEdit: "+"받았다!"+isEdit)
-
-            scheduleData?.scheduleWhen = sharedPreference.getString("scheduleDate", "").toString()
-            scheduleData?.missionTitle = sharedPreference.getString("missionTitle", "").toString()
-            scheduleData?.missionId = sharedPreference.getLong("missionId", 0)
-            scheduleData?.startAt = sharedPreference.getString("scheduleStartTime", "").toString()
-            scheduleData?.endAt = sharedPreference.getString("scheduleEndTime", "").toString()
-        }
-
-        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
-            Context.MODE_PRIVATE
-        )
-        scheduleData?.scheduleTitle = sharedPreference.getString("scheduleTitle", "").toString()
-        scheduleData?.content = sharedPreference.getString("scheduleMemo", "").toString()
-        scheduleData?.scheduleId = sharedPreference.getLong("scheduleId", 0)
-        Log.d("debug", "scheduleData!!.missionId: ${scheduleData?.missionId}, scheduleData!!.scheduleId: ${scheduleData?.scheduleId}")
-
-        //화면에 반영
-        binding.scheduleTitleEtv.setText(scheduleData?.scheduleTitle)
-        binding.scheduleDateTv.text = scheduleData?.scheduleWhen
-        binding.missionTitleTv.text = scheduleData?.missionTitle
-        binding.scheduleStartTimeTv.text = scheduleTimeFormatter(scheduleData?.startAt)
-        binding.scheduleEndTimeTv.text = scheduleTimeFormatter(scheduleData?.endAt)
-        binding.scheduleMemoEtv.setText(scheduleData?.content)
-
-    }
-
-
-
-    private fun setSpinnerDialog(position:Int){
-        //sharedPreference저장
-        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
-            Context.MODE_PRIVATE
-        )
-        val editor = sharedPreference.edit()
-        editor.putString("scheduleTitle", binding.scheduleTitleEtv.text.toString())
-        editor.putString("scheduleDate", binding.scheduleDateTv.text.toString())
-        editor.putString("missionTitle", binding.missionTitleTv.text.toString())
-        editor.putString("scheduleStartTime", scheduleData?.startAt)
-        editor.putString("scheduleEndTime", scheduleData?.endAt)
-        editor.putString("scheduleMemo", binding.scheduleMemoEtv.text.toString())
-        editor.putLong("missionId", scheduleData!!.missionId)
-        editor.putLong("scheduleId", scheduleData!!.scheduleId)
-        editor.apply()
-
-        var bundle = Bundle()
-        bundle.putInt("position", position)
-//        bundle.putString("scheduleDate", binding.scheduleDateTv.text.toString());
-//        bundle.putString("missionTitle", binding.missionTitleTv.text.toString());
-//        bundle.putLong("missionId", missionId);
-//        bundle.putString("scheduleStartTime", binding.scheduleStartTimeTv.text.toString());
-//        bundle.putString("scheduleEndTime", binding.scheduleEndTimeTv.text.toString());
-
-        val scheduleSpinnerDialogFragment = ScheduleSpinnerDialogFragment()
-        scheduleSpinnerDialogFragment.arguments = bundle
-        scheduleSpinnerDialogFragment.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
-        dismiss()//editDialog종료
-    }
-
-    //scheduleModify api연결
-    private fun scheduleModifyApi() {
-        val token : String = BuildConfig.API_TOKEN
-//        Log.d("retrofit", "token = "+token+"l");
-//
-        val requestBody = ScheduleModifyRequest(
-            title = binding.missionTitleTv.text.toString(),
-            content = binding.scheduleMemoEtv.text.toString() ,//메모
-            startAt = scheduleData.startAt,
-            endAt = scheduleData.endAt,
-            missionId = scheduleData.missionId,
-            scheduleWhen = binding.scheduleDateTv.text.toString()
-        )
-
-        val service = RetrofitClient.getInstance().create(ScheduleModifyService::class.java)
-        val listCall = service.scheduleModify(token, requestBody)
-
-        listCall.enqueue(object : Callback<ScheduleModifyResponse> {
-            override fun onResponse(
-                call: Call<ScheduleModifyResponse>,
-                response: Response<ScheduleModifyResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("retrofit", response.body().toString());
-                }else {
-                    Log.e("retrofit", "onResponse: Error ${response.code()}")
-                    val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse: Error Body $errorBody")
-                }}
-            override fun onFailure(call: Call<ScheduleModifyResponse>, t: Throwable) {
-                Log.e("retrofit", "onFailure: ${t.message}")
-            }
-        })
-    }
-
-
     //startTime, endTime 포맷
     private fun scheduleTimeFormatter(startAt: String?): String {
         val formatter = DecimalFormat("00")
@@ -247,11 +311,12 @@ class ScheduleEditDialogFragment : DialogFragment() {
         val time = startAt!!.split(":")
         val hour = time[0].toInt()
         val minute = time[1].toInt()
+
         if (hour < 12) {
-            return "오전 $startAt"
+            return "오전 ${formatter.format(hour)}:${formatter.format(minute)}"
         } else {
             if (hour == 12)
-                return "오후 $startAt"
+                return "오후 ${formatter.format(hour)}:${formatter.format(minute)}"
             else
                 return "오후 ${formatter.format(hour - 12)}:${formatter.format(minute)}"
         }

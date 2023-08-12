@@ -60,7 +60,7 @@ class SpinnerMissionFragment : Fragment() {
         val editor = sharedPreference.edit()
         //값 변경하지 않았을때 기본값으로 전달
         editor.putString("missionTitle", scheduleData.missionTitle)
-        editor.putLong("missionId", scheduleData.missionId)
+        scheduleData.missionId?.let { editor.putLong("missionId", it) }
         editor.apply()// data 저장!
 
         var numberpicker = binding.missionSpinner
@@ -82,16 +82,16 @@ class SpinnerMissionFragment : Fragment() {
                 override fun onValueChange(picker: NumberPicker, oldVal: Int, newVal: Int) {
                     //Display the newly selected value from picker
                     //tv.setText("Selected value : " + missionTitleList.get(newVal))
-                    var pickScheduleTitle = missionTitleList.get(newVal)
-                    Log.d("debug", "missionTitle : $pickScheduleTitle")
+                    var pickMissionTitle = missionTitleList.get(newVal)
+                    Log.d("debug", "missionTitle : $pickMissionTitle")
 
-                    scheduleData.missionId = titleIdMap[pickScheduleTitle]!!
+                    scheduleData.missionId = titleIdMap[pickMissionTitle]!!
                     Log.d(
                         "debug",
                         "고른 미션 이름: ${titleTitleMap[scheduleData.missionId]}.${scheduleData.missionId}"
                     )
                     editor.putString("missionTitle", titleTitleMap[scheduleData.missionId])
-                    editor.putLong("missionId", scheduleData.missionId)
+                    editor.putLong("missionId", scheduleData.missionId!!)
                     editor.apply()// data 저장!
                 }
             })
@@ -147,9 +147,10 @@ class SpinnerMissionFragment : Fragment() {
                     Log.d("retrofit", response.body().toString());
                     missionList = response.body()?.result!!.missionList
 
+
                     missionTitleList.add("없음")
                     titleIdMap["없음"] = -1 //-1 = missionId
-                    titleTitleMap[-1] = missionList[0].missionTitle
+                    titleTitleMap[-1] = "없음"
 
                     for(i in 0 until missionList!!.size){
                         var title = missionTitleFormat(missionList[i])
@@ -157,6 +158,8 @@ class SpinnerMissionFragment : Fragment() {
                         titleIdMap[title] = missionList[i].missionId
                         titleTitleMap[missionList[i].missionId] = missionList[i].missionTitle
                     }
+
+
 
 
                 }else {

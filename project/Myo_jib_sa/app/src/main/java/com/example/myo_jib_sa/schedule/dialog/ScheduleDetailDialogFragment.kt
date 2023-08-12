@@ -30,7 +30,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.DecimalFormat
 
-class ScheduleDetailDialogFragment : DialogFragment() {
+class ScheduleDetailDialogFragment : DialogFragment(){
     private lateinit var binding: DialogFragmentScheduleDetailBinding
     private var result:ScheduleDetailResult = ScheduleDetailResult(
         scheduleId = 0,
@@ -92,24 +92,21 @@ class ScheduleDetailDialogFragment : DialogFragment() {
                 editor.putString("scheduleStartTime", result?.startAt)
                 editor.putString("scheduleEndTime", result?.endAt)
                 editor.putString("scheduleMemo", binding.scheduleMemoTv.text.toString())
-                result?.missionId?.let { it1 -> editor.putLong("missionId", it1) }
+                if(binding.scheduleMemoTv.text.toString() == "없음") {
+                    editor.putLong("missionId", -1)
+                }else{
+                    result?.missionId?.let { it1 -> editor.putLong("missionId", it1) }
+                }
                 result?.scheduleId?.let { it1 -> editor.putLong("scheduleId", it1) }
                 editor.apply()
 
                 Log.d("timeDebug", "scheduleStartTime = ${result?.startAt}")
 
-//            var bundle = Bundle()
-//            bundle.putString("scheduleTitle", binding.scheduleTitleTv.text.toString())
-//            bundle.putString("scheduleDate", binding.scheduleDateTv.text.toString())
-//            bundle.putString("missionTitle", binding.missionTitleTv.text.toString())
-//            bundle.putString("scheduleStartTime", binding.scheduleStartTimeTv.text.toString())
-//            bundle.putString("scheduleEndTime", binding.scheduleEndTimeTv.text.toString())
-//            bundle.putString("scheduleMemo", binding.scheduleMemoTv.text.toString())
-//            bundle.putLong("missionId", result.missionId)
-//            bundle.putLong("scheduleId", result.scheduleId)
-//            ScheduleEditDialogFragment().arguments = bundle
 
                 buttonClickListener.onClickEditBtn()
+                val scheduleEditDialog = ScheduleEditDialogFragment()
+                scheduleEditDialogItemClickEvent(scheduleEditDialog)//scheduleEditDialog Item클릭 이벤트 setting
+                scheduleEditDialog.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
             }
         }
 
@@ -120,15 +117,42 @@ class ScheduleDetailDialogFragment : DialogFragment() {
     interface OnButtonClickListener {
         fun onClickEditBtn()
     }
-
     // 클릭 이벤트 설정
     fun setButtonClickListener(buttonClickListener: OnButtonClickListener) {
         this.buttonClickListener = buttonClickListener
     }
-
     // 클릭 이벤트 실행
     private lateinit var buttonClickListener: OnButtonClickListener
 
+
+
+    private fun scheduleEditDialogItemClickEvent(dialog: ScheduleEditDialogFragment){
+        dialog.setButtonClickListener(object: ScheduleEditDialogFragment.OnButtonClickListener{
+            override fun onClickEditBtn(scheduleData:ScheduleDetailResult) {
+                Log.d("debug", "일정 상세로 데이터 넘김"+scheduleData.toString())
+                result.scheduleTitle = scheduleData.scheduleTitle
+                result.scheduleWhen = scheduleData.scheduleWhen
+                result.missionTitle = scheduleData.missionTitle
+                result.missionId = scheduleData.missionId
+                result.startAt = scheduleData.startAt
+                result.endAt = scheduleData.endAt
+                result.content = scheduleData.content
+
+
+                //화면에 반영
+                binding.scheduleTitleTv.text = scheduleData.scheduleTitle
+                binding.scheduleDateTv.text = scheduleData.scheduleWhen
+                if(scheduleData.missionTitle == null)
+                    binding.missionTitleTv.text = "없음"
+                else {
+                    binding.missionTitleTv.text = scheduleData.missionTitle
+                }
+                binding.scheduleStartTimeTv.text = scheduleTimeFormatter(scheduleData.startAt)
+                binding.scheduleEndTimeTv.text = scheduleTimeFormatter(scheduleData.endAt)
+                binding.scheduleMemoTv.text = scheduleData.content
+            }
+        })
+    }
 
     //scheduleDetail api연결
     fun scheduleDetailApi(scheduleId: Long) {
@@ -149,7 +173,11 @@ class ScheduleDetailDialogFragment : DialogFragment() {
 
                     binding.scheduleTitleTv.text = result!!.scheduleTitle
                     binding.scheduleDateTv.text = result!!.scheduleWhen
-                    binding.missionTitleTv.text = result!!.missionTitle
+                    if(result!!.missionTitle == null)
+                        binding.missionTitleTv.text = "없음"
+                    else {
+                        binding.missionTitleTv.text = result!!.missionTitle
+                    }
                     binding.scheduleStartTimeTv.text = scheduleTimeFormatter(result!!.startAt)
                     binding.scheduleEndTimeTv.text = scheduleTimeFormatter(result!!.endAt)
                     binding.scheduleMemoTv.text = result!!.content
@@ -169,6 +197,7 @@ class ScheduleDetailDialogFragment : DialogFragment() {
     }
 
 
+
     //startTime, endTime 포맷
     fun scheduleTimeFormatter(startAt: String?): String {
         val formatter = DecimalFormat("00")
@@ -177,10 +206,10 @@ class ScheduleDetailDialogFragment : DialogFragment() {
         val hour = time[0].toInt()
         val minute = time[1].toInt()
         if (hour < 12) {
-            return "오전 $startAt"
+            return "오전 ${formatter.format(hour)}:${formatter.format(minute)}"
         } else {
             if (hour == 12)
-                return "오후 $startAt"
+                return "오후 ${formatter.format(hour)}:${formatter.format(minute)}"
             else
                 return "오후 ${formatter.format(hour - 12)}:${formatter.format(minute)}"
         }

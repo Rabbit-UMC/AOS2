@@ -342,21 +342,11 @@ class ScheduleFragment : Fragment() {
     fun scheduleDetailDialogItemClickEvent(dialog: ScheduleDetailDialogFragment){
         dialog.setButtonClickListener(object: ScheduleDetailDialogFragment.OnButtonClickListener{
             override fun onClickEditBtn() {
-                val scheduleEditDialog = ScheduleEditDialogFragment()
-                scheduleEditDialogItemClickEvent(scheduleEditDialog)//scheduleEditDialog Item클릭 이벤트 setting
-                scheduleEditDialog.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
+
             }
         })
     }
 
-    //scheduleEditDialog Item클릭 이벤트
-    fun scheduleEditDialogItemClickEvent(dialog: ScheduleEditDialogFragment){
-        dialog.setButtonClickListener(object: ScheduleEditDialogFragment.OnButtonClickListener{
-            override fun onClickEditBtn() {
-                scheduleDetailDialog.dismiss()
-            }
-        })
-    }
 
 
 

@@ -29,6 +29,6 @@ data class ScheduleAddRequest(
     val endAt: String,
     @SerializedName("when")
     val scheduleWhen: String,
-    val missionId: Long
+    val missionId: Long?
 
 )
