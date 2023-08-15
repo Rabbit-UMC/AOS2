@@ -8,7 +8,7 @@ interface ScheduleOfDayService {
 
     @GET("app/schedule/when/{when}")
     fun scheduleOfDay(
-        @Header("Authorization")
+        @Header("X-ACCESS-TOKEN")
         accessToken: String,
         @Path("when") scheduleWhen: String?
     ) : Call<ScheduleOfDayResponse>

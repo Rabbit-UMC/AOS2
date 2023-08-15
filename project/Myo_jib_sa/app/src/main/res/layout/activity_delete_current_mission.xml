@@ -23,12 +23,13 @@ tools:context=".schedule.currentMissionActivity.DeleteCurrentMissionActivity">
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="283dp"
+            android:layout_height="0dp"
             android:background="#C7DAFA"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/horizontalGuideline">
 
             <ImageButton
                 android:id="@+id/go_back_btn"
@@ -50,12 +51,27 @@ tools:context=".schedule.currentMissionActivity.DeleteCurrentMissionActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/missionList_rv"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginBottom="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            app:layout_constraintStart_toEndOf="@+id/verticalguideline"
+            app:layout_constraintTop_toBottomOf="@+id/horizontalGuideline" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontalGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.36" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalguideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.03" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/delete_fbtn"
@@ -80,6 +96,7 @@ tools:context=".schedule.currentMissionActivity.DeleteCurrentMissionActivity">
     android:id="@+id/slidingUp_panel_layout"
     android:layout_width="match_parent"
     android:layout_height="590dp"
+    android:layout_weight="0.64"
     android:orientation="vertical"
     android:background="@drawable/view_round_r20_gray">
 

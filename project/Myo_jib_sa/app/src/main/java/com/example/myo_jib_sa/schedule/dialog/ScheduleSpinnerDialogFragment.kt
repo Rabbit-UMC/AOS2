@@ -17,6 +17,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleSpinnerBinding
+import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
 import com.example.myo_jib_sa.schedule.spinnerViewpager.*
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -41,9 +42,15 @@ class ScheduleSpinnerDialogFragment : DialogFragment() {
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
 
-        setTablayout()
+        setTablayout()//dialog에 viewpager+tablayout셋팅
+        setButton() //버튼 세팅
+
+        return binding.root
+    }
 
 
+    //버튼 세팅
+    private fun setButton(){
         //pre이동
         binding.preBtn.setOnClickListener {
             var current = binding.spinnerViewPager.currentItem
@@ -65,38 +72,49 @@ class ScheduleSpinnerDialogFragment : DialogFragment() {
             }
         }
 
-
-
         //확인, 취소 버튼
         binding.completeBtn.setOnClickListener{
 
-
+            buttonClickListener.onClickCompeleteBtn(true)
             //확인눌렀는지 판단위해
-            val bundle = Bundle()
-            bundle.putBoolean("isEdit", true)
-            //ScheduleEditDialogFragment열기
-            val scheduleEditDialogFragment = ScheduleEditDialogFragment()
-            scheduleEditDialogFragment.arguments = bundle
-            scheduleEditDialogFragment.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
+//            val bundle = Bundle()
+//            bundle.putBoolean("isEdit", true)
+//            //ScheduleEditDialogFragment열기
+//            val scheduleEditDialogFragment = ScheduleEditDialogFragment()
+//            scheduleEditDialogFragment.arguments = bundle
+//            scheduleEditDialogFragment.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
             dismiss()//spinnerDialog종료
         }
         binding.cancelBtn.setOnClickListener {
 
-
+            buttonClickListener.onClickCompeleteBtn(false)
             //확인눌렀는지 판단위해
-            val bundle = Bundle()
-            bundle.putBoolean("isEdit", false)
-            //ScheduleEditDialogFragment열기
-            val scheduleEditDialogFragment = ScheduleEditDialogFragment()
-            scheduleEditDialogFragment.arguments = bundle
-            scheduleEditDialogFragment.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
+//            val bundle = Bundle()
+//            bundle.putBoolean("isEdit", false)
+//            //ScheduleEditDialogFragment열기
+//            val scheduleEditDialogFragment = ScheduleEditDialogFragment()
+//            scheduleEditDialogFragment.arguments = bundle
+//            scheduleEditDialogFragment.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
             dismiss()//spinnerDialog종료
         }
-
-
-        return binding.root
     }
 
+
+    //scheduleFragment에 값을 넘겨주기 위한 인터페이스
+    interface OnButtonClickListener {
+        fun onClickCompeleteBtn(isEdit: Boolean)
+    }
+    // 클릭 이벤트 설정
+    fun setButtonClickListener(buttonClickListener: OnButtonClickListener) {
+        this.buttonClickListener = buttonClickListener
+    }
+    // 클릭 이벤트 실행
+    private lateinit var buttonClickListener: OnButtonClickListener
+    //====================================================================
+
+
+
+    //dialog에 viewpager+tablayout셋팅
     var startPosition:Int = -1
     fun setTablayout(){
         val bundle = arguments
@@ -159,7 +177,6 @@ class ScheduleSpinnerDialogFragment : DialogFragment() {
     }
 
 
-
     //ScheduleSpinner의 ViewPagerAdapter
     inner class ScheduleSpinnerViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle):
         FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -171,82 +188,18 @@ class ScheduleSpinnerDialogFragment : DialogFragment() {
             return when (position) {
                 0 -> {
                     val spinnerMissionFragment = SpinnerMissionFragment()
-//                    val receivebundle = arguments
-//
-//                    val bundle = Bundle()
-//                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
-//                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
-//                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
-//                    bundle.putString(
-//                        "scheduleStartTime",
-//                        receivebundle!!.getString("scheduleStartTime")
-//                    );
-//                    bundle.putString(
-//                        "scheduleEndTime",
-//                        receivebundle!!.getString("scheduleEndTime")
-//                    );
-//                    spinnerMissionFragment.arguments = bundle
-
                     spinnerMissionFragment
                 }
                 1 -> {
                     val spinnerDateFragment = SpinnerDateFragment()
-//                    val receivebundle = arguments
-//
-//                    val bundle = Bundle()
-//                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
-//                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
-//                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
-//                    bundle.putString(
-//                        "scheduleStartTime",
-//                        receivebundle!!.getString("scheduleStartTime")
-//                    );
-//                    bundle.putString(
-//                        "scheduleEndTime",
-//                        receivebundle!!.getString("scheduleEndTime")
-//                    );
-//                    spinnerDateFragment.arguments = bundle
-
                     spinnerDateFragment
                 }
                 2 -> {
                     val spinnerStartTimeFragment = SpinnerStartTimeFragment()
-//                    val receivebundle = arguments
-//
-//                    val bundle = Bundle()
-//                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
-//                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
-//                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
-//                    bundle.putString(
-//                        "scheduleStartTime",
-//                        receivebundle!!.getString("scheduleStartTime")
-//                    );
-//                    bundle.putString(
-//                        "scheduleEndTime",
-//                        receivebundle!!.getString("scheduleEndTime")
-//                    );
-//                    spinnerStartTimeFragment.arguments = bundle
-
                     spinnerStartTimeFragment
                 }
                 else -> {
                     val spinnerEndTimeFragment = SpinnerEndTimeFragment()
-//                    val receivebundle = arguments
-//
-//                    val bundle = Bundle()
-//                    bundle.putString("scheduleDate", receivebundle!!.getString("scheduleDate"));
-//                    bundle.putString("missionTitle", receivebundle!!.getString("missionTitle"));
-//                    bundle.putLong("missionId", receivebundle!!.getLong("missionId"));
-//                    bundle.putString(
-//                        "scheduleStartTime",
-//                        receivebundle!!.getString("scheduleStartTime")
-//                    );
-//                    bundle.putString(
-//                        "scheduleEndTime",
-//                        receivebundle!!.getString("scheduleEndTime")
-//                    );
-//                    spinnerEndTimeFragment.arguments = bundle
-
                     spinnerEndTimeFragment
                 }
             }

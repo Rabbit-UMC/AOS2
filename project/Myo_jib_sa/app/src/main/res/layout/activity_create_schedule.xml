@@ -1,174 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".schedule.createScheduleActivity.CreateScheduleActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <ImageButton
+        android:id="@+id/goBack_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_schedule_dialog_left_arrow" />
+
+    <TextView
+        android:id="@+id/complete_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font_inter"
+        android:padding="10dp"
+        android:text="완료"
+        android:textColor="#234BD9"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/top_line_v"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="1dp"
+        android:background="#C6C6C6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/complete_tv" />
 
-        <ImageButton
-            android:id="@+id/goBack_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
-            android:adjustViewBounds="true"
-            android:background="@android:color/transparent"
-            android:padding="10dp"
-            android:scaleType="fitCenter"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_schedule_dialog_left_arrow" />
-
-        <TextView
-            android:id="@+id/complete_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/font_inter"
-            android:padding="10dp"
-            android:text="완료"
-            android:textColor="#234BD9"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/top_line_v"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#C6C6C6"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/complete_tv" />
-
-        <EditText
-            android:id="@+id/scheduleTitle_etv"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="58dp"
-            android:backgroundTint="#C6C6C6"
-            android:ems="10"
-            android:fontFamily="@font/font_inter"
-            android:gravity="center"
-            android:hint="일정명을 입력하세요."
-            android:inputType="textPersonName"
-            android:maxLength="10"
-            android:maxLines="1"
-            android:textColor="#000000"
-            android:textColorHint="#707070"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/top_line_v" />
-
-        <LinearLayout
-            android:id="@+id/calendar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scheduleTitle_etv">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/year_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="55dp"
-                    android:fontFamily="@font/font_inter"
-                    android:text="2023년"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+    <EditText
+        android:id="@+id/scheduleTitle_etv"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#C6C6C6"
+        android:ems="10"
+        android:fontFamily="@font/font_inter"
+        android:gravity="center"
+        android:hint="일정명을 입력하세요."
+        android:inputType="textPersonName"
+        android:maxLength="10"
+        android:maxLines="1"
+        android:textColor="#000000"
+        android:textColorHint="#707070"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalguideline" />
 
 
-                <ImageButton
-                    android:id="@+id/preMonth_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/month_tv"
-                    android:adjustViewBounds="true"
-                    android:background="@android:color/transparent"
-                    android:padding="18dp"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ic_schedule_calendar_left" />
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:fontFamily="@font/font_inter"
+        android:text="미션"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalguideline2" />
 
-                <TextView
-                    android:id="@+id/month_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/font_inter"
-                    android:text="6월"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+    <TextView
+        android:id="@+id/missionTitle_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:fontFamily="@font/font_inter"
+        android:padding="10dp"
+        android:text="없음"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
+        app:layout_constraintStart_toEndOf="@+id/textView6" />
 
-                <ImageButton
-                    android:id="@+id/nextMonth_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/month_tv"
-                    android:adjustViewBounds="true"
-                    android:background="@android:color/transparent"
-                    android:padding="18dp"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ic_schedule_calendar_right" />
+    <View
+        android:id="@+id/middle_line1_v"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="#C6C6C6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-            </RelativeLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/calendar_rv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="35dp"
-                android:layout_marginRight="35dp" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:fontFamily="@font/font_inter"
-            android:text="날짜"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/calendar_layout" />
-
+    <!--
         <LinearLayout
             android:id="@+id/date_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
+            android:layout_marginStart="44dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toEndOf="@+id/textView8"
-            app:layout_constraintTop_toBottomOf="@+id/calendar_layout">
+            tools:layout_editor_absoluteY="230dp"
+            android:weightSum="5">
 
             <TextView
                 android:id="@+id/scheduleYear_tv"
@@ -231,175 +175,315 @@
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-        </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/calendar_btn"
+
+        </LinearLayout>
+-->
+
+
+    <ImageButton
+        android:id="@+id/calendar_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="3dp"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/middle_line1_v"
+        app:srcCompat="@drawable/ic_schedule_calendar_black" />
+
+    <TextView
+        android:id="@+id/scheduleYear_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/font_inter"
+        android:text="2023"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/calendar_btn"
+        app:layout_constraintTop_toBottomOf="@+id/middle_line1_v" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/font_inter"
+        android:text="년"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/scheduleYear_tv"
+        app:layout_constraintStart_toEndOf="@+id/scheduleYear_tv"
+        app:layout_constraintTop_toBottomOf="@+id/middle_line1_v" />
+
+    <TextView
+        android:id="@+id/scheduleMonth_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/font_inter"
+        android:text="6"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/scheduleYear_tv"
+        app:layout_constraintStart_toEndOf="@+id/textView10"
+        app:layout_constraintTop_toBottomOf="@+id/middle_line1_v" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/font_inter"
+        android:text="월"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/scheduleYear_tv"
+        app:layout_constraintStart_toEndOf="@+id/scheduleMonth_tv"
+        app:layout_constraintTop_toBottomOf="@+id/middle_line1_v" />
+
+    <TextView
+        android:id="@+id/scheduleDay_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/font_inter"
+        android:text="7"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/scheduleYear_tv"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/middle_line1_v" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/font_inter"
+        android:text="일"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/scheduleYear_tv"
+        app:layout_constraintStart_toEndOf="@+id/scheduleDay_tv"
+        app:layout_constraintTop_toBottomOf="@+id/middle_line1_v" />
+
+    <View
+        android:id="@+id/middle_line2_v"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="#C6C6C6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_btn" />
+
+    <TextView
+        android:id="@+id/scheduleStartAt_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/font_inter"
+        android:padding="10dp"
+        android:text="오전 08:00"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/middle_line3_v"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/middle_line2_v" />
+
+    <View
+        android:id="@+id/middle_line3_v"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="#C6C6C6"
+        app:layout_constraintBottom_toTopOf="@+id/middle_line4_v"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/middle_line2_v" />
+
+    <TextView
+        android:id="@+id/scheduleEndAt_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/font_inter"
+        android:padding="10dp"
+        android:text="오전 09:00"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/middle_line3_v"
+        app:layout_constraintTop_toBottomOf="@+id/middle_line2_v" />
+
+    <View
+        android:id="@+id/middle_line4_v"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="3dp"
+        android:background="#C6C6C6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scheduleStartAt_tv" />
+
+    <EditText
+        android:id="@+id/scheduleMemo_etv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:ems="30"
+        android:fontFamily="@font/font_inter"
+        android:hint="메모를 입력하세요."
+        android:inputType="textMultiLine"
+        android:maxLength="30"
+        android:maxLines="3"
+        android:textColor="#000000"
+        android:textColorHint="#707070"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/middle_line4_v" />
+
+
+
+
+    <LinearLayout
+        android:id="@+id/calendar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/view_round_r20_indigo"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:weightSum="20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/year_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="55dp"
+                android:fontFamily="@font/font_inter"
+                android:text="2023년"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+
+            <ImageButton
+                android:id="@+id/preMonth_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/month_tv"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:padding="18dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_schedule_calendar_left" />
+
+            <TextView
+                android:id="@+id/month_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/font_inter"
+                android:text="6월"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/nextMonth_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@+id/month_tv"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:padding="18dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_schedule_calendar_right" />
+
+            <TextView
+                android:id="@+id/calendarComplete_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="38dp"
+                android:fontFamily="@font/font_inter"
+                android:padding="10dp"
+                android:text="완료"
+                android:textColor="#FFF100"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/calendar_rv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:adjustViewBounds="true"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            app:layout_constraintStart_toEndOf="@+id/date_layout"
-            app:layout_constraintTop_toBottomOf="@+id/calendar_layout"
-            app:srcCompat="@drawable/ic_schedule_calendar" />
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"/>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalguideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.14" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalguideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.28" />
+
+    <LinearLayout
+        android:id="@+id/guidebanner"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/ic_createschedule_guidebanner"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1.625:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
-        <LinearLayout
-            android:id="@+id/time_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="32dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/calendar_btn">
-
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/font_inter"
-                android:text="시간"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_layout" />
-
-            <TextView
-                android:id="@+id/scheduleStartAt_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="45dp"
-                android:fontFamily="@font/font_inter"
-                android:text="오전 08:00"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:fontFamily="@font/font_inter"
-                android:text="~"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/scheduleEndAt_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:fontFamily="@font/font_inter"
-                android:text="오전 09:00"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/missionSelect_parentlayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="14dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/time_layout">
-
-            <TextView
-                android:id="@+id/textView20"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/font_inter"
-                android:text="미션"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:id="@+id/missionSelect_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-
-                android:gravity="center|center_horizontal"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_createschedule_mission_up_arrow" />
-
-                <TextView
-                    android:id="@+id/missionTitle_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/font_inter"
-                    android:padding="4dp"
-                    android:text="없음"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/imageView6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_createschedule_mission_down_arrow" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="330dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/view_round_r10_gray"
-            android:orientation="vertical"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/missionSelect_parentlayout">
-
-            <TextView
-                android:id="@+id/textView22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
-                android:fontFamily="@font/font_inter"
-                android:text="메모📌"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/scheduleMemo_etv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@null"
-                android:ems="30"
-                android:fontFamily="@font/font_inter"
-                android:hint="메모를 입력하세요."
-                android:inputType="none"
-                android:maxLength="30"
-                android:textColor="#000000"
-                android:textColorHint="#707070"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

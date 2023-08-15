@@ -1,29 +1,48 @@
 package com.example.myo_jib_sa.schedule.createScheduleActivity
 
 import android.content.Context
+import android.graphics.Point
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputFilter
+import android.text.TextWatcher
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
+import com.example.myo_jib_sa.schedule.adapter.CalendarData
+import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
+import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
+import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyResponse
+import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.CreateScheduleCalendarAdapter
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDateData
+import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddRequest
+import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddResponse
+import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddService
 import com.example.myo_jib_sa.schedule.createScheduleActivity.spinner.ScheduleCreateSpinnerDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleSpinnerDialogFragment
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
+import kotlin.math.roundToInt
 
 class CreateScheduleActivity : AppCompatActivity() {
     private lateinit var binding : ActivityCreateScheduleBinding
@@ -34,8 +53,6 @@ class CreateScheduleActivity : AppCompatActivity() {
 
     private var isClickCalendarImgBtn = false //달력이미지버튼 클릭에서 사용
     private var selectedDateIndex : Int = 0//referenceDate의 dayList에서 index값 //달력이미지버튼 클릭에서 사용
-
-    private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils//키보드 유틸
 
     private var scheduleData : ScheduleDetailResult = ScheduleDetailResult(
         scheduleId = 0,
@@ -67,31 +84,13 @@ class CreateScheduleActivity : AppCompatActivity() {
         binding.scheduleMonthTv.text = referenceDate?.monthValue.toString()
         binding.scheduleDayTv.text = referenceDate?.dayOfMonth.toString()
 
-        setBtb()//버튼 setting
-
+        setBtn()//버튼 setting
+        setMemoMaxLine()//메모 최대 3줄로 제한
 
         calendarRvItemClickEvent()//캘린더 아이템 클릭이벤트
 
-        //키보드 유틸 : edittext
-        binding.scheduleMemoEtv.setOnFocusChangeListener (object : View.OnFocusChangeListener {
-            override fun onFocusChange(view: View, hasFocus: Boolean) {
-                if (hasFocus) {
-                    //  .. 포커스시
-                    //binding.textView22.visibility = View.INVISIBLE
-//                    keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
-//                        { keyboardHeight ->
-//                            binding.root.run {
-//                                smoothScrollTo(scrollX, scrollY + keyboardHeight)
-//                            }
-//                        })
-                } else {
-                    //  .. 포커스 뺏겼을 때
-                    //binding.textView22.visibility = View.VISIBLE
 
-                    //onShowKeyboard =
-                }
-            }
-        })
+
 
     }
 
@@ -112,7 +111,7 @@ class CreateScheduleActivity : AppCompatActivity() {
         dayInMonthArray(referenceDate)
 
         //리사이클러뷰 연결
-        calendarAdapter = CreateScheduleCalendarAdapter(dayList, isClickCalendarImgBtn)
+        calendarAdapter = CreateScheduleCalendarAdapter(dayList)
         binding.calendarRv.layoutManager = GridLayoutManager(this, 7)
         binding.calendarRv.adapter = calendarAdapter
     }
@@ -131,18 +130,56 @@ class CreateScheduleActivity : AppCompatActivity() {
         var dayOfWeek = firstDay.dayOfWeek.value
 
         for(i in 1..42){
-            if(i<=dayOfWeek || i>(lastDay + dayOfWeek)){
+
+            if(dayOfWeek == 7){//그 달의 첫날이 일요일일때 작동: 한칸 아래줄부터 날짜 표시되는 현상 막기위해
+                if(i>lastDay) {
+                    //break
+                    dayList.add(SelectDateData(null))
+                }
+                else {
+                    if (i == referenceDate.dayOfMonth) {//referenceDate의 dayList에서 index값
+                        selectedDateIndex = i - 1
+                    }
+                    if (selectedDate == LocalDate.of(
+                            referenceDate.year,
+                            referenceDate.monthValue,
+                            i
+                        )
+                    ) { //현재 선택한 date
+                        dayList.add(
+                            SelectDateData(
+                                LocalDate.of(
+                                    referenceDate.year,
+                                    referenceDate.monthValue,
+                                    i
+                                ), true
+                            )
+                        )
+                    } else {
+                        dayList.add(
+                            SelectDateData(
+                                LocalDate.of(
+                                    referenceDate.year,
+                                    referenceDate.monthValue,
+                                    i
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+            else if(i<=dayOfWeek || i>(lastDay + dayOfWeek)){//그 외 경우
                 dayList.add(SelectDateData(null))
-            }else{
+            }
+            else{
                 if(i-dayOfWeek == referenceDate.dayOfMonth) {//referenceDate의 dayList에서 index값
                     selectedDateIndex = i - 1
                 }
-                if( selectedDate == LocalDate.of(referenceDate.year, referenceDate.monthValue, i-dayOfWeek) && isClickCalendarImgBtn){ //현재 선택한 date
+                if( selectedDate == LocalDate.of(referenceDate.year, referenceDate.monthValue, i-dayOfWeek) ){ //현재 선택한 date
                     dayList.add(SelectDateData(LocalDate.of(referenceDate.year, referenceDate.monthValue, i-dayOfWeek), true))
                 } else{
                     dayList.add(SelectDateData(LocalDate.of(referenceDate.year, referenceDate.monthValue, i-dayOfWeek)))
                 }
-
             }
         }
 
@@ -163,6 +200,7 @@ class CreateScheduleActivity : AppCompatActivity() {
                     calendarAdapter.notifyItemChanged(selectedDateIndex)
                 }
 
+                selectedDate = selectDateData.date!!
 
                 var iYear = selectDateData.date?.year
                 var iMonth = selectDateData.date?.monthValue
@@ -182,7 +220,7 @@ class CreateScheduleActivity : AppCompatActivity() {
 
     //버튼 setting
     @RequiresApi(Build.VERSION_CODES.O)
-    fun setBtb() {
+    fun setBtn() {
 
         //뒤로가기 버튼 클릭
         binding.goBackBtn.setOnClickListener {
@@ -195,50 +233,53 @@ class CreateScheduleActivity : AppCompatActivity() {
                 Log.d("exitDebug", "no!!")
                 val errorDialogFragment = ErrorDialogFragment()
                 errorDialogFragment.show(supportFragmentManager, "ErrorDialogFragment")
-
-
-            } else {
+            } else {//정상적일때
                 Log.d("exitDebug", "yes!!")
+                SchduleAddApi()
                 finish()
             }
         }
 
-        //이전달로 이동
+        //캘린더: 이전달로 이동
         binding.preMonthBtn.setOnClickListener {
-            if (isClickCalendarImgBtn) {
                 referenceDate = referenceDate.minusMonths(1)
                 setMonthView()
                 calendarRvItemClickEvent()
-            }
         }
-        //다음달로 이동
+        //캘린더: 다음달로 이동
         binding.nextMonthBtn.setOnClickListener {
-            if (isClickCalendarImgBtn) {
                 referenceDate = referenceDate.plusMonths(1)
                 setMonthView()
                 calendarRvItemClickEvent()
-            }
+        }
+
+        //캘린더에서 완료 버튼 클릭
+        binding.calendarCompleteTv.setOnClickListener {
+            binding.calendarLayout.visibility = View.GONE
+            binding.guidebanner.visibility = View.VISIBLE
+            binding.calendarBtn.setImageResource(R.drawable.ic_schedule_calendar_black)
+            isClickCalendarImgBtn = false
         }
 
         //달력이미지 클릭
         binding.calendarBtn.setOnClickListener {
-            if (!isClickCalendarImgBtn) {
+            if (!isClickCalendarImgBtn) {//캘린더 보이게
+                binding.calendarLayout.visibility = View.VISIBLE
+                binding.guidebanner.visibility = View.GONE
+                binding.calendarBtn.setImageResource(R.drawable.ic_schedule_calendar)
                 isClickCalendarImgBtn = true
-                val temp = dayList[selectedDateIndex]
-                dayList[selectedDateIndex] = SelectDateData(temp.date, true)
-                selectedDate = temp.date!!
-                //calendarAdapter.notifyDataSetChanged()
+            }
+            else{//캘린더 안보이게
+                binding.calendarLayout.visibility = View.GONE
+                binding.guidebanner.visibility = View.VISIBLE
+                binding.calendarBtn.setImageResource(R.drawable.ic_schedule_calendar_black)
+                isClickCalendarImgBtn = false
 
-                //캘린더 다시 구성
-                calendarAdapter = CreateScheduleCalendarAdapter(dayList, isClickCalendarImgBtn)
-                binding.calendarRv.layoutManager = GridLayoutManager(this, 7)
-                binding.calendarRv.adapter = calendarAdapter
-                calendarRvItemClickEvent()
             }
         }
 
         //시간|미션 클릭
-        binding.missionSelectLayout.setOnClickListener {
+        binding.missionTitleTv.setOnClickListener {
             setSpinnerDialog(0)
         }
         binding.scheduleStartAtTv.setOnClickListener{
@@ -248,6 +289,27 @@ class CreateScheduleActivity : AppCompatActivity() {
             setSpinnerDialog(2)
         }
 
+    }
+
+    //메모 최대 3줄로 제한
+    private fun setMemoMaxLine(){
+        binding.scheduleMemoEtv.addTextChangedListener(object: TextWatcher{
+            var maxText = ""
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                maxText = p0.toString()
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(binding.scheduleMemoEtv.lineCount > 3){//최대 3줄까지 제한
+                    binding.scheduleMemoEtv.setText(maxText)
+                    binding.scheduleMemoEtv.setSelection(binding.scheduleMemoEtv.length())//커서
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+        })
     }
 
     private fun setSpinnerDialog(position:Int){
@@ -262,7 +324,7 @@ class CreateScheduleActivity : AppCompatActivity() {
         editor.putString("scheduleStartTime", scheduleData?.startAt)
         editor.putString("scheduleEndTime", scheduleData?.endAt)
         editor.putString("scheduleMemo", binding.scheduleMemoEtv.text.toString())
-        editor.putLong("missionId", scheduleData!!.missionId)
+        scheduleData!!.missionId?.let { editor.putLong("missionId", it) }
         editor.putLong("scheduleId", scheduleData!!.scheduleId)
         editor.apply()
 
@@ -293,6 +355,40 @@ class CreateScheduleActivity : AppCompatActivity() {
         })
     }
 
+    private fun SchduleAddApi(){
+        val token : String = BuildConfig.API_TOKEN
+//        Log.d("retrofit", "token = "+token+"l");
+//
+        val requestBody = ScheduleAddRequest(
+            title = binding.scheduleTitleEtv.text.toString(),
+            content = binding.scheduleMemoEtv.text.toString() ,//메모
+            startAt = scheduleData.startAt,
+            endAt = scheduleData.endAt,
+            missionId = scheduleData.missionId,
+            scheduleWhen = scheduleDateFormatter()
+        )
+        Log.d("retrofit", "ScheduleAddRequest: $requestBody");
+
+        val service = RetrofitClient.getInstance().create(ScheduleAddService::class.java)
+        val listCall = service.scheduleAdd(token, requestBody)
+
+        listCall.enqueue(object : Callback<ScheduleAddResponse> {
+            override fun onResponse(
+                call: Call<ScheduleAddResponse>,
+                response: Response<ScheduleAddResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("retrofit", response.body().toString());
+                }else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }}
+            override fun onFailure(call: Call<ScheduleAddResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
 
 
     //sharedPreference에 저장할때 사용용
@@ -340,6 +436,13 @@ class CreateScheduleActivity : AppCompatActivity() {
             else
                 return "오후 ${formatter.format(hour - 12)}:${formatter.format(minute)}"
         }
+    }
+
+    //화면의 날짜를 yyyy-mm-dd형식으로 포맷
+    private fun scheduleDateFormatter():String{
+        val formatter = DecimalFormat("00")
+
+        return "${binding.scheduleYearTv.text}-${formatter.format(binding.scheduleMonthTv.text.toString().toInt())}-${formatter.format(binding.scheduleDayTv.text.toString().toInt())}"
     }
 
     //M월 형식으로 포맷

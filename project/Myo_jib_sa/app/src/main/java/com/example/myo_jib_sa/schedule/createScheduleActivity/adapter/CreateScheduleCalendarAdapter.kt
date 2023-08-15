@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa.schedule.createScheduleActivity.adapter
 
+import android.graphics.Color
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +23,7 @@ data class SelectDateData(
     var isSelected :Boolean = false//ture이면 일정 있음, false이면 일정 없음
 )
 
-class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData>, private val isClickCalendarImgBtn:Boolean):
+class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData>):
     RecyclerView.Adapter<CreateScheduleCalendarAdapter.ViewHolder>() {
 
 
@@ -43,9 +44,10 @@ class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData
         holder.bind(dayList[position])
 
 
-        if(isClickCalendarImgBtn){//캘린더 이미지 버튼을 클릭했을 때만 리사이클러뷰 클릭이벤트 허용
+
+        if(!dayList[position].isSelected) {
             //날짜 클릭 이벤트
-            holder.itemView.setOnClickListener{
+            holder.itemView.setOnClickListener {
                 //ragment나 activity에서 클릭이벤트 정의하고 싶을때 사용
                 itemClickListener.onClick(dayList[position], position)
                 //===============================================
@@ -53,7 +55,7 @@ class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData
                 dayList[position].isSelected = true
                 notifyItemChanged(position)
 
-                if(prePosition != -1){
+                if (prePosition != -1) {
                     dayList[prePosition].isSelected = false
                 }
                 notifyItemChanged(prePosition)
@@ -61,13 +63,14 @@ class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData
 
             }
         }
-
     }
 
     class ViewHolder(private val binding: ItemCreateScheudleCalendarDayBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(data: SelectDateData) {
+
+
 
             //날짜 변수에 담기
             if(data.date==null){
@@ -78,9 +81,11 @@ class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData
             }
             if(data.isSelected){
                 binding.selectedDateIv.visibility = View.VISIBLE
+                binding.dayTv.setTextColor(Color.parseColor("#0F1C4C"));
             }
             else{
                 binding.selectedDateIv.visibility = View.INVISIBLE
+                binding.dayTv.setTextColor(Color.parseColor("#FFFFFF"));
             }
 
         }

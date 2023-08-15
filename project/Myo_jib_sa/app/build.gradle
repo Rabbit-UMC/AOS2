@@ -26,7 +26,7 @@ android {
         versionName "1.0"
 
 
-        //카카오 로그인 API 연결 
+        //카카오 로그인 API 연결
         buildConfigField "String", "KAKAO_API_KEY", properties['KAKAO_API_KEY']
         buildConfigField "String", "Redirect_URI", properties['Redirect_URI']
         buildConfigField "String", "NATIVE_APP_KEY", properties['NATIVE_APP_KEY']
@@ -38,6 +38,9 @@ android {
         // 타입 - 키 - 값
         //애드몹 광고 아이디 - 변경필요
         buildConfigField "String", "AD_UNIT_ID", properties['adUnitId']
+
+        buildConfigField "String", "API_TOKEN", properties['apiToken']
+
 
         //키 - 값
         // 매니페스트에서 사용 가능

@@ -3,9 +3,14 @@ package com.example.myo_jib_sa.schedule.currentMissionActivity.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.adapter.CalendarData
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
 
 data class CurrentMissionData(
     var missionTitle:String,
@@ -15,7 +20,8 @@ data class CurrentMissionData(
     var missionId:Long
 )
 
-class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<CurrentMissionData>):
+class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<CurrentMissionResult>,
+                                           private val width:Int, private val height:Int):
     RecyclerView.Adapter<CurrentMissionCurrentMissionAdapter.ViewHolder>() {
 
 
@@ -26,6 +32,8 @@ class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<Cur
     ): ViewHolder {
         val binding =
             ItemCurrentMissionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding.root.layoutParams = ConstraintLayout.LayoutParams((width*0.46).toInt(), (width*0.46*1.2).toInt())
+        //binding.frameLayout.layoutParams = ConstraintLayout.LayoutParams((width*0.40).toInt(), (height*0.16).toInt())
         return ViewHolder(binding)
     }
 
@@ -49,18 +57,23 @@ class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<Cur
 
     class ViewHolder(private val binding: ItemCurrentMissionBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: CurrentMissionData) {
+        fun bind(data: CurrentMissionResult) {
+
             binding.missionTitleTv.text = data.missionTitle
-            binding.missionDdayTv.text = data.missionDday
-            binding.missionChallengerTv.text = "${data.missionChallengerCnt}명"
-            binding.missionImg.setImageResource(data.missionImg)  //이미지 설정
+            binding.missionDdayTv.text = data.dday
+            binding.missionChallengerTv.text = "${data.challengerCnt}명"
+            Glide.with(itemView)
+                .load(data.image)
+                .error(R.drawable.ic_currentmission_free) //에러시 보여줄 이미지
+                .fallback(R.drawable.ic_currentmission_free) //load할 url이 비어있을 경우 보여줄 이미지
+                .into(binding.missionImg)//이미지 설정
         }
     }
 
     //클릭 이벤트 처리 ==============================================
     //리스너 인터페이스
     interface OnItemClickListener{
-        fun onClick(currentMissionData: CurrentMissionData)
+        fun onClick(currentMissionData: CurrentMissionResult)
         fun onLongClick(position: Int)
     }
     // (3) 외부에서 클릭 시 이벤트 설정
