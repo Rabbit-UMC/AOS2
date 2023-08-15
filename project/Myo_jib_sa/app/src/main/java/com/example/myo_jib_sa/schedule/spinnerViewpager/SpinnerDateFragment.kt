@@ -61,6 +61,9 @@ class SpinnerDateFragment : Fragment() {
                 Log.d("debug", "$year.${formatter.format ( month + 1 )}.${formatter.format(dayOfMonth)}")
                 editor.putString("scheduleDate", "$year-${formatter.format ( month + 1 )}-${formatter.format(dayOfMonth)}")
                 editor.apply()// data 저장!
+
+                Log.d("Datedebug", "SpinneronDateChanged = $year-${formatter.format ( month + 1 )}-${formatter.format(dayOfMonth)}")
+
             }
         })
 
@@ -103,6 +106,9 @@ class SpinnerDateFragment : Fragment() {
         scheduleData.content = sharedPreference.getString("scheduleMemo", "").toString()
         scheduleData.missionId = sharedPreference.getLong("missionId", 0)
         scheduleData.scheduleId = sharedPreference.getLong("scheduleId", 0)
+
+        Log.d("Datedebug", "SpinnergetData = ${scheduleData?.scheduleWhen}")
+
     }
 
 

@@ -68,6 +68,7 @@ class ScheduleDetailDialogFragment : DialogFragment(){
 
         //x누르면 dialog종료
         binding.exitTv.setOnClickListener {
+            buttonClickListener.onClickEditBtn()
             dismiss()
         }
 
@@ -101,7 +102,7 @@ class ScheduleDetailDialogFragment : DialogFragment(){
                 editor.apply()
 
                 Log.d("timeDebug", "scheduleStartTime = ${result?.startAt}")
-
+                Log.d("Datedebug", "Detail = ${binding.scheduleDateTv.text.toString()}")
 
                 buttonClickListener.onClickEditBtn()
                 val scheduleEditDialog = ScheduleEditDialogFragment()
@@ -138,6 +139,8 @@ class ScheduleDetailDialogFragment : DialogFragment(){
                 result.endAt = scheduleData.endAt
                 result.content = scheduleData.content
 
+                Log.d("Datedebug", "DetailCallback = ${result.scheduleWhen}")
+
 
                 //화면에 반영
                 binding.scheduleTitleTv.text = scheduleData.scheduleTitle
@@ -147,9 +150,11 @@ class ScheduleDetailDialogFragment : DialogFragment(){
                 else {
                     binding.missionTitleTv.text = scheduleData.missionTitle
                 }
-                binding.scheduleStartTimeTv.text = scheduleTimeFormatter(scheduleData.startAt)
-                binding.scheduleEndTimeTv.text = scheduleTimeFormatter(scheduleData.endAt)
+                binding.scheduleStartAtTv.text = scheduleTimeFormatter(scheduleData.startAt)
+                binding.scheduleEndAtTv.text = scheduleTimeFormatter(scheduleData.endAt)
                 binding.scheduleMemoTv.text = scheduleData.content
+
+
             }
         })
     }
@@ -178,8 +183,8 @@ class ScheduleDetailDialogFragment : DialogFragment(){
                     else {
                         binding.missionTitleTv.text = result!!.missionTitle
                     }
-                    binding.scheduleStartTimeTv.text = scheduleTimeFormatter(result!!.startAt)
-                    binding.scheduleEndTimeTv.text = scheduleTimeFormatter(result!!.endAt)
+                    binding.scheduleStartAtTv.text = scheduleTimeFormatter(result!!.startAt)
+                    binding.scheduleEndAtTv.text = scheduleTimeFormatter(result!!.endAt)
                     binding.scheduleMemoTv.text = result!!.content
 
 

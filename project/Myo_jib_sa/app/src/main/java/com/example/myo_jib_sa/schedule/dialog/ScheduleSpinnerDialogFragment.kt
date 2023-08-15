@@ -1,8 +1,10 @@
 package com.example.myo_jib_sa.schedule.dialog
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +46,27 @@ class ScheduleSpinnerDialogFragment : DialogFragment() {
 
         setTablayout()//dialog에 viewpager+tablayout셋팅
         setButton() //버튼 세팅
+
+
+        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
+            Context.MODE_PRIVATE
+        )
+        //값 저장할 sharedPreference 부르기
+        val modifiedSharedPreference = requireContext().getSharedPreferences("scheduleModifiedData",
+            Context.MODE_PRIVATE
+        )
+        val editor = modifiedSharedPreference.edit()
+        editor.putString("scheduleTitle", sharedPreference.getString("scheduleTitle", "").toString())//값 변경하지 않았을때 기본값으로 전달
+        editor.putString("scheduleDate", sharedPreference.getString("scheduleDate", "").toString())
+        editor.putString("missionTitle", sharedPreference.getString("missionTitle", "").toString())
+        editor.putString("scheduleStartTime", sharedPreference.getString("scheduleStartTime", "").toString())
+        editor.putString("scheduleEndTime", sharedPreference.getString("scheduleEndTime", "").toString())
+        editor.putString("scheduleMemo", sharedPreference.getString("scheduleMemo", "").toString())
+        editor.putLong("missionId", sharedPreference.getLong("missionId", 0))
+        editor.putLong("scheduleId", sharedPreference.getLong("scheduleId", 0))
+        editor.apply()// data 저장!
+
+
 
         return binding.root
     }

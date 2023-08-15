@@ -2,14 +2,18 @@ package com.example.myo_jib_sa.schedule
 
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +32,6 @@ import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayService
 import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActivity
 import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActivity
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
-import com.example.myo_jib_sa.schedule.dialog.ScheduleEditDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.scheduleDeleteDialog
 import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
@@ -43,7 +46,6 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 
-
 class ScheduleFragment : Fragment() {
 
     lateinit var binding: FragmentScheduleBinding
@@ -54,6 +56,10 @@ class ScheduleFragment : Fragment() {
 
     var mDataList = ArrayList<Mission>() //미션 리스트 데이터
     var sDataList = ArrayList<ScheduleOfDayResult>() //일정 리스트 데이터
+
+    private lateinit var createScheduleActivityResultLauncher: ActivityResultLauncher<Intent> //createScheduleActivity의 ResultLauncher
+
+
 
     private var adLoader: AdLoader? = null //광고를 불러올 adLoader 객체
     //val AD_UNIT_ID = BuildConfig.AD_UNIT_ID
@@ -98,6 +104,7 @@ class ScheduleFragment : Fragment() {
                 binding.calenderLayout.visibility = View.GONE
         }
 
+
         //화면전환
         switchScreen()
         //캘린더에 이전달 다음달 이동 버튼 세팅
@@ -107,6 +114,38 @@ class ScheduleFragment : Fragment() {
 
         return binding.root
     }
+
+
+    //화면 reload 기능: 기본적인 데이터 세팅
+    //화면이 사용자와 상호작용할수 있는 상태일때 (=화면이 눈에 보일때
+   @RequiresApi(Build.VERSION_CODES.O)
+    override fun onResume() {
+        super.onResume()
+
+
+        scheduleHomeApi()//scheduleHome api연결
+
+        setCalendarAdapter()//화면 초기화
+
+        //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
+        setCurrentMissionAdapter()
+        //setScheduleAdapter(selectedDate)
+        //scheduleAdaptar.notifyDataSetChanged()
+        //scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
+
+
+        CoroutineScope(Dispatchers.Main).launch{
+            delay(50)
+            scheduleOfDayApi(YYYYMMDDFromDate(selectedDate))//scheduleOfDay api연결
+
+        }
+
+
+
+
+
+    }
+
 
 
     //month화면에 보여주기
@@ -127,7 +166,7 @@ class ScheduleFragment : Fragment() {
 
             //CalendarAdapter리사이클러뷰 연결
             calendarAdapter = CalendarAdapter(dayList)
-            binding.calendarRv.layoutManager = GridLayoutManager(getActivity(), 7)
+            binding.calendarRv.layoutManager = GridLayoutManager(activity, 7)
             binding.calendarRv.adapter = calendarAdapter
 
             calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
@@ -174,7 +213,7 @@ class ScheduleFragment : Fragment() {
                             ), hasScheduleMap[currentDate]
                         )
                     )
-                    Log.d("debug", "$date checkResult = ${hasScheduleMap[currentDate]}")
+                    //Log.d("debug", "$date checkResult = ${hasScheduleMap[currentDate]}")
                 }
             }
             else if(i<=dayOfWeek || i>(lastDay + dayOfWeek)){//그 외 경우
@@ -183,7 +222,7 @@ class ScheduleFragment : Fragment() {
             else{
                 var currentDate = YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek))
                 dayList.add(CalendarData(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek), hasScheduleMap[currentDate]))//얘만 살리기
-                Log.d("debug", "$currentDate checkResult = ${hasScheduleMap[currentDate]}")
+                //Log.d("debug", "$currentDate checkResult = ${hasScheduleMap[currentDate]}")
             }
         }
 
@@ -226,8 +265,8 @@ class ScheduleFragment : Fragment() {
     //setScheduleAdapterAdapter 리사이클러뷰 연결
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setScheduleAdapter(date: LocalDate?){
-        var formatter = DateTimeFormatter.ofPattern("D")
-        var day = date?.format(formatter)
+        //var formatter = DateTimeFormatter.ofPattern("D")
+        //var day = date?.format(formatter)
 
         //ScheduleAdaptar 리사이클러뷰 연결
 
@@ -239,6 +278,7 @@ class ScheduleFragment : Fragment() {
 //            sDataList.add(ScheduleData("헬스 5일차", "19:00", "20:00"))
 //            sDataList.add(ScheduleData("헬스 6일차", "19:00", "20:00"))
 //        }
+        Log.d("retrofit", "$date : $sDataList")
         scheduleAdaptar = ScheduleAdaptar(sDataList)
         binding.scheduleRv.layoutManager = LinearLayoutManager(getActivity())
         binding.scheduleRv.adapter = scheduleAdaptar
@@ -309,13 +349,14 @@ class ScheduleFragment : Fragment() {
                 var iMonth = calendarData.date?.monthValue
                 var iDay = calendarData.date?.dayOfMonth
 
+                selectedDate = calendarData.date!!
+
 //                Toast.makeText(context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
 //                    .show()
-                CoroutineScope(Dispatchers.Main).launch {
-                    scheduleOfDayApi(YYYYMMDDFromDate(calendarData.date))//scheduleOfDay api연결
-                    delay(100)
-                    setScheduleAdapter(calendarData.date)
-                }
+
+
+                scheduleOfDayApi(YYYYMMDDFromDate(calendarData.date))//scheduleOfDay api연결
+
             }
         })
     }
@@ -341,13 +382,21 @@ class ScheduleFragment : Fragment() {
     //scheduleDetailDialog Item클릭 이벤트
     fun scheduleDetailDialogItemClickEvent(dialog: ScheduleDetailDialogFragment){
         dialog.setButtonClickListener(object: ScheduleDetailDialogFragment.OnButtonClickListener{
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onClickEditBtn() {
+                //화면reload===============================================
 
+                scheduleHomeApi()//scheduleHome api연결
+                setCalendarAdapter()//화면 초기화
+
+                //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
+                setCurrentMissionAdapter()
+
+                scheduleOfDayApi(YYYYMMDDFromDate(selectedDate))//scheduleOfDay api연결
+                //화면reload===============================================
             }
         })
     }
-
-
 
 
 
@@ -451,7 +500,7 @@ class ScheduleFragment : Fragment() {
                 response: Response<ScheduleOfDayResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.d("retrofit", response.body().toString());
+                    Log.d("retrofit", "scheduleOfDayApi"+response.body().toString());
                     val scheduleList = response.body()?.result
 
                     //일정 데이터 리스트 sDataList에 추가
@@ -464,6 +513,8 @@ class ScheduleFragment : Fragment() {
                             scheduleList[i].scheduleWhen
                         ))
                     }
+                    if(binding.calenderLayout.visibility == View.VISIBLE)
+                        setScheduleAdapter(selectedDate)
                 }else {
                     Log.e("retrofit", "onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
@@ -501,7 +552,7 @@ class ScheduleFragment : Fragment() {
 
         Log.d("debug", "==========================================")
         for ((key, value) in hasScheduleMap) {
-            Log.d("debug", "dd$key -> $value")
+            //Log.d("debug", "dd$key -> $value")
         }
 
     }
@@ -534,11 +585,11 @@ class ScheduleFragment : Fragment() {
                     //response에 값이 있으면 해당날짜 일정있음
                     if (!scheduleList.isNullOrEmpty()) {
                         checkResult = true
-                        Log.d("debug", "$date scheduleList != null")
+                        //Log.d("debug", "$date scheduleList != null")
                     }
                     else{
                         checkResult = false
-                        Log.d("debug", "$date scheduleList == null")
+                        //Log.d("debug", "$date scheduleList == null")
                     }
 
 

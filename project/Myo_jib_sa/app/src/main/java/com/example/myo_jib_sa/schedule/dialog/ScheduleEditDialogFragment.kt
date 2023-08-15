@@ -108,12 +108,15 @@ class ScheduleEditDialogFragment : DialogFragment() {
         scheduleData?.scheduleId = sharedPreference.getLong("scheduleId", 0)
         Log.d("debug", "EditDialog$scheduleData")
 
+        Log.d("Datedebug", "EditSetCurrentDialog = ${scheduleData?.scheduleWhen}")
+
+
         //화면에 반영
         binding.scheduleTitleEtv.setText(scheduleData?.scheduleTitle)
         binding.scheduleDateTv.text = scheduleData?.scheduleWhen
         binding.missionTitleTv.text = scheduleData?.missionTitle
-        binding.scheduleStartTimeTv.text = scheduleTimeFormatter(scheduleData?.startAt)
-        binding.scheduleEndTimeTv.text = scheduleTimeFormatter(scheduleData?.endAt)
+        binding.scheduleStartAtTv.text = scheduleTimeFormatter(scheduleData?.startAt)
+        binding.scheduleEndAtTv.text = scheduleTimeFormatter(scheduleData?.endAt)
         binding.scheduleMemoEtv.setText(scheduleData?.content)
 
     }
@@ -141,10 +144,10 @@ class ScheduleEditDialogFragment : DialogFragment() {
             setSpinnerDialog(1)
         }
         //시간 클릭시
-        binding.scheduleStartTimeTv.setOnClickListener {
+        binding.scheduleStartAtTv.setOnClickListener {
             setSpinnerDialog(2)
         }
-        binding.scheduleEndTimeTv.setOnClickListener {
+        binding.scheduleEndAtTv.setOnClickListener {
             setSpinnerDialog(3)
         }
     }
@@ -170,6 +173,9 @@ class ScheduleEditDialogFragment : DialogFragment() {
         editor.putLong("scheduleId", scheduleData.scheduleId)
         editor.apply()
 
+        Log.d("Datedebug", "EditSaveData = ${scheduleData?.scheduleWhen}")
+
+
     }
 
     private fun setSpinnerDialog(position:Int){
@@ -191,6 +197,9 @@ class ScheduleEditDialogFragment : DialogFragment() {
         }
         editor.putLong("scheduleId", scheduleData!!.scheduleId)
         editor.apply()
+
+        Log.d("Datedebug", "EditSetSpinnerDialog = ${scheduleData?.scheduleWhen}")
+
 
         var bundle = Bundle()
         bundle.putInt("position", position)
@@ -217,11 +226,14 @@ class ScheduleEditDialogFragment : DialogFragment() {
                     scheduleData?.startAt = sharedPreferenceModified.getString("scheduleStartTime", "").toString()
                     scheduleData?.endAt = sharedPreferenceModified.getString("scheduleEndTime", "").toString()
 
+
+                    Log.d("Datedebug", "EditCallback = ${scheduleData?.scheduleWhen}")
+
                     //화면에 반영
                     binding.scheduleDateTv.text = scheduleData?.scheduleWhen
                     binding.missionTitleTv.text = scheduleData?.missionTitle
-                    binding.scheduleStartTimeTv.text = scheduleTimeFormatter(scheduleData?.startAt)
-                    binding.scheduleEndTimeTv.text = scheduleTimeFormatter(scheduleData?.endAt)
+                    binding.scheduleStartAtTv.text = scheduleTimeFormatter(scheduleData?.startAt)
+                    binding.scheduleEndAtTv.text = scheduleTimeFormatter(scheduleData?.endAt)
                 }
             }
         })
