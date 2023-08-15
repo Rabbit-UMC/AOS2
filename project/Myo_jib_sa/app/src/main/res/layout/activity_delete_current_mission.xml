@@ -56,8 +56,10 @@ tools:context=".schedule.currentMissionActivity.DeleteCurrentMissionActivity">
             android:layout_marginBottom="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/verticalguideline"
-            app:layout_constraintTop_toBottomOf="@+id/horizontalGuideline" />
+            app:layout_constraintTop_toBottomOf="@+id/horizontalGuideline"
+            app:layout_constraintVertical_bias="0.0" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/horizontalGuideline"
@@ -78,10 +80,10 @@ tools:context=".schedule.currentMissionActivity.DeleteCurrentMissionActivity">
             android:layout_width="120dp"
             android:layout_height="45dp"
             android:layout_marginBottom="70dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:fontFamily="@font/font_inter"
             android:gravity="center"
-            android:text="삭제"
+            android:text=" 삭제"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
