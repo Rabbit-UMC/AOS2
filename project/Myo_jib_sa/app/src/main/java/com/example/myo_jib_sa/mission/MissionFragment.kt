@@ -1,60 +1,109 @@
 package com.example.myo_jib_sa.mission
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.myo_jib_sa.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.myo_jib_sa.Login.API.RetrofitInstance
+import com.example.myo_jib_sa.databinding.FragmentMissionBinding
+import com.example.myo_jib_sa.mission.API.Home
+import com.example.myo_jib_sa.mission.API.MissionHomeResponse
+import com.example.myo_jib_sa.mission.API.MissionITFC
+import com.example.myo_jib_sa.mission.Dialog.MissionDetailDialogFragment
+import com.example.myo_jib_sa.mission.Dialog.MissionReportDialogFragment
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MissionFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MissionFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var missionAdapter: MissionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mission, container, false)
-    }
+        val binding = FragmentMissionBinding.inflate(inflater, container, false)
+        recyclerView = binding.missionMissionRecycler
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MissionFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MissionFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        //미션 home api 호출
+        val retrofit = RetrofitInstance.getInstance().create(MissionITFC::class.java)
+
+        retrofit.MissionHome().enqueue(object : Callback<MissionHomeResponse> {
+            override fun onResponse(call: Call<MissionHomeResponse>, response: Response<MissionHomeResponse>) {
+                if (response.isSuccessful) {
+                    val missionHomeResponse = response.body()
+                    val dataList = missionHomeResponse?.result ?: emptyList()
+
+                    Log.d("home", "MissionHomeResponse data count: ${dataList.size}")
+                    for (item in dataList) {
+                        Log.d("home", "Mission id: ${item.missionId}")
+                    }
+
+                    // 어댑터 생성 및 리사이클러뷰에 설정
+                     missionAdapter = MissionAdapter(
+                        requireContext(),
+                        dataList,
+                        onItemLongClickListener = object : MissionAdapter.OnItemLongClickListener {
+                            override fun onItemLongClick(reportItem: Home) {
+                                showReportDialog(reportItem)
+                            }
+                        },
+                        onItemClickListener = object : MissionAdapter.OnItemClickListener {
+                            override fun onItemClick(detailItem: Home) {
+                                showDetailDialog(detailItem)
+                            }
+                        }
+                    )
+
+                    recyclerView.adapter = missionAdapter
+                    recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+                    // 아이템 간격 설정 (옵션)
+                    missionAdapter.setItemSpacing(recyclerView,15)
+
+                } else {
+                    // API 요청 실패 처리
                 }
             }
+
+            override fun onFailure(call: Call<MissionHomeResponse>, t: Throwable) {
+                // 네트워크 등의 문제로 API 요청이 실패한 경우 처리
+            }
+        })
+
+
+
+        //floating 버튼 설정
+        binding.newMissionFloatingBtn.setOnClickListener{
+
+            val intent = Intent(activity, MissionWriteMissionActivity::class.java)
+            startActivity(intent)
+        }
+
+
+        return binding.root
     }
+
+    private fun showReportDialog(reportItem: Home) {
+        val reportDialog = MissionReportDialogFragment(reportItem)
+        Log.d("home","Mreport ID: {$reportItem.id.toString()}")
+        reportDialog.show(requireActivity().supportFragmentManager, "mission_report_dialog")
+
+    }
+
+   private fun showDetailDialog(detailItem: Home) {
+       val detailDialog = MissionDetailDialogFragment(detailItem)
+       Log.d("home","Mdetail ID: {$detailItem.id.toString()}")
+       detailDialog.show(requireActivity().supportFragmentManager, "mission_detail_dialog")
+   }
+
+
+
 }

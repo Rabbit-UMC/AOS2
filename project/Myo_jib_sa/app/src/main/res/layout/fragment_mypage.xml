@@ -1,14 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mypage.MypageFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+    >
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="mypage" />
+        android:id="@+id/txt_myPage_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:fontFamily="@font/font_inter"
+        android:text="집사 페이지"
+        android:textSize="20sp"
+        android:paddingVertical="10dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/layout_myPage_tab"/>
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_myPage_tab"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_myPage_title">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/myPage_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFF0F0F0"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabIndicatorColor="#F0F0F0"
+            app:tabIconTint="@color/black"
+            app:tabIndicatorHeight="1dp"
+            />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/myPage_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/myPage_tab" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

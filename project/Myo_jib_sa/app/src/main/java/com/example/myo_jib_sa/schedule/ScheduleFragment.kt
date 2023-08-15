@@ -445,8 +445,6 @@ class ScheduleFragment : Fragment() {
     }
 
 
-
-
     //scheduleHome api연결
     private fun scheduleHomeApi() {
         val token : String = BuildConfig.API_TOKEN

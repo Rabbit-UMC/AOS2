@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/comment_profile_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!--원형 이미지 맞춤-->
+    <!--<de.hdodenhof.circleimageview.CircleImageView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/post_writerProfile_img"
+    android:layout_width="32dp"
+    android:layout_height="32dp"
+    android:scaleType="centerCrop"
+    android:layout_marginStart="23dp"
+    android:layout_marginTop="20dp"
+    android:src="@drawable/ic_profile"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/board_cntLayout" />-->
+
+    <TextView
+        android:id="@+id/comment_writerName_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:fontFamily="@font/font_inter"
+        android:textStyle="bold"
+        android:text="닉네임"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/comment_profile_img"
+        app:layout_constraintStart_toEndOf="@+id/comment_profile_img"
+        app:layout_constraintTop_toTopOf="@+id/comment_profile_img" />
+
+    <ImageButton
+        android:id="@+id/comment_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:padding="0dp"
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintBottom_toBottomOf="@+id/comment_profile_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/comment_profile_img" />
+
+
+    <TextView
+        android:id="@+id/comment_postText_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/font_inter"
+        android:textStyle="bold"
+        android:inputType="textPersonName"
+        android:background="@drawable/background_post"
+        android:backgroundTint="#F1F1F1"
+        android:layout_marginHorizontal="15dp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="15dp"
+        android:text="글 내용"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/comment_profile_img" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
