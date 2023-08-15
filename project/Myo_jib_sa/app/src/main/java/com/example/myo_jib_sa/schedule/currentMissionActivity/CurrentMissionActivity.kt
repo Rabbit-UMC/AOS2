@@ -1,19 +1,24 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
+import com.example.myo_jib_sa.schedule.HistoryActivity
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResponse
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailService
+import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActivity
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
@@ -36,41 +41,38 @@ class CurrentMissionActivity : AppCompatActivity() {
         binding = ActivityCurrentMissionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         currentMissionApi()//currentMission api연결
 
+        setCurrentMissionScheduleAdapter()    //CurrentMissionScheduleAdapter 초기화
         setCurrentMissionCurrentMissionAdapter()    //CurrentMissionCurrentMissionAdapter 연결
-        //setCurrentMissionScheduleAdapter(missionList[0].missionTitle)    //CurrentMissionScheduleAdapter 연결
 
 
         currentMissionCurrentMissionRvItemClickEvent()//currentMissionCurrentMissionRv item클릭 이벤트
 
         //뒤로가기 버튼 클릭
         binding.goBackBtn.setOnClickListener {
-//            var scheduleIntent = Intent(this, ScheduleFragment::class.java)
-//            startActivity(scheduleIntent)
-//            if(!isFinishing) {
             finish()
-        //}
         }
 
 
     }
+    override fun onResume() {
+        super.onResume()
+        //currentMissionApi()//currentMission api연결
+
+
+
+    }
+
+
+
+
+
+
+
 
     //CurrentMissionCurrentMissionAdapter 연결
     private fun setCurrentMissionCurrentMissionAdapter(){
-//        missionList = ArrayList<CurrentMissionResult>()
-
-//        missionList.add(CurrentMissionData("헬스1", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
-//        missionList.add(CurrentMissionData("헬스2", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
-//        missionList.add(CurrentMissionData("미션 제목3", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-//        missionList.add(CurrentMissionData("미션 제목4", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-//        missionList.add(CurrentMissionData("미션 제목5", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-//        missionList.add(CurrentMissionData("미션 제목6", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-//        missionList.add(CurrentMissionData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-//        missionList.add(CurrentMissionData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-//        missionList.add(CurrentMissionData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-
 
         currentMissionAdapter = CurrentMissionCurrentMissionAdapter(missionList, getDisplayWidthSize(), getDisplayHeightSize())
         binding.missionListRv.layoutManager = GridLayoutManager(this, 2)
@@ -79,18 +81,6 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     //CurrentMissionScheduleAdapter 연결
     private fun setCurrentMissionScheduleAdapter(){//missionTitle:String
-//        scheduleList = ArrayList<ScheduleAdapterData>()
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 4일차", "2023.07.01"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 4일차", "2023.07.01"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 3일차", "2023.06.30"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 3일차", "2023.06.30"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 3일차", "2023.06.30"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29"))
-
 
         val scheduleAdapter = CurrentMissionScheduleAdapter(scheduleList, getDisplayHeightSize())
         binding.scheduleListRv.layoutManager = LinearLayoutManager(this)
@@ -113,7 +103,7 @@ class CurrentMissionActivity : AppCompatActivity() {
                     //setCurrentMissionScheduleAdapter(currentMissionData.missionId)
 
 
-                    delay = System.currentTimeMillis()+200 //클릭 간격
+                    delay = System.currentTimeMillis()+400 //클릭 간격
                     return
                 }
                 if (System.currentTimeMillis() <= delay) {

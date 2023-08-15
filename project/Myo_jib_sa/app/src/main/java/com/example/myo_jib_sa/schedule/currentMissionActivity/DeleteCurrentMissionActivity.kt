@@ -1,6 +1,8 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent.getActivity
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.*
@@ -11,26 +13,21 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.BuildConfig
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityDeleteCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResponse
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.concurrent.thread
 
 
 class DeleteCurrentMissionActivity : AppCompatActivity() {
@@ -182,6 +179,13 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
             Log.d("debug_delete", "delete schedule: ${scheduleDeleteAdapter.getSelectedItemScheduleId()}")
             currentMissionDeleteApi(currentMissionDeleteAdapter.getSelectedItemMissionId())//미션삭제api
             scheduleDeleteApi(scheduleDeleteAdapter.getSelectedItemScheduleId())//스케줄 삭제 api
+
+
+            this.finish() //인텐트 종료
+            overridePendingTransition(0, 0) //인텐트 효과 없애기
+            val intent: Intent = intent //인텐트
+            startActivity(intent) //액티비티 열기
+            overridePendingTransition(0, 0) //인텐트 효과 없애기
         }
 
     }

@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.schedule.createScheduleActivity
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Point
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,7 @@ import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
+import com.example.myo_jib_sa.schedule.ScheduleFragment
 import com.example.myo_jib_sa.schedule.adapter.CalendarData
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
@@ -224,6 +226,9 @@ class CreateScheduleActivity : AppCompatActivity() {
 
         //뒤로가기 버튼 클릭
         binding.goBackBtn.setOnClickListener {
+            val intent = Intent(this, ScheduleFragment::class.java)
+            intent.putExtra("isCreate", false)
+            setResult(RESULT_OK, intent)
             finish()
         }
 
@@ -236,6 +241,10 @@ class CreateScheduleActivity : AppCompatActivity() {
             } else {//정상적일때
                 Log.d("exitDebug", "yes!!")
                 SchduleAddApi()
+
+                val intent = Intent(this, ScheduleFragment::class.java)
+                intent.putExtra("isCreate", true)
+                setResult(RESULT_OK, intent)
                 finish()
             }
         }
