@@ -42,7 +42,6 @@ class MyoSignUpActivity : AppCompatActivity() {
 
         // SharedPreferences 객체 가져오기
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-
         // JWT 값 가져오기
         val jwt = sharedPreferences.getString("jwt", null)
 
