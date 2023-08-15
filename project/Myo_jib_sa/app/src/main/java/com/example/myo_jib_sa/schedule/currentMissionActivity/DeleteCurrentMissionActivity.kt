@@ -209,9 +209,10 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
                         missionList.add(CurrentMissionDeleteData(element))
                     }
                     setCurrentMissionCurrentMissionDeleteAdapter()//CurrentMissionDelete rv 연결
-                    currentMissionScheduleApi(missionList[0].currentMissionResult.missionId)//하위 스케쥴 데이터 추가+schedule rv연결+clickevent
-                    currentMissionCurrentMissionDeleteRvItemClickEvent()        //currentMissionCurrentMissionDeleteRv item클릭 이벤트
                     setActivity()//화면 셋팅
+                    currentMissionScheduleApi(missionList[position].currentMissionResult.missionId)//하위 스케쥴 데이터 추가+schedule rv연결+clickevent
+                    currentMissionCurrentMissionDeleteRvItemClickEvent()        //currentMissionCurrentMissionDeleteRv item클릭 이벤트
+
 
                 } else {
                     Log.e("retrofit", "onResponse: Error ${response.code()}")
