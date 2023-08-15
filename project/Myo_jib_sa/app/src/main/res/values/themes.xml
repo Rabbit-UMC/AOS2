@@ -9,10 +9,25 @@
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
+
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
+        <!-- splash screen. -->
+<!--        <item name="android:windowSplashScreenBackground">#0F1C4D</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_app</item>
+        <item name="android:windowSplashScreenAnimationDuration">500</item>-->
+    </style>
+
+    <style name="AppTheme.PopupActivity"
+        parent="Theme.AppCompat.Light.Dialog">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item> <!-- 액션바 제거 -->
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
     <!-- numberpicker 테마 -->
     <style name = "NumberPickerStyle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -32,4 +47,14 @@
         <item name="android:paddingTop">30dp</item>
         <item name="android:includeFontPadding">false</item>
     </style>
+
+    <style name="Theme.Myo_jib_sa.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Myo_jib_sa.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Myo_jib_sa.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

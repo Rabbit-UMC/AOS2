@@ -32,4 +32,5 @@
         app:layout_constraintStart_toEndOf="@+id/day_tv"
         app:layout_constraintBottom_toTopOf="@+id/day_tv"/>
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>

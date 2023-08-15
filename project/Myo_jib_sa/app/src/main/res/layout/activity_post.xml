@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".community.PostActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/board_cntLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/post_name_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="게시판 이름"
+            android:textColor="#707070"
+            android:textSize="16dp"
+            android:fontFamily="@font/font_inter"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/post_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back" />
+
+        <Button
+            android:id="@+id/post_list_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text="목록"
+            android:textColor="#234BD9"
+            android:textSize="16dp"
+            android:fontFamily="@font/font_inter"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/board_linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#F1F1F1"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/board_cntLayout"></LinearLayout>
+
+    <ImageView
+        android:id="@+id/post_writerProfile_img"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:scaleType="centerCrop"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/board_cntLayout" />
+    <!--원형 이미지 맞춤-->
+    <!--<de.hdodenhof.circleimageview.CircleImageView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/post_writerProfile_img"
+    android:layout_width="32dp"
+    android:layout_height="32dp"
+    android:scaleType="centerCrop"
+    android:layout_marginStart="23dp"
+    android:layout_marginTop="20dp"
+    android:src="@drawable/ic_profile"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/board_cntLayout" />-->
+
+    <TextView
+        android:id="@+id/post_writerName_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/font_inter"
+        android:textStyle="bold"
+        android:text="닉네임"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/post_writerProfile_img"
+        app:layout_constraintStart_toEndOf="@+id/post_writerProfile_img"
+        app:layout_constraintTop_toTopOf="@+id/post_writerProfile_img" />
+
+    <TextView
+        android:id="@+id/post_writinTime_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:textSize="12dp"
+        android:text="작성 날짜 시간"
+        android:textColor="@color/black"
+        android:fontFamily="@font/font_inter"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/post_writerProfile_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/post_writerProfile_img" />
+
+    <TextView
+        android:id="@+id/post_postName_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="19dp"
+        android:fontFamily="@font/font_inter"
+        android:textStyle="bold"
+        android:text="글 제목"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_writerProfile_img" />
+
+    <TextView
+        android:id="@+id/post_postText_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/font_inter"
+        android:textStyle="bold"
+        android:inputType="textPersonName"
+        android:layout_marginHorizontal="15dp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="15dp"
+        android:text="글 내용"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_postName_txt" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/post_img_recyclr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_postText_txt" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/post_comment_recyclr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_img_recyclr" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="#F1F1F1">
+
+        <ImageButton
+            android:id="@+id/post_heart_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:background="@android:color/transparent"
+            android:padding="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_heart_blueline" />
+
+        <ImageButton
+            android:id="@+id/post_enter_btn"
+            android:layout_width="22dp"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="15dp"
+            android:background="@android:color/transparent"
+            android:padding="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_enter" />
+
+        <EditText
+            android:id="@+id/post_commentInput_Etxt"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_post"
+            android:backgroundTint="@color/white"
+            android:ems="20"
+            android:fontFamily="@font/font_inter"
+            android:textStyle="bold"
+            android:hint="댓글 입력"
+            android:padding="7dp"
+            android:inputType="textMultiLine"
+            android:scrollHorizontally="false"
+            android:textColor="@color/black"
+            android:textSize="11dp"
+            android:maxLines="5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/post_enter_btn"
+            app:layout_constraintStart_toEndOf="@+id/post_heart_btn"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
