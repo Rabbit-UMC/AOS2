@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import com.example.myo_jib_sa.community.CommunityFragment
+//import com.example.myo_jib_sa.community.CommunityFragment
 import com.example.myo_jib_sa.databinding.ActivityMainBinding
 import com.example.myo_jib_sa.mission.MissionFragment
 import com.example.myo_jib_sa.mypage.MypageFragment
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_community -> {
-                    setFragment(CommunityFragment())
+                   // setFragment(CommunityFragment())
                     true
                 }
                 R.id.menu_mypage -> {
