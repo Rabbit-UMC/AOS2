@@ -5,13 +5,16 @@ import android.graphics.Point
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputFilter
+import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.R
@@ -81,10 +84,11 @@ class CreateScheduleActivity : AppCompatActivity() {
         binding.scheduleMonthTv.text = referenceDate?.monthValue.toString()
         binding.scheduleDayTv.text = referenceDate?.dayOfMonth.toString()
 
-        setBtb()//버튼 setting
-
+        setBtn()//버튼 setting
+        setMemoMaxLine()//메모 최대 3줄로 제한
 
         calendarRvItemClickEvent()//캘린더 아이템 클릭이벤트
+
 
 
 
@@ -216,7 +220,7 @@ class CreateScheduleActivity : AppCompatActivity() {
 
     //버튼 setting
     @RequiresApi(Build.VERSION_CODES.O)
-    fun setBtb() {
+    fun setBtn() {
 
         //뒤로가기 버튼 클릭
         binding.goBackBtn.setOnClickListener {
@@ -252,6 +256,7 @@ class CreateScheduleActivity : AppCompatActivity() {
         //캘린더에서 완료 버튼 클릭
         binding.calendarCompleteTv.setOnClickListener {
             binding.calendarLayout.visibility = View.GONE
+            binding.guidebanner.visibility = View.VISIBLE
             binding.calendarBtn.setImageResource(R.drawable.ic_schedule_calendar_black)
             isClickCalendarImgBtn = false
         }
@@ -284,6 +289,27 @@ class CreateScheduleActivity : AppCompatActivity() {
             setSpinnerDialog(2)
         }
 
+    }
+
+    //메모 최대 3줄로 제한
+    private fun setMemoMaxLine(){
+        binding.scheduleMemoEtv.addTextChangedListener(object: TextWatcher{
+            var maxText = ""
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                maxText = p0.toString()
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(binding.scheduleMemoEtv.lineCount > 3){//최대 3줄까지 제한
+                    binding.scheduleMemoEtv.setText(maxText)
+                    binding.scheduleMemoEtv.setSelection(binding.scheduleMemoEtv.length())//커서
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+        })
     }
 
     private fun setSpinnerDialog(position:Int){
