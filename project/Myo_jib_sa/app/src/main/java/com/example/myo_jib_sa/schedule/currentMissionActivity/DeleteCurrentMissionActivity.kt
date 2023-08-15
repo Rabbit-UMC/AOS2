@@ -12,9 +12,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityDeleteCurrentMissionBinding
+import com.example.myo_jib_sa.schedule.api.RetrofitClient
+import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
+import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResponse
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionService
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteResponse
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteService
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import kotlin.concurrent.thread
 
 
@@ -31,14 +46,16 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
         binding = ActivityDeleteCurrentMissionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        currentMissionApi()//currentMission api연결
         setCurrentMissionCurrentMissionDeleteAdapter()        //CurrentMissionCurrentMissionDeleteAdapter 연결
         currentMissionCurrentMissionDeleteRvItemClickEvent()        //currentMissionCurrentMissionDeleteRv item클릭 이벤트
 
 
-        setActivity()//화면 셋팅
+//        setActivity()//화면 셋팅
         setButton()//버튼 셋팅
 
-        setCurrentMissionScheduleDeleteAdapter(missionList[position].missionTitle)        //CurrentMissionScheduleDeleteAdapter 연결
+        //setCurrentMissionScheduleDeleteAdapter(missionList[position].missionTitle)        //CurrentMissionScheduleDeleteAdapter 연결
 
 
         // 2초동안 액션 없으면 작동|핸들러에 메세지 보내기
@@ -55,40 +72,40 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
     }
     //CurrentMissionCurrentMissionAdapter 연결
     private fun setCurrentMissionCurrentMissionDeleteAdapter(){
+//
+//        missionList.add(CurrentMissionDeleteData("헬스1", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
+//        missionList.add(CurrentMissionDeleteData("헬스2", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목3", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목4", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목5", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목6", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
+//        missionList.add(CurrentMissionDeleteData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
 
-        missionList.add(CurrentMissionDeleteData("헬스1", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
-        missionList.add(CurrentMissionDeleteData("헬스2", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목3", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목4", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목5", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목6", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-        missionList.add(CurrentMissionDeleteData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
 
-
-        currentMissionDeleteAdapter = CurrentMissionCurrentMissionDeleteAdapter(missionList)
+        currentMissionDeleteAdapter = CurrentMissionCurrentMissionDeleteAdapter(missionList, getDisplayWidthSize())
         binding.missionListRv.layoutManager = GridLayoutManager(this, 2)
         binding.missionListRv.adapter = currentMissionDeleteAdapter
     }
 
     //CurrentMissionScheduleAdapter 연결
-    private fun setCurrentMissionScheduleDeleteAdapter(missionTitle:String){
+    private fun setCurrentMissionScheduleDeleteAdapter(){
         //scheduleList.clear()
-        scheduleList = ArrayList<ScheduleDeleteAdapterData>()
-        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 4일차", "2023.07.01", 1))
-        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 4일차", "2023.07.01", 1))
-        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 3일차", "2023.06.30", 1))
-        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 3일차", "2023.06.30", 1))
-        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 3일차", "2023.06.30", 1))
-        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29", 1))
-        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29", 1))
-        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29", 1))
-        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29", 1))
-        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29", 1))
+//        scheduleList = ArrayList<ScheduleDeleteAdapterData>()
+//        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 4일차", "2023.07.01", 1))
+//        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 4일차", "2023.07.01", 1))
+//        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 3일차", "2023.06.30", 1))
+//        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 3일차", "2023.06.30", 1))
+//        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 3일차", "2023.06.30", 1))
+//        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29", 1))
+//        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29", 1))
+//        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29", 1))
+//        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29", 1))
+//        scheduleList.add(ScheduleDeleteAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29", 1))
 
 
-        scheduleDeleteAdapter = CurrentMissionScheduleDeleteAdapter(scheduleList)
+        scheduleDeleteAdapter = CurrentMissionScheduleDeleteAdapter(scheduleList, getDisplayHeightSize())
         binding.scheduleListRv.layoutManager = LinearLayoutManager(this)
         binding.scheduleListRv.adapter = scheduleDeleteAdapter
     }
@@ -104,8 +121,8 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
             override fun onClick(currentMissionData: CurrentMissionDeleteData) {
                 if (System.currentTimeMillis() > delay) {
                     //한번 클릭 동작
-                    setCurrentMissionScheduleDeleteAdapter(currentMissionData.missionTitle)
-
+                    //setCurrentMissionScheduleDeleteAdapter(currentMissionData.currentMissionResult.missionTitle)
+                    currentMissionScheduleApi(currentMissionData.currentMissionResult.missionId)
 
                     delay = System.currentTimeMillis()+200
                     return
@@ -114,8 +131,8 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
                     //두번 클릭 동작
                     // 미션 상세 다이어로그 띄우기
                     var bundle = Bundle()
-                    bundle.putLong("scheduleId", currentMissionData.missionId)
-                    Log.d("debug", "\"scheduleId\", ${currentMissionData.missionId}")
+                    bundle.putLong("missionId", currentMissionData.currentMissionResult.missionId)
+                    Log.d("debug", "\"scheduleId\", ${currentMissionData.currentMissionResult.missionId}")
                     val currentMissionDetailDialogFragment = CurrentMissionDetailDialogFragment()
                     currentMissionDetailDialogFragment.arguments = bundle
 
@@ -160,10 +177,185 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
 
 
         //삭제 버튼 클릭
+        binding.deleteFbtn.setOnClickListener {
+            Log.d("debug_delete", "delete mission: ${currentMissionDeleteAdapter.getSelectedItemMissionId()}")
+            Log.d("debug_delete", "delete schedule: ${scheduleDeleteAdapter.getSelectedItemScheduleId()}")
+            currentMissionDeleteApi(currentMissionDeleteAdapter.getSelectedItemMissionId())//미션삭제api
+            scheduleDeleteApi(scheduleDeleteAdapter.getSelectedItemScheduleId())//스케줄 삭제 api
+        }
 
     }
 
+    //currentMission api연결
+    private fun currentMissionApi() {
+        val token: String = BuildConfig.API_TOKEN
+        Log.d("debug", "token = "+token+"l");
 
+        missionList = ArrayList<CurrentMissionDeleteData>()
+
+        val service = RetrofitClient.getInstance().create(CurrentMissionService::class.java)
+        val listCall = service.currentMission(token)
+
+        listCall.enqueue(object : Callback<CurrentMissionResponse> {
+            override fun onResponse(
+                call: Call<CurrentMissionResponse>,
+                response: Response<CurrentMissionResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("debug", "retrofit: "+response.body().toString());
+                    val result = response.body()!!.result
+
+                    for(element in result) {
+                        missionList.add(CurrentMissionDeleteData(element))
+                    }
+                    setCurrentMissionCurrentMissionDeleteAdapter()//CurrentMissionDelete rv 연결
+                    setActivity()//화면 셋팅
+                    currentMissionScheduleApi(missionList[position].currentMissionResult.missionId)//하위 스케쥴 데이터 추가+schedule rv연결+clickevent
+                    currentMissionCurrentMissionDeleteRvItemClickEvent()        //currentMissionCurrentMissionDeleteRv item클릭 이벤트
+
+
+                } else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }
+            }
+            override fun onFailure(call: Call<CurrentMissionResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
+
+    //currentMissionSchedule api연결
+    private fun currentMissionScheduleApi(missionId:Long) {
+        val token: String = BuildConfig.API_TOKEN
+        Log.d("debug", "token = "+token+"l");
+
+        scheduleList = ArrayList<ScheduleDeleteAdapterData>()
+
+        val service = RetrofitClient.getInstance().create(CurrentMissionScheduleService::class.java)
+        val listCall = service.currentMissionSchedule(token, missionId)
+
+        listCall.enqueue(object : Callback<CurrentMissionScheduleResponse> {
+            override fun onResponse(
+                call: Call<CurrentMissionScheduleResponse>,
+                response: Response<CurrentMissionScheduleResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("debug", "retrofit: "+response.body().toString());
+                    val result = response.body()!!.result
+
+                    for(i in 0 until result.size) {
+                        scheduleList.add(ScheduleDeleteAdapterData(result[i]))
+                    }
+                    setCurrentMissionScheduleDeleteAdapter()//CurrentMissionSchedule rv 연결
+                    currentMissionCurrentMissionDeleteRvItemClickEvent()
+
+                } else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }
+            }
+            override fun onFailure(call: Call<CurrentMissionScheduleResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
+
+    //currentMission api연결
+    private fun currentMissionDeleteApi(deleteMissionIdList:MutableList<Long>) {
+        val token: String = BuildConfig.API_TOKEN
+        Log.d("debug", "token = "+token+"l");
+
+
+        val service = RetrofitClient.getInstance().create(CurrentMissionDeleteService::class.java)
+        val url ="app/mission/my-missions/${deleteMissionIdList.joinToString(",")}"
+        Log.d("debug", "$url");
+        val listCall = service.currentMissionDelete(token, url)
+
+        listCall.enqueue(object : Callback<CurrentMissionDeleteResponse> {
+            override fun onResponse(
+                call: Call<CurrentMissionDeleteResponse>,
+                response: Response<CurrentMissionDeleteResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("debug", "retrofit: "+response.body().toString());
+                    val result = response.body()!!.result
+
+
+                } else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }
+            }
+            override fun onFailure(call: Call<CurrentMissionDeleteResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
+
+    //scheduleDelete api연결: 일정삭제
+    private fun scheduleDeleteApi(deleteScheduleIdList:MutableList<Long>) {
+        val token : String = BuildConfig.API_TOKEN
+//        Log.d("retrofit", "token = "+token+"l");
+
+
+        val service = RetrofitClient.getInstance().create(ScheduleDeleteService::class.java)
+        val url ="app/schedule/${deleteScheduleIdList.joinToString(", ")}"
+        Log.d("debug", "$url");
+        val listCall = service.scheduleDeleteModifyVer(token, url)
+
+        listCall.enqueue(object : Callback<ScheduleDeleteResponse> {
+            override fun onResponse(
+                call: Call<ScheduleDeleteResponse>,
+                response: Response<ScheduleDeleteResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("retrofit", response.body().toString());
+
+                    //scheduleAdaptar.removeTask(position)
+                }else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }}
+            override fun onFailure(call: Call<ScheduleDeleteResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
+
+    //화면 width구하기
+    fun getDisplayWidthSize(): Int {
+
+        val display = this.applicationContext?.resources?.displayMetrics
+
+        return display?.widthPixels!!
+    }
+    //화면 height구하기
+    private fun getDisplayHeightSize(): Int {
+
+        //statusbarHeight
+        var statusbarHeight = 0
+        val resourceId: Int = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            statusbarHeight = resources.getDimensionPixelSize(resourceId)
+        }
+
+        //navigationbarHeight
+        val resourceId2 = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        var navigationbarHeight = 0
+        if (resourceId2 > 0) {
+            navigationbarHeight = resources.getDimensionPixelSize(resourceId)
+        }
+
+        val display = this.applicationContext?.resources?.displayMetrics
+
+        return display?.heightPixels!! + statusbarHeight + navigationbarHeight
+
+    }
 
 
 

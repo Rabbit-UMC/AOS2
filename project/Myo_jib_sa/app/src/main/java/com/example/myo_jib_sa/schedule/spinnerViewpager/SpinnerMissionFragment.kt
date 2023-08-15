@@ -48,18 +48,19 @@ class SpinnerMissionFragment : Fragment() {
 
         // missionTitleList 초기화
         missionTitleList = mutableListOf()
-        titleIdMap =  hashMapOf()
+        titleIdMap = hashMapOf()
         titleTitleMap = hashMapOf()
 
         getData()//sharedPreference로 값 받기
         //값 저장할 sharedPreference 부르기
-        val sharedPreference = requireContext().getSharedPreferences("scheduleModifiedData",
+        val sharedPreference = requireContext().getSharedPreferences(
+            "scheduleModifiedData",
             Context.MODE_PRIVATE
         )
         val editor = sharedPreference.edit()
         //값 변경하지 않았을때 기본값으로 전달
         editor.putString("missionTitle", scheduleData.missionTitle)
-        editor.putLong("missionId", scheduleData.missionId)
+        scheduleData.missionId?.let { editor.putLong("missionId", it) }
         editor.apply()// data 저장!
 
         var numberpicker = binding.missionSpinner
@@ -69,29 +70,32 @@ class SpinnerMissionFragment : Fragment() {
         CoroutineScope(Dispatchers.Main).launch {
             delay(70)
             numberpicker.minValue = 0
-            numberpicker.maxValue = missionTitleList.size -1
+            numberpicker.maxValue = missionTitleList.size - 1
             numberpicker.value = setNumberpickerInitvalue(scheduleData.missionTitle)//초기값 설정
             numberpicker.displayedValues = missionTitleList.toTypedArray()
             numberpicker.wrapSelectorWheel = true //순환
             numberpicker.descendantFocusability =
                 NumberPicker.FOCUS_BLOCK_DESCENDANTS //editText가 눌리는 것을 막는다
+
+
+            numberpicker.setOnValueChangedListener(object : NumberPicker.OnValueChangeListener {
+                override fun onValueChange(picker: NumberPicker, oldVal: Int, newVal: Int) {
+                    //Display the newly selected value from picker
+                    //tv.setText("Selected value : " + missionTitleList.get(newVal))
+                    var pickMissionTitle = missionTitleList.get(newVal)
+                    Log.d("debug", "missionTitle : $pickMissionTitle")
+
+                    scheduleData.missionId = titleIdMap[pickMissionTitle]!!
+                    Log.d(
+                        "debug",
+                        "고른 미션 이름: ${titleTitleMap[scheduleData.missionId]}.${scheduleData.missionId}"
+                    )
+                    editor.putString("missionTitle", titleTitleMap[scheduleData.missionId])
+                    editor.putLong("missionId", scheduleData.missionId!!)
+                    editor.apply()// data 저장!
+                }
+            })
         }
-
-        numberpicker.setOnValueChangedListener(object : NumberPicker.OnValueChangeListener {
-            override fun onValueChange(picker: NumberPicker, oldVal: Int, newVal: Int) {
-                //Display the newly selected value from picker
-                //tv.setText("Selected value : " + missionTitleList.get(newVal))
-                var pickScheduleTitle = missionTitleList.get(newVal)
-                Log.d("debug", "missionTitle : $pickScheduleTitle")
-
-                scheduleData.missionId = titleIdMap[pickScheduleTitle]!!
-                Log.d("debug", "고른 미션 이름: ${titleTitleMap[scheduleData.missionId]}.${scheduleData.missionId}")
-                editor.putString("missionTitle", titleTitleMap[scheduleData.missionId])
-                editor.putLong("missionId", scheduleData.missionId)
-                editor.apply()// data 저장!
-            }
-        })
-
         return binding.root
     }
     override fun onPause() {
@@ -128,7 +132,7 @@ class SpinnerMissionFragment : Fragment() {
 
     //scheduleHome api연결 for missionList받기위해
     private fun scheduleHomeApi() {
-        val token : String = BuildConfig.KAKAO_API_KEY
+        val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
@@ -143,9 +147,10 @@ class SpinnerMissionFragment : Fragment() {
                     Log.d("retrofit", response.body().toString());
                     missionList = response.body()?.result!!.missionList
 
+
                     missionTitleList.add("없음")
                     titleIdMap["없음"] = -1 //-1 = missionId
-                    titleTitleMap[-1] = missionList[0].missionTitle
+                    titleTitleMap[-1] = "없음"
 
                     for(i in 0 until missionList!!.size){
                         var title = missionTitleFormat(missionList[i])
@@ -153,6 +158,8 @@ class SpinnerMissionFragment : Fragment() {
                         titleIdMap[title] = missionList[i].missionId
                         titleTitleMap[missionList[i].missionId] = missionList[i].missionTitle
                     }
+
+
 
 
                 }else {

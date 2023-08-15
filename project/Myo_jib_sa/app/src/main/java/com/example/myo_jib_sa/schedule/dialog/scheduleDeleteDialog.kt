@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.databinding.DialogScheduleDeleteBinding
 import com.example.myo_jib_sa.schedule.adapter.ScheduleAdaptar
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
@@ -44,7 +45,7 @@ class scheduleDeleteDialog(
         //확인
         binding.yesTv.setOnClickListener{
             dismiss()
-            //scheduleDeleteApi()//: 일정삭제 api
+            scheduleDeleteApi()//: 일정삭제 api
         }
         //취소
         binding.exitBtn.setOnClickListener {
@@ -68,7 +69,8 @@ class scheduleDeleteDialog(
 
 
     //scheduleDelete api연결: 일정삭제
-   /* fun scheduleDeleteApi() {
+    fun scheduleDeleteApi() {
+        val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 
         val sDataList = scheduleAdaptar.getItem()
@@ -92,5 +94,5 @@ class scheduleDeleteDialog(
                 Log.e("retrofit", "onFailure: ${t.message}")
             }
         })
-    }*/
+    }
 }

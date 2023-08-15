@@ -169,7 +169,7 @@
 
     <View
         android:id="@+id/center_line_v"
-        android:layout_width="345dp"
+        android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="35dp"
         android:layout_marginTop="8dp"
@@ -220,7 +220,7 @@
                 android:background="@android:color/transparent"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_schedule_calendar_left" />
+                app:srcCompat="@drawable/ic_schedule_calendar_left_black" />
 
             <TextView
                 android:id="@+id/month_tv"
@@ -241,7 +241,7 @@
                 android:background="@android:color/transparent"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_schedule_calendar_right" />
+                app:srcCompat="@drawable/ic_schedule_calendar_right_black" />
 
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
@@ -254,41 +254,62 @@
     </LinearLayout>
 
     <!-- 일정이 없을때 표시-->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/no_schedule"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calender_layout"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/calender_layout">
 
 
-    <ImageView
-        android:id="@+id/no_schedule_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="162dp"
-        android:layout_marginTop="58dp"
-        android:layout_marginEnd="142dp"
-        android:layout_marginBottom="12dp"
-
-        android:src="@drawable/ic_schedule_no_schedule" />
+        <ImageView
+            android:id="@+id/no_schedule_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_schedule_no_schedule"
+            app:layout_constraintEnd_toStartOf="@id/verticalguideline2"
+            app:layout_constraintStart_toEndOf="@id/verticalguideline"
+            app:layout_constraintTop_toTopOf="@id/horizontalguideline" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="오늘 일정이 없습니다"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/font_inter"
+            android:text="오늘 일정이 없습니다"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_gravity="center"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/no_schedule_iv" />
 
-    </LinearLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalguideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.41" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalguideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.64" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontalguideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.22" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/schedule_rv"
         android:layout_width="match_parent"

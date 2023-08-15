@@ -1,57 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
-
+    android:layout_height="wrap_content">
 
 
     <View
         android:id="@+id/seleted_v"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_gravity="start"
         android:background="#D9D9D9"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="20dp"
-        android:padding="10dp"
-        />
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="@+id/verticalguideline3"
+        app:layout_constraintEnd_toEndOf="@+id/verticalguideline4"
+        app:layout_constraintTop_toTopOf="@+id/horizontalguideline" />
 
-<FrameLayout
-    android:layout_width="345dp"
-    android:layout_height="57dp"
-    android:padding="5dp"
-    android:layout_gravity="right"
-    android:layout_marginBottom="20dp"
-    android:layout_marginRight="15dp"
-    android:background="@drawable/view_round_r10_stroke">
-
-
-    <TextView
-        android:id="@+id/scheduleTitle_tv"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verticalguideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="left"
-        android:text="TextView"
-        android:fontFamily="@font/font_inter"
-        android:textColor="#707070"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.06" />
 
-    <TextView
-        android:id="@+id/scheduleDate_tv"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verticalguideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_gravity="bottom|right"
-        android:text="TextView"
-        android:fontFamily="@font/font_inter"
-        android:textColor="#707070"
-        android:textSize="12sp"
-        android:textStyle="bold"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.096" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalguideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.34" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/view_round_r10_stroke"
+        android:padding="5dp"
+        app:layout_constraintDimensionRatio="57:10"
+        app:layout_constraintEnd_toStartOf="@+id/verticalguideline2"
+        app:layout_constraintStart_toEndOf="@+id/verticalguideline"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/scheduleTitle_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/font_inter"
+            android:text="TextView"
+            android:textColor="#707070"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/scheduleDate_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/font_inter"
+            android:text="TextView"
+            android:textColor="#707070"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verticalguideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.14" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verticalguideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.96" />
 
 
-</FrameLayout>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
