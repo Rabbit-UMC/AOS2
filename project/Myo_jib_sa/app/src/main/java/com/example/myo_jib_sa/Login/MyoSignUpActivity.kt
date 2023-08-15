@@ -28,7 +28,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MyoSignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMyoSignUpBinding
-    private var returnMsg: String? = null
+    private var returnCode: Int? = null
+    private var kakaoEmail: String? = null
 
     // Retrofit 객체 가져오기
     val retrofit = RetrofitInstance.getInstance().create(LoginITFC::class.java)
@@ -39,12 +40,11 @@ class MyoSignUpActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        //카카오 이메일
-        var kakaoEmail: String? = null
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
 
-        //jwt 토큰
-        var jwtToken: String? = null
-        val userNickname =binding.signUpInputUserName.toString()
+        // JWT 값 가져오기
+        val jwt = sharedPreferences.getString("jwt", null)
 
         val ageCheckBox = binding.signUpAgeCheckBox
         val useCheckBox = binding.signUpUseCheckBox
@@ -53,29 +53,16 @@ class MyoSignUpActivity : AppCompatActivity() {
         val identifyCheckBox = binding.signUpIdentidyCheckBox
         val signUpButton = binding.signUpSignUpBtn
 
-        var userEmail=intent.getStringExtra("email").toString()
-
-        UserApiClient.instance.me { user, error ->
-            if (error != null) {
-                Log.e("kakao", "사용자 정보 요청 실패", error)
-            }
-            else if (user != null) {
-                kakaoEmail=user.kakaoAccount?.email
-                Log.d("kakaoM",kakaoEmail.toString())
-            }
-        }
+        val userEmail=intent.getStringExtra("email").toString()
 
 
-
+        Log.d("token","email:{$userEmail}")
 
         //로그인 api 연결
         // 카카오 로그인 API 호출
-        val clientId = BuildConfig.KAKAO_API_KEY
+       /* val clientId = BuildConfig.KAKAO_API_KEY
         val redirectUri = BuildConfig.Redirect_URI
         val responseType = "code"
-
-        //앞에서 bundle로 넘겨주는 걸로 변경
-        val accessToken = "UzH3V7Bi04pDMtnfThiV0go2ayPMpF8BTILfy9cVCj1y6wAAAYnkWW2l"
 
         //Login API 연결
         retrofit.Login(accessToken,clientId, redirectUri, responseType).enqueue(object : Callback<LoginResponse> {
@@ -92,6 +79,14 @@ class MyoSignUpActivity : AppCompatActivity() {
                             Log.d("LoginResponse", "jwt: ${jwtToken}")
 
                             // jwtToken을 sharedPreference에 저장하기
+                            val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+                            val getJwt = sharedPreferences.edit()
+                            // JWT 저장
+                            val jwt = jwtToken
+                            if (jwt != null) {
+                                getJwt.putString("jwt", jwt)
+                            }
+                            getJwt.apply()
                         }
                     }
                 } else {
@@ -103,36 +98,60 @@ class MyoSignUpActivity : AppCompatActivity() {
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Log.e("LoginResponse", "onFail API 호출 실패: ${t.message}")
             }
-        })
+        })*/
 
-        Log.d("LoginResponse",jwtToken.toString())
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e("kakao", "사용자 정보 요청 실패", error)
+            }
+            else if (user != null) {
+                kakaoEmail=user.kakaoAccount?.email
+                Log.d("kakaoM",kakaoEmail.toString())
 
-      //카카오 이메일 입력 받지 않은 경우는 따로 입력 받은 이메일 넣어주기
-        /*if (kakaoEmail != null){
-            jwtToken.toString()?.let { signUpUser(jwtToken.toString(),userEmail,userNickname) }
+                //회원가입 API 연결
+                if (kakaoEmail != null){
+                    if(jwt!=null){
+                        signUpUser(jwt.toString(),kakaoEmail,kakaoEmail)
+                        Log.d("LoginResponse", "Kakao Email jwt: ${jwt}")
+                    }
+                    else{
+                        Toast.makeText(this@MyoSignUpActivity, "서버 오류 발생", Toast.LENGTH_SHORT).show()
+                        Log.d("LoginResponse", "Kakao Email jwt: ${jwt}")
+                    }
+                }
+                //카카오 이메일 입력 받지 않은 경우는 따로 입력 받은 이메일 넣어주기
+                else{
+                    if(jwt!=null){
+                        signUpUser(jwt.toString(),userEmail,userEmail)
+                        Log.d("LoginResponse", "User Email jwt: ${jwt}")
+                    }
+                    else{
+                        Toast.makeText(this@MyoSignUpActivity, "서버 오류 발생", Toast.LENGTH_SHORT).show()
+                        Log.d("LoginResponse", "User Email jwt: ${jwt}")
+                    }
+                }
+            }
         }
-        //카카오 이메일 입력 받은 경우 카카오 이메일 넣어주기
-        else{
-            jwtToken.toString()?.let { signUpUser(jwtToken.toString(),userEmail,userNickname) }
+
+
+
+
+      /*  binding.signUpTestNickNameBtn.setOnClickListener{
+            //Log.d("LoginResponse","check jwt:{$jwtToken}")
+            //카카오 이메일 입력 받은 경우 카카오 이메일 넣어주기
+            //현재 오류 있음,, 고칠 것
+            if (kakaoEmail != null){
+                jwtToken.toString()?.let { signUpUser(jwtToken.toString(),kakaoEmail,userNickname) }
+                while(returnCode!=409)
+                    checkUserName()
+            }
+            //카카오 이메일 입력 받지 않은 경우는 따로 입력 받은 이메일 넣어주기
+            else{
+                jwtToken.toString()?.let { signUpUser(jwtToken.toString(),userEmail,userNickname) }
+                while(returnCode!=409)
+                    checkUserName()
+            }
         }*/
-
-        //닉네임 중복 체크
-        //returnMsg가 "중복된 닉네임입니다." 일 경우에는 중복됐다고 알려주기
-        //binding.signUpCheckUserName 색이랑 문구 바꿔주기
-        //정상일 경우: #FF8EBE59 사용가능합니다.
-        //중복일 경우: #FFE93425 중복됐습니다.
-        //중복일 경우는 닉네임 다시 입력 받고 api에 올려주기(while문 사용해서 사용가능 뜰 때까지 반복)
-        if (returnMsg !== "중복된 닉네임입니다.") {
-            // 정상일 경우
-            binding.signUpCheckUserName.setText("사용 가능합니다.");
-            binding.signUpCheckUserName.setTextColor(0xFF8EBE59.toInt())
-        } else {
-            // 중복일 경우
-            binding.signUpCheckUserName.setText("중복됐습니다.");
-            binding.signUpCheckUserName.setTextColor(0xFFE93425.toInt())
-            // 닉네임 재입력 로직 구현
-            // 예시: 사용자로부터 새로운 닉네임을 입력받고, 다시 API에 올려주는 로직 등을 구현해야 합니다.
-        }
 
 
 
@@ -264,16 +283,33 @@ class MyoSignUpActivity : AppCompatActivity() {
             binding_complete.signUpCompleteBtn.setOnClickListener {
                 // 메인으로 이동
                 val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)
             }
 
-            }
         }
+    }
+    /*fun checkUserName(){
+        //닉네임 중복 체크
+        //returnMsg가 "중복된 닉네임입니다." 일 경우에는 중복됐다고 알려주기
+        //binding.signUpCheckUserName 색이랑 문구 바꿔주기
+        //정상일 경우: #FF8EBE59 사용가능합니다.
+        //중복일 경우: #FFE93425 중복됐습니다.
+        //중복일 경우는 닉네임 다시 입력 받고 api에 올려주기(while문 사용해서 사용가능 뜰 때까지 반복)
+        if (returnCode !== 409) {
+            // 정상일 경우
+            binding.signUpCheckUserName.setText("사용 가능합니다.");
+            binding.signUpCheckUserName.setTextColor(0xFF8EBE59.toInt())
+        } else {
+            // 중복일 경우
+            binding.signUpCheckUserName.setText("중복됐습니다.");
+            binding.signUpCheckUserName.setTextColor(0xFFE93425.toInt())
+            // 닉네임 재입력 로직 구현
+            // 예시: 사용자로부터 새로운 닉네임을 입력받고, 다시 API에 올려주는 로직 등을 구현해야 합니다.
+        }
+    }*/
 
     fun signUpUser(jwtToken:String,email: String?, nickName: String?) {
-
-        // returnMsg가 null이면 기본 메시지를 설정
-        val message = returnMsg ?: "메시지가 없습니다."
 
         // SignUpRequest 객체 생성 및 데이터 설정
         val signUpRequest = SignUpRequest(
@@ -288,12 +324,12 @@ class MyoSignUpActivity : AppCompatActivity() {
                 val signUpResponse = response.body()
                 if (response.isSuccessful) {
                     if (signUpResponse != null) {
-                        returnMsg = signUpResponse.message
+                        returnCode = signUpResponse.code
 
                         // 응답 데이터 처리
-                        Toast.makeText(this@MyoSignUpActivity, returnMsg, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MyoSignUpActivity, signUpResponse.message, Toast.LENGTH_SHORT).show()
 
-                        Log.d("Retrofit", message)
+                        Log.d("Retrofit",signUpResponse.message)
                         Log.d("signUp", "userEmail: ${email}")
                         Log.d("signUp", "userNickName: ${nickName}")
                     }
