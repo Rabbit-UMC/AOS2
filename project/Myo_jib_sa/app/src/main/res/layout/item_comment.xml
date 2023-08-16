@@ -7,11 +7,12 @@
 
     <ImageView
         android:id="@+id/comment_profile_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginStart="23dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/ic_profile"
+        android:background="@drawable/background_circle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <!--원형 이미지 맞춤-->
@@ -61,7 +62,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/font_inter"
         android:textStyle="bold"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
         android:background="@drawable/background_post"
         android:backgroundTint="#F1F1F1"
         android:layout_marginHorizontal="15dp"

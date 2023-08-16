@@ -9,9 +9,9 @@ object Constance {
     const val FREE_ID:Int=1 //자유 게시판 ID
     const val author="X-ACCESS-TOKEN"
 
-    //유저 id 13인 토큰
+    //유저 id 1인 토큰
     const val jwt:String="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTE2NjUwMzIsImV4cCI6MTY5MzEzNjI2MX0.mlOx8WnywdEYGNDHkhlqP3agL3rVMyvwgwWP8VlvsXM"
-    const val USER_ID:Long=13
+    const val USER_ID:Long=1
 
 
 }

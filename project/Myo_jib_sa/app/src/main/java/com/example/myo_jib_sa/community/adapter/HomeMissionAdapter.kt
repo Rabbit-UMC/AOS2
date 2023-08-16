@@ -32,9 +32,12 @@ class HomeMissionAdapter(
                 binding.homeMissionItemDdayTxt.text=item.dday
 
                 //이미지 설정
-               Glide.with(context)
-                    .load(item.categoryImage)
-                    .into(binding.homeMissionItemImgImg)
+                if(item.categoryImage.isNotEmpty()&&item.categoryImage!=null){
+                    Glide.with(context)
+                        .load(item.categoryImage)
+                        .into(binding.homeMissionItemImgImg)
+                }
+
 
                 //클릭 이벤트
                 binding.MissionItemConstraintLayout.setOnClickListener{

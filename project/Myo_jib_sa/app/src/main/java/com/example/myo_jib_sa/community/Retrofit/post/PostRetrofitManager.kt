@@ -125,8 +125,8 @@ class PostRetrofitManager (context: Context){
 
 
     //게시물 수정, 수정 완료인지 봔환 (boolean)
-    fun postEdit(author:String,request:PostEditRequest, articleId:Long,articleID: Long, completion: (isSucces:Boolean) -> Unit){
-        val call: Call<SimpleResponse> = retrofit?.postEdit(author, request, articleId, articleID) ?: return
+    fun postEdit(author:String,request:PostEditRequest, articleId:Long, completion: (isSucces:Boolean) -> Unit){
+        val call: Call<SimpleResponse> = retrofit?.postEdit(author, request, articleId, articleId) ?: return
 
         call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
@@ -289,8 +289,8 @@ class PostRetrofitManager (context: Context){
     }
 
     //게시글 댓글 삭제
-    fun postCommentDelete(author: String,articleId: Long,commentId:Long, completion: (isSucces:Boolean) -> Unit){
-        val call: Call<SimpleResponse> = retrofit?.postCommentDelete(author, articleId, commentId) ?: return
+    fun postCommentDelete(author: String,commentId:Long, completion: (isSucces:Boolean) -> Unit){
+        val call: Call<SimpleResponse> = retrofit?.postCommentDelete(author,commentId) ?: return
 
         call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
@@ -341,6 +341,8 @@ class PostRetrofitManager (context: Context){
                     } else {
                         Log.d("게시물 댓글 락",
                             "RetrofitManager 게시물 댓글 락 is NOT Success\t :${response.code} ")
+                        Log.d("게시물 댓글 락",
+                            "RetrofitManager 게시물 댓글 락 is NOT success\t :${response.result} ")
                         completion(false)
                     }
                 } else {

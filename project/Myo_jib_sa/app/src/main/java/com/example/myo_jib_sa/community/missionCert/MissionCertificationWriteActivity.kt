@@ -131,9 +131,9 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
     //이미지 업로드 api
     fun ImgUpload(imgPath:String, callback: (Boolean) -> Unit){
         val imageFile = File(imgPath) // 이미지 파일 경로
-
+        val imgList= listOf(imageFile)
         val imgUploadRetrofitManager = imgUploadRetrofitManager(this)
-        imgUploadRetrofitManager.uploadImage(imageFile, ImgPath.POST) { response ->
+        imgUploadRetrofitManager.uploadImage(imgList, ImgPath.POST) { response ->
             if (response != null) {
                 val imageUrl = response.result[0]
                 val isSuccess = response.isSuccess

@@ -55,4 +55,35 @@ class PostBoardRetrofitManager(context: Context) {
             }
         })
     }
+
+    //베스트 게시물 조회
+    fun popular(author:String,page:Int, completion: (PostBoardResponse) -> Unit){
+        val call: Call<PostBoardResponse> = retrofit?.popular(author,page) ?: return
+
+        call.enqueue(object : retrofit2.Callback<PostBoardResponse> {
+            override fun onResponse(
+                call: Call<PostBoardResponse>,
+                response: Response<PostBoardResponse>
+            ) {
+                Log.d("Post 베스트 게시판 api", "RetrofitManager profile onResponse \t :${response.message()} ")
+                val response: PostBoardResponse? = response?.body() //LoginResponse 형식의 응답 받음
+                if (response != null) {
+                    if (response.isSuccess=="true") {
+                        Log.d("Post 베스트 게시판 api",
+                            "RetrofitManager Post 베스트 게시판 is Success\t :${response.code} ")
+                        completion(response)
+                    } else {
+                        Log.d("Post 게시판 api",
+                            "RetrofitManager Post 베스트 게시판 is NOT Success\t :${response.code} ")
+                    }
+                } else {
+                    Log.d("Post 베스트 게시판 api", "RetrofitManager Post 게시판 null")
+                }
+            }
+
+            override fun onFailure(call: Call<PostBoardResponse>, t: Throwable) {
+                Log.d("Post 베스트 게시판 api", "RetrofitManager Post 게시판 onFailure \t :$t ")
+            }
+        })
+    }
 }

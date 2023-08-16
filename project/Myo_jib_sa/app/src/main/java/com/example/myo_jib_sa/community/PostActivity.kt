@@ -3,8 +3,10 @@ package com.example.myo_jib_sa.community
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Im
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -59,7 +61,8 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
         //댓글 달기
         binding.postEnterBtn.setOnClickListener {
-            commenting(Constance.jwt, binding.postCommentInputEtxt.text.toString(),postId){isSuccess->
+            commenting(Constance.jwt,
+                binding.postCommentInputEtxt.text.toString().replace("\n", "<br>"),postId){isSuccess->
                 if(isSuccess){
                     setPostData(Constance.jwt, binding, boardId.toInt(), postId)
                 }else{
@@ -71,8 +74,6 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
 
         //좋아요 버튼 상태 불러오기
-        sharedPreferences=getSharedPreferences("${postId.toString()}", Context.MODE_PRIVATE)
-        isHearted = sharedPreferences.getBoolean("isHearted", false)
         heartButton = findViewById(R.id.post_heart_btn)
         setHeartButtonIcon()
         //좋아요 누르기 기능
@@ -81,7 +82,6 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 if(isSuccess){
                     isHearted = !isHearted
                     setHeartButtonIcon()
-                    saveState()
                 }
             }
         }
@@ -94,6 +94,12 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        setPostData(Constance.jwt, binding, boardId.toInt(), postId)
+    }
+
 
     //    팝업 메뉴 보여주는 커스텀 메소드
     //작성자 아이디와 본인 아이디 비교해서 서로 다른 메뉴를 보여주는 부분 구현 필요
@@ -122,6 +128,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     intent.putExtra("title", binding.postPostNameTxt.text.toString())
                     intent.putExtra("postText", binding.postPostTextTxt.text.toString())
                     intent.putExtra("postId", postId)
+                    intent.putExtra("boardId", boardId.toInt())
                     //사진 리스트 첨부
                     intent.putExtra("imgList1_id", imageList[0].imageId)
                     intent.putExtra("imgList1_path", imageList[0].filePath)
@@ -192,8 +199,11 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
                 //로그
                 if(imgList.isNotEmpty()){
+                    imageList=imgList
                     Log.d("게시글 API List 확인", imgList[0].filePath)
                     Log.d("게시글 API List 확인", imgList[0].imageId.toString())
+                }else{
+                    imageList= listOf(ArticleImage(0,""), ArticleImage(0,""))
                 }
                 Log.d("게시글 API List 확인", response.result.articleTitle)
 
@@ -208,8 +218,12 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     myPost=true
                 }
 
-                imageList=imgList
+                //하트 상태
+                isHearted=response.result.likeArticle
+                setHeartButtonIcon()
 
+
++77
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                 val returnCode = response.code
@@ -226,18 +240,36 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private fun setPost(contents:PostViewResponse, binding: ActivityPostBinding, boardId: Int, ){
         binding.postWriterNameTxt.text=contents.result.authorName
         binding.postPostNameTxt.text=contents.result.articleTitle
-        binding.postPostTextTxt.text=contents.result.articleContent
+        binding.postPostTextTxt.text=contents.result.articleContent.replace("<br>", "\n")
         binding.postWritinTimeTxt.text=contents.result.uploadTime
 
         //프로필 이미지 설정 필요
-        Glide.with(binding.root.context)
-            .load(contents.result.authorProfileImage)
-            .into(binding.postWriterProfileImg)
+        if(contents.result.authorProfileImage.isNotEmpty()&&contents.result.authorProfileImage!=null){
+            Glide.with(binding.root.context)
+                .load(contents.result.authorProfileImage)
+                .into(binding.postWriterProfileImg)
+        }
 
-        //이미지 리사이클러뷰
-        linkImgRecyclr(contents.result.articleImage)
-        val isWriter:Boolean=(contents.result.authorId==Constance.USER_ID)
+        //이미지 리사이클러뷰 todo:다시 바꾸기
+        if(contents.result.articleImage.isNotEmpty()){
+            Log.d("게시글 이미지",contents.result.articleImage.toString() )
+            binding.postLineLinear.backgroundTintList=
+                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+            linkImgRecyclr(contents.result.articleImage)
+        }
+
+        /*if(contents.result.articleImage[0].filePath.isNotBlank()){
+            Log.d("게시글 이미지",contents.result.articleImage.toString() )
+            binding.postLineLinear.backgroundTintList=
+                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+            linkImgRecyclr(contents.result.articleImage)
+        }else{
+            linkImgRecyclr(contents.result.articleImage)
+        }*/
+
+
         //댓글 리사이클러뷰
+        val isWriter:Boolean=(contents.result.authorId==Constance.USER_ID)
         linkCommentRecyclr(contents.result.commentList,isWriter, contents.result.articleId)
 
         //게시판 이름
@@ -343,13 +375,6 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         heartButton.setImageDrawable(icon)
     }
 
-
-    //하트 버튼 상태 저장
-    private fun saveState() {
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        editor.putBoolean("isHearted", isHearted)
-        editor.apply()
-    }
     //하트 api 연결
     private fun setHeartApi(author:String, postId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = PostRetrofitManager.getInstance(this)

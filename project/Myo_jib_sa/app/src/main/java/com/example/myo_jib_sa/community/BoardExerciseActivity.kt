@@ -19,25 +19,35 @@ class BoardExerciseActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityBoardExerciseBinding
     private var hostId:Long=0
+
+    //아래 두개 관리자 페이지로 넘겨줌
     private var missionId:Long=0
-    private var boardId:Int=0
     private var missionImg:String=""
-    private var page:Int=1
+
+    private var boardId:Int=0
+    private var page:Int=0
 
     private var isLoading = false
     private var isLoadingMore = false
 
     private lateinit var Badapter: BoardAdapter
 
+    //베스트 게시판인지
 
     private var boardList:MutableList<Articles> = mutableListOf()
+
+    //다시 화면 조회
+    private var isResume:Boolean=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityBoardExerciseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        isResume=false
+
         boardId=intent.getIntExtra("boardId", 0)
+
 
         //게시판 화면 띄우기
         getBoardData(Constance.jwt, boardId.toLong())
@@ -81,8 +91,7 @@ class BoardExerciseActivity : AppCompatActivity() {
 
         //관리자 페이지 넘어가기
         binding.boardExcsNameTxt.setOnClickListener(View.OnClickListener {
-            // TextView 클릭될 시 할 코드작성 todo: 주석 제거 하기
-            if(true /*hostId==Constance.USER_ID*/){
+            if(true /*hostId==Constance.USER_ID*/ ){
                 val intent=Intent(this, ManagerPageActivity::class.java)
                 intent.putExtra("boardId", boardId)
                 intent.putExtra("missionImg", missionImg)
@@ -92,12 +101,13 @@ class BoardExerciseActivity : AppCompatActivity() {
         })
 
         //미션 인증 페이지 넘어가기
-        //todo: missionId 값 인텐트로 넘겨주기
         binding.boardExcsMissiomTxt.setOnClickListener {
-            val intent=Intent(this, MissionCertificationActivity::class.java)
-            intent.putExtra("missionId", missionId)
-            intent.putExtra("boardId", boardId)
-            startActivity(intent)
+
+                val intent=Intent(this, MissionCertificationActivity::class.java)
+                intent.putExtra("missionId", missionId)
+                intent.putExtra("boardId", boardId)
+                startActivity(intent)
+
         }
 
     }
@@ -106,17 +116,20 @@ class BoardExerciseActivity : AppCompatActivity() {
     private fun getBoardData(author:String ,id:Long){
 
         //게시판 이름
-        when(id.toInt()){
-            Constance.ART_ID-> {
-                binding.boardExcsNameTxt.text="예술 게시판"
-            }
-            Constance.FREE_ID-> {
-                binding.boardExcsNameTxt.text="자유 게시판"
-            }
-            Constance.EXERCISE_ID-> {
-                binding.boardExcsNameTxt.text="운동 게시판"
-            }
+
+            when(id.toInt()){
+                Constance.ART_ID-> {
+                    binding.boardExcsNameTxt.text="예술 게시판"
+                }
+                Constance.FREE_ID-> {
+                    binding.boardExcsNameTxt.text="자유 게시판"
+                }
+                Constance.EXERCISE_ID-> {
+                    binding.boardExcsNameTxt.text="운동 게시판"
+                }
+
         }
+
 
 
         val retrofitManager = PostBoardRetrofitManager.getInstance(this)
@@ -125,9 +138,10 @@ class BoardExerciseActivity : AppCompatActivity() {
                 val list:List<Articles> = response.result.articleLists
                 boardList=list.toMutableList()
                 hostId=response.result.categoryHostId
+                missionId=response.result.mainMissionId
                 Log.d("페이지 수", page.toString())
                 if(list?.isNotEmpty()==true){
-                    if(page!=1){
+                    if(page!=0){
                         boardList.addAll(list)
                         Badapter.updateData(boardList)
                         Badapter.notifyDataSetChanged()
@@ -175,6 +189,8 @@ class BoardExerciseActivity : AppCompatActivity() {
 
             binding.boardExcsPostRecyclr.layoutManager = BlayoutManager
             binding.boardExcsPostRecyclr.adapter = Badapter
+        } else if( isResume){
+            Badapter.resetUpdateData(boardList)
         } else {
             // 어댑터가 이미 초기화되었다면 기존 어댑터의 데이터를 업데이트
             Badapter.updateData(boardList)
@@ -186,7 +202,8 @@ class BoardExerciseActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         //게시판 화면 띄우기
-        page=1
+        page=0
+        isResume=true
         getBoardData(Constance.jwt, boardId.toLong())
 
     }

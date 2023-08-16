@@ -22,3 +22,11 @@ data class Articles(
     val likeCount:Int,
     val commentCount:Int
 )
+data class ArticlesPopular(
+    val categoryName:String
+    ,val articleId: Long
+    ,val articleTitle: String
+    ,val uploadTime: String
+    ,val likeCount: Int
+    ,val commentCount: Int
+)

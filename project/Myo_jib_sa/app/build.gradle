@@ -81,6 +81,11 @@ dependencies {
     //원형 이미지 뷰
     implementation'de.hdodenhof:circleimageview:2.2.0' //원형 프로필
 
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.3.1"
+    implementation "androidx.lifecycle:lifecycle-runtime:2.3.1" // 필요한 경우
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2" // 코루틴 지원
+
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'

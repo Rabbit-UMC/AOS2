@@ -2,6 +2,7 @@ package com.example.myo_jib_sa.community
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -12,21 +13,20 @@ import android.util.Base64
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.ImgPath
 import com.example.myo_jib_sa.community.Retrofit.imgUploadRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.post.ImageList
-import com.example.myo_jib_sa.community.Retrofit.post.ImageListC
 import com.example.myo_jib_sa.community.Retrofit.post.PostCreateRequest
 import com.example.myo_jib_sa.community.Retrofit.post.PostEditRequest
 import com.example.myo_jib_sa.community.Retrofit.post.PostRetrofitManager
 import com.example.myo_jib_sa.community.adapter.PostImgAdapter
 import com.example.myo_jib_sa.community.adapter.WritePostImgAdapter
 import com.example.myo_jib_sa.databinding.ActivityWritePostingBinding
+import kotlinx.coroutines.flow.emptyFlow
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -37,6 +37,12 @@ class WritePostingActivity : AppCompatActivity() {
     private var imgListEdit:List<ImageList> = listOf(ImageList(0,""), ImageList(0, ""))
     private var isEdit:Boolean=false
     private var postId:Long=0 //수정할 때만 씀
+
+    //이미지 url 저장
+    private var imgUrlList:MutableList<String> = mutableListOf("","")
+
+    //이미지가 있는 지
+    private var isHasImg:Boolean=false
 
 
     companion object {
@@ -56,6 +62,9 @@ class WritePostingActivity : AppCompatActivity() {
             binding.postWritePostTextEtxt.setText(intent.getStringExtra("postText"))
             binding.writePostTitleEtxt.setText(intent.getStringExtra("title"))
             //이미지 설정
+            if(!intent.getStringExtra("imgList1_path").toString().isNullOrBlank()){
+                isHasImg=true
+            }
             setImgGlide(binding.missionCertImg, intent.getStringExtra("imgList1_path").toString())
             setImgGlide(binding.missionCertImg1, intent.getStringExtra("imgList2_path").toString())
 
@@ -85,43 +94,61 @@ class WritePostingActivity : AppCompatActivity() {
 
         //게시글 쓰기, 수정 완료
         binding.postWriteCompleteBtn.setOnClickListener {
-            var imgUrl1=""
-            var imgUrl2=""
-            ImgUpload(imgList[0]){url->
-                imgUrl1=url
-            }
-            ImgUpload(imgList[1]){url->
-                imgUrl2=url
-            }
-            val imgUrlList= listOf<String>(imgUrl1, imgUrl2)
-            if(!isEdit){
-                val request=PostCreateRequest(
-                    binding.postWriteNameTxt.text.toString(),
-                    binding.postWritePostTextEtxt.text.toString(),
-                    imgUrlList //이미지 리스트 넣음
-                )
-                posting(Constance.jwt,request, boardId.toLong()){isSuccess->
-                    if(isSuccess){
-                        finish()
-                    }else{
-                        showToast("게시글 쓰기 실패")
-                    }
-                }
-            }else{
-                imgListEdit[0].filePath=imgUrlList[0]
-                imgListEdit[1].filePath=imgUrlList[1]
+            ImgUpload(imgList){isSuccess->
+                if(isSuccess){
+                    if(!isEdit){
+                        var request:PostCreateRequest
+                        if(!isHasImg){
+                            request=PostCreateRequest(
+                                binding.writePostTitleEtxt.text.toString(),
+                                binding.postWritePostTextEtxt.text.toString().replace("\n", "<br>"),
+                                emptyList() //이미지 리스트 넣음
+                            )
+                        }else{
+                            request=PostCreateRequest(
+                                binding.writePostTitleEtxt.text.toString(),
+                                binding.postWritePostTextEtxt.text.toString().replace("\n", "<br>"),
+                                imgUrlList //이미지 리스트 넣음
+                            )
+                        }
 
-                val request= PostEditRequest(
-                    binding.postWritePostTextEtxt.text.toString()
-                    , binding.postWritePostTextEtxt.text.toString()
-                    , imgListEdit)
-                //api로 콜 보냄
-                editing(Constance.jwt, request, postId){isSuccess->
-                    if(isSuccess){
-                        finish()
+                        posting(Constance.jwt,request, boardId.toLong()){isSuccess->
+                            if(isSuccess){
+                                finish()
+                            }else{
+                                showToast("게시글 쓰기 실패")
+                            }
+                        }
                     }else{
-                        showToast("게시글 수정 실패")
+                        var request:PostEditRequest
+                        //이미지 유무에 따라 분기 나누기
+                        if(isHasImg){
+                            imgListEdit[0].filePath=imgUrlList[0]
+                            imgListEdit[1].filePath=imgUrlList[1]
+                            request= PostEditRequest(
+                                binding.writePostTitleEtxt.text.toString()
+                                , binding.postWritePostTextEtxt.text.toString().replace("\n", "\\n")
+                                , imgListEdit)
+                        }else{
+                            request= PostEditRequest(
+                                binding.writePostTitleEtxt.text.toString()
+                                , binding.postWritePostTextEtxt.text.toString().replace("\n", "\\n")
+                                , emptyList()
+                            )
+                        }
+
+                        //api로 콜 보냄
+                        editing(Constance.jwt, request, postId){isSuccess->
+                            if(isSuccess){
+                                finish()
+                            }else{
+                                showToast("게시글 수정 실패")
+                            }
+                        }
                     }
+
+                }else{
+                    showToast("이미지 업로드에 실패했습니다")
                 }
             }
 
@@ -153,16 +180,23 @@ class WritePostingActivity : AppCompatActivity() {
             // 선택한 이미지를 해당 이미지뷰에 표시
             selectedImageUri?.let { uri ->
 
-                val imgPath = getRealPathFromURI(uri)
+                //todo:val imgPath = getRealPathFromURI(uri)
+
                 if(requestCode== GALLERY_REQUEST_CODE1){
+                    binding.writePostPlusImgLayout.backgroundTintList=
+                        ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
                     binding.missionCertImg.setImageURI(uri)
+                    isHasImg=true
                     imgList = imgList.toMutableList().apply {
-                        set(0, imgPath.toString())
+                        set(0, getRealPathFromURI(uri).toString())
                     }
                 }else{
+                    binding.writePostPlusImgLayout1.backgroundTintList=
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
                     binding.missionCertImg1.setImageURI(uri)
+                    isHasImg=true
                     imgList = imgList.toMutableList().apply {
-                        set(1, imgPath.toString())
+                        set(1, getRealPathFromURI(uri).toString())
                     }
                 }
             }
@@ -197,7 +231,7 @@ class WritePostingActivity : AppCompatActivity() {
         val retrofitManager = PostRetrofitManager.getInstance(this)
 
         //게시물 생성 api 연결
-        retrofitManager.postEdit(author,request, postId, postId){response ->
+        retrofitManager.postEdit(author,request, postId){response ->
             if(response){
                 //로그
                 Log.d("게시물 수정", "${response.toString()}")
@@ -238,31 +272,53 @@ class WritePostingActivity : AppCompatActivity() {
     }
 
     //이미지 업로드 api
-    private fun ImgUpload(imgPath:String, callback: (String) -> Unit){
-        val imageFile = File(imgPath) // 이미지 파일 경로
-
-        val imgUploadRetrofitManager = imgUploadRetrofitManager(this)
-        imgUploadRetrofitManager.uploadImage(imageFile, ImgPath.POST) { response ->
-            if (response != null) {
-                val imageUrl = response.result[0]
-                val isSuccess = response.isSuccess
-                val message = response.message
-                Log.d("이미지 업로드 결과", "$message")
-                Log.d("이미지 업로드 결과", "$imageUrl")
-                if(isSuccess=="true"){
-                    Log.d("이미지 업로드 결과", "isSuccess")
-                    callback(imageUrl)
-
-                }else{
-                    Log.d("이미지 업로드 결과", "isSuccess이 false")
-                    callback("")
+    private fun ImgUpload(imgPath:List<String>, callback: (Boolean) -> Unit){
+        if(isHasImg){
+            val imgList:MutableList<File> = mutableListOf()
+            for(i in 1..imgPath.size){
+                //있는 사진 부터 순차적으로
+                if(!imgPath[i-1].isNullOrBlank()){
+                    val imageFile = File(imgPath[i-1]) // 이미지 파일 경로
+                    imgList.add(imageFile)
                 }
-
-            } else {
-                Log.d("이미지 업로드 결과", "실패")
-                callback("")
             }
+
+            val imgUploadRetrofitManager = imgUploadRetrofitManager(this)
+            imgUploadRetrofitManager.uploadImage(imgList, ImgPath.POST) { response ->
+                if (response != null) {
+                    val imageUrl = response.result[0]
+                    val isSuccess = response.isSuccess
+                    val message = response.message
+                    Log.d("이미지 업로드 결과", "$message")
+                    Log.d("이미지 업로드 결과", "$imageUrl")
+                    if(isSuccess=="true"){
+                        Log.d("이미지 업로드 결과", "isSuccess")
+                        if(response.result.isNullOrEmpty()){
+                            callback(false)
+                        }else{
+                            //이미지 url 저장
+                            for(i in 1..response.result.size){
+                                if(response.result[i-1].isNotEmpty()){
+                                    imgUrlList[i-1]=response.result[i-1]
+                                }
+                            }
+                            callback(true)
+                        }
+
+                    }else{
+                        Log.d("이미지 업로드 결과", "isSuccess이 false")
+                        callback(false)
+                    }
+
+                } else {
+                    Log.d("이미지 업로드 결과", "실패")
+                    callback(false)
+                }
+            }
+        }else{
+            callback(true)
         }
+
     }
     //Base64로 인코딩하기
     fun encodeImageToBase64(imagePath: String): String? {
