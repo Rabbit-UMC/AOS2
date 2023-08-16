@@ -24,7 +24,7 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 
-class MissionWriteMissionActivity : AppCompatActivity(),DataTransferInterface {
+class MissionWriteMissionActivity : AppCompatActivity(){
     private lateinit var binding:ActivityMissionWriteMissionBinding
     lateinit var calendarAdapter : CalendarAdapter //calendarRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
     lateinit var selectedDate : LocalDate //오늘 날짜
@@ -34,7 +34,9 @@ class MissionWriteMissionActivity : AppCompatActivity(),DataTransferInterface {
         binding= ActivityMissionWriteMissionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val scheduleFrag = ScheduleFragment()
+        /*val scheduleFrag = ScheduleFragment()
+
+        //activityCreateSchedule
 
 
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
@@ -71,16 +73,16 @@ class MissionWriteMissionActivity : AppCompatActivity(),DataTransferInterface {
                 binding.shareSwitchBtn.isChecked = true
             }
         }
-
+*/
     }
 
     // 인터페이스 메서드 구현
-    override fun onDataTransfer(subject: String) {
+   /* override fun onDataTransfer(subject: String) {
         // Dialog에서 전달된 선택 주제를 기존화면 주제에 연결
         binding.selectSubjectTxt.text = subject
         Log.d("subject", "Received data: $subject")
     }
-
+*/
 
 
     //날짜 생성: ArrayList<CalendarData>()생성
@@ -112,7 +114,7 @@ class MissionWriteMissionActivity : AppCompatActivity(),DataTransferInterface {
     }
 
     //Calendar rv item클릭 이벤트
-    fun calendarRvItemClickEvent() {
+    /*fun calendarRvItemClickEvent() {
         calendarAdapter.setItemClickListener(object : CalendarAdapter.OnItemClickListener {
 
             @RequiresApi(Build.VERSION_CODES.O)
@@ -133,13 +135,13 @@ class MissionWriteMissionActivity : AppCompatActivity(),DataTransferInterface {
                 Toast.makeText(this@MissionWriteMissionActivity, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT).show()
 
                 CoroutineScope(Dispatchers.Main).launch {
-                    /*scheduleOfDayApi(YYYYMMDDFromDate(calendarData.date))//scheduleOfDay api연결*/
+                    *//*scheduleOfDayApi(YYYYMMDDFromDate(calendarData.date))//scheduleOfDay api연결*//*
                     delay(100)
-                    /*setScheduleAdapter(calendarData.date)*/
+                    *//*setScheduleAdapter(calendarData.date)*//*
                 }
             }
         })
-    }
+    }*/
 
     //month화면에 보여주기
     @SuppressLint("SuspiciousIndentation")
@@ -159,7 +161,7 @@ class MissionWriteMissionActivity : AppCompatActivity(),DataTransferInterface {
             binding.calendarRv.layoutManager = GridLayoutManager(applicationContext, 7)
             binding.calendarRv.adapter = calendarAdapter
 
-            calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
+            //calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
         }
 
     }
