@@ -19,8 +19,8 @@ data class Rank(
     val userName:String
 )
 data class MissionProofImages(
-    val imageId:Int,
-    val userId:Int,
+    val imageId:Long,
+    val userId:Long,
     val filePath:String
 )
 

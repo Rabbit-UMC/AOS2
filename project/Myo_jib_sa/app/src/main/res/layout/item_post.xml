@@ -73,15 +73,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="20dp"
         android:fontFamily="@font/font_inter"
         android:text="업로드 시간"
         android:textColor="#707070"
         android:textSize="10dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/postItem_heart_img"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postItem_name_txt" />
+        app:layout_constraintTop_toTopOf="@+id/postItem_heart_img" />
 
     <LinearLayout
         android:layout_width="match_parent"

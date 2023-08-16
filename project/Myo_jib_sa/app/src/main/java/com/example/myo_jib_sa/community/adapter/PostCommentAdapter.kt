@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
@@ -38,12 +39,18 @@ class PostCommentAdapter(
         fun bind(item: CommentList){
             //댓글 작성자 이름, 내용 세팅
             binding.commentWriterNameTxt.text=item.commentAuthorName
-            binding.commentPostTextTxt.text=item.commentContent
+            binding.commentPostTextTxt.text=item.commentContent.replace("<br>", "\n")
 
 
-            Glide.with(context)
-                 .load(item.commentAuthorProfileImage)
-                 .into(binding.commentProfileImg)
+            if(item.commentAuthorProfileImage.isNotEmpty()&&item.commentAuthorProfileImage!=null){
+                Glide.with(context)
+                    .load(item.commentAuthorProfileImage)
+                    .into(binding.commentProfileImg)
+            }else{
+                val drawable = ContextCompat.getDrawable(context, R.drawable.ic_profile)
+                binding.commentProfileImg.setImageDrawable(drawable)
+            }
+
 
             //commentBtn 아이콘 상태 설정
             if(item.commentUserId==Constance.USER_ID){
@@ -71,8 +78,9 @@ class PostCommentAdapter(
                             override fun onPositiveButtonClicked(value: Boolean) {
                                 if (value){
                                     //댓글 삭제하기
-                                    commentDelete(jwt, postId, item.commentId){isSuccess->
-                                    if(isSuccess){
+                                    Log.d("댓글 id", item.commentId.toString())
+                                    commentDelete(jwt, item.commentId){isSuccess->
+                                        if(isSuccess){
                                             setCommentData(jwt,postId)
                                             notifyDataSetChanged()
                                         }else{
@@ -91,10 +99,9 @@ class PostCommentAdapter(
                             override fun onPositiveButtonClicked(value: Boolean) {
                                 if (value){
                                     //댓글 변경하기
-                                    commentChange(jwt){isSuccess->
+                                    commentChange(jwt, item.commentId){isSuccess->
                                         if(isSuccess){
                                             setCommentData(jwt,postId)
-                                            notifyDataSetChanged()
                                         }else{
                                             showToast("댓글 변경에 실패 했습니다.")
                                         }
@@ -153,9 +160,9 @@ class PostCommentAdapter(
     }
 
     //댓글 삭제
-    private fun commentDelete(author:String, articleId:Long, commentId:Long, callback:(Boolean)->Unit){
+    private fun commentDelete(author:String,  commentId:Long, callback:(Boolean)->Unit){
         val retrofitManager=PostRetrofitManager.getInstance(context)
-        retrofitManager.postCommentDelete(author, articleId,commentId){response->
+        retrofitManager.postCommentDelete(author, commentId){response->
             if(response){
                 //로그
                 Log.d("댓글 삭제", "${response.toString()}")
@@ -170,9 +177,9 @@ class PostCommentAdapter(
     }
 
     //댓글 바꾸기
-    private fun commentChange(author:String, callback: (Boolean) -> Unit){
+    private fun commentChange(author:String, commentId: Long,callback: (Boolean) -> Unit){
         val retrofitManager = PostRetrofitManager.getInstance(context)
-        retrofitManager.postCommentLock(author, postId){response ->
+        retrofitManager.postCommentLock(author, commentId){response ->
             if(response){
                 Log.d("댓글 변경", "${response.toString()}")
                 callback(true)
@@ -193,6 +200,8 @@ class PostCommentAdapter(
 
     //댓글 부분 데이터 리스트 받기
     private fun setCommentData(author:String, postId:Long){
+        dataList= emptyList()
+
         val retrofitManager = PostRetrofitManager.getInstance(context)
         retrofitManager.postView(author, postId){response ->
             if(response.isSuccess=="true"){
@@ -205,7 +214,9 @@ class PostCommentAdapter(
                 }
                 Log.d("게시글 API List 확인", response.result.articleTitle)
 
+
                 dataList=response.result.commentList
+                notifyDataSetChanged()
 
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
@@ -217,5 +228,11 @@ class PostCommentAdapter(
 
 
         }
+    }
+
+    // 데이터 리스트를 업데이트하는 메서드
+    fun updateData(newDataList: List<CommentList>) {
+        dataList = newDataList
+        notifyDataSetChanged()
     }
 }

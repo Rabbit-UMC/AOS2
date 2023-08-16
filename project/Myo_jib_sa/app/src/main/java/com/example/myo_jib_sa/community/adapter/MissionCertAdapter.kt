@@ -23,6 +23,7 @@ import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
 import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularArticle
 import com.example.myo_jib_sa.community.Retrofit.missionCert.MCrecyclrImg
 import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionCertRetrofitManager
+import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.databinding.ItemMissionCertificationImgBinding
 
 class MissionCertAdapter(
@@ -65,7 +66,7 @@ class MissionCertAdapter(
     }
 
     //클릭 이벤트
-    private fun imgTouch(img:ImageView, imgId:Int){
+    private fun imgTouch(img:ImageView, imgId:Long){
         img.setOnTouchListener(object : View.OnTouchListener {
             private var numTaps = 0
 
@@ -74,10 +75,22 @@ class MissionCertAdapter(
                     MotionEvent.ACTION_DOWN -> {
                         numTaps++
                         if (numTaps == 1) {
+
                             handler.postDelayed({
                                 if (!doubleTap) {
-                                    //todo: dialog 띄우고 확인 눌렀을 떄만 신고하기
-                                    report(Constance.jwt, imgId)
+
+                                    val DelDialog = CommunityPopupOk(context,"해당 게시물을 신고 하나요?")
+                                    DelDialog.setCustomDialogListener(object : CommunityPopupOk.CustomDialogListener {
+                                        override fun onPositiveButtonClicked(value: Boolean) {
+                                            if (value){
+                                                //신고 재확인 팝업창 띄우고 확인 누르면 api 연결
+                                                Log.d("미션 인증 게시물 신고", "미션 인증 게시물 신고")
+                                                //todo: dialog 띄우고 확인 눌렀을 떄만 신고하기
+                                                report(Constance.jwt, imgId)
+                                            }
+                                        }
+                                    })
+                                    DelDialog.show()
                                 }
                                 numTaps = 0
                             }, doubleTapDelay)
@@ -90,21 +103,26 @@ class MissionCertAdapter(
 
                             // Toggle like/unlike based on the current like status
                             if (isLiked) {
+                                Log.d("미션 인증 게시물 좋아요 취소", "미션 인증 게시물 좋아요 취소")
                                 unlike(Constance.jwt, imgId) { isSuccess ->
                                     if (isSuccess) {
                                         // Update the like status in SharedPreferences
                                         sharedPreferences.edit().putBoolean("isLiked_$imgId", false).apply()
                                         showToast("좋아요 취소")
+                                        Log.d("미션 인증 게시물 좋아요 취소 성공", "미션 인증 게시물 좋아요 취소 성공")
                                     } else {
                                         showToast("좋아요 취소 실패")
                                     }
                                 }
                             } else {
+                                Log.d("미션 인증 게시물 좋아요", "미션 인증 게시물 좋아요")
                                 like(Constance.jwt, imgId) { isSuccess ->
                                     if (isSuccess) {
                                         // Update the like status in SharedPreferences
                                         sharedPreferences.edit().putBoolean("isLiked_$imgId", true).apply()
                                         showToast("좋아요")
+                                        Log.d("미션 인증 게시물 좋아요 성공", "미션 인증 게시물 좋아요 성공")
+
                                     } else {
                                         showToast("좋아요 실패")
                                     }
@@ -128,10 +146,10 @@ class MissionCertAdapter(
     }
 
     //좋아요
-    private fun like(author:String ,imgId:Int, callback: (Boolean) -> Unit){
+    private fun like(author:String ,imgId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = MissionCertRetrofitManager.getInstance(context)
         retrofitManager.missionImgLike(author, imgId){response ->
-            if(response){
+            if(response==200){
                     Log.d("missionImgLike", "missionImgLike 성공")
                     callback(true)
             } else {
@@ -146,7 +164,7 @@ class MissionCertAdapter(
 
 
     //좋아요 삭제
-    private fun unlike(author:String ,imgId:Int, callback: (Boolean) -> Unit){
+    private fun unlike(author:String ,imgId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = MissionCertRetrofitManager.getInstance(context)
         retrofitManager.missionImgUnlike(author, imgId){response ->
             if(response){
@@ -163,7 +181,7 @@ class MissionCertAdapter(
     }
 
     //신고하기
-    private fun report(author:String ,imgId:Int){
+    private fun report(author:String ,imgId:Long){
         val retrofitManager = MissionCertRetrofitManager.getInstance(context)
         retrofitManager.report(author, imgId){response ->
             if(response){

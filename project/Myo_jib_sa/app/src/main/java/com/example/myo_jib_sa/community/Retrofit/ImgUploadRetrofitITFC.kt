@@ -11,8 +11,8 @@ import retrofit2.http.Query
 interface ImgUploadRetrofitITFC{
 
     @Multipart
-    @GET("file")
-    fun uploadImage(@Part image: MultipartBody.Part
+    @POST("app/file")
+    fun uploadImage(@Part file: List<MultipartBody.Part?>
                     ,@Query("path") path:String ): Call<ImageUploadResponse>
 
 }

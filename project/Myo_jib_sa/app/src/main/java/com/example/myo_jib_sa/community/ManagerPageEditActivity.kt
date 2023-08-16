@@ -2,8 +2,10 @@ package com.example.myo_jib_sa.community
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +14,7 @@ import android.util.Base64
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
@@ -43,6 +46,14 @@ class ManagerPageEditActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val boardId =intent.getLongExtra("boardId", 0)
+        val missionImg=intent.getStringExtra("missionImg")
+        if(!missionImg.isNullOrBlank()){
+            binding.constraintLayout.backgroundTintList=
+                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+            Glide.with(this)
+                .load(missionImg)
+                .into(binding.managerPageImg)
+        }
 
         //바꾼 사진 저장
         binding.managerPageCompleteBtn.setOnClickListener {
@@ -71,9 +82,7 @@ class ManagerPageEditActivity : AppCompatActivity() {
     //사진 저장 api
     private fun setPhoto(author:String, boardId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = ManagerRetrofitManager.getInstance(this)
-        val imgpath = getRealPathFromURI(imgUri)
-
-        ImgUpload(imgpath.toString()){isSuccess->
+        ImgUpload(){isSuccess->
             if(isSuccess){
                 retrofitManager.missionImgEdit(author,imgUrl ,boardId){response ->
                     if(response){
@@ -131,11 +140,15 @@ class ManagerPageEditActivity : AppCompatActivity() {
     }
 
     //이미지 업로드 api
-    private fun ImgUpload(imgPath:String, callback: (Boolean) -> Unit){
-        val imageFile = File(imgPath) // 이미지 파일 경로
+    private fun ImgUpload(callback: (Boolean) -> Unit){
+        val imgpath = getRealPathFromURI(imgUri)
+        Log.d("이미지 경로", "${imgpath}")
+        val imageFile = File(imgpath) // 이미지 파일 경로
+        Log.d("이미지 파일 경로", imageFile.toString())
 
         val imgUploadRetrofitManager = imgUploadRetrofitManager(this)
-        imgUploadRetrofitManager.uploadImage(imageFile, ImgPath.CATEGORY) { response ->
+        val imgList:List<File> = listOf(imageFile)
+        imgUploadRetrofitManager.uploadImage(imgList, ImgPath.CATEGORY) { response ->
             if (response != null) {
                 val imageUrl = response.result[0]
                 val isSuccess = response.isSuccess

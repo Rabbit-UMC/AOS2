@@ -75,4 +75,11 @@ class BoardAdapter(
         notifyDataSetChanged() // 어댑터에 데이터가 변경되었음을 알립니다.
     }
 
+    //데이터 리셋 후 추가
+    fun resetUpdateData(newDataList: List<Articles>) {
+        dataList.clear() // 기존 데이터를 제거합니다.
+        dataList.addAll(newDataList) // 새로운 데이터로 갱신합니다.
+        notifyDataSetChanged() // 어댑터에 데이터가 변경되었음을 알립니다.
+    }
+
 }

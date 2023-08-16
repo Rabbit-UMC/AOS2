@@ -2,10 +2,13 @@ package com.example.myo_jib_sa.community
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
@@ -17,7 +20,7 @@ class ManagerPageActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityManagerPageBinding
     private val REQUEST_CODE=1
-    private
+    private var missionImg:String=""
 
     companion object {
         private const val GALLERY_REQUEST_CODE = 1001
@@ -32,6 +35,17 @@ class ManagerPageActivity : AppCompatActivity() {
 
         //관리자 페이지 이름 설정
         val boardId= intent.getIntExtra("boardId",0)
+
+        //이미지 설정
+        missionImg=intent.getStringExtra("missionImg").toString()
+        if(!missionImg.isNullOrBlank()){
+            binding.constraintLayout.backgroundTintList=
+                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+            Glide.with(this)
+                .load(missionImg)
+                .into(binding.managerPageImg)
+        }
+
         //게시판 이름
         when(boardId){
             Constance.ART_ID-> {
@@ -50,6 +64,7 @@ class ManagerPageActivity : AppCompatActivity() {
         binding.managerPageImgEditBtn.setOnClickListener{
             val intent= Intent(this, ManagerPageEditActivity::class.java)
             intent.putExtra("boardId", boardId.toLong())
+            intent.putExtra("missionImg", missionImg)
             startActivityForResult(intent, REQUEST_CODE)
         }
 
