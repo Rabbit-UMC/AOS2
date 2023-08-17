@@ -2,6 +2,7 @@ package com.example.myo_jib_sa.community.missionCert
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -12,6 +13,8 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.ImgPath
 import com.example.myo_jib_sa.community.Retrofit.imgUploadRetrofitManager
@@ -40,6 +43,20 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
         boardId=intent.getIntExtra("boardId", 0)
 
+        when(boardId){
+            Constance.ART_ID-> {
+                binding.missionCertBoardNameTxt.text="예술 게시판"
+            }
+            Constance.FREE_ID-> {
+                binding.missionCertBoardNameTxt.text="자유 게시판"
+            }
+            Constance.EXERCISE_ID-> {
+                binding.missionCertBoardNameTxt.text="운동 게시판"
+            }
+
+        }
+
+
         binding.missionCertImgBtn.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
@@ -51,8 +68,6 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
             postImg(Constance.jwt, boardId.toLong()){ isSuccess->
                 if(isSuccess){
                     finish()
-                }else{
-                    showToast("이미지 업로드에 실패했습니다.")
                 }
             }
 
@@ -69,6 +84,9 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                 val imageView: ImageView = binding.missionCertImg
                 imageView.setImageURI(uri)
                 imgUri=uri
+
+                binding.missionWriteImgLayout.backgroundTintList=
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
             }
         }
     }
@@ -86,6 +104,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                         Log.d("mission postImg", "postImge 성공")
                         callback(true)
                     } else {
+                        showToast("이미지 업로드에 실패했습니다.")
                         // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                         Log.d("mission postImg", "postImg 실패")
                         callback(false)
@@ -93,6 +112,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
                 }
             }else{
+                showToast("이미지 업로드에 실패했습니다.")
                 Log.d("mission postImg", "uploadImge 실패")
                 callback(false)
             }

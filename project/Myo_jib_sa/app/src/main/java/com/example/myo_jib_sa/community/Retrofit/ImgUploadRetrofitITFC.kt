@@ -12,7 +12,7 @@ interface ImgUploadRetrofitITFC{
 
     @Multipart
     @POST("app/file")
-    fun uploadImage(@Part file: List<MultipartBody.Part?>
+    fun uploadImage(@Part file: List<MultipartBody.Part>
                     ,@Query("path") path:String ): Call<ImageUploadResponse>
 
 }

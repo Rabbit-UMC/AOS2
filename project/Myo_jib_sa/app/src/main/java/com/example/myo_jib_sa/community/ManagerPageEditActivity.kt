@@ -53,6 +53,9 @@ class ManagerPageEditActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(missionImg)
                 .into(binding.managerPageImg)
+        }else{
+            binding.constraintLayout.backgroundTintList =
+                ColorStateList.valueOf(Color.parseColor("#F1F1F1"))
         }
 
         //바꾼 사진 저장
@@ -63,8 +66,6 @@ class ManagerPageEditActivity : AppCompatActivity() {
                     resultIntent.putExtra("imgPath", imgUri)
                     setResult(Activity.RESULT_OK, resultIntent)
                     finish()
-                }else{
-                    showToast("사진을 저장하지 못했습니다.")
                 }
 
             }
@@ -86,12 +87,16 @@ class ManagerPageEditActivity : AppCompatActivity() {
             if(isSuccess){
                 retrofitManager.missionImgEdit(author,imgUrl ,boardId){response ->
                     if(response){
+                        Log.d("관리자 페이지 사진 저장", "성공!!")
                         callback(true)
                     } else {
+                        showToast("사진을 저장하지 못했습니다.")
+                        Log.d("관리자 페이지 사진 저장", "실패 ㅜㅠ")
                         callback(false)
                     }
                 }
             }else{
+                showToast("사진을 저장하지 못했습니다.")
                 callback(false)
             }
         }

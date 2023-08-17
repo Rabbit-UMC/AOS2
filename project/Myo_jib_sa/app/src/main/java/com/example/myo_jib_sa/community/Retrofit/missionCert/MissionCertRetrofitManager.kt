@@ -36,8 +36,6 @@ class MissionCertRetrofitManager(context: Context) : ViewModel() {
     //미션 화면 조회
     fun mission(author: String,day:Int,mainMissionId:Long, completion: (missionResponse: MissionResponse) -> Unit){
 
-
-
             val call: Call<MissionResponse> = retrofit?.mission(author, mainMissionId, day) ?: return
 
             call.enqueue(object : retrofit2.Callback<MissionResponse> {

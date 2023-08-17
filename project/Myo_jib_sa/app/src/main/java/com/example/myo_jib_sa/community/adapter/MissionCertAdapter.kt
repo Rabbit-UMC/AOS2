@@ -48,15 +48,27 @@ class MissionCertAdapter(
         }
         fun bind(item: MCrecyclrImg){
             //이미지 설정
-            Glide.with(context)
-                .load(item.data1.filePath)
-                .into(binding.missionImg1)
-            Glide.with(context)
-                .load(item.data2.filePath)
-                .into(binding.missionImg2)
-            Glide.with(context)
-                .load(item.data3.filePath)
-                .into(binding.missionImg3)
+            if(item.data1.filePath=="empty"){
+                binding.missionImg1.visibility=View.INVISIBLE
+            }else{
+                Glide.with(context)
+                    .load(item.data1.filePath)
+                    .into(binding.missionImg1)
+            }
+            if(item.data2.filePath=="empty"){
+                binding.missionImg2.visibility=View.INVISIBLE
+            }else{
+                Glide.with(context)
+                    .load(item.data2.filePath)
+                    .into(binding.missionImg2)
+            }
+            if(item.data3.filePath=="empty"){
+                binding.missionImg3.visibility=View.INVISIBLE
+            }else{
+                Glide.with(context)
+                    .load(item.data3.filePath)
+                    .into(binding.missionImg3)
+            }
 
             //클릭 이벤트
             imgTouch(binding.missionImg1, item.data1.imageId)
