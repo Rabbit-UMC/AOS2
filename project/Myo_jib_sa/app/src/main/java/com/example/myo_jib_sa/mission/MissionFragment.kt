@@ -57,7 +57,7 @@ class MissionFragment : Fragment() {
                      }*/
 
                     // 어댑터 생성 및 리사이클러뷰에 설정
-                    setupMissionAdapter(dataList)
+                    setUpMissionAdapter(dataList)
 
                 } else {
                     // API 요청 실패 처리
@@ -94,7 +94,7 @@ class MissionFragment : Fragment() {
 
     }
 
-    fun setupMissionAdapter(dataList: List<Home>) {
+    fun setUpMissionAdapter(dataList: List<Home>) {
         missionAdapter = MissionAdapter(
             requireContext(),
             dataList,
