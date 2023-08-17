@@ -1,6 +1,8 @@
 package com.example.myo_jib_sa.mission.Dialog
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -25,6 +27,9 @@ class MissionDetailDialogFragment(private val item: Home) : DialogFragment() {
     ): View? {
         binding = DialogMissionDetailFragmentBinding.inflate(inflater, container, false)
 
+        //다이얼로그 모서리 둥글게 적용
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         //미션 report api 호출
         val retrofit = RetrofitInstance.getInstance().create(MissionITFC::class.java)
 

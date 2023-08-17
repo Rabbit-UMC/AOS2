@@ -92,8 +92,6 @@ class CreateScheduleActivity : AppCompatActivity() {
         calendarRvItemClickEvent()//캘린더 아이템 클릭이벤트
 
 
-
-
     }
 
 

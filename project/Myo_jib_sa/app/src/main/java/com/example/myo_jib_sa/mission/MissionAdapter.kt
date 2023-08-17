@@ -46,12 +46,18 @@ class MissionAdapter(
                 content // 원본 문자열 그대로 사용
             }
 
+            //미션 홈에 날짜 mm-dd로 표시되도록
+            val startAt = item.startAt
+            val formattedStartAt = startAt.substring(5, 10)
+            val endAt = item.endAt
+            val formattedEndAt = endAt.substring(5, 10)
+
             binding.missionIntroTxt.text = truncatedContent
             Glide.with(binding.root.context)
                 .load(item.image)
                 .into(binding.missionImg)
-            binding.missionStartTimeTxt.text = item.startAt
-            binding.missionEndTimeTxt.text = item.endAt
+            binding.missionStartTimeTxt.text = formattedStartAt
+            binding.missionEndTimeTxt.text = formattedEndAt
             binding.missionChallengerTxt.text="${item.challengerCnt} 명"
 
             Log.d("home",item.missionId.toString())

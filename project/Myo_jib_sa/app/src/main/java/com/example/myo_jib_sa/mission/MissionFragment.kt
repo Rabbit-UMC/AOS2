@@ -22,14 +22,23 @@ import retrofit2.Response
 
 class MissionFragment : Fragment() {
 
+    private lateinit var binding:FragmentMissionBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var missionAdapter: MissionAdapter
+   // private lateinit var categoryId:Int
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentMissionBinding.inflate(inflater, container, false)
+        binding = FragmentMissionBinding.inflate(inflater, container, false)
+
+
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
         recyclerView = binding.missionMissionRecycler
 
         //미션 home api 호출
@@ -40,33 +49,15 @@ class MissionFragment : Fragment() {
                 if (response.isSuccessful) {
                     val missionHomeResponse = response.body()
                     val dataList = missionHomeResponse?.result ?: emptyList()
+                    //categoryId=dataList[0].categoryId
 
-                    Log.d("home", "MissionHomeResponse data count: ${dataList.size}")
-                    for (item in dataList) {
-                        Log.d("home", "Mission id: ${item.missionId}")
-                    }
+                    /* Log.d("home", "MissionHomeResponse data count: ${dataList.size}")
+                     for (item in dataList) {
+                         Log.d("home", "Mission id: ${item.missionId}")
+                     }*/
 
                     // 어댑터 생성 및 리사이클러뷰에 설정
-                     missionAdapter = MissionAdapter(
-                        requireContext(),
-                        dataList,
-                        onItemLongClickListener = object : MissionAdapter.OnItemLongClickListener {
-                            override fun onItemLongClick(reportItem: Home) {
-                                showReportDialog(reportItem)
-                            }
-                        },
-                        onItemClickListener = object : MissionAdapter.OnItemClickListener {
-                            override fun onItemClick(detailItem: Home) {
-                                showDetailDialog(detailItem)
-                            }
-                        }
-                    )
-
-                    recyclerView.adapter = missionAdapter
-                    recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-                    // 아이템 간격 설정 (옵션)
-                    missionAdapter.setItemSpacing(recyclerView,15)
+                    setUpMissionAdapter(dataList)
 
                 } else {
                     // API 요청 실패 처리
@@ -87,9 +78,45 @@ class MissionFragment : Fragment() {
             startActivity(intent)
         }
 
+        //자유
+        binding.missionBoardFree.setOnClickListener{
 
-        return binding.root
+        }
+        //운동
+        binding.missionBoardExcs.setOnClickListener{
+
+        }
+        //예술
+        binding.missionBoardArt.setOnClickListener{
+
+        }
+
+
     }
+
+    fun setUpMissionAdapter(dataList: List<Home>) {
+        missionAdapter = MissionAdapter(
+            requireContext(),
+            dataList,
+            onItemLongClickListener = object : MissionAdapter.OnItemLongClickListener {
+                override fun onItemLongClick(reportItem: Home) {
+                    showReportDialog(reportItem)
+                }
+            },
+            onItemClickListener = object : MissionAdapter.OnItemClickListener {
+                override fun onItemClick(detailItem: Home) {
+                    showDetailDialog(detailItem)
+                }
+            }
+        )
+
+        recyclerView.adapter = missionAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        // 아이템 간격 설정 (옵션)
+        missionAdapter.setItemSpacing(recyclerView, 15)
+    }
+
 
     private fun showReportDialog(reportItem: Home) {
         val reportDialog = MissionReportDialogFragment(reportItem)
