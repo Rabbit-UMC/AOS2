@@ -35,41 +35,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/missionTitle_tv">
 
+        <ImageView
+            android:id="@+id/mission_img"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:scaleType = "centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_currentmission_exercise" />
+
         <TextView
             android:id="@+id/missionDday_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/font_inter"
             android:text="D+5"
-            android:textColor="#707070"
+            android:background="#000000"
+            android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/mission_img"/>
-
-        <ImageView
-            android:id="@+id/mission_img"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:scaleType="centerInside"
-            app:layout_constraintBottom_toTopOf="@+id/missionChallenger_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/missionDday_tv"
-            app:srcCompat="@drawable/ic_currentmission_exercise" />
+            />
 
         <TextView
             android:id="@+id/missionChallenger_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
+            android:background="#000000"
             android:fontFamily="@font/font_inter"
             android:text="10명"
-            android:textColor="#707070"
+            android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/mission_img"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

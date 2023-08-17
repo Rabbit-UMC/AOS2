@@ -16,7 +16,7 @@ interface ScheduleAddService {
     @POST("app/schedule")//?Authorization=$authKey
     fun scheduleAdd(
         @Header("X-ACCESS-TOKEN")
-        accessToken: String,
+        accessToken: String?,
         @Body requestBody: ScheduleAddRequest
     ) : Call<ScheduleAddResponse>
 }

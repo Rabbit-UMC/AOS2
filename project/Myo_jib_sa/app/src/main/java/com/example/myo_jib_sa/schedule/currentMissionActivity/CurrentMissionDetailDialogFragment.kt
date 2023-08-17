@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContentProviderCompat
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.databinding.DialogFragmentCurrentMissionDetailBinding
@@ -77,7 +79,12 @@ class CurrentMissionDetailDialogFragment : DialogFragment() {
 
     //missionDetail api연결
     private fun missionDetailApi(missionId: Long) {
-        val token: String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token: String = BuildConfig.API_TOKEN
         Log.d("debug", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(CurrentMissionDetailService::class.java)

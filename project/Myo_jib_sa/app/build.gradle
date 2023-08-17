@@ -39,7 +39,7 @@ android {
         //애드몹 광고 아이디 - 변경필요
         buildConfigField "String", "AD_UNIT_ID", properties['adUnitId']
 
-        buildConfigField "String", "API_TOKEN", properties['apiToken']
+        buildConfigField "String", "API_TOKEN", properties['apiToken']//나중에 지우기
 
 
         //키 - 값

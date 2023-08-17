@@ -3,6 +3,7 @@ package com.example.myo_jib_sa.schedule
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -447,7 +448,12 @@ class ScheduleFragment : Fragment() {
 
     //scheduleHome api연결
     private fun scheduleHomeApi() {
-        val token : String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", "")
+
+        //val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
@@ -484,7 +490,12 @@ class ScheduleFragment : Fragment() {
     //scheduleOfDay api연결
     //calendarRvItemClickEvent()안에서만 실행
     fun scheduleOfDayApi(date: String?) {
-        val token : String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 //
 //        val requestBody = ScheduleOfDayRequest(
@@ -563,7 +574,12 @@ class ScheduleFragment : Fragment() {
     fun scheduleOfDayApiForCheck(date: String?) {
         var checkResult: Boolean = false
 
-          val token = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 //
 //        val requestBody = ScheduleOfDayRequest(

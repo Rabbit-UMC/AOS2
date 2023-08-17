@@ -10,7 +10,7 @@ interface ScheduleDetailService {
     @GET("app/schedule/{scheduleId}")
     fun scheduleDetail(
         @Header("X-ACCESS-TOKEN")
-        accessToken: String,
+        accessToken: String?,
         @Path("scheduleId") scheduleId: Long
     ) : Call<ScheduleDetailResponse>
 }

@@ -2,6 +2,7 @@ package com.example.myo_jib_sa.schedule.currentMissionActivity
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent.getActivity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
@@ -192,7 +193,12 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
 
     //currentMission api연결
     private fun currentMissionApi() {
-        val token: String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token: String = BuildConfig.API_TOKEN
         Log.d("debug", "token = "+token+"l");
 
         missionList = ArrayList<CurrentMissionDeleteData>()
@@ -232,7 +238,12 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
 
     //currentMissionSchedule api연결
     private fun currentMissionScheduleApi(missionId:Long) {
-        val token: String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token: String = BuildConfig.API_TOKEN
         Log.d("debug", "token = "+token+"l");
 
         scheduleList = ArrayList<ScheduleDeleteAdapterData>()
@@ -269,7 +280,12 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
 
     //currentMission api연결
     private fun currentMissionDeleteApi(deleteMissionIdList:MutableList<Long>) {
-        val token: String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token: String = BuildConfig.API_TOKEN
         Log.d("debug", "token = "+token+"l");
 
 
@@ -302,7 +318,12 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
 
     //scheduleDelete api연결: 일정삭제
     private fun scheduleDeleteApi(deleteScheduleIdList:MutableList<Long>) {
-        val token : String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 
 

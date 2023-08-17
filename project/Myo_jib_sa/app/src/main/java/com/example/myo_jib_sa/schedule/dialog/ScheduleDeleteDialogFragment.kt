@@ -1,45 +1,49 @@
 package com.example.myo_jib_sa.schedule.dialog
 
-import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.WindowManager
-import com.example.myo_jib_sa.BuildConfig
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogScheduleDeleteBinding
 import com.example.myo_jib_sa.schedule.adapter.ScheduleAdaptar
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteService
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyResponse
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-
-class scheduleDeleteDialog(
+class ScheduleDeleteDialogFragment(
     context: Context,
     val scheduleAdaptar: ScheduleAdaptar,
-    val position:Int,
-) : Dialog(context) {
+    val position:Int
+) : DialogFragment() {
     private lateinit var binding: DialogScheduleDeleteBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        binding = DialogScheduleDeleteBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DialogScheduleDeleteBinding.inflate(inflater, container, false)
+
 
         //requestWindowFeature(Window.FEATURE_NO_TITLE)
-        setContentView(binding.root)
         initViews()
+
+        return binding.root
     }
 
     private fun initViews() {
 
-        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
 
         //확인
@@ -70,7 +74,12 @@ class scheduleDeleteDialog(
 
     //scheduleDelete api연결: 일정삭제
     fun scheduleDeleteApi() {
-        val token : String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 
         val sDataList = scheduleAdaptar.getItem()
@@ -95,4 +104,6 @@ class scheduleDeleteDialog(
             }
         })
     }
+
+
 }
