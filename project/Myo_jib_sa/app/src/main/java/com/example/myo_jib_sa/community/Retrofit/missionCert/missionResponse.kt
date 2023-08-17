@@ -11,6 +11,7 @@ data class MissionResult(
     val mainMissionName:String,
     val dday:String,
     val mainMissionContent:String,
+    val startDay:String,
     val rank:List<Rank>,
     val missionProofImages:List<MissionProofImages>
 )

@@ -91,7 +91,7 @@ class BoardExerciseActivity : AppCompatActivity() {
 
         //관리자 페이지 넘어가기
         binding.boardExcsNameTxt.setOnClickListener(View.OnClickListener {
-            if(true /*hostId==Constance.USER_ID*/ ){
+            if(hostId==Constance.USER_ID){
                 val intent=Intent(this, ManagerPageActivity::class.java)
                 intent.putExtra("boardId", boardId)
                 intent.putExtra("missionImg", missionImg)
@@ -102,10 +102,11 @@ class BoardExerciseActivity : AppCompatActivity() {
 
         //미션 인증 페이지 넘어가기
         binding.boardExcsMissiomTxt.setOnClickListener {
-
                 val intent=Intent(this, MissionCertificationActivity::class.java)
                 intent.putExtra("missionId", missionId)
+                intent.putExtra("missionImg", missionImg)
                 intent.putExtra("boardId", boardId)
+                intent.putExtra("hostId", hostId)
                 startActivity(intent)
 
         }

@@ -32,28 +32,29 @@ class ManagerRetrofitManager (context: Context){
     //미션 대표 사진 바꾸기
     fun missionImgEdit(author: String,filePath:String,boardId:Long, completion: (isSucces:Boolean) -> Unit){
         val call: Call<SimpleResponse> = retrofit?.EditPhoto(author, filePath,boardId) ?: return
-
+        Log.d("RetrofitManager 미션 대표 사진 바꾸기", "데이터 확인 $filePath")
         call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
                 call: Call<SimpleResponse>,
                 response: Response<SimpleResponse>
             ) {
-                Log.d("미션 대표 사진 바꾸기", "RetrofitManager 미션 대표 사진 바꾸기 onResponse \t :${response.message()} ")
+                Log.d("RetrofitManager 미션 대표 사진 바꾸기", "RetrofitManager 미션 대표 사진 바꾸기 onResponse \t :${response.message()} ")
+                Log.d("RetrofitManager 미션 대표 사진 바꾸기", "RetrofitManager 미션 대표 사진 바꾸기 onResponse \t :${response.code()} ")
                 val response: SimpleResponse? = response?.body()
                 if (response != null) {
                     if (response.isSuccess=="true") {
-                        Log.d("미션 대표 사진 바꾸기",
+                        Log.d("RetrofitManager 미션 대표 사진 바꾸기",
                             "RetrofitManager 미션 대표 사진 바꾸기 is Success\t :${response.code} ")
-                        Log.d("미션 대표 사진 바꾸기",
+                        Log.d("RetrofitManager 미션 대표 사진 바꾸기",
                             "RetrofitManager 미션 대표 사진 바꾸기 is Success\t :${response.result} ")
                         completion(true)
                     } else {
-                        Log.d("미션 대표 사진 바꾸기",
+                        Log.d("RetrofitManager 미션 대표 사진 바꾸기",
                             "RetrofitManager 미션 대표 사진 바꾸기 is NOT Success\t :${response.code} ")
                         completion(false)
                     }
                 } else {
-                    Log.d("미션 대표 사진 바꾸기", "RetrofitManager 미션 대표 사진 바꾸기 null")
+                    Log.d("RetrofitManager 미션 대표 사진 바꾸기", "RetrofitManager 미션 대표 사진 바꾸기 null")
                 }
             }
             override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
@@ -65,7 +66,7 @@ class ManagerRetrofitManager (context: Context){
     //미션 생성하기
     //미션 대표 사진 바꾸기
     fun missionCreate(author: String,data:MissionCreateRequest, boardId: Long,completion: (isSucces:Boolean) -> Unit){
-        val call: Call<SimpleResponse> = retrofit?.missionCreate(author, data,boardId) ?: return
+        val call: Call<SimpleResponse> = retrofit?.missionCreate(author,boardId,data) ?: return
 
         call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(

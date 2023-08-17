@@ -180,7 +180,6 @@ class WritePostingActivity : AppCompatActivity() {
             // 선택한 이미지를 해당 이미지뷰에 표시
             selectedImageUri?.let { uri ->
 
-                //todo:val imgPath = getRealPathFromURI(uri)
 
                 if(requestCode== GALLERY_REQUEST_CODE1){
                     binding.writePostPlusImgLayout.backgroundTintList=
@@ -220,6 +219,7 @@ class WritePostingActivity : AppCompatActivity() {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                 Log.d("게시물 생성 isSuccess가 false", "${response.toString()}")
                 //토스트 메시지 띄우기
+                showToast("게시글 업로드 실패")
                 callback(false)
             }
         }
@@ -241,6 +241,7 @@ class WritePostingActivity : AppCompatActivity() {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                 Log.d("게시물 수정 isSuccess가 false", "${response.toString()}")
                 //토스트 메시지 띄우기
+                showToast("게시글 수정 실패")
                 callback(false)
             }
         }
@@ -307,16 +308,20 @@ class WritePostingActivity : AppCompatActivity() {
 
                     }else{
                         Log.d("이미지 업로드 결과", "isSuccess이 false")
+                        showToast("이미지 업로드 실패")
                         callback(false)
                     }
 
                 } else {
                     Log.d("이미지 업로드 결과", "실패")
+                    showToast("이미지 업로드 실패")
+
                     callback(false)
                 }
             }
         }else{
             callback(true)
+            showToast("이미지 업로드 실패")
         }
 
     }

@@ -8,6 +8,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
@@ -29,9 +30,6 @@ class ManagerPageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityManagerPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        //todo: 게시판 이미지 설정해주기
-
 
         //관리자 페이지 이름 설정
         val boardId= intent.getIntExtra("boardId",0)
@@ -70,7 +68,9 @@ class ManagerPageActivity : AppCompatActivity() {
 
         //묘방생 페이지로 이동
         binding.managerPageByeBtn.setOnClickListener {
-            val intent=Intent(this, ManagerPageMissionActivity::class.java)
+            val intent=Intent(this, ManagerMissionCreateActivity::class.java)
+            Log.d("묘방생 페이지로 이동", "묘방생 페이지로 이동")
+            intent.putExtra("boardId", boardId)
             intent.putExtra("isBye", true)
             startActivity(intent)
         }
@@ -78,7 +78,8 @@ class ManagerPageActivity : AppCompatActivity() {
         //미션 생성 페이지로 이동
         //todo: 진행중인 미션이 없다면 미션 생성 페이지로 이동
         binding.managerPageMissionBtn.setOnClickListener {
-            val intent=Intent(this, ManagerPageMissionActivity::class.java)
+            Log.d("미션 생성 페이지로 이동", "미션 생성 페이지로 이동")
+            val intent=Intent(this, ManagerMissionCreateActivity::class.java)
             intent.putExtra("boardId", boardId)
             startActivity(intent)
         }

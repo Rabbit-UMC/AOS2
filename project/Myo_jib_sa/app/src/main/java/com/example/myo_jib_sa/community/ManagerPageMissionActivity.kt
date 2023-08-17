@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
-
+/*
 class ManagerPageMissionActivity : AppCompatActivity(){
 
     private lateinit var binding:ActivityManagerPageMissionBinding
@@ -350,3 +350,4 @@ class ManagerPageMissionActivity : AppCompatActivity(){
         return date.format(formatter)
     }
 }
+*/
