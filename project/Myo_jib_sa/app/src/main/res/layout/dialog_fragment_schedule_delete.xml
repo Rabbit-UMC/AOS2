@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/schedule_delete_dialog"
     android:layout_width="275dp"
@@ -7,7 +8,8 @@
     android:minWidth="275dp"
     android:minHeight="143dp"
     android:background="@drawable/view_round_r15"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".schedule.dialog.ScheduleDeleteDialogFragment">
 
     <ImageButton
         android:id="@+id/exit_btn"
@@ -46,5 +48,5 @@
         android:layout_marginBottom="10dp"
         android:gravity="center"
         android:layout_gravity="center"/>
-</LinearLayout>
 
+</LinearLayout>

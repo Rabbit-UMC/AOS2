@@ -161,7 +161,12 @@ class ScheduleDetailDialogFragment : DialogFragment(){
 
     //scheduleDetail api연결
     fun scheduleDetailApi(scheduleId: Long) {
-        val token: String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token: String = BuildConfig.API_TOKEN
         Log.d("debug", "token = "+token+"l");
 
         val service = RetrofitClient.getInstance().create(ScheduleDetailService::class.java)

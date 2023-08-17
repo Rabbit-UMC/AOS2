@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -132,7 +133,12 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     //currentMission api연결
     private fun currentMissionApi() {
-        val token: String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token: String = BuildConfig.API_TOKEN
         Log.d("debug", "token = "+token+"l");
 
         missionList = ArrayList<CurrentMissionResult>()
@@ -170,7 +176,12 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     //currentMissionSchedule api연결
     private fun currentMissionScheduleApi(missionId:Long) {
-        val token: String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token: String = BuildConfig.API_TOKEN
         Log.d("debug", "token = "+token+"l");
 
         scheduleList = ArrayList<CurrentMissionScheduleResult>()

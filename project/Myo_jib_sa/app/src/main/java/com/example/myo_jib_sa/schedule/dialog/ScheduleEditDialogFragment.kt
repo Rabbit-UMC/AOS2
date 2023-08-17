@@ -241,7 +241,12 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
     //scheduleModify api연결
     private fun scheduleModifyApi() {
-        val token : String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 //
         if(scheduleData.missionId == -1L){
