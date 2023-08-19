@@ -33,13 +33,15 @@ class CurrentMissionActivity : AppCompatActivity() {
         binding = ActivityCurrentMissionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        currentMissionApi()//currentMission api연결
+        //currentMissionApi()//currentMission api연결
 
-        setCurrentMissionScheduleAdapter()    //CurrentMissionScheduleAdapter 초기화
-        setCurrentMissionCurrentMissionAdapter()    //CurrentMissionCurrentMissionAdapter 연결
+//        setCurrentMissionScheduleAdapter()    //CurrentMissionScheduleAdapter 초기화
+//        setCurrentMissionCurrentMissionAdapter()    //CurrentMissionCurrentMissionAdapter 연결
+//
+//
+//        currentMissionCurrentMissionRvItemClickEvent()//currentMissionCurrentMissionRv item클릭 이벤트
 
-
-        currentMissionCurrentMissionRvItemClickEvent()//currentMissionCurrentMissionRv item클릭 이벤트
+        ///currentMissionApi()//currentMission api연결
 
         //뒤로가기 버튼 클릭
         binding.goBackBtn.setOnClickListener {
@@ -50,7 +52,7 @@ class CurrentMissionActivity : AppCompatActivity() {
     }
     override fun onResume() {
         super.onResume()
-        //currentMissionApi()//currentMission api연결
+        currentMissionApi()//currentMission api연결
 
 
 
@@ -112,38 +114,6 @@ class CurrentMissionActivity : AppCompatActivity() {
                     //scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
                     currentMissionDetailDialogFragment.show(supportFragmentManager, "currentMissionDetailDialogFragment")
                 }
-
-
-
-
-
-
-
-
-                    ////double click ver 1
-//                var clickTime = System.currentTimeMillis();
-//                if (System.currentTimeMillis() > delay) {
-//                    //한번 클릭 동작
-//                    currentMissionScheduleApi(currentMissionData.missionId)
-//                    //setCurrentMissionScheduleAdapter(currentMissionData.missionId)
-//
-//
-//                    delay = System.currentTimeMillis()+200 //클릭 간격
-//                    return
-//                }
-//                if (System.currentTimeMillis() <= delay) {
-//                    //두번 클릭 동작
-//                    // 미션 상세 다이어로그 띄우기
-//                    var bundle = Bundle()
-//                    bundle.putLong("missionId", currentMissionData.missionId)
-//                    Log.d("debug", "\"missionId\", ${currentMissionData.missionId}")
-//                    val currentMissionDetailDialogFragment = CurrentMissionDetailDialogFragment()
-//                    currentMissionDetailDialogFragment.arguments = bundle
-//
-//                    //scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
-//                    currentMissionDetailDialogFragment.show(supportFragmentManager, "currentMissionDetailDialogFragment")
-//
-//                }
             }
 
             override fun onLongClick(position:Int){
@@ -177,7 +147,7 @@ class CurrentMissionActivity : AppCompatActivity() {
                 response: Response<CurrentMissionResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.d("debug", "retrofit: "+response.body().toString());
+                    Log.d("retrofit", response.body().toString());
                     val result = response.body()!!.result
 
                     for(i in 0 until result.size) {
@@ -220,7 +190,7 @@ class CurrentMissionActivity : AppCompatActivity() {
                 response: Response<CurrentMissionScheduleResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.d("debug", "retrofit: "+response.body().toString());
+                    Log.d("retrofit", response.body().toString());
                     val result = response.body()!!.result
 
                     for(i in 0 until result.size) {

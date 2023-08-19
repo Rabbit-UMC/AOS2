@@ -118,27 +118,6 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
 
 
             @RequiresApi(Build.VERSION_CODES.O)
-//            override fun onClick(currentMissionData: CurrentMissionDeleteData) {
-//                if (System.currentTimeMillis() > delay) {
-//                    //한번 클릭 동작
-//                    //setCurrentMissionScheduleDeleteAdapter(currentMissionData.currentMissionResult.missionTitle)
-//                    currentMissionScheduleApi(currentMissionData.currentMissionResult.missionId)
-//
-//                    delay = System.currentTimeMillis()+200
-//                    return
-//                }
-//                if (System.currentTimeMillis() <= delay) {
-//                    //두번 클릭 동작
-//                    // 미션 상세 다이어로그 띄우기
-//                    var bundle = Bundle()
-//                    bundle.putLong("missionId", currentMissionData.currentMissionResult.missionId)
-//                    Log.d("debug", "\"scheduleId\", ${currentMissionData.currentMissionResult.missionId}")
-//                    val currentMissionDetailDialogFragment = CurrentMissionDetailDialogFragment()
-//                    currentMissionDetailDialogFragment.arguments = bundle
-//
-//                    //scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
-//                    currentMissionDetailDialogFragment.show(supportFragmentManager, "currentMissionDetailDialogFragment")
-//                }
                 override fun onClick(currentMissionData: CurrentMissionDeleteData) {
                     doubleClickFlag++;
                     var handler = Handler(Looper.getMainLooper());
