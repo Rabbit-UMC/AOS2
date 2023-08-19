@@ -39,6 +39,7 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
     private lateinit var currentMissionDeleteAdapter : CurrentMissionCurrentMissionDeleteAdapter
     private var scheduleList = ArrayList<ScheduleDeleteAdapterData>() //CurrentMissionScheduleDeleteAdapter의 데이터 리스트
     private lateinit var scheduleDeleteAdapter : CurrentMissionScheduleDeleteAdapter
+    private var deleteScheduleIdList : MutableSet<Long> = mutableSetOf()//삭제할 스케줄 아이디
     private var isAllSeleted = false //전체선택
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,6 +108,9 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
         scheduleDeleteAdapter = CurrentMissionScheduleDeleteAdapter(scheduleList, getDisplayHeightSize())
         binding.scheduleListRv.layoutManager = LinearLayoutManager(this)
         binding.scheduleListRv.adapter = scheduleDeleteAdapter
+
+        Log.d("debug", "scheduleList: $scheduleList");
+
     }
 
 
@@ -123,7 +127,10 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
                     var handler = Handler(Looper.getMainLooper());
                     val clickRunnable = Runnable {
                         doubleClickFlag = 0
-                        // 클릭 이벤트 처리
+                        // 한번 클릭 이벤트 처리
+                        deleteScheduleIdList.addAll(scheduleDeleteAdapter.getSelectedItemScheduleId())//삭제할 스케줄 아이디 저장
+                        binding.allSeleteV.setBackgroundColor(Color.parseColor("#D9D9D9")) //회색으로 버튼 색 변경:전체선택 버튼 초기화
+                        isAllSeleted = false//전체선택 버튼 초기화
                         currentMissionScheduleApi(currentMissionData.currentMissionResult.missionId)
                     }
                     if (doubleClickFlag == 1) {
@@ -181,9 +188,13 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
         //삭제 버튼 클릭
         binding.deleteFbtn.setOnClickListener {
             Log.d("debug_delete", "delete mission: ${currentMissionDeleteAdapter.getSelectedItemMissionId()}")
-            Log.d("debug_delete", "delete schedule: ${scheduleDeleteAdapter.getSelectedItemScheduleId()}")
+            Log.d("debug_delete", "delete schedule: $deleteScheduleIdList")
             currentMissionDeleteApi(currentMissionDeleteAdapter.getSelectedItemMissionId())//미션삭제api
-            scheduleDeleteApi(scheduleDeleteAdapter.getSelectedItemScheduleId())//스케줄 삭제 api
+
+            deleteScheduleIdList.addAll(scheduleDeleteAdapter.getSelectedItemScheduleId())//삭제할 스케줄 아이디 저장
+            scheduleDeleteApi(deleteScheduleIdList)//스케줄 삭제 api
+
+
 
 
             this.finish() //인텐트 종료
@@ -264,9 +275,16 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
                     Log.d("debug", "retrofit: "+response.body().toString());
                     val result = response.body()!!.result
 
-                    for(i in 0 until result.size) {
-                        scheduleList.add(ScheduleDeleteAdapterData(result[i]))
+                    for(i in result.indices) {
+
+                            if(deleteScheduleIdList.contains(result[i].scheduleId))
+                                scheduleList.add(ScheduleDeleteAdapterData(result[i], true))
+                            else
+                                scheduleList.add(ScheduleDeleteAdapterData(result[i]))
+
+                        //scheduleList.add(ScheduleDeleteAdapterData(result[i]))
                     }
+                    Log.d("debug", "scheduleList: $scheduleList");
                     setCurrentMissionScheduleDeleteAdapter()//CurrentMissionSchedule rv 연결
                     currentMissionCurrentMissionDeleteRvItemClickEvent()
 
@@ -321,7 +339,7 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
     }
 
     //scheduleDelete api연결: 일정삭제
-    private fun scheduleDeleteApi(deleteScheduleIdList:MutableList<Long>) {
+    private fun scheduleDeleteApi(deleteScheduleIdList:MutableSet<Long>) {
         // SharedPreferences 객체 가져오기
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
