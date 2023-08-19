@@ -1,25 +1,16 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity
 
-import android.app.Activity
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.os.Bundle
+import android.os.*
 import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myo_jib_sa.BuildConfig
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
-import com.example.myo_jib_sa.schedule.HistoryActivity
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResponse
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailService
-import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActivity
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
@@ -92,24 +83,26 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     //currentMissionCurrentMissionRv item클릭 이벤트
     private fun currentMissionCurrentMissionRvItemClickEvent() {
+        var doubleClickFlag = 0
+        val CLICK_DELAY: Long = 250
         currentMissionAdapter.setItemClickListener(object : CurrentMissionCurrentMissionAdapter.OnItemClickListener {
-
-            var delay:Long = 0//클릭 간격
+            ////double click ver 1
+            //var delay:Long = 0//클릭 간격
 
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onClick(currentMissionData: CurrentMissionResult) {
-                if (System.currentTimeMillis() > delay) {
-                    //한번 클릭 동작
+                doubleClickFlag++;
+                var handler = Handler(Looper.getMainLooper());
+                val clickRunnable = Runnable {
+                    doubleClickFlag = 0
+                    // 클릭 이벤트 처리
                     currentMissionScheduleApi(currentMissionData.missionId)
-                    //setCurrentMissionScheduleAdapter(currentMissionData.missionId)
-
-
-                    delay = System.currentTimeMillis()+400 //클릭 간격
-                    return
                 }
-                if (System.currentTimeMillis() <= delay) {
-                    //두번 클릭 동작
-                    // 미션 상세 다이어로그 띄우기
+                if (doubleClickFlag == 1) {
+                    handler.postDelayed(clickRunnable, CLICK_DELAY)
+                } else if (doubleClickFlag == 2) {
+                    doubleClickFlag = 0
+                    // 더블클릭 이벤트 처리
                     var bundle = Bundle()
                     bundle.putLong("missionId", currentMissionData.missionId)
                     Log.d("debug", "\"missionId\", ${currentMissionData.missionId}")
@@ -119,6 +112,38 @@ class CurrentMissionActivity : AppCompatActivity() {
                     //scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
                     currentMissionDetailDialogFragment.show(supportFragmentManager, "currentMissionDetailDialogFragment")
                 }
+
+
+
+
+
+
+
+
+                    ////double click ver 1
+//                var clickTime = System.currentTimeMillis();
+//                if (System.currentTimeMillis() > delay) {
+//                    //한번 클릭 동작
+//                    currentMissionScheduleApi(currentMissionData.missionId)
+//                    //setCurrentMissionScheduleAdapter(currentMissionData.missionId)
+//
+//
+//                    delay = System.currentTimeMillis()+200 //클릭 간격
+//                    return
+//                }
+//                if (System.currentTimeMillis() <= delay) {
+//                    //두번 클릭 동작
+//                    // 미션 상세 다이어로그 띄우기
+//                    var bundle = Bundle()
+//                    bundle.putLong("missionId", currentMissionData.missionId)
+//                    Log.d("debug", "\"missionId\", ${currentMissionData.missionId}")
+//                    val currentMissionDetailDialogFragment = CurrentMissionDetailDialogFragment()
+//                    currentMissionDetailDialogFragment.arguments = bundle
+//
+//                    //scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
+//                    currentMissionDetailDialogFragment.show(supportFragmentManager, "currentMissionDetailDialogFragment")
+//
+//                }
             }
 
             override fun onLongClick(position:Int){

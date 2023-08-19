@@ -2,14 +2,12 @@ package com.example.myo_jib_sa.schedule.currentMissionActivity
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContentProviderCompat
 import androidx.fragment.app.DialogFragment
@@ -44,8 +42,7 @@ class CurrentMissionDetailDialogFragment : DialogFragment() {
         var missionId = bundle?.getLong("missionId")?: -1
         Log.d("debug", "\"missionId\" : $missionId")
 
-        //missionDetail api연결
-        missionDetailApi(missionId)
+
 
         // 레이아웃 배경을 투명하게 해줌
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -57,23 +54,49 @@ class CurrentMissionDetailDialogFragment : DialogFragment() {
             dismiss()
         }
 
-
+        //missionDetail api연결
+        missionDetailApi(missionId)
 
         return binding.root
     }
 
-    // 인터페이스
-    interface OnButtonClickListener {
-        fun onClickEditBtn()
+    override fun onResume() {
+        super.onResume()
+        resizeDialog()
     }
 
-    // 클릭 이벤트 설정
-    fun setButtonClickListener(buttonClickListener: OnButtonClickListener) {
-        this.buttonClickListener = buttonClickListener
+
+    //dialog크기 조절
+    fun resizeDialog() {
+        val windowManager = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+        val deviceWidth = size.x
+        val deviceHeight = size.y
+
+        var height = (deviceWidth * 0.95 * 1.13).toInt()
+        var minHeight = ConvertDPtoPX(requireContext(), 380)
+        if(minHeight > height){
+            params?.height = minHeight
+        } else{
+            params?.height = height
+
+        }
+        params?.width = (deviceWidth * 0.95).toInt()
+//        params?.height = (deviceWidth * 0.9 * 1.13).toInt()
+
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 
-    // 클릭 이벤트 실행
-    private lateinit var buttonClickListener: OnButtonClickListener
+    //dp -> px
+    fun ConvertDPtoPX(context: Context, dp: Int): Int {
+        val density = context.resources.displayMetrics.density
+        return Math.round(dp.toFloat() * density)
+    }
+
+
 
 
 

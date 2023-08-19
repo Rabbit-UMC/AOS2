@@ -53,26 +53,26 @@ class ScheduleCreateSpinnerDialogFragment : DialogFragment() {
         setTablayout()
 
 
-        //pre이동
-        binding.preBtn.setOnClickListener {
-            var current = binding.spinnerViewPager.currentItem
-            if (current == 0){
-                binding.spinnerViewPager.setCurrentItem(2, false)
-            }
-            else{
-                binding.spinnerViewPager.setCurrentItem(current-1, false)
-            }
-        }
-        //next 이동
-        binding.nextBtn.setOnClickListener {
-            var current = binding.spinnerViewPager.currentItem
-            if (current == 2){
-                binding.spinnerViewPager.setCurrentItem(0, false)
-            }
-            else{
-                binding.spinnerViewPager.setCurrentItem(current+1, false)
-            }
-        }
+//        //pre이동
+//        binding.preBtn.setOnClickListener {
+//            var current = binding.spinnerViewPager.currentItem
+//            if (current == 0){
+//                binding.spinnerViewPager.setCurrentItem(2, false)
+//            }
+//            else{
+//                binding.spinnerViewPager.setCurrentItem(current-1, false)
+//            }
+//        }
+//        //next 이동
+//        binding.nextBtn.setOnClickListener {
+//            var current = binding.spinnerViewPager.currentItem
+//            if (current == 2){
+//                binding.spinnerViewPager.setCurrentItem(0, false)
+//            }
+//            else{
+//                binding.spinnerViewPager.setCurrentItem(current+1, false)
+//            }
+//        }
 
 
 

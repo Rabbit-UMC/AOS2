@@ -3,10 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:background="@drawable/view_round_r30"
     android:minWidth="354dp"
     android:minHeight="400dp"
-    android:background="@drawable/view_round_r30"
     tools:context=".schedule.dialog.ScheduleDetailDialogFragment">
 
 
@@ -14,9 +16,9 @@
             android:id="@+id/exit_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/font_inter"
             android:padding="20dp"
             android:text="X"
-            android:fontFamily="@font/font_inter"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -27,11 +29,11 @@
             android:id="@+id/edit_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:src="@drawable/ic_schedule_edit"
-            android:background="@android:color/transparent"
             android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:padding="20dp"
             android:scaleType="fitCenter"
+            android:src="@drawable/ic_schedule_edit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,13 +45,13 @@
             android:layout_marginStart="16dp"
             android:background="@null"
             android:ems="10"
+            android:enabled="false"
             android:fontFamily="@font/font_inter"
             android:inputType="textPersonName"
             android:text="헬스 4일차"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:enabled="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/exit_tv" />
 
@@ -68,8 +70,8 @@
             android:id="@+id/missionTitle_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/font_inter"
             android:inputType="textPersonName"
             android:text="헬스"
@@ -204,26 +206,26 @@
             app:layout_constraintTop_toBottomOf="@+id/middle_line4_v" />
 
 
-
         <TextView
             android:id="@+id/scheduleMemo_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:background="@null"
-            android:ems="10"
             android:enabled="false"
             android:fontFamily="@font/font_inter"
-            android:inputType="textPersonName"
+            android:inputType="textMultiLine"
+            android:lines="4"
+            android:maxLines="3"
             android:text="Name"
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

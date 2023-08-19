@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.databinding.DialogScheduleDeleteBinding
+import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDeleteBinding
 import com.example.myo_jib_sa.schedule.adapter.ScheduleAdaptar
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
@@ -26,13 +26,13 @@ class ScheduleDeleteDialogFragment(
     val scheduleAdaptar: ScheduleAdaptar,
     val position:Int
 ) : DialogFragment() {
-    private lateinit var binding: DialogScheduleDeleteBinding
+    private lateinit var binding: DialogFragmentScheduleDeleteBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogScheduleDeleteBinding.inflate(inflater, container, false)
+        binding = DialogFragmentScheduleDeleteBinding.inflate(inflater, container, false)
 
 
         //requestWindowFeature(Window.FEATURE_NO_TITLE)
