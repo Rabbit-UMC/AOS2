@@ -59,6 +59,7 @@ class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<Cur
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: CurrentMissionResult) {
 
+            binding.missionImg.clipToOutline = true //이미지 모서리 둥글게
             binding.missionTitleTv.text = data.missionTitle
             binding.missionDdayTv.text = data.dday
             binding.missionChallengerTv.text = "${data.challengerCnt}명"

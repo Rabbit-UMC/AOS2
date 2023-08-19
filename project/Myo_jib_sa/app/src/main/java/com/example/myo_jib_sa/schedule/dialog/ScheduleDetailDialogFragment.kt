@@ -3,13 +3,12 @@ package com.example.myo_jib_sa.schedule.dialog
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDetailBinding
@@ -30,7 +29,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.DecimalFormat
 
-class ScheduleDetailDialogFragment : DialogFragment(){
+class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
     private lateinit var binding: DialogFragmentScheduleDetailBinding
     private var result:ScheduleDetailResult = ScheduleDetailResult(
         scheduleId = 0,
@@ -61,6 +60,9 @@ class ScheduleDetailDialogFragment : DialogFragment(){
         // 레이아웃 배경을 투명하게 해줌
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+
+
 
 
 
@@ -112,6 +114,42 @@ class ScheduleDetailDialogFragment : DialogFragment(){
         }
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        resizeDialog()
+    }
+
+
+    //dialog크기 조절
+    fun resizeDialog() {
+        val windowManager = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+        val deviceWidth = size.x
+        val deviceHeight = size.y
+
+        var height = (deviceWidth * 0.95 * 1.13).toInt()
+        var minHeight = ConvertDPtoPX(requireContext(), 380)
+        if(minHeight > height){
+            params?.height = minHeight
+        } else{
+            params?.height = height
+
+        }
+        params?.width = (deviceWidth * 0.95).toInt()
+//        params?.height = (deviceWidth * 0.9 * 1.13).toInt()
+
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
+    }
+
+    //dp -> px
+    fun ConvertDPtoPX(context: Context, dp: Int): Int {
+        val density = context.resources.displayMetrics.density
+        return Math.round(dp.toFloat() * density)
     }
 
     // 인터페이스

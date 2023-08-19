@@ -21,6 +21,7 @@ import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResponse
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteService
@@ -112,31 +113,55 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
     //currentMissionCurrentMissionRv item클릭 이벤트
     private fun currentMissionCurrentMissionDeleteRvItemClickEvent() {
         currentMissionDeleteAdapter.setItemClickListener(object : CurrentMissionCurrentMissionDeleteAdapter.OnItemClickListener {
+            var doubleClickFlag = 0
+            val CLICK_DELAY: Long = 250
 
-            var delay:Long = 0//클릭 간격
 
             @RequiresApi(Build.VERSION_CODES.O)
-            override fun onClick(currentMissionData: CurrentMissionDeleteData) {
-                if (System.currentTimeMillis() > delay) {
-                    //한번 클릭 동작
-                    //setCurrentMissionScheduleDeleteAdapter(currentMissionData.currentMissionResult.missionTitle)
-                    currentMissionScheduleApi(currentMissionData.currentMissionResult.missionId)
+//            override fun onClick(currentMissionData: CurrentMissionDeleteData) {
+//                if (System.currentTimeMillis() > delay) {
+//                    //한번 클릭 동작
+//                    //setCurrentMissionScheduleDeleteAdapter(currentMissionData.currentMissionResult.missionTitle)
+//                    currentMissionScheduleApi(currentMissionData.currentMissionResult.missionId)
+//
+//                    delay = System.currentTimeMillis()+200
+//                    return
+//                }
+//                if (System.currentTimeMillis() <= delay) {
+//                    //두번 클릭 동작
+//                    // 미션 상세 다이어로그 띄우기
+//                    var bundle = Bundle()
+//                    bundle.putLong("missionId", currentMissionData.currentMissionResult.missionId)
+//                    Log.d("debug", "\"scheduleId\", ${currentMissionData.currentMissionResult.missionId}")
+//                    val currentMissionDetailDialogFragment = CurrentMissionDetailDialogFragment()
+//                    currentMissionDetailDialogFragment.arguments = bundle
+//
+//                    //scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
+//                    currentMissionDetailDialogFragment.show(supportFragmentManager, "currentMissionDetailDialogFragment")
+//                }
+                override fun onClick(currentMissionData: CurrentMissionDeleteData) {
+                    doubleClickFlag++;
+                    var handler = Handler(Looper.getMainLooper());
+                    val clickRunnable = Runnable {
+                        doubleClickFlag = 0
+                        // 클릭 이벤트 처리
+                        currentMissionScheduleApi(currentMissionData.currentMissionResult.missionId)
+                    }
+                    if (doubleClickFlag == 1) {
+                        handler.postDelayed(clickRunnable, CLICK_DELAY)
+                    } else if (doubleClickFlag == 2) {
+                        doubleClickFlag = 0
+                        // 더블클릭 이벤트 처리
+                        // 미션 상세 다이어로그 띄우기
+                        var bundle = Bundle()
+                        bundle.putLong("missionId", currentMissionData.currentMissionResult.missionId)
+                        Log.d("debug", "\"scheduleId\", ${currentMissionData.currentMissionResult.missionId}")
+                        val currentMissionDetailDialogFragment = CurrentMissionDetailDialogFragment()
+                        currentMissionDetailDialogFragment.arguments = bundle
 
-                    delay = System.currentTimeMillis()+200
-                    return
-                }
-                if (System.currentTimeMillis() <= delay) {
-                    //두번 클릭 동작
-                    // 미션 상세 다이어로그 띄우기
-                    var bundle = Bundle()
-                    bundle.putLong("missionId", currentMissionData.currentMissionResult.missionId)
-                    Log.d("debug", "\"scheduleId\", ${currentMissionData.currentMissionResult.missionId}")
-                    val currentMissionDetailDialogFragment = CurrentMissionDetailDialogFragment()
-                    currentMissionDetailDialogFragment.arguments = bundle
-
-                    //scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
-                    currentMissionDetailDialogFragment.show(supportFragmentManager, "currentMissionDetailDialogFragment")
-                }
+                        //scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
+                        currentMissionDetailDialogFragment.show(supportFragmentManager, "currentMissionDetailDialogFragment")
+                    }
             }
         })
     }

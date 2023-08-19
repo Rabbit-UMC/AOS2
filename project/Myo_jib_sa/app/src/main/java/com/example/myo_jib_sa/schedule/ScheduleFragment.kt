@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.BuildConfig
+import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.example.myo_jib_sa.schedule.adapter.*
@@ -32,8 +33,8 @@ import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayService
 import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActivity
 import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActivity
+import com.example.myo_jib_sa.schedule.dialog.ScheduleDeleteDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
-import com.example.myo_jib_sa.schedule.dialog.scheduleDeleteDialog
 import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
@@ -47,12 +48,12 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 
-class ScheduleFragment : Fragment() {
+class ScheduleFragment(context: Context) : Fragment() {
 
     lateinit var binding: FragmentScheduleBinding
     lateinit var calendarAdapter : CalendarAdapter //calendarRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
     lateinit var scheduleAdaptar : ScheduleAdaptar //scheduleRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
-    val scheduleDetailDialog = ScheduleDetailDialogFragment()
+    var scheduleDetailDialog = ScheduleDetailDialogFragment(context)
     lateinit var selectedDate : LocalDate //오늘 날짜
 
     var mDataList = ArrayList<Mission>() //미션 리스트 데이터
@@ -71,6 +72,7 @@ class ScheduleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentScheduleBinding.inflate(inflater, container, false)
+
 
         scheduleHomeApi()//scheduleHome api연결
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
@@ -303,14 +305,26 @@ class ScheduleFragment : Fragment() {
 
                 val position = viewHolder.adapterPosition
 
+                var bundle = Bundle()
+                //bundle.putLong("scheduleId", scheduleData.scheduleId)
+
                 //dialog연결 2안
-                var scheduleDeleteDialog= scheduleDeleteDialog(requireContext(), binding.scheduleRv.adapter as ScheduleAdaptar, position)
-                scheduleDeleteDialog.setButtonClickListener(object: scheduleDeleteDialog.OnButtonClickListener{
+                var scheduleDeleteDialog = ScheduleDeleteDialogFragment(requireContext(), binding.scheduleRv.adapter as ScheduleAdaptar, position)
+                scheduleDeleteDialog.setButtonClickListener(object: ScheduleDeleteDialogFragment.OnButtonClickListener{
                     override fun onClickExitBtn() {
                         scheduleAdaptar.notifyItemChanged(viewHolder.adapterPosition);
                     }
                 })
-                scheduleDeleteDialog.show()
+                scheduleDeleteDialog.arguments = bundle
+                scheduleDeleteDialog.show(requireActivity().supportFragmentManager, "scheduleDeleteDialog")
+
+//                var scheduleDeleteDialog= scheduleDeleteDialog(requireContext(), binding.scheduleRv.adapter as ScheduleAdaptar, position)
+//                scheduleDeleteDialog.setButtonClickListener(object: scheduleDeleteDialog.OnButtonClickListener{
+//                    override fun onClickExitBtn() {
+//                        scheduleAdaptar.notifyItemChanged(viewHolder.adapterPosition);
+//                    }
+//                })
+//                scheduleDeleteDialog.show()
               }
 
 

@@ -44,6 +44,8 @@
         <item name="android:fontFamily">@font/font_inter</item>
         <!--구분선 색상 변경-->
         <item name="android:colorControlNormal">#C6C6C6</item>
+        <!-- @android:color/transparent -->
+
     </style>
     <!-- TabLayout 텍스트 테마 -->
     <style name="schedule_tablayout_style" parent="TextAppearance.Design.Tab">

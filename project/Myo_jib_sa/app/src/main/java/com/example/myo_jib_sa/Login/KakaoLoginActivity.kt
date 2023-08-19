@@ -34,9 +34,19 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
 
         // 자동로그인 처리
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+
+
+
+
+
+
+
         val savedJwt = sharedPreferences.getString("jwt", null)
 
         Log.d("Login","${savedJwt}")
+
+
+
 
         //저장된 Jwt가 있다면 바로 홈으로
         if (savedJwt != null ) {
