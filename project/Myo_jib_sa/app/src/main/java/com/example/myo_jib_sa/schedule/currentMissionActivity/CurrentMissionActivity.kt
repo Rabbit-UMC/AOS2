@@ -1,19 +1,16 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.os.Bundle
+import android.os.*
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myo_jib_sa.BuildConfig
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResponse
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
@@ -36,41 +33,40 @@ class CurrentMissionActivity : AppCompatActivity() {
         binding = ActivityCurrentMissionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //currentMissionApi()//currentMission api연결
 
-        currentMissionApi()//currentMission api연결
+//        setCurrentMissionScheduleAdapter()    //CurrentMissionScheduleAdapter 초기화
+//        setCurrentMissionCurrentMissionAdapter()    //CurrentMissionCurrentMissionAdapter 연결
+//
+//
+//        currentMissionCurrentMissionRvItemClickEvent()//currentMissionCurrentMissionRv item클릭 이벤트
 
-        setCurrentMissionCurrentMissionAdapter()    //CurrentMissionCurrentMissionAdapter 연결
-        //setCurrentMissionScheduleAdapter(missionList[0].missionTitle)    //CurrentMissionScheduleAdapter 연결
-
-
-        currentMissionCurrentMissionRvItemClickEvent()//currentMissionCurrentMissionRv item클릭 이벤트
+        ///currentMissionApi()//currentMission api연결
 
         //뒤로가기 버튼 클릭
         binding.goBackBtn.setOnClickListener {
-//            var scheduleIntent = Intent(this, ScheduleFragment::class.java)
-//            startActivity(scheduleIntent)
-//            if(!isFinishing) {
             finish()
-        //}
         }
 
 
     }
+    override fun onResume() {
+        super.onResume()
+        currentMissionApi()//currentMission api연결
+
+
+
+    }
+
+
+
+
+
+
+
 
     //CurrentMissionCurrentMissionAdapter 연결
     private fun setCurrentMissionCurrentMissionAdapter(){
-//        missionList = ArrayList<CurrentMissionResult>()
-
-//        missionList.add(CurrentMissionData("헬스1", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
-//        missionList.add(CurrentMissionData("헬스2", "D+5", 10, R.drawable.ic_currentmission_exercise, 1))
-//        missionList.add(CurrentMissionData("미션 제목3", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-//        missionList.add(CurrentMissionData("미션 제목4", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-//        missionList.add(CurrentMissionData("미션 제목5", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-//        missionList.add(CurrentMissionData("미션 제목6", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-//        missionList.add(CurrentMissionData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-//        missionList.add(CurrentMissionData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-//        missionList.add(CurrentMissionData("미션 제목", "D+10", 10, R.drawable.ic_currentmission_art, 1))
-
 
         currentMissionAdapter = CurrentMissionCurrentMissionAdapter(missionList, getDisplayWidthSize(), getDisplayHeightSize())
         binding.missionListRv.layoutManager = GridLayoutManager(this, 2)
@@ -79,18 +75,6 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     //CurrentMissionScheduleAdapter 연결
     private fun setCurrentMissionScheduleAdapter(){//missionTitle:String
-//        scheduleList = ArrayList<ScheduleAdapterData>()
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 4일차", "2023.07.01"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 4일차", "2023.07.01"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 3일차", "2023.06.30"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 3일차", "2023.06.30"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 3일차", "2023.06.30"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29"))
-//        scheduleList.add(ScheduleAdapterData("${missionTitle}: 헬스 2일차", "2023.06.29"))
-
 
         val scheduleAdapter = CurrentMissionScheduleAdapter(scheduleList, getDisplayHeightSize())
         binding.scheduleListRv.layoutManager = LinearLayoutManager(this)
@@ -101,24 +85,26 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     //currentMissionCurrentMissionRv item클릭 이벤트
     private fun currentMissionCurrentMissionRvItemClickEvent() {
+        var doubleClickFlag = 0
+        val CLICK_DELAY: Long = 250
         currentMissionAdapter.setItemClickListener(object : CurrentMissionCurrentMissionAdapter.OnItemClickListener {
-
-            var delay:Long = 0//클릭 간격
+            ////double click ver 1
+            //var delay:Long = 0//클릭 간격
 
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onClick(currentMissionData: CurrentMissionResult) {
-                if (System.currentTimeMillis() > delay) {
-                    //한번 클릭 동작
+                doubleClickFlag++;
+                var handler = Handler(Looper.getMainLooper());
+                val clickRunnable = Runnable {
+                    doubleClickFlag = 0
+                    // 클릭 이벤트 처리
                     currentMissionScheduleApi(currentMissionData.missionId)
-                    //setCurrentMissionScheduleAdapter(currentMissionData.missionId)
-
-
-                    delay = System.currentTimeMillis()+200 //클릭 간격
-                    return
                 }
-                if (System.currentTimeMillis() <= delay) {
-                    //두번 클릭 동작
-                    // 미션 상세 다이어로그 띄우기
+                if (doubleClickFlag == 1) {
+                    handler.postDelayed(clickRunnable, CLICK_DELAY)
+                } else if (doubleClickFlag == 2) {
+                    doubleClickFlag = 0
+                    // 더블클릭 이벤트 처리
                     var bundle = Bundle()
                     bundle.putLong("missionId", currentMissionData.missionId)
                     Log.d("debug", "\"missionId\", ${currentMissionData.missionId}")
@@ -142,7 +128,12 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     //currentMission api연결
     private fun currentMissionApi() {
-        val token: String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token: String = BuildConfig.API_TOKEN
         Log.d("debug", "token = "+token+"l");
 
         missionList = ArrayList<CurrentMissionResult>()
@@ -156,7 +147,7 @@ class CurrentMissionActivity : AppCompatActivity() {
                 response: Response<CurrentMissionResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.d("debug", "retrofit: "+response.body().toString());
+                    Log.d("retrofit", response.body().toString());
                     val result = response.body()!!.result
 
                     for(i in 0 until result.size) {
@@ -180,7 +171,12 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     //currentMissionSchedule api연결
     private fun currentMissionScheduleApi(missionId:Long) {
-        val token: String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token: String = BuildConfig.API_TOKEN
         Log.d("debug", "token = "+token+"l");
 
         scheduleList = ArrayList<CurrentMissionScheduleResult>()
@@ -194,7 +190,7 @@ class CurrentMissionActivity : AppCompatActivity() {
                 response: Response<CurrentMissionScheduleResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.d("debug", "retrofit: "+response.body().toString());
+                    Log.d("retrofit", response.body().toString());
                     val result = response.body()!!.result
 
                     for(i in 0 until result.size) {

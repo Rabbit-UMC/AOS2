@@ -1,12 +1,12 @@
 package com.example.myo_jib_sa.schedule.dialog
 
+import android.content.Context
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.util.Log
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
@@ -45,32 +45,92 @@ class ScheduleSpinnerDialogFragment : DialogFragment() {
         setTablayout()//dialog에 viewpager+tablayout셋팅
         setButton() //버튼 세팅
 
+
+        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
+            Context.MODE_PRIVATE
+        )
+        //값 저장할 sharedPreference 부르기
+        val modifiedSharedPreference = requireContext().getSharedPreferences("scheduleModifiedData",
+            Context.MODE_PRIVATE
+        )
+        val editor = modifiedSharedPreference.edit()
+        editor.putString("scheduleTitle", sharedPreference.getString("scheduleTitle", "").toString())//값 변경하지 않았을때 기본값으로 전달
+        editor.putString("scheduleDate", sharedPreference.getString("scheduleDate", "").toString())
+        editor.putString("missionTitle", sharedPreference.getString("missionTitle", "").toString())
+        editor.putString("scheduleStartTime", sharedPreference.getString("scheduleStartTime", "").toString())
+        editor.putString("scheduleEndTime", sharedPreference.getString("scheduleEndTime", "").toString())
+        editor.putString("scheduleMemo", sharedPreference.getString("scheduleMemo", "").toString())
+        editor.putLong("missionId", sharedPreference.getLong("missionId", 0))
+        editor.putLong("scheduleId", sharedPreference.getLong("scheduleId", 0))
+        editor.apply()// data 저장!
+
+
+
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        resizeDialog()
+    }
+
+    //dialog크기 조절
+    fun resizeDialog() {
+        val windowManager = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+        val deviceWidth = size.x
+        val deviceHeight = size.y
+
+        var height = (deviceWidth * 0.95 * 1.13).toInt()
+        var minHeight = ConvertDPtoPX(requireContext(), 380)
+        if(minHeight > height){
+            params?.height = minHeight
+        } else{
+            params?.height = height
+
+        }
+        params?.width = (deviceWidth * 0.95).toInt()
+//        params?.height = (deviceWidth * 0.9 * 1.13).toInt()
+
+
+
+
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
+    }
+
+
+    //dp -> px
+    fun ConvertDPtoPX(context: Context, dp: Int): Int {
+        val density = context.resources.displayMetrics.density
+        return Math.round(dp.toFloat() * density)
     }
 
 
     //버튼 세팅
     private fun setButton(){
-        //pre이동
-        binding.preBtn.setOnClickListener {
-            var current = binding.spinnerViewPager.currentItem
-            if (current == 0){
-                binding.spinnerViewPager.setCurrentItem(3, false)
-            }
-            else{
-                binding.spinnerViewPager.setCurrentItem(current-1, false)
-            }
-        }
-        //next 이동
-        binding.nextBtn.setOnClickListener {
-            var current = binding.spinnerViewPager.currentItem
-            if (current == 3){
-                binding.spinnerViewPager.setCurrentItem(0, false)
-            }
-            else{
-                binding.spinnerViewPager.setCurrentItem(current+1, false)
-            }
-        }
+//        //pre이동
+//        binding.preBtn.setOnClickListener {
+//            var current = binding.spinnerViewPager.currentItem
+//            if (current == 0){
+//                binding.spinnerViewPager.setCurrentItem(3, false)
+//            }
+//            else{
+//                binding.spinnerViewPager.setCurrentItem(current-1, false)
+//            }
+//        }
+//        //next 이동
+//        binding.nextBtn.setOnClickListener {
+//            var current = binding.spinnerViewPager.currentItem
+//            if (current == 3){
+//                binding.spinnerViewPager.setCurrentItem(0, false)
+//            }
+//            else{
+//                binding.spinnerViewPager.setCurrentItem(current+1, false)
+//            }
+//        }
 
         //확인, 취소 버튼
         binding.completeBtn.setOnClickListener{

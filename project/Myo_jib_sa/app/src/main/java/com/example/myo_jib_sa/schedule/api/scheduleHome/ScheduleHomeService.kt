@@ -8,6 +8,6 @@ interface ScheduleHomeService {
     @GET("app/schedule")
     fun scheduleHome(
         @Header("X-ACCESS-TOKEN")
-        accessToken: String,
+        accessToken: String?,
     ) : Call<ScheduleHomeResponse>
 }

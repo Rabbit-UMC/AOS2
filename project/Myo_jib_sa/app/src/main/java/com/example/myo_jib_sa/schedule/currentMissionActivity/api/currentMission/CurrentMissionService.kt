@@ -13,6 +13,6 @@ interface CurrentMissionService {
     @GET("app/mission/my-missions")//?Authorization=$authKey
     fun currentMission(
         @Header("X-ACCESS-TOKEN")
-        accessToken: String
+        accessToken: String?
     ) : Call<CurrentMissionResponse>
 }

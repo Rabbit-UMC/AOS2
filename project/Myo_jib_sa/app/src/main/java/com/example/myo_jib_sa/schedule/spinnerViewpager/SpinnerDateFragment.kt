@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
+import android.widget.NumberPicker
 import androidx.annotation.RequiresApi
 import com.example.myo_jib_sa.databinding.FragmentSpinnerDateBinding
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
@@ -53,6 +54,8 @@ class SpinnerDateFragment : Fragment() {
 
         //datePicker초기값 설정
         binding.scheduleDatePicker.updateDate(date[0].toInt(), date[1].toInt()-1, date[2].toInt());
+        binding.scheduleDatePicker.descendantFocusability =
+            NumberPicker.FOCUS_BLOCK_DESCENDANTS //editText가 눌리는 것을 막는다
 
         binding.scheduleDatePicker.setOnDateChangedListener(object: DatePicker.OnDateChangedListener{
             override fun onDateChanged(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
@@ -61,6 +64,9 @@ class SpinnerDateFragment : Fragment() {
                 Log.d("debug", "$year.${formatter.format ( month + 1 )}.${formatter.format(dayOfMonth)}")
                 editor.putString("scheduleDate", "$year-${formatter.format ( month + 1 )}-${formatter.format(dayOfMonth)}")
                 editor.apply()// data 저장!
+
+                Log.d("Datedebug", "SpinneronDateChanged = $year-${formatter.format ( month + 1 )}-${formatter.format(dayOfMonth)}")
+
             }
         })
 
@@ -103,6 +109,9 @@ class SpinnerDateFragment : Fragment() {
         scheduleData.content = sharedPreference.getString("scheduleMemo", "").toString()
         scheduleData.missionId = sharedPreference.getLong("missionId", 0)
         scheduleData.scheduleId = sharedPreference.getLong("scheduleId", 0)
+
+        Log.d("Datedebug", "SpinnergetData = ${scheduleData?.scheduleWhen}")
+
     }
 
 

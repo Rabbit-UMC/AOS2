@@ -1,6 +1,9 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent.getActivity
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.*
@@ -11,9 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.BuildConfig
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityDeleteCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
@@ -25,12 +26,10 @@ import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.concurrent.thread
 
 
 class DeleteCurrentMissionActivity : AppCompatActivity() {
@@ -40,6 +39,7 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
     private lateinit var currentMissionDeleteAdapter : CurrentMissionCurrentMissionDeleteAdapter
     private var scheduleList = ArrayList<ScheduleDeleteAdapterData>() //CurrentMissionScheduleDeleteAdapter의 데이터 리스트
     private lateinit var scheduleDeleteAdapter : CurrentMissionScheduleDeleteAdapter
+    private var deleteScheduleIdList : MutableSet<Long> = mutableSetOf()//삭제할 스케줄 아이디
     private var isAllSeleted = false //전체선택
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,37 +108,46 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
         scheduleDeleteAdapter = CurrentMissionScheduleDeleteAdapter(scheduleList, getDisplayHeightSize())
         binding.scheduleListRv.layoutManager = LinearLayoutManager(this)
         binding.scheduleListRv.adapter = scheduleDeleteAdapter
+
+        Log.d("debug", "scheduleList: $scheduleList");
+
     }
 
 
     //currentMissionCurrentMissionRv item클릭 이벤트
     private fun currentMissionCurrentMissionDeleteRvItemClickEvent() {
         currentMissionDeleteAdapter.setItemClickListener(object : CurrentMissionCurrentMissionDeleteAdapter.OnItemClickListener {
+            var doubleClickFlag = 0
+            val CLICK_DELAY: Long = 250
 
-            var delay:Long = 0//클릭 간격
 
             @RequiresApi(Build.VERSION_CODES.O)
-            override fun onClick(currentMissionData: CurrentMissionDeleteData) {
-                if (System.currentTimeMillis() > delay) {
-                    //한번 클릭 동작
-                    //setCurrentMissionScheduleDeleteAdapter(currentMissionData.currentMissionResult.missionTitle)
-                    currentMissionScheduleApi(currentMissionData.currentMissionResult.missionId)
+                override fun onClick(currentMissionData: CurrentMissionDeleteData) {
+                    doubleClickFlag++;
+                    var handler = Handler(Looper.getMainLooper());
+                    val clickRunnable = Runnable {
+                        doubleClickFlag = 0
+                        // 한번 클릭 이벤트 처리
+                        deleteScheduleIdList.addAll(scheduleDeleteAdapter.getSelectedItemScheduleId())//삭제할 스케줄 아이디 저장
+                        binding.allSeleteV.setBackgroundColor(Color.parseColor("#D9D9D9")) //회색으로 버튼 색 변경:전체선택 버튼 초기화
+                        isAllSeleted = false//전체선택 버튼 초기화
+                        currentMissionScheduleApi(currentMissionData.currentMissionResult.missionId)
+                    }
+                    if (doubleClickFlag == 1) {
+                        handler.postDelayed(clickRunnable, CLICK_DELAY)
+                    } else if (doubleClickFlag == 2) {
+                        doubleClickFlag = 0
+                        // 더블클릭 이벤트 처리
+                        // 미션 상세 다이어로그 띄우기
+                        var bundle = Bundle()
+                        bundle.putLong("missionId", currentMissionData.currentMissionResult.missionId)
+                        Log.d("debug", "\"scheduleId\", ${currentMissionData.currentMissionResult.missionId}")
+                        val currentMissionDetailDialogFragment = CurrentMissionDetailDialogFragment()
+                        currentMissionDetailDialogFragment.arguments = bundle
 
-                    delay = System.currentTimeMillis()+200
-                    return
-                }
-                if (System.currentTimeMillis() <= delay) {
-                    //두번 클릭 동작
-                    // 미션 상세 다이어로그 띄우기
-                    var bundle = Bundle()
-                    bundle.putLong("missionId", currentMissionData.currentMissionResult.missionId)
-                    Log.d("debug", "\"scheduleId\", ${currentMissionData.currentMissionResult.missionId}")
-                    val currentMissionDetailDialogFragment = CurrentMissionDetailDialogFragment()
-                    currentMissionDetailDialogFragment.arguments = bundle
-
-                    //scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
-                    currentMissionDetailDialogFragment.show(supportFragmentManager, "currentMissionDetailDialogFragment")
-                }
+                        //scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
+                        currentMissionDetailDialogFragment.show(supportFragmentManager, "currentMissionDetailDialogFragment")
+                    }
             }
         })
     }
@@ -179,16 +188,32 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
         //삭제 버튼 클릭
         binding.deleteFbtn.setOnClickListener {
             Log.d("debug_delete", "delete mission: ${currentMissionDeleteAdapter.getSelectedItemMissionId()}")
-            Log.d("debug_delete", "delete schedule: ${scheduleDeleteAdapter.getSelectedItemScheduleId()}")
+            Log.d("debug_delete", "delete schedule: $deleteScheduleIdList")
             currentMissionDeleteApi(currentMissionDeleteAdapter.getSelectedItemMissionId())//미션삭제api
-            scheduleDeleteApi(scheduleDeleteAdapter.getSelectedItemScheduleId())//스케줄 삭제 api
+
+            deleteScheduleIdList.addAll(scheduleDeleteAdapter.getSelectedItemScheduleId())//삭제할 스케줄 아이디 저장
+            scheduleDeleteApi(deleteScheduleIdList)//스케줄 삭제 api
+
+
+
+
+            this.finish() //인텐트 종료
+            overridePendingTransition(0, 0) //인텐트 효과 없애기
+            val intent: Intent = intent //인텐트
+            startActivity(intent) //액티비티 열기
+            overridePendingTransition(0, 0) //인텐트 효과 없애기
         }
 
     }
 
     //currentMission api연결
     private fun currentMissionApi() {
-        val token: String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token: String = BuildConfig.API_TOKEN
         Log.d("debug", "token = "+token+"l");
 
         missionList = ArrayList<CurrentMissionDeleteData>()
@@ -228,7 +253,12 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
 
     //currentMissionSchedule api연결
     private fun currentMissionScheduleApi(missionId:Long) {
-        val token: String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token: String = BuildConfig.API_TOKEN
         Log.d("debug", "token = "+token+"l");
 
         scheduleList = ArrayList<ScheduleDeleteAdapterData>()
@@ -245,9 +275,16 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
                     Log.d("debug", "retrofit: "+response.body().toString());
                     val result = response.body()!!.result
 
-                    for(i in 0 until result.size) {
-                        scheduleList.add(ScheduleDeleteAdapterData(result[i]))
+                    for(i in result.indices) {
+
+                            if(deleteScheduleIdList.contains(result[i].scheduleId))
+                                scheduleList.add(ScheduleDeleteAdapterData(result[i], true))
+                            else
+                                scheduleList.add(ScheduleDeleteAdapterData(result[i]))
+
+                        //scheduleList.add(ScheduleDeleteAdapterData(result[i]))
                     }
+                    Log.d("debug", "scheduleList: $scheduleList");
                     setCurrentMissionScheduleDeleteAdapter()//CurrentMissionSchedule rv 연결
                     currentMissionCurrentMissionDeleteRvItemClickEvent()
 
@@ -265,7 +302,12 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
 
     //currentMission api연결
     private fun currentMissionDeleteApi(deleteMissionIdList:MutableList<Long>) {
-        val token: String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token: String = BuildConfig.API_TOKEN
         Log.d("debug", "token = "+token+"l");
 
 
@@ -297,8 +339,13 @@ class DeleteCurrentMissionActivity : AppCompatActivity() {
     }
 
     //scheduleDelete api연결: 일정삭제
-    private fun scheduleDeleteApi(deleteScheduleIdList:MutableList<Long>) {
-        val token : String = BuildConfig.API_TOKEN
+    private fun scheduleDeleteApi(deleteScheduleIdList:MutableSet<Long>) {
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 
 

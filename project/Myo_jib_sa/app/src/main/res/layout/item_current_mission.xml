@@ -30,48 +30,56 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/view_round_r10_stroke"
-        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/missionTitle_tv">
+
+
+
+        <ImageView
+            android:id="@+id/mission_img"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType = "centerCrop"
+            android:background="@drawable/view_round_r10_stroke"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_currentmission_exercise" />
 
         <TextView
             android:id="@+id/missionDday_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="3dp"
+            android:paddingEnd = "3dp"
             android:fontFamily="@font/font_inter"
+            android:layout_margin="10dp"
             android:text="D+5"
-            android:textColor="#707070"
+            android:background="@drawable/view_round_r2_gray"
+            android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/mission_img"
             />
-
-        <ImageView
-            android:id="@+id/mission_img"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:scaleType="centerInside"
-            app:layout_constraintBottom_toTopOf="@+id/missionChallenger_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/missionDday_tv"
-            app:srcCompat="@drawable/ic_currentmission_exercise" />
 
         <TextView
             android:id="@+id/missionChallenger_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="3dp"
+            android:paddingEnd = "3dp"
+            android:background="@drawable/view_round_r2_gray"
             android:fontFamily="@font/font_inter"
+            android:layout_margin="10dp"
             android:text="10명"
-            android:textColor="#707070"
+            android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mission_img"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

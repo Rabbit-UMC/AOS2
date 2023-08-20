@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:timePickerMode="spinner"
         android:theme="@style/NumberPickerStyle"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         />
 
 </FrameLayout>

@@ -54,6 +54,8 @@ class CurrentMissionCurrentMissionDeleteAdapter (private val missionList:ArrayLi
     inner class ViewHolder(private val binding: ItemCurrentMissionDeleteBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: CurrentMissionDeleteData) {
+            binding.missionImg.clipToOutline = true //이미지 모서리 둥글게
+
             binding.missionTitleTv.text = data.currentMissionResult.missionTitle
             binding.missionDdayTv.text = data.currentMissionResult.dday
             binding.missionChallengerTv.text = "${data.currentMissionResult.challengerCnt}명"

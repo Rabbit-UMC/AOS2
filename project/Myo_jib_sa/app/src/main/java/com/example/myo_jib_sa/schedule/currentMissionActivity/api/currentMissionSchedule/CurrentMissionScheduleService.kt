@@ -13,7 +13,7 @@ interface CurrentMissionScheduleService {
     @GET("app/mission/my-missions/schedule/{missionId}")//?Authorization=$authKey
     fun currentMissionSchedule(
         @Header("X-ACCESS-TOKEN")
-        accessToken: String,
+        accessToken: String?,
         @Path("missionId") missionId: Long
     ) : Call<CurrentMissionScheduleResponse>
 }

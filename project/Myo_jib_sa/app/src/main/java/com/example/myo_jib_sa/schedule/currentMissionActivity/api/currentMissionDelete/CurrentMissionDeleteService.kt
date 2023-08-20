@@ -11,7 +11,7 @@ interface CurrentMissionDeleteService {
     @DELETE//("app/mission/my-missions/{missionId}")//?Authorization=$authKey
     fun currentMissionDelete(
         @Header("X-ACCESS-TOKEN")
-        accessToken: String,
+        accessToken: String?,
         @Url url: String
         //@Path("missionId") missionId:MutableList<Long>
     ) : Call<CurrentMissionDeleteResponse>

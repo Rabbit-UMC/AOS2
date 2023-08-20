@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.NumberPicker
 import android.widget.TimePicker
 import com.example.myo_jib_sa.databinding.FragmentSpinnerStartTimeBinding
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
@@ -46,6 +47,8 @@ class SpinnerStartTimeFragment : Fragment() {
         var startTime = scheduleData.startAt.split(":")
         binding.startTimePicker.hour = startTime[0].toInt();
         binding.startTimePicker.minute = startTime[1].toInt();
+        binding.startTimePicker.descendantFocusability =
+            NumberPicker.FOCUS_BLOCK_DESCENDANTS //editText가 눌리는 것을 막는다
 
         binding.startTimePicker.setOnTimeChangedListener(object: TimePicker.OnTimeChangedListener {
             override fun onTimeChanged(view: TimePicker?, hourOfDay: Int, minute: Int) {

@@ -50,7 +50,6 @@ class ManagerPageMissionActivity : AppCompatActivity(), DataTransferInterface {
         super.onCreate(savedInstanceState)
         binding= ActivityManagerPageMissionBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val scheduleFrag = ScheduleFragment()
 
         //게시판 아이디 설정
         boardId=intent.getIntExtra("boardId",0)
