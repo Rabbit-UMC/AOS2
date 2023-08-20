@@ -1,38 +1,35 @@
 package com.example.myo_jib_sa.mission
 
-import android.app.Dialog
 import android.content.Context
 import android.graphics.Rect
 import android.util.Log
 import android.view.*
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.databinding.ItemMissionMissionBinding
-import com.example.myo_jib_sa.mission.API.Home
-import com.example.myo_jib_sa.mission.API.MissionHomeResponse
+import com.example.myo_jib_sa.mission.API.Category
 
-class MissionAdapter(
+class MissionCategoryAdapter(
     private val context: Context,
-    private val dataList: List<Home>,
+    private val dataList: List<Category>,
     private val onItemClickListener: OnItemClickListener,
     private val onItemLongClickListener: OnItemLongClickListener
-) : RecyclerView.Adapter<MissionAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MissionCategoryAdapter.ViewHolder>() {
 
 
     interface OnItemLongClickListener {
-        fun onItemLongClick(item:Home)
+        fun onItemLongClick(item: Category)
     }
 
     interface OnItemClickListener {
-        fun onItemClick(item:Home)
+        fun onItemClick(item: Category)
     }
 
     inner class ViewHolder(
         private val binding: ItemMissionMissionBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Home) {
+        fun bind(item: Category) {
 
             binding.missionTitleTxt.text = item.title
 
@@ -40,19 +37,20 @@ class MissionAdapter(
             val maxLength = 15
             val content = item.content // 원본 문자열
 
-            val truncatedContent = if (content.length > maxLength) {
+            val cutContent = if (content.length > maxLength) {
                 content.substring(0, maxLength) + " ···" // 최대 길이까지 잘라서 '···' 추가
             } else {
                 content // 원본 문자열 그대로 사용
             }
 
-            //미션 홈에 날짜 mm-dd로 표시되도록
+            // 미션 홈에 날짜 mm.dd로 표시되도록
             val startAt = item.startAt
-            val formattedStartAt = startAt.substring(5, 10)
+            val formattedStartAt = startAt.substring(5, 7) + "." + startAt.substring(8, 10)
             val endAt = item.endAt
-            val formattedEndAt = endAt.substring(5, 10)
+            val formattedEndAt = endAt.substring(5, 7) + "." + endAt.substring(8, 10)
 
-            binding.missionIntroTxt.text = truncatedContent
+
+            binding.missionIntroTxt.text = cutContent
             Glide.with(binding.root.context)
                 .load(item.image)
                 .into(binding.missionImg)

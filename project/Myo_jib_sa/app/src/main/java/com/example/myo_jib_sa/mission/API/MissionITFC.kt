@@ -12,6 +12,7 @@ interface MissionITFC {
     //미션 생성
     @POST("app/mission")
     fun MissionWrite(
+        @Header("X-ACCESS-TOKEN") accessToken: String,
         @Body requestBody: MissionWriteRequest
     ):Call<MissionWriteResponse>
 

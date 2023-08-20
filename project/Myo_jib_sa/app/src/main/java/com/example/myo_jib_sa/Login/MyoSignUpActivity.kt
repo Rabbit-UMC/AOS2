@@ -45,6 +45,8 @@ class MyoSignUpActivity : AppCompatActivity() {
         // JWT 값 가져오기
         val jwt = sharedPreferences.getString("jwt", null)
 
+       // val jwt="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoyMDIsImlhdCI6MTY5MjU0Mjc0MiwiZXhwIjoxNjkyNTQ2MzQyfQ.FEksV9BFIeDBVOsTVHwNPuMlctCLrJmCa6xaZTjYXew"
+
         val ageCheckBox = binding.signUpAgeCheckBox
         val useCheckBox = binding.signUpUseCheckBox
         val privacyCheckBox = binding.signUpPrivacyCheckBox
@@ -345,7 +347,6 @@ class MyoSignUpActivity : AppCompatActivity() {
             }
         })
     }
-
 
     //다이얼로그 크기 설정
     fun setDialogSize(dialog: Dialog, widthPercentage: Double, height: Int) {

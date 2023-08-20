@@ -65,7 +65,7 @@ class ScheduleFragment : Fragment() {
     ): View? {
         binding = FragmentScheduleBinding.inflate(inflater, container, false)
 
-        scheduleHomeApi()//scheduleHome api연결
+        //scheduleHomeApi()//scheduleHome api연결
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
 
         //calendarAdapter 임시 초기화
@@ -393,7 +393,7 @@ class ScheduleFragment : Fragment() {
 
 
     //scheduleHome api연결
-    private fun scheduleHomeApi() {
+   /* private fun scheduleHomeApi() {
         val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 
@@ -425,7 +425,7 @@ class ScheduleFragment : Fragment() {
                 Log.e("retrofit", "onFailure: ${t.message}")
             }
         })
-    }
+    }*/
 
 
     //scheduleOfDay api연결
