@@ -30,9 +30,9 @@ interface PostRetrofitITFC {
     @PATCH("app/article/{articleID}")
     fun postEdit(
         @Header(Constance.author)author:String,
-        @Body request:PostEditRequest,
-        @Query("articleId") articleId:Long
-        ,@Path("articleId") articleID: Long):
+        @Body request:PostEditRequest
+        ,@Path("articleID") articleID: Long
+        ,@Query("articleId")  queryArticleId:Long):
             Call<SimpleResponse>
 
     //게시물 신고
@@ -61,11 +61,18 @@ interface PostRetrofitITFC {
             Call<SimpleResponse>
 
     //게시글 댓글 삭제
-    @DELETE("app/comments/{articleId}/{commentsId}")
-    fun postCommentDelete(@Header(Constance.author)author:String
-                      ,@Path("articleId") articleId: Long
-                      ,@Path("commentsId") commentsId:Long):
-            Call<SimpleResponse>
+    @DELETE("app/comments/{commentsId}")
+    fun postCommentDelete(
+        @Header(Constance.author) author: String,
+        @Path("commentsId") commentsId: Long
+    ): Call<SimpleResponse>
+
+    //게시글 댓글 잠그기
+    @PATCH("/app/comments/{commentsId}/lock")
+    fun commentLock(
+        @Header(Constance.author)author:String
+        ,@Path("commentsId") commentsId: Long
+    ):Call<SimpleResponse>
 
 
 }

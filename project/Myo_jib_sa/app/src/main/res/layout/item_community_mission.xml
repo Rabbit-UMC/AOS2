@@ -11,23 +11,24 @@
         android:id="@+id/MissionItem_constraintLayout"
         android:layout_width="161dp"
         android:layout_height="131dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/background_post_item"
-        android:backgroundTint="#F1F1F1"
+        android:background="@drawable/background_mission"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/homeMissionItem_name_txt">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/homeMissionItem_Dday_txt"
+            android:background="@drawable/background_post"
+            android:backgroundTint="#234BD9"
+            android:paddingHorizontal="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="8dp"
-            android:text="D-0"
-            android:textColor="@color/black"
-            android:textSize="12dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
             android:fontFamily="@font/font_inter"
+            android:text="D-0"
+            android:textColor="@color/white"
+            android:textSize="12dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,35 +37,35 @@
             android:id="@+id/homeMissionItem_img_img"
             android:layout_width="98dp"
             android:layout_height="98dp"
+            android:layout_marginBottom="5dp"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.69"
             app:srcCompat="@drawable/ic_lock" />
+
+        <TextView
+            android:id="@+id/homeMissionItem_boardName_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/font_inter"
+            android:text="게시판이름"
+            android:textColor="#707070"
+            android:textSize="11dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <TextView
         android:id="@+id/homeMissionItem_name_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
         android:layout_marginTop="2dp"
         android:text="미션 이름"
-        android:textColor="@color/black"
-        android:textSize="12dp"
-        android:fontFamily="@font/font_inter"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/homeMissionItem_boardName_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="게시판 이름"
         android:textColor="@color/black"
         android:textSize="12dp"
         android:fontFamily="@font/font_inter"

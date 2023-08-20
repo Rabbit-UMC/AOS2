@@ -26,9 +26,13 @@ class PostImgAdapter(
         fun bind(item: ArticleImage){
 
             //이미지 설정
-            Glide.with(context)
-                .load(item.filePath)
-                .into(binding.postImgImg)
+            if(item.filePath.isNotBlank()){
+                Glide.with(context)
+                    .load(item.filePath)
+                    .into(binding.postImgImg)
+            }else{
+                binding.postImgImg.visibility=View.GONE
+            }
 
             //클릭 이벤트
             binding.postImgImg.setOnClickListener {

@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:inputType="textMultiLine"
             android:text="게시판 이름"
             android:textColor="#707070"
             android:textSize="16dp"
@@ -35,6 +36,7 @@
             android:id="@+id/post_back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:layout_marginStart="15dp"
             android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -61,23 +63,15 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/board_linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="#F1F1F1"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/board_cntLayout"></LinearLayout>
 
     <ImageView
         android:id="@+id/post_writerProfile_img"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:scaleType="centerCrop"
-        android:layout_marginStart="23dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/background_circle"
         android:src="@drawable/ic_profile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/board_cntLayout" />
@@ -126,9 +120,9 @@
         android:id="@+id/post_postName_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
+        android:layout_marginStart="21dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="19dp"
+        android:layout_marginEnd="21dp"
         android:fontFamily="@font/font_inter"
         android:textStyle="bold"
         android:text="글 제목"
@@ -145,10 +139,9 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/font_inter"
         android:textStyle="bold"
-        android:inputType="textPersonName"
-        android:layout_marginHorizontal="15dp"
-        android:paddingVertical="10dp"
-        android:paddingHorizontal="15dp"
+        android:inputType="textMultiLine"
+        android:layout_marginStart="23dp"
+        android:layout_marginEnd="23dp"
         android:text="글 내용"
         android:textColor="@color/black"
         android:textSize="12dp"
@@ -166,6 +159,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/post_postText_txt" />
 
+    <LinearLayout
+        android:id="@+id/post_line_Linear"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="7dp"
+        android:background="#F1F1F1"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/post_postText_txt" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/post_comment_recyclr"

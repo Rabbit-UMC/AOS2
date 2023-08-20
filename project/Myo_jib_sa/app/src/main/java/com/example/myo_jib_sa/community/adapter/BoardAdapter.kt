@@ -14,7 +14,7 @@ import com.example.myo_jib_sa.databinding.ItemPostBinding
 
 class BoardAdapter(
     private val context: Context,
-    private val dataList:List<Articles>,
+    private val dataList:MutableList<Articles>,
     private val boardId:Int)
     : RecyclerView.Adapter<BoardAdapter.ViewHolder>(){
 
@@ -68,6 +68,18 @@ class BoardAdapter(
     // 아이템 간격 설정을 위한 메소드
     fun setItemSpacing(recyclerView: RecyclerView, spacing: Int) {
         recyclerView.addItemDecoration(CustomItemDecoration(spacing))
+    }
+    // 기존 데이터를 업데이트하는 메서드
+    fun updateData(newDataList: List<Articles>) {
+        dataList.addAll(newDataList) // 새로운 데이터로 갱신합니다.
+        notifyDataSetChanged() // 어댑터에 데이터가 변경되었음을 알립니다.
+    }
+
+    //데이터 리셋 후 추가
+    fun resetUpdateData(newDataList: List<Articles>) {
+        dataList.clear() // 기존 데이터를 제거합니다.
+        dataList.addAll(newDataList) // 새로운 데이터로 갱신합니다.
+        notifyDataSetChanged() // 어댑터에 데이터가 변경되었음을 알립니다.
     }
 
 }
