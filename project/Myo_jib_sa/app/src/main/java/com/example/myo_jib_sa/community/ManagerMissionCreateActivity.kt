@@ -15,10 +15,10 @@ import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.manager.ManagerRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.manager.MissionCreateRequest
-import com.example.myo_jib_sa.community.adapter.CreateScheduleCalendarAdapter
-import com.example.myo_jib_sa.community.adapter.SelectDateData
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.databinding.ActivityManagerPageMissionBinding
+import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.CreateScheduleCalendarAdapter
+import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDateData
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -376,7 +376,7 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
                 isSelectingStartTime = true
                 isSelectingEndTime = false
                 isClickEndCalendarImgBtn=false
-            // 시작일 선택 중일 때는 종료일 선택 모드 해제
+                // 시작일 선택 중일 때는 종료일 선택 모드 해제
             } else { //캘린더 안보이게
                 binding.calendarLayout.visibility = View.GONE
                 binding.guidebanner.visibility = View.VISIBLE
@@ -397,7 +397,7 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
                 isSelectingEndTime = true
                 isSelectingStartTime = false
                 isClickStartCalendarImgBtn=false
-            // 종료일 선택 중일 때는 시작일 선택 모드 해제
+                // 종료일 선택 중일 때는 시작일 선택 모드 해제
             } else {//캘린더 안보이게
                 binding.calendarLayout.visibility = View.GONE
                 binding.guidebanner.visibility = View.VISIBLE

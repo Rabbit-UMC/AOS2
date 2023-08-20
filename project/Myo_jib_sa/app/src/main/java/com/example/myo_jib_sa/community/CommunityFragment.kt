@@ -67,10 +67,10 @@ class CommunityFragment : Fragment() {
         }
 
         //더보기 터치 시 이동 구현 필요
-       binding.homePulsTxt.setOnClickListener {
-           val intent=Intent(requireActivity(), BoardExerciseActivity::class.java )
-           intent.putExtra("isBest", true)
-           startActivity(intent)
+        binding.homePulsTxt.setOnClickListener {
+            val intent=Intent(requireActivity(), BoardExerciseActivity::class.java )
+            intent.putExtra("isBest", true)
+            startActivity(intent)
         }
 
         //api 연결, 뷰 띄우기
