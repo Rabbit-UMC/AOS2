@@ -17,8 +17,6 @@ import com.example.myo_jib_sa.community.Retrofit.manager.ManagerRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.manager.MissionCreateRequest
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.databinding.ActivityManagerPageMissionBinding
-import com.example.myo_jib_sa.mission.Dialog.DataTransferInterface
-import com.example.myo_jib_sa.mission.Dialog.MissionSubjectDialogFragment
 import com.example.myo_jib_sa.schedule.ScheduleFragment
 import com.example.myo_jib_sa.schedule.adapter.CalendarAdapter
 import com.example.myo_jib_sa.schedule.adapter.CalendarData
@@ -29,8 +27,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
-
-class ManagerPageMissionActivity : AppCompatActivity(), DataTransferInterface {
+/*
+class ManagerPageMissionActivity : AppCompatActivity(){
 
     private lateinit var binding:ActivityManagerPageMissionBinding
     lateinit var calendarAdapter : CalendarAdapter //calendarRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
@@ -45,6 +43,10 @@ class ManagerPageMissionActivity : AppCompatActivity(), DataTransferInterface {
     //제목 글자수
     private var noTitle:Boolean=true
 
+    //묘방생 미션인지
+    private var isBye:Boolean=false
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +55,7 @@ class ManagerPageMissionActivity : AppCompatActivity(), DataTransferInterface {
 
         //게시판 아이디 설정
         boardId=intent.getIntExtra("boardId",0)
+        isBye=intent.getBooleanExtra("isBye", false)
 
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
 
@@ -141,13 +144,6 @@ class ManagerPageMissionActivity : AppCompatActivity(), DataTransferInterface {
 
     }
 
-    // 인터페이스 메서드 구현
-    override fun onDataTransfer(subject: String) {
-        // Dialog에서 전달된 선택 주제를 기존화면 주제에 연결
-       // binding.selectSubjectTxt.text = subject
-        Log.d("subject", "Received data: $subject")
-    }
-
     //팝업창 띄우기
     private fun showDialog(txt:String){
         val DelDialog = CommunityPopupOk(this,txt)
@@ -175,7 +171,7 @@ class ManagerPageMissionActivity : AppCompatActivity(), DataTransferInterface {
             binding.subMemoEt.text.toString(),
             start,
             end,
-            false
+            isBye
         )
         callback(request)
     }
@@ -353,3 +349,4 @@ class ManagerPageMissionActivity : AppCompatActivity(), DataTransferInterface {
         return date.format(formatter)
     }
 }
+*/

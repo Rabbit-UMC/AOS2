@@ -19,10 +19,11 @@ interface ManagerRetrofitITFC {
             ,@Path("categoryId") categoryId: Long): Call<SimpleResponse>
 
     //미션 생성
-    @POST("/app/host/main-mission/{categoryId}")
+    @POST("app/host/main-mission/{categoryId}")
     fun missionCreate(@Header(Constance.author)author:String
+                      ,@Path("categoryId")categoryId:Long
                       ,@Body request: MissionCreateRequest
-                      ,@Path("categoryId")categoryId:Long): Call<SimpleResponse>
+                      ): Call<SimpleResponse>
 }
 
 data class MissionCreateRequest(

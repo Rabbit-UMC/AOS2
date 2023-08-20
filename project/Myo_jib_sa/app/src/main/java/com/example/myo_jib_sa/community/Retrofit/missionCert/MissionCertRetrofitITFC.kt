@@ -3,6 +3,7 @@ package com.example.myo_jib_sa.community.Retrofit.missionCert
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.post.SimpleResponse
 import retrofit2.Call
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -20,17 +21,17 @@ interface MissionCertRetrofitITFC {
     //미션 인증 사진 좋아요
     @POST("app/main-mission/proof/{mainMissionProofId}/like")
     fun missionLike(@Header(Constance.author)author:String,
-                     @Path("mainMissionId") mainMissionId: Int):Call<SimpleResponse>
+                     @Path("mainMissionProofId") mainMissionId: Long):Call<SimpleResponse>
 
     //미션 인증 사진 좋아요 취소
-    @POST("app/main-mission/proof/{mainMissionProofId}/unlike")
+    @DELETE("app/main-mission/proof/{mainMissionProofId}/unlike")
     fun missionUnlike(@Header(Constance.author)author:String,
-                    @Path("mainMissionId") mainMissionId: Int):Call<SimpleResponse>
+                    @Path("mainMissionProofId") mainMissionId: Long):Call<SimpleResponse>
 
     //미션 인증 사진 신고
     @POST("app/main-mission/proof/{mainMissionProofId}/report")
     fun missionReport(@Header(Constance.author)author:String,
-                    @Path("mainMissionId") mainMissionId: Int):Call<SimpleResponse>
+                    @Path("mainMissionProofId") mainMissionId: Long):Call<SimpleResponse>
 
     //미션 인증 사진 올리기
     @POST("app/main-mission/upload/{categoryId}")

@@ -2,16 +2,19 @@ package com.example.myo_jib_sa.community.Retrofit.missionCert
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.RetrofitClient
 import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
 import com.example.myo_jib_sa.community.Retrofit.manager.ManagerRetrofitITFC
 import com.example.myo_jib_sa.community.Retrofit.manager.ManagerRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.post.SimpleResponse
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
 
-class MissionCertRetrofitManager(context: Context){
+class MissionCertRetrofitManager(context: Context) : ViewModel() {
     //레트로핏 인터페이스 가져오기기
     private val retrofit : MissionCertRetrofitITFC? = RetrofitClient.getClient(Constance.BASEURL)?.create(
         MissionCertRetrofitITFC::class.java)
@@ -32,39 +35,42 @@ class MissionCertRetrofitManager(context: Context){
 
     //미션 화면 조회
     fun mission(author: String,day:Int,mainMissionId:Long, completion: (missionResponse: MissionResponse) -> Unit){
-        val call: Call<MissionResponse> = retrofit?.mission(author, mainMissionId, day) ?: return
 
-        call.enqueue(object : retrofit2.Callback<MissionResponse> {
-            override fun onResponse(
-                call: Call<MissionResponse>,
-                response: Response<MissionResponse>
-            ) {
-                Log.d("미션 화면 조회", "RetrofitManager 미션 화면 조회 onResponse \t :${response.message()} ")
-                val response: MissionResponse? = response?.body()
-                if (response != null) {
-                    if (response.isSuccess=="true") {
-                        Log.d("미션 화면 조회",
-                            "RetrofitManager 미션 화면 조회 is Success\t :${response.code} ")
-                        Log.d("미션 화면 조회",
-                            "RetrofitManager 미션 화면 조회 is Success\t :${response.message} ")
-                        completion(response)
+            val call: Call<MissionResponse> = retrofit?.mission(author, mainMissionId, day) ?: return
+
+            call.enqueue(object : retrofit2.Callback<MissionResponse> {
+                override fun onResponse(
+                    call: Call<MissionResponse>,
+                    response: Response<MissionResponse>
+                ) {
+                    Log.d("미션 화면 조회", "RetrofitManager 미션 화면 조회 onResponse \t :${response.message()} ")
+                    val response: MissionResponse? = response?.body()
+                    if (response != null) {
+                        if (response.isSuccess=="true") {
+                            Log.d("미션 화면 조회",
+                                "RetrofitManager 미션 화면 조회 is Success\t :${response.code} ")
+                            Log.d("미션 화면 조회",
+                                "RetrofitManager 미션 화면 조회 is Success\t :${response.message} ")
+                            completion(response)
+                        } else {
+                            Log.d("미션 화면 조회",
+                                "RetrofitManager 미션 화면 조회 is NOT Success\t :${response.code} ")
+                            completion(response)
+                        }
                     } else {
-                        Log.d("미션 화면 조회",
-                            "RetrofitManager 미션 화면 조회 is NOT Success\t :${response.code} ")
-                        completion(response)
+                        Log.d("미션 화면 조회", "RetrofitManager 미션 화면 조회 null")
                     }
-                } else {
-                    Log.d("미션 화면 조회", "RetrofitManager 미션 화면 조회 null")
                 }
-            }
-            override fun onFailure(call: Call<MissionResponse>, t: Throwable) {
-                Log.d("미션 화면 조회", "RetrofitManager 미션 화면 조회 onFailure \t :$t ")
-            }
-        })
+                override fun onFailure(call: Call<MissionResponse>, t: Throwable) {
+                    Log.d("미션 화면 조회", "RetrofitManager 미션 화면 조회 onFailure \t :$t ")
+                }
+            })
+
+
     }
 
     //미션 인증 사진 좋아요
-    fun missionImgLike(author: String,imgId:Int, completion: (isSuccess:Boolean) -> Unit){
+    fun missionImgLike(author: String,imgId:Long, completion: (code:Int) -> Unit){
         val call: Call<SimpleResponse> = retrofit?.missionLike(author, imgId) ?: return
 
         call.enqueue(object : retrofit2.Callback<SimpleResponse> {
@@ -80,11 +86,11 @@ class MissionCertRetrofitManager(context: Context){
                             "RetrofitManager 미션 인증 사진 좋아요 is Success\t :${response.code} ")
                         Log.d("미션 인증 사진 좋아요",
                             "RetrofitManager 미션 인증 사진 좋아요 is Success\t :${response.result} ")
-                        completion(true)
+                        completion(response.code)
                     } else {
                         Log.d("미션 인증 사진 좋아요",
                             "RetrofitManager 미션 인증 사진 좋아요 is NOT Success\t :${response.code} ")
-                        completion(false)
+                        completion(0)
                     }
                 } else {
                     Log.d("미션 인증 사진 좋아요", "RetrofitManager 미션 인증 사진 좋아요 null")
@@ -97,7 +103,7 @@ class MissionCertRetrofitManager(context: Context){
     }
 
     //미션 인증 사진 좋아요 취소
-    fun missionImgUnlike(author: String,imgId:Int, completion: (isSuccess:Boolean) -> Unit){
+    fun missionImgUnlike(author: String,imgId:Long, completion: (isSuccess:Boolean) -> Unit){
         val call: Call<SimpleResponse> = retrofit?.missionUnlike(author, imgId) ?: return
 
         call.enqueue(object : retrofit2.Callback<SimpleResponse> {
@@ -130,7 +136,7 @@ class MissionCertRetrofitManager(context: Context){
     }
 
     //미션 인증 사진 신고
-    fun report(author: String,imgId:Int, completion: (isSuccess:Boolean) -> Unit){
+    fun report(author: String,imgId:Long, completion: (isSuccess:Boolean) -> Unit){
         val call: Call<SimpleResponse> = retrofit?.missionReport(author, imgId) ?: return
 
         call.enqueue(object : retrofit2.Callback<SimpleResponse> {

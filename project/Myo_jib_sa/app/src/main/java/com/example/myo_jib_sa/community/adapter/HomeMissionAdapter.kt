@@ -9,14 +9,10 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat.startActivities
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.BoardArtActivity
 import com.example.myo_jib_sa.community.BoardExerciseActivity
-import com.example.myo_jib_sa.community.BoardFreeActivity
+import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
 import com.example.myo_jib_sa.databinding.ItemCommunityMissionBinding
 
@@ -36,9 +32,12 @@ class HomeMissionAdapter(
                 binding.homeMissionItemDdayTxt.text=item.dday
 
                 //이미지 설정
-               Glide.with(context)
-                    .load(item.categoryImage)
-                    .into(binding.homeMissionItemImgImg)
+                if(item.categoryImage.isNotEmpty()&&item.categoryImage!=null){
+                    Glide.with(context)
+                        .load(item.categoryImage)
+                        .into(binding.homeMissionItemImgImg)
+                }
+
 
                 //클릭 이벤트
                 binding.MissionItemConstraintLayout.setOnClickListener{
@@ -95,27 +94,33 @@ class HomeMissionAdapter(
     private fun boardMove(name:String, imageView: ImageView ){
         when(name){
             "예술 게시판"-> {
-                val intent = Intent(imageView.context, BoardArtActivity::class.java )
+                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                intent.putExtra("boardId", Constance.ART_ID)
                 imageView.context.startActivity(intent)
             }
             "운동 게시판"-> {
                 val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                intent.putExtra("boardId", Constance.EXERCISE_ID)
                 imageView.context.startActivity(intent)
             }
             "자유 게시판"-> {
-                val intent = Intent(imageView.context, BoardFreeActivity::class.java )
+                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                intent.putExtra("boardId", Constance.FREE_ID)
                 imageView.context.startActivity(intent)
             }
             "예술"-> {
-                val intent = Intent(imageView.context, BoardArtActivity::class.java )
+                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                intent.putExtra("boardId", Constance.ART_ID)
                 imageView.context.startActivity(intent)
             }
             "운동"-> {
                 val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                intent.putExtra("boardId", Constance.EXERCISE_ID)
                 imageView.context.startActivity(intent)
             }
             "자유"-> {
-                val intent = Intent(imageView.context, BoardFreeActivity::class.java )
+                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                intent.putExtra("boardId", Constance.FREE_ID)
                 imageView.context.startActivity(intent)
             }
 

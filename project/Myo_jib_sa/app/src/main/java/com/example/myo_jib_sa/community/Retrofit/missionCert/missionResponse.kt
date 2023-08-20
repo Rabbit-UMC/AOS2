@@ -1,7 +1,6 @@
 package com.example.myo_jib_sa.community.Retrofit.missionCert
 
 data class MissionResponse(
-
     val isSuccess:String,
     val code:Int,
     val message:String,
@@ -12,6 +11,7 @@ data class MissionResult(
     val mainMissionName:String,
     val dday:String,
     val mainMissionContent:String,
+    val startDay:String,
     val rank:List<Rank>,
     val missionProofImages:List<MissionProofImages>
 )
@@ -20,8 +20,8 @@ data class Rank(
     val userName:String
 )
 data class MissionProofImages(
-    val imageId:Int,
-    val userId:Int,
+    val imageId:Long,
+    val userId:Long,
     val filePath:String
 )
 

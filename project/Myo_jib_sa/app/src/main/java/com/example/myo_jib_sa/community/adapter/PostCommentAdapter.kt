@@ -8,22 +8,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
+import com.example.myo_jib_sa.community.Retrofit.post.ArticleImage
 import com.example.myo_jib_sa.community.Retrofit.post.CommentList
 import com.example.myo_jib_sa.community.Retrofit.post.PostRetrofitManager
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
+import com.example.myo_jib_sa.databinding.ActivityPostBinding
 import com.example.myo_jib_sa.databinding.ItemCommentBinding
 import com.example.myo_jib_sa.databinding.ItemCommunityMissionBinding
 
 class PostCommentAdapter(
     private val context: Context,
-    private val dataList:List<CommentList>,
+    private var dataList:List<CommentList>,
     private val isPostWriter:Boolean,
-    private val postId:Long)
+    private val postId:Long
+    ,private val jwt:String)
     : RecyclerView.Adapter<PostCommentAdapter.ViewHolder>(){
 
 
@@ -35,13 +39,18 @@ class PostCommentAdapter(
         fun bind(item: CommentList){
             //댓글 작성자 이름, 내용 세팅
             binding.commentWriterNameTxt.text=item.commentAuthorName
-            binding.commentPostTextTxt.text=item.commentContent
+            binding.commentPostTextTxt.text=item.commentContent.replace("<br>", "\n")
 
 
-            // todo: 프로필 이미지 설정
-            /*Glide.with(context)
-                 .load(item.commentAuthorProfileImage)
-                 .into(binding.commentProfileImg)*/
+            if(item.commentAuthorProfileImage.isNotEmpty()&&item.commentAuthorProfileImage!=null){
+                Glide.with(context)
+                    .load(item.commentAuthorProfileImage)
+                    .into(binding.commentProfileImg)
+            }else{
+                val drawable = ContextCompat.getDrawable(context, R.drawable.ic_profile)
+                binding.commentProfileImg.setImageDrawable(drawable)
+            }
+
 
             //commentBtn 아이콘 상태 설정
             if(item.commentUserId==Constance.USER_ID){
@@ -69,7 +78,15 @@ class PostCommentAdapter(
                             override fun onPositiveButtonClicked(value: Boolean) {
                                 if (value){
                                     //댓글 삭제하기
-                                    commentDelete(Constance.jwt, postId, item.commentId)
+                                    Log.d("댓글 id", item.commentId.toString())
+                                    commentDelete(jwt, item.commentId){isSuccess->
+                                        if(isSuccess){
+                                            setCommentData(jwt,postId)
+                                            notifyDataSetChanged()
+                                        }else{
+                                            showToast("댓글 삭제에 실패 했습니다.")
+                                        }
+                                    }
 
                                 }
                             }
@@ -82,9 +99,13 @@ class PostCommentAdapter(
                             override fun onPositiveButtonClicked(value: Boolean) {
                                 if (value){
                                     //댓글 변경하기
-                                    commentChange()
-                                    // TODO: 댓글 바꾸기 api 연결 함수 넣기, 댓글 바꾸기 api 추가해
-
+                                    commentChange(jwt, item.commentId){isSuccess->
+                                        if(isSuccess){
+                                            setCommentData(jwt,postId)
+                                        }else{
+                                            showToast("댓글 변경에 실패 했습니다.")
+                                        }
+                                    }
                                 }
                             }
                         })
@@ -139,29 +160,79 @@ class PostCommentAdapter(
     }
 
     //댓글 삭제
-    private fun commentDelete(author:String, articleId:Long, commentId:Long){
+    private fun commentDelete(author:String,  commentId:Long, callback:(Boolean)->Unit){
         val retrofitManager=PostRetrofitManager.getInstance(context)
-        retrofitManager.postCommentDelete(author, articleId,commentId){response->
+        retrofitManager.postCommentDelete(author, commentId){response->
             if(response){
                 //로그
                 Log.d("댓글 삭제", "${response.toString()}")
-
+                callback(true)
 
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                 Log.d("댓글 삭제 API isSuccess가 false", "${response.toString()}")
-                showToast("댓글 삭제 실패")
+                callback(false)
             }
         }
     }
 
     //댓글 바꾸기
-    private fun commentChange(){
-        // TODO: 댓글 바꾸기 api 연결 함수 넣기
+    private fun commentChange(author:String, commentId: Long,callback: (Boolean) -> Unit){
+        val retrofitManager = PostRetrofitManager.getInstance(context)
+        retrofitManager.postCommentLock(author, commentId){response ->
+            if(response){
+                Log.d("댓글 변경", "${response.toString()}")
+                callback(true)
+
+            } else {
+                Log.d("댓글 변경 API isSuccess가 false", "${response.toString()}")
+                callback(false)
+            }
+
+
+        }
     }
 
     //토스트 메시지 띄우기
     private fun showToast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    //댓글 부분 데이터 리스트 받기
+    private fun setCommentData(author:String, postId:Long){
+        dataList= emptyList()
+
+        val retrofitManager = PostRetrofitManager.getInstance(context)
+        retrofitManager.postView(author, postId){response ->
+            if(response.isSuccess=="true"){
+                val imgList:List<ArticleImage> = response.result.articleImage
+
+                //로그
+                if(imgList.isNotEmpty()){
+                    Log.d("게시글 API List 확인", imgList[0].filePath)
+                    Log.d("게시글 API List 확인", imgList[0].imageId.toString())
+                }
+                Log.d("게시글 API List 확인", response.result.articleTitle)
+
+
+                dataList=response.result.commentList
+                notifyDataSetChanged()
+
+            } else {
+                // API 호출은 성공했으나 isSuccess가 false인 경우 처리
+                val returnCode = response.code
+                val returnMsg = response.message
+                showToast("댓글 부분을 불러오지 못했습니다.")
+                Log.d("게시글 API isSuccess가 false", "${returnCode}  ${returnMsg}")
+            }
+
+
+        }
+    }
+
+    // 데이터 리스트를 업데이트하는 메서드
+    fun updateData(newDataList: List<CommentList>) {
+        dataList = newDataList
+        notifyDataSetChanged()
     }
 }
