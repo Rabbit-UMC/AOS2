@@ -1,25 +1,17 @@
 package com.example.myo_jib_sa.schedule.dialog
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.InputFilter
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import android.view.*
 import androidx.fragment.app.DialogFragment
-import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleEditBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
-import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
 import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
 import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyResponse
 import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
@@ -27,7 +19,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.DecimalFormat
-import java.text.SimpleDateFormat
 import java.util.regex.Pattern
 
 class ScheduleEditDialogFragment : DialogFragment() {
@@ -69,6 +60,43 @@ class ScheduleEditDialogFragment : DialogFragment() {
        return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        resizeDialog()
+    }
+
+    //dialog크기 조절
+    fun resizeDialog() {
+        val windowManager = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+        val deviceWidth = size.x
+        val deviceHeight = size.y
+
+        var height = (deviceWidth * 0.95 * 1.13).toInt()
+        var minHeight = ConvertDPtoPX(requireContext(), 380)
+        if(minHeight > height){
+            params?.height = minHeight
+        } else{
+            params?.height = height
+
+        }
+        params?.width = (deviceWidth * 0.95).toInt()
+//        params?.height = (deviceWidth * 0.9 * 1.13).toInt()
+
+
+
+
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
+    }
+
+    //dp -> px
+    fun ConvertDPtoPX(context: Context, dp: Int): Int {
+        val density = context.resources.displayMetrics.density
+        return Math.round(dp.toFloat() * density)
+    }
 
 
     //ScheduleDetailDialog에서 보낸 데이터 바인딩하기
@@ -108,12 +136,15 @@ class ScheduleEditDialogFragment : DialogFragment() {
         scheduleData?.scheduleId = sharedPreference.getLong("scheduleId", 0)
         Log.d("debug", "EditDialog$scheduleData")
 
+        Log.d("Datedebug", "EditSetCurrentDialog = ${scheduleData?.scheduleWhen}")
+
+
         //화면에 반영
         binding.scheduleTitleEtv.setText(scheduleData?.scheduleTitle)
         binding.scheduleDateTv.text = scheduleData?.scheduleWhen
         binding.missionTitleTv.text = scheduleData?.missionTitle
-        binding.scheduleStartTimeTv.text = scheduleTimeFormatter(scheduleData?.startAt)
-        binding.scheduleEndTimeTv.text = scheduleTimeFormatter(scheduleData?.endAt)
+        binding.scheduleStartAtTv.text = scheduleTimeFormatter(scheduleData?.startAt)
+        binding.scheduleEndAtTv.text = scheduleTimeFormatter(scheduleData?.endAt)
         binding.scheduleMemoEtv.setText(scheduleData?.content)
 
     }
@@ -141,10 +172,10 @@ class ScheduleEditDialogFragment : DialogFragment() {
             setSpinnerDialog(1)
         }
         //시간 클릭시
-        binding.scheduleStartTimeTv.setOnClickListener {
+        binding.scheduleStartAtTv.setOnClickListener {
             setSpinnerDialog(2)
         }
-        binding.scheduleEndTimeTv.setOnClickListener {
+        binding.scheduleEndAtTv.setOnClickListener {
             setSpinnerDialog(3)
         }
     }
@@ -170,6 +201,9 @@ class ScheduleEditDialogFragment : DialogFragment() {
         editor.putLong("scheduleId", scheduleData.scheduleId)
         editor.apply()
 
+        Log.d("Datedebug", "EditSaveData = ${scheduleData?.scheduleWhen}")
+
+
     }
 
     private fun setSpinnerDialog(position:Int){
@@ -191,6 +225,9 @@ class ScheduleEditDialogFragment : DialogFragment() {
         }
         editor.putLong("scheduleId", scheduleData!!.scheduleId)
         editor.apply()
+
+        Log.d("Datedebug", "EditSetSpinnerDialog = ${scheduleData?.scheduleWhen}")
+
 
         var bundle = Bundle()
         bundle.putInt("position", position)
@@ -217,11 +254,14 @@ class ScheduleEditDialogFragment : DialogFragment() {
                     scheduleData?.startAt = sharedPreferenceModified.getString("scheduleStartTime", "").toString()
                     scheduleData?.endAt = sharedPreferenceModified.getString("scheduleEndTime", "").toString()
 
+
+                    Log.d("Datedebug", "EditCallback = ${scheduleData?.scheduleWhen}")
+
                     //화면에 반영
                     binding.scheduleDateTv.text = scheduleData?.scheduleWhen
                     binding.missionTitleTv.text = scheduleData?.missionTitle
-                    binding.scheduleStartTimeTv.text = scheduleTimeFormatter(scheduleData?.startAt)
-                    binding.scheduleEndTimeTv.text = scheduleTimeFormatter(scheduleData?.endAt)
+                    binding.scheduleStartAtTv.text = scheduleTimeFormatter(scheduleData?.startAt)
+                    binding.scheduleEndAtTv.text = scheduleTimeFormatter(scheduleData?.endAt)
                 }
             }
         })
@@ -229,7 +269,12 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
     //scheduleModify api연결
     private fun scheduleModifyApi() {
-        val token : String = BuildConfig.API_TOKEN
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 //
         if(scheduleData.missionId == -1L){

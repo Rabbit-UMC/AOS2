@@ -338,7 +338,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/view_round_r5_gray"
+            android:background="@drawable/view_round_r8_gray"
             android:hint="메모📌"
             android:textStyle="bold"
             android:fontFamily="@font/font_inter"

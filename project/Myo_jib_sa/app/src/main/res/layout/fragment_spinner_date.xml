@@ -13,7 +13,7 @@
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
         android:theme="@style/NumberPickerStyle"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         />
 
 

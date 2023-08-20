@@ -41,6 +41,7 @@ class CurrentMissionScheduleDeleteAdapter(private val scheduleList:ArrayList<Sch
 
         //미션 클릭 이벤트
         holder.itemView.setOnClickListener {
+            toggleItemSelected(position);
 
         }
     }
@@ -57,7 +58,7 @@ class CurrentMissionScheduleDeleteAdapter(private val scheduleList:ArrayList<Sch
             }
             //체크박스 클릭 설정
             binding.seletedV.setOnClickListener {
-                toggleItemSelected(adapterPosition);
+                //toggleItemSelected(adapterPosition);
             }
         }
     }
