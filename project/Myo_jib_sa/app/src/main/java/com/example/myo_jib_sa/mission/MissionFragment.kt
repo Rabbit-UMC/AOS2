@@ -25,7 +25,7 @@ class MissionFragment : Fragment() {
     private lateinit var binding:FragmentMissionBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var missionAdapter: MissionAdapter
-   // private lateinit var categoryId:Int
+    // private lateinit var categoryId:Int
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -125,11 +125,11 @@ class MissionFragment : Fragment() {
 
     }
 
-   private fun showDetailDialog(detailItem: Home) {
-       val detailDialog = MissionDetailDialogFragment(detailItem)
-       Log.d("home","Mdetail ID: {$detailItem.id.toString()}")
-       detailDialog.show(requireActivity().supportFragmentManager, "mission_detail_dialog")
-   }
+    private fun showDetailDialog(detailItem: Home) {
+        val detailDialog = MissionDetailDialogFragment(detailItem)
+        Log.d("home","Mdetail ID: {$detailItem.id.toString()}")
+        detailDialog.show(requireActivity().supportFragmentManager, "mission_detail_dialog")
+    }
 
 
 

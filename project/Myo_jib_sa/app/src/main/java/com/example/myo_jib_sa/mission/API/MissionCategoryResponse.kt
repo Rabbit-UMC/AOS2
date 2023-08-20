@@ -4,6 +4,7 @@ data class MissionCategoryResponse(
     val result: List<Category>
 )
 data class Category(
+    val image: String,
     val missionId: Long,
     val title: String,
     val challengerCnt: Int,
