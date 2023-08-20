@@ -1,19 +1,20 @@
 package com.example.myo_jib_sa
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
-//import com.example.myo_jib_sa.community.CommunityFragment
+import com.example.myo_jib_sa.community.CommunityFragment
 import com.example.myo_jib_sa.databinding.ActivityMainBinding
 import com.example.myo_jib_sa.mission.MissionFragment
 import com.example.myo_jib_sa.mypage.MypageFragment
 import com.example.myo_jib_sa.schedule.ScheduleFragment
-import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
 import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_community -> {
-                   // setFragment(CommunityFragment())
+                    setFragment(CommunityFragment())
                     true
                 }
                 R.id.menu_mypage -> {

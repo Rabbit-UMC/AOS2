@@ -65,12 +65,12 @@
             android:exported="false"
             android:label="@string/title_activity_post"
             android:theme="@style/Theme.Myo_jib_sa.NoActionBar"/>
-        <activity
+<!--        <activity
             android:name=".community.BoardFreeActivity"
             android:exported="false" />
         <activity
             android:name=".community.BoardArtActivity"
-            android:exported="false" />
+            android:exported="false" />-->
         <activity
             android:name=".community.BoardExerciseActivity"
             android:exported="false" />
