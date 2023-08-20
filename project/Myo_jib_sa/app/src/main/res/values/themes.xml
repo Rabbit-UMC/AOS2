@@ -33,13 +33,14 @@
     <!-- myPage tab text 색상 변경 -->
     <style name="BoldTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/font_inter</item>
     </style>
 
     <!-- numberpicker 테마 -->
     <style name = "NumberPickerStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <!--글자크기-->
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">15sp</item>
         <!--글꼴-->
         <item name="android:fontFamily">@font/font_inter</item>
         <!--구분선 색상 변경-->
