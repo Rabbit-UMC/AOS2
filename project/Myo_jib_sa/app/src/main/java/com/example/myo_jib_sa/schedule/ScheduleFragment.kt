@@ -19,12 +19,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.example.myo_jib_sa.schedule.adapter.*
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
+import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleMonthResponse
+import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleMonthService
 import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeService
@@ -570,11 +571,15 @@ class ScheduleFragment(context: Context) : Fragment() {
         var dayOfWeek = firstDay.dayOfWeek.value
 
 
-        for (i in 1..lastDay) {
-            var currentDate = YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i))
-            scheduleOfDayApiForCheck(currentDate)
-        }
 
+//        for (i in 1..lastDay) {
+//            var currentDate =
+//                YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i))
+//            //scheduleOfDayApiForCheck(currentDate)
+//        }
+
+        var currentMonth = "${selectedDate.year}-${selectedDate.monthValue}"
+        scheduleMonthApi(currentMonth)
 
 
     }
@@ -637,6 +642,48 @@ class ScheduleFragment(context: Context) : Fragment() {
 
     }
 
+    //scheduleMonthApi 연결: 스케줄 있는지 없는지 체크
+    private fun scheduleMonthApi(monthDate: String?) {
+        var checkResult: Boolean = false
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", "")
+
+        //val token : String = BuildConfig.API_TOKEN
+//        Log.d("retrofit", "token = "+token+"l");
+
+        val service = RetrofitClient.getInstance().create(ScheduleMonthService::class.java)
+        val listCall = service.scheduleMonth(token, monthDate)
+
+        listCall.enqueue(object : Callback<ScheduleMonthResponse> {
+            override fun onResponse(
+                call: Call<ScheduleMonthResponse>,
+                response: Response<ScheduleMonthResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("retrofit", response.body().toString());
+                    val scheduleList = response.body()?.result?.scheduleList
+
+
+
+                    //현재 미션 데이터 리스트 리사이클러뷰 연결
+                    //디데이 얼마 안남은 미션부터 많이 남은 순으로 정렬돼 있음
+                    for(i in 0 until scheduleList!!.size){
+                        hasScheduleMap["$monthDate-${scheduleList[i]}"] = true
+                    }
+
+                }else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }}
+            override fun onFailure(call: Call<ScheduleMonthResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
+
     //M월 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
     private fun monthFromDate(date : LocalDate):String{
@@ -661,5 +708,7 @@ class ScheduleFragment(context: Context) : Fragment() {
         var formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd")
         return date?.format(formatter)
     }
+
+
 
 }
