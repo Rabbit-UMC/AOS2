@@ -63,39 +63,9 @@ class SpinnerMissionFragment : Fragment() {
         scheduleData.missionId?.let { editor.putLong("missionId", it) }
         editor.apply()// data 저장!
 
-        var numberpicker = binding.missionSpinner
-
         scheduleHomeApi()//api연결을 통해 missionTitleList를 setting
 
-        CoroutineScope(Dispatchers.Main).launch {
-            delay(70)
-            numberpicker.minValue = 0
-            numberpicker.maxValue = missionTitleList.size - 1
-            numberpicker.value = setNumberpickerInitvalue(scheduleData.missionTitle)//초기값 설정
-            numberpicker.displayedValues = missionTitleList.toTypedArray()
-            numberpicker.wrapSelectorWheel = true //순환
-            numberpicker.descendantFocusability =
-                NumberPicker.FOCUS_BLOCK_DESCENDANTS //editText가 눌리는 것을 막는다
 
-
-            numberpicker.setOnValueChangedListener(object : NumberPicker.OnValueChangeListener {
-                override fun onValueChange(picker: NumberPicker, oldVal: Int, newVal: Int) {
-                    //Display the newly selected value from picker
-                    //tv.setText("Selected value : " + missionTitleList.get(newVal))
-                    var pickMissionTitle = missionTitleList.get(newVal)
-                    Log.d("debug", "missionTitle : $pickMissionTitle")
-
-                    scheduleData.missionId = titleIdMap[pickMissionTitle]!!
-                    Log.d(
-                        "debug",
-                        "고른 미션 이름: ${titleTitleMap[scheduleData.missionId]}.${scheduleData.missionId}"
-                    )
-                    editor.putString("missionTitle", titleTitleMap[scheduleData.missionId])
-                    editor.putLong("missionId", scheduleData.missionId!!)
-                    editor.apply()// data 저장!
-                }
-            })
-        }
         return binding.root
     }
     override fun onPause() {
@@ -129,6 +99,38 @@ class SpinnerMissionFragment : Fragment() {
         return initValue
     }
 
+    private fun setNumberpicker(){
+        var numberpicker = binding.missionSpinner
+
+            numberpicker.minValue = 0
+            numberpicker.maxValue = missionTitleList.size - 1
+            numberpicker.value = setNumberpickerInitvalue(scheduleData.missionTitle)//초기값 설정
+            numberpicker.displayedValues = missionTitleList.toTypedArray()
+            numberpicker.wrapSelectorWheel = true //순환
+            numberpicker.descendantFocusability =
+                NumberPicker.FOCUS_BLOCK_DESCENDANTS //editText가 눌리는 것을 막는다
+
+
+            numberpicker.setOnValueChangedListener(object : NumberPicker.OnValueChangeListener {
+                override fun onValueChange(picker: NumberPicker, oldVal: Int, newVal: Int) {
+                    //Display the newly selected value from picker
+                    //tv.setText("Selected value : " + missionTitleList.get(newVal))
+                    var pickMissionTitle = missionTitleList.get(newVal)
+                    Log.d("debug", "missionTitle : $pickMissionTitle")
+
+                    scheduleData.missionId = titleIdMap[pickMissionTitle]!!
+                    Log.d(
+                        "debug",
+                        "고른 미션 이름: ${titleTitleMap[scheduleData.missionId]}.${scheduleData.missionId}"
+                    )
+                    val sharedPreference = requireContext().getSharedPreferences("scheduleModifiedData", Context.MODE_PRIVATE)
+                    val editor = sharedPreference.edit()
+                    editor.putString("missionTitle", titleTitleMap[scheduleData.missionId])
+                    editor.putLong("missionId", scheduleData.missionId!!)
+                    editor.apply()// data 저장!
+                }
+            })
+    }
 
     //scheduleHome api연결 for missionList받기위해
     private fun scheduleHomeApi() {
@@ -163,8 +165,7 @@ class SpinnerMissionFragment : Fragment() {
                         titleIdMap[title] = missionList[i].missionId
                         titleTitleMap[missionList[i].missionId] = missionList[i].missionTitle
                     }
-
-
+                    setNumberpicker()
 
 
                 }else {
