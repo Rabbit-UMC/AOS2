@@ -13,7 +13,7 @@ interface ScheduleMonthService {
     fun scheduleMonth(
         @Header("X-ACCESS-TOKEN")
         accessToken: String?,
-        @Path("month") scheduleId: String?
+        @Path("month") month: String?
     ) : Call<ScheduleMonthResponse>
 
 
