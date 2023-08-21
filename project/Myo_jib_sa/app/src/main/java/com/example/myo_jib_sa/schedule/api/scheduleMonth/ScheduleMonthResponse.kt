@@ -11,5 +11,5 @@ data class ScheduleMonthResponse(
 )
 
 data class ScheduleMonthResult(
-    val scheduleList: List<Int>
+    val dayList: List<Int>
 )
