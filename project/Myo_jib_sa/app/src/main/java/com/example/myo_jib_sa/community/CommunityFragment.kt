@@ -128,6 +128,7 @@ class CommunityFragment : Fragment() {
             if(homeResponse.isSuccess=="true"){
                 val missionList:List<MainMission> = homeResponse.result.mainMission
                 val postList:List<PopularArticle> = homeResponse.result.popularArticle
+                //todo: 리펙토링 ㄱ
                 if(missionList?.isNotEmpty() == true || postList?.isNotEmpty() == true){
 
                     //로그

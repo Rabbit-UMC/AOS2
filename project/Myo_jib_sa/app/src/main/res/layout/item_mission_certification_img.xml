@@ -6,40 +6,40 @@
 
     <ImageView
         android:id="@+id/mission_img1"
-        android:layout_width="110dp"
+        android:layout_width="105dp"
         android:layout_height="150dp"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/background_post_item"
-        android:backgroundTint="#F1F1F1"
+        android:background="@drawable/background_post"
+        android:backgroundTint="@color/black"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/background_post_item" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:id="@+id/mission_img2"
-        android:layout_width="110dp"
+        android:layout_width="105dp"
         android:layout_height="150dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/background_post_item"
-        android:backgroundTint="#F1F1F1"
+        android:background="@drawable/background_post"
+        android:backgroundTint="@color/black"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/mission_img3"
         app:layout_constraintStart_toEndOf="@+id/mission_img1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/background_post_item" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/mission_img3"
-        android:layout_width="110dp"
+        android:layout_width="105dp"
         android:layout_height="150dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/background_post_item"
-        android:backgroundTint="#F1F1F1"
+        android:background="@drawable/background_post"
+        android:backgroundTint="@color/black"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/background_post_item" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,5 +19,5 @@ interface PostBoardRetrofitITFC {
     fun popular(
         @Header(Constance.author) author:String
         ,@Query("page") page:Int
-    ): Call<PostBoardResponse>
+    ): Call<PopularPostResponse>
 }

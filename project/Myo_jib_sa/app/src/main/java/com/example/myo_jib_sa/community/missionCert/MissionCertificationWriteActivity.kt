@@ -43,6 +43,8 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
         boardId=intent.getIntExtra("boardId", 0)
 
+        binding.missionCertImg.clipToOutline=true //둥근 모서리
+
         when(boardId){
             Constance.ART_ID-> {
                 binding.missionCertBoardNameTxt.text="예술 게시판"
@@ -63,8 +65,6 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         }
 
         binding.missionCertCompleteTxt.setOnClickListener {
-            //todo: api 연결
-            //todo: 게시판 아이디 첨부
             postImg(Constance.jwt, boardId.toLong()){ isSuccess->
                 if(isSuccess){
                     finish()
@@ -99,7 +99,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         ImgUpload(imgpath.toString()) { isSuccess ->
             if(isSuccess){
                 Log.d("mission postImg", "uploadImge 성공")
-                retrofitManager.postImg(author, boardId, imgPath) { response ->
+                retrofitManager.postImg(author, boardId, imgUrl) { response ->
                     if (response) {
                         Log.d("mission postImg", "postImge 성공")
                         callback(true)
