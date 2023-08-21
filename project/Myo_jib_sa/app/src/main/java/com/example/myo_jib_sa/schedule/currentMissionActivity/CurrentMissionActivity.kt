@@ -74,7 +74,7 @@ class CurrentMissionActivity : AppCompatActivity() {
     }
 
     //CurrentMissionScheduleAdapter 연결
-    private fun setCurrentMissionScheduleAdapter(){//missionTitle:String
+    private fun setCurrentMissionScheduleAdapter() {//missionTitle:String
 
         val scheduleAdapter = CurrentMissionScheduleAdapter(scheduleList, getDisplayHeightSize())
         binding.scheduleListRv.layoutManager = LinearLayoutManager(this)

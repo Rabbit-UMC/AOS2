@@ -571,16 +571,11 @@ class ScheduleFragment(context: Context) : Fragment() {
 
 
         for (i in 1..lastDay) {
-            var currentDate =
-                YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i))
+            var currentDate = YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i))
             scheduleOfDayApiForCheck(currentDate)
         }
 
 
-        Log.d("debug", "==========================================")
-        for ((key, value) in hasScheduleMap) {
-            //Log.d("debug", "dd$key -> $value")
-        }
 
     }
 
