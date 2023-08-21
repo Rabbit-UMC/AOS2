@@ -48,13 +48,15 @@ class ScheduleDeleteDialogFragment(
 
         //확인
         binding.yesTv.setOnClickListener{
+
             dismiss()
             scheduleDeleteApi()//: 일정삭제 api
+
         }
         //취소
         binding.exitBtn.setOnClickListener {
             dismiss()
-            buttonClickListener.onClickExitBtn()
+            //buttonClickListener.onClickExitBtn()
         }
     }
 
@@ -93,7 +95,8 @@ class ScheduleDeleteDialogFragment(
             ) {
                 if (response.isSuccessful) {
                     Log.d("retrofit", response.body().toString());
-                    scheduleAdaptar.removeTask(position)
+                    //scheduleAdaptar.removeTask(position)
+                    buttonClickListener.onClickExitBtn()
                 }else {
                     Log.e("retrofit", "onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()

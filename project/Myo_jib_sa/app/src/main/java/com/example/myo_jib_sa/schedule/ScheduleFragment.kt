@@ -44,6 +44,7 @@ import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -75,7 +76,7 @@ class ScheduleFragment(context: Context) : Fragment() {
         binding = FragmentScheduleBinding.inflate(inflater, container, false)
 
 
-        scheduleHomeApi()//scheduleHome api연결
+        //scheduleHomeApi()//scheduleHome api연결
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
 
         //calendarAdapter 임시 초기화
@@ -96,7 +97,7 @@ class ScheduleFragment(context: Context) : Fragment() {
         binding.selectedMonthDayTv.text = "${MMDDFromDate(selectedDate)} 일정"
 
         //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
-        setCurrentMissionAdapter()
+        //setCurrentMissionAdapter()
         setScheduleAdapter(selectedDate)
         scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
 
@@ -126,13 +127,13 @@ class ScheduleFragment(context: Context) : Fragment() {
     override fun onResume() {
         super.onResume()
 
-
+        Log.d("debug", "onResume")
         scheduleHomeApi()//scheduleHome api연결
 
-        setCalendarAdapter()//화면 초기화
+
 
         //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
-        setCurrentMissionAdapter()
+        //setCurrentMissionAdapter()
         //setScheduleAdapter(selectedDate)
         //scheduleAdaptar.notifyDataSetChanged()
         //scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
@@ -140,6 +141,7 @@ class ScheduleFragment(context: Context) : Fragment() {
 
         CoroutineScope(Dispatchers.Main).launch{
             delay(50)
+            setCalendarAdapter()//화면 초기화
             scheduleOfDayApi(YYYYMMDDFromDate(selectedDate))//scheduleOfDay api연결
 
         }
@@ -305,7 +307,12 @@ class ScheduleFragment(context: Context) : Fragment() {
                 var scheduleDeleteDialog = ScheduleDeleteDialogFragment(requireContext(), binding.scheduleRv.adapter as ScheduleAdaptar, position)
                 scheduleDeleteDialog.setButtonClickListener(object: ScheduleDeleteDialogFragment.OnButtonClickListener{
                     override fun onClickExitBtn() {
-                        scheduleAdaptar.notifyItemChanged(viewHolder.adapterPosition);
+                        //scheduleAdaptar.notifyItemChanged(viewHolder.adapterPosition);
+                        //CoroutineScope(Dispatchers.Main).launch{
+                            //delay(50)
+                            setCalendarAdapter()//화면 초기화
+                            scheduleOfDayApi(YYYYMMDDFromDate(selectedDate))//scheduleOfDay api연결
+                        //}
                     }
                 })
                 scheduleDeleteDialog.arguments = bundle
@@ -427,18 +434,18 @@ class ScheduleFragment(context: Context) : Fragment() {
         //이전달로 이동
         binding.preMonthBtn.setOnClickListener{
             selectedDate = selectedDate.minusMonths(1)
-            CoroutineScope(Dispatchers.Main).launch {
+            //CoroutineScope(Dispatchers.Main).launch {
                 setCalendarAdapter()
                 //calendarRvItemClickEvent()
-            }
+            //}
         }
         //다음달로 이동
         binding.nextMonthBtn.setOnClickListener{
             selectedDate =selectedDate.plusMonths(1)
-            CoroutineScope(Dispatchers.Main).launch {
+            //CoroutineScope(Dispatchers.Main).launch {
                 setCalendarAdapter()
                 //calendarRvItemClickEvent()
-            }
+            //}
         }
     }
 
@@ -552,12 +559,18 @@ class ScheduleFragment(context: Context) : Fragment() {
 
 
         var currentMonth = YYYY_MMFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, selectedDate.dayOfMonth))//MMMM-DD형태로 포맷
-        scheduleMonthApi(currentMonth)//날짜별로 스케줄 있는지 없는지 체크
+        scheduleMonthApi(currentMonth, lastDay)//날짜별로 스케줄 있는지 없는지 체크
     }
 
     //scheduleMonthApi 연결: 스케줄 있는지 없는지 체크
-    private fun scheduleMonthApi(monthDate: String?) {
+    private fun scheduleMonthApi(monthDate: String?, lastDay:Int) {
         var checkResult: Boolean = false
+        //hasScheduleMap초기화
+        for(j in 1..lastDay) {
+            val formatter = DecimalFormat("00")
+            hasScheduleMap["$monthDate-${formatter.format(j)}"] = false
+        }
+
         // SharedPreferences 객체 가져오기
         val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
