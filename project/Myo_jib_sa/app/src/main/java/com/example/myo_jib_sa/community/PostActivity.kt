@@ -4,12 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
+import android.graphics.Outline
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Im
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewOutlineProvider
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
@@ -49,6 +51,20 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         binding = ActivityPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        //원형 이미지
+        binding.postWriterProfileImg.apply {
+            background = ContextCompat.getDrawable(context, R.drawable.background_circle)
+            clipToOutline = true
+
+            // 원형 모양의 OutlineProvider 설정
+            outlineProvider = object : ViewOutlineProvider() {
+                override fun getOutline(view: View, outline: Outline) {
+                    val radius = view.width / 2.0f
+                    outline.setRoundRect(0, 0, view.width, view.height, radius)
+                }
+            }
+        }
         boardId=intent.getIntExtra("boardId", 0).toLong()
         postId=intent.getLongExtra("postId", 0L)
         Log.d("게시물 ID", "게시물 id : ${postId}")

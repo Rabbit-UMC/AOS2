@@ -57,16 +57,16 @@ class PostBoardRetrofitManager(context: Context) {
     }
 
     //베스트 게시물 조회
-    fun popular(author:String,page:Int, completion: (PostBoardResponse) -> Unit){
-        val call: Call<PostBoardResponse> = retrofit?.popular(author,page) ?: return
+    fun popular(author:String,page:Int, completion: (PopularPostResponse) -> Unit){
+        val call: Call<PopularPostResponse> = retrofit?.popular(author,page) ?: return
 
-        call.enqueue(object : retrofit2.Callback<PostBoardResponse> {
+        call.enqueue(object : retrofit2.Callback<PopularPostResponse> {
             override fun onResponse(
-                call: Call<PostBoardResponse>,
-                response: Response<PostBoardResponse>
+                call: Call<PopularPostResponse>,
+                response: Response<PopularPostResponse>
             ) {
                 Log.d("Post 베스트 게시판 api", "RetrofitManager profile onResponse \t :${response.message()} ")
-                val response: PostBoardResponse? = response?.body() //LoginResponse 형식의 응답 받음
+                val response: PopularPostResponse? = response?.body() //LoginResponse 형식의 응답 받음
                 if (response != null) {
                     if (response.isSuccess=="true") {
                         Log.d("Post 베스트 게시판 api",
@@ -81,7 +81,7 @@ class PostBoardRetrofitManager(context: Context) {
                 }
             }
 
-            override fun onFailure(call: Call<PostBoardResponse>, t: Throwable) {
+            override fun onFailure(call: Call<PopularPostResponse>, t: Throwable) {
                 Log.d("Post 베스트 게시판 api", "RetrofitManager Post 게시판 onFailure \t :$t ")
             }
         })

@@ -6,12 +6,14 @@ import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -35,6 +37,8 @@ class ManagerPageEditActivity : AppCompatActivity() {
     private var imgUri:Uri= Uri.EMPTY
     private var imgUrl:String=""
 
+    private var missionImg:String=""
+
     //갤러리 REQUEST_CODE
     companion object {
         private const val GALLERY_REQUEST_CODE = 1001
@@ -46,8 +50,12 @@ class ManagerPageEditActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val boardId =intent.getLongExtra("boardId", 0)
-        val missionImg=intent.getStringExtra("missionImg")
-        if(!missionImg.isNullOrBlank()){
+        missionImg=intent.getStringExtra("missionImg").toString()
+
+        binding.managerPageImg.clipToOutline=true //모서리 궁글게
+        //이미지 설정
+        if(missionImg.isNotBlank()){
+            binding.managerPageIcImg.visibility= View.GONE
             binding.constraintLayout.backgroundTintList=
                 ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
             Glide.with(this)
@@ -56,6 +64,7 @@ class ManagerPageEditActivity : AppCompatActivity() {
         }else{
             binding.constraintLayout.backgroundTintList =
                 ColorStateList.valueOf(Color.parseColor("#F1F1F1"))
+            setMissionIcon(boardId)
         }
 
         //바꾼 사진 저장
@@ -63,7 +72,8 @@ class ManagerPageEditActivity : AppCompatActivity() {
             setPhoto(Constance.jwt, boardId){isSuccess->
                 if(isSuccess){ //저장 성공 시에만 종료
                     val resultIntent = Intent()
-                    resultIntent.putExtra("imgPath", imgUri)
+                    resultIntent.putExtra("imgPath", imgUrl)
+                    Log.d("바뀐 이미지 intent에 넣어", imgUrl)
                     setResult(Activity.RESULT_OK, resultIntent)
                     finish()
                 }
@@ -173,6 +183,24 @@ class ManagerPageEditActivity : AppCompatActivity() {
             } else {
                 Log.d("이미지 업로드 결과", "실패")
                 callback(false)
+            }
+        }
+    }
+
+    //기본 이미지 설정
+    private fun setMissionIcon(boardId:Long){
+        when(boardId.toInt()){
+            Constance.ART_ID-> {
+                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_art)
+                binding.managerPageIcImg.setImageDrawable(drawable)
+            }
+            Constance.FREE_ID-> {
+                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_free)
+                binding.managerPageIcImg.setImageDrawable(drawable)
+            }
+            Constance.EXERCISE_ID-> {
+                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_exercise)
+                binding.managerPageIcImg.setImageDrawable(drawable)
             }
         }
     }

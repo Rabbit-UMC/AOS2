@@ -22,7 +22,15 @@ data class Articles(
     val likeCount:Int,
     val commentCount:Int
 )
-data class ArticlesPopular(
+
+data class PopularPostResponse(
+    val isSuccess:String,
+    val code:Int,
+    val message:String,
+    val result: List<PopularPostResult>
+)
+
+data class PopularPostResult(
     val categoryName:String
     ,val articleId: Long
     ,val articleTitle: String

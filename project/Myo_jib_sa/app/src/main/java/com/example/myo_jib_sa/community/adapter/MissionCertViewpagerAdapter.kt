@@ -40,7 +40,9 @@ class MissionCertViewpagerAdapter (fragmentActivity: FragmentActivity) : Fragmen
             if(response.isSuccess=="true"){
 
                 if(response.result != null){
-
+                    if(response.result.missionProofImages.isNotEmpty()){
+                        Log.d("뷰페이저 어댑터에서 이미지 확인", response.result.missionProofImages[0].filePath)
+                    }
                     fragment.updateView(response.result.missionProofImages)
 
                 }else{

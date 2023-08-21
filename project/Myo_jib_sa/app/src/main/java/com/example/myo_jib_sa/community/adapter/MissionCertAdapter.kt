@@ -47,10 +47,17 @@ class MissionCertAdapter(
             sharedPreferences = itemView.context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
         }
         fun bind(item: MCrecyclrImg){
+
+            //둥근 모서리
+            binding.missionImg1.clipToOutline=true
+            binding.missionImg2.clipToOutline=true
+            binding.missionImg3.clipToOutline=true
+
             //이미지 설정
             if(item.data1.filePath=="empty"){
                 binding.missionImg1.visibility=View.INVISIBLE
             }else{
+                Log.d("미션 리사이클러 이미지 확인",item.data1.filePath )
                 Glide.with(context)
                     .load(item.data1.filePath)
                     .into(binding.missionImg1)
@@ -58,6 +65,7 @@ class MissionCertAdapter(
             if(item.data2.filePath=="empty"){
                 binding.missionImg2.visibility=View.INVISIBLE
             }else{
+                Log.d("미션 리사이클러 이미지 확인",item.data2.filePath )
                 Glide.with(context)
                     .load(item.data2.filePath)
                     .into(binding.missionImg2)
@@ -65,6 +73,7 @@ class MissionCertAdapter(
             if(item.data3.filePath=="empty"){
                 binding.missionImg3.visibility=View.INVISIBLE
             }else{
+                Log.d("미션 리사이클러 이미지 확인",item.data3.filePath )
                 Glide.with(context)
                     .load(item.data3.filePath)
                     .into(binding.missionImg3)
@@ -97,7 +106,6 @@ class MissionCertAdapter(
                                             if (value){
                                                 //신고 재확인 팝업창 띄우고 확인 누르면 api 연결
                                                 Log.d("미션 인증 게시물 신고", "미션 인증 게시물 신고")
-                                                //todo: dialog 띄우고 확인 눌렀을 떄만 신고하기
                                                 report(Constance.jwt, imgId)
                                             }
                                         }

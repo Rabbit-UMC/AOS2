@@ -31,7 +31,8 @@ class ManagerRetrofitManager (context: Context){
 
     //미션 대표 사진 바꾸기
     fun missionImgEdit(author: String,filePath:String,boardId:Long, completion: (isSucces:Boolean) -> Unit){
-        val call: Call<SimpleResponse> = retrofit?.EditPhoto(author, filePath,boardId) ?: return
+        val request=PatchCategoryImageReq(filePath)
+        val call: Call<SimpleResponse> = retrofit?.EditPhoto(author,boardId, request) ?: return
         Log.d("RetrofitManager 미션 대표 사진 바꾸기", "데이터 확인 $filePath")
         call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
