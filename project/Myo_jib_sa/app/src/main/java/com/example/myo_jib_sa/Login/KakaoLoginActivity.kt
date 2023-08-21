@@ -42,7 +42,6 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
 
 
 
-
         val savedJwt = sharedPreferences.getString("jwt", null)
 
         Log.d("Login","${savedJwt}")
