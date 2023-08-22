@@ -33,7 +33,7 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
         installSplashScreen()
         setContentView(binding.root)
 
-     /* // 자동로그인 처리
+      // 자동로그인 처리
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val savedJwt = sharedPreferences.getString("jwt", null)
 
@@ -46,7 +46,7 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
             val intent = Intent(this@KakaoLoginActivity, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
-        }*/
+        }
         //아닐경우 회원가입
 
             binding.kakaoLoginBtn.setOnClickListener {
@@ -145,7 +145,7 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.putExtra("email", email)
         intent.putExtra("accessToken",accessToken)
-       // LoginApi(accessToken)
+
         startActivity(intent)
     }
     private fun showAddEmailDialog() {
