@@ -5,18 +5,14 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
-import com.example.myo_jib_sa.community.adapter.WritePostImgAdapter
 import com.example.myo_jib_sa.databinding.ActivityManagerPageBinding
 
 class ManagerPageActivity : AppCompatActivity() {
