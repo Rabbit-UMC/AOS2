@@ -8,15 +8,15 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.Login.API.RetrofitInstance
 import com.example.myo_jib_sa.databinding.DialogMissionReportFragmentBinding
-import com.example.myo_jib_sa.mission.API.Home
 import com.example.myo_jib_sa.mission.API.MissionITFC
 import com.example.myo_jib_sa.mission.API.MissionReportResponse
+import com.example.myo_jib_sa.mission.MissionItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class MissionReportDialogFragment(private val item: Home) : DialogFragment() {
+class MissionReportDialogFragment(private val item: MissionItem) : DialogFragment() {
     private lateinit var binding: DialogMissionReportFragmentBinding
 
     override fun onCreateView(

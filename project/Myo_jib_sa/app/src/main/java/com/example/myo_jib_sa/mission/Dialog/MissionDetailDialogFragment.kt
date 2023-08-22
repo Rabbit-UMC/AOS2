@@ -14,13 +14,14 @@ import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.Login.API.RetrofitInstance
 import com.example.myo_jib_sa.databinding.DialogMissionDetailFragmentBinding
 import com.example.myo_jib_sa.mission.API.*
+import com.example.myo_jib_sa.mission.MissionItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 
-class MissionDetailDialogFragment(private val item: Home) : DialogFragment() {
+class MissionDetailDialogFragment(private val item: MissionItem) : DialogFragment() {
 
     private lateinit var binding:DialogMissionDetailFragmentBinding
     override fun onCreateView(

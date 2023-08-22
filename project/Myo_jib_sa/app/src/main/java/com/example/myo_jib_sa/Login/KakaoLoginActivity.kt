@@ -32,23 +32,11 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
         installSplashScreen()
         setContentView(binding.root)
 
-/*        // 자동로그인 처리
+     /* // 자동로그인 처리
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-
-
-
-
-
-
-
-
-
         val savedJwt = sharedPreferences.getString("jwt", null)
 
         Log.d("Login","${savedJwt}")
-
-
-
 
         //저장된 Jwt가 있다면 바로 홈으로
         if (savedJwt != null ) {
@@ -152,6 +140,7 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.putExtra("email", email)
         intent.putExtra("accessToken",accessToken)
+        LoginApi(accessToken)
         startActivity(intent)
     }
     private fun showAddEmailDialog() {
