@@ -16,7 +16,7 @@
         android:fontFamily="@font/font_inter"
         android:text="집사 페이지"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
