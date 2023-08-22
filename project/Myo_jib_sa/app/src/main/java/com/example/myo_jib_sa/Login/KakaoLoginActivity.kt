@@ -34,12 +34,14 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
         setContentView(binding.root)
 
         // 앱 시작 시 자동 로그인 체크
+
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val jwtToken = sharedPreferences.getString("jwt", null)
         if (jwtToken != null) {
             // 저장된 토큰이 있다면 자동으로 로그인
             autoLogin(jwtToken)
         }
+
 
 
 
@@ -120,8 +122,8 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                             val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
                             val getJwt = sharedPreferences.edit()
                             // JWT 저장
-                            val jwt ="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTI3MjE1OTMsImV4cCI6MTY5MjcyNTE5M30.QQBX4y9UIAnMMS_8sbU7tbXti2TU8TsosXRVEWBs_FM"
-                            if (jwt != null) {
+                            val jwt ="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTI3MjY0NDQsImV4cCI6MTY5MjczMDA0NH0.1O842SB5KUqefN17OtLp3EJrFHHfHEDqXKCdD_f7MzU"
+                                if (jwt != null) {
                                 getJwt.putString("jwt", jwt)
                             }
                             getJwt.apply()
