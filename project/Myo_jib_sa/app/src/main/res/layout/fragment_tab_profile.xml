@@ -37,12 +37,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="7dp"
             android:fontFamily="@font/font_inter"
             android:background="@android:color/transparent"
             android:text="닉네임"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/myPage_profile_img_btn"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,7 @@
         android:id="@+id/layout_2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#F0F0F0"
+        android:background="#F1F1F1"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,50 +63,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_1">
 
-        <LinearLayout
-            android:id="@+id/layout_myPage_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="80dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
                 android:id="@+id/txt_myPage_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="이메일"
+                android:layout_marginTop="80dp"
                 android:fontFamily="@font/font_inter"
                 android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" (편집불가)"
-                android:fontFamily="@font/font_inter"
-                android:textColor="@color/black"
-                android:textSize="22sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/txt_myPage_email" />
-        </LinearLayout>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/myPage_edit_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="80dp"
+            android:layout_marginBottom="30dp"
             android:fontFamily="@font/font_inter"
             android:background="@drawable/mypage_edit_btn"
             android:text="편집"
             android:textColor="@color/white"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/layout_myPage_email"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,10 +7,4 @@
     <!-- 모서리 둥글게-->
     <corners android:radius="30dp"/>
 
-    <!-- 각각 적용하려면
-    <corners android:bottomRightRadius="15dp"
-        android:bottomLeftRadius="15dp"
-        android:topLeftRadius="15dp"
-        android:topRightRadius="15dp"/>
-    -->
 </shape>

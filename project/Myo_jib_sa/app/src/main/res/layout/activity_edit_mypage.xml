@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:background="#F0F0F0"
+        android:background="#F1F1F1"
         app:layout_constraintHeight_default="percent"
         app:layout_constraintHeight_percent="0.5"
         app:layout_constraintHorizontal_bias="0.5"
@@ -57,7 +57,7 @@
             android:layout_marginTop="30dp"
             android:layout_gravity="center"
             android:hint="이름(편집모드)"
-            android:textSize="22sp"
+            android:textSize="12sp"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:background="@android:color/transparent"
@@ -97,18 +97,10 @@
                 android:fontFamily="@font/font_inter"
                 android:text="이메일"
                 android:textColor="@color/black"
-                android:textSize="22sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/font_inter"
-                android:text=" (편집불가)"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/txt_myPage_email" />
+
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton

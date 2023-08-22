@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/view_round_r15"
+    android:background="@drawable/view_round_r30"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,6 +10,8 @@
         android:id="@+id/dialog_exit_btn"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="12dp"
         android:src="@drawable/ic_close_x"
         android:background="@android:color/transparent"
         android:textColor="#919191"
@@ -43,7 +45,7 @@
         android:id="@+id/mission_category_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="20dp"
         android:fontFamily="@font/font_inter"
         android:text="카테고리"
@@ -58,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="1.5dp"
         android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="9dp"
         android:background="#D8D8D8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +70,7 @@
         android:id="@+id/mission_start_date_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="20dp"
         android:fontFamily="@font/font_inter"
         android:text="2023.07.01"
@@ -80,14 +82,13 @@
         android:id="@+id/mission_total_date_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:text="32일"
         android:fontFamily="@font/font_inter"
         android:textColor="#707070"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/view02"
+        app:layout_constraintTop_toTopOf="@id/mission_start_date_txt"
         app:layout_constraintStart_toEndOf="@id/mission_start_date_txt"
         app:layout_constraintEnd_toStartOf="@id/mission_end_date_txt"/>
 
@@ -96,19 +97,18 @@
         android:id="@+id/mission_end_date_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:fontFamily="@font/font_inter"
         android:text="2023.08.01"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/view02"
+        app:layout_constraintTop_toTopOf="@id/mission_start_date_txt"
         app:layout_constraintEnd_toEndOf="parent"/>
     <View
         android:id="@+id/view03"
         android:layout_width="match_parent"
         android:layout_height="1.5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="9dp"
         android:layout_centerInParent="true"
         android:background="#D8D8D8"
         app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +118,7 @@
         android:id="@+id/mission_memoTitle_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="20dp"
         android:fontFamily="@font/font_inter"
         android:text="메모📌"
@@ -147,8 +147,8 @@
         android:id="@+id/mission_with_btn"
         android:layout_width="120dp"
         android:layout_height="30dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="40dp"
         android:text="같이하기"
         android:textSize="16sp"
         android:textColor="@color/white"
@@ -156,15 +156,15 @@
         android:background="@drawable/mypage_edit_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mission_memo_txt"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
-    <View
+<!--    <View
         android:layout_width="0dp"
         android:layout_height="35dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mission_with_btn"
-        />
+        />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

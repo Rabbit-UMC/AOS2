@@ -72,7 +72,7 @@ class MyoSignUpActivity : AppCompatActivity() {
                         Log.d("LoginResponse", "Kakao Email jwt: ${jwt}")
                     }
                     else{
-                        Toast.makeText(this@MyoSignUpActivity, "서버 오류 발생", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@MyoSignUpActivity, "서버 오류 발생", Toast.LENGTH_SHORT).show()
                         Log.d("LoginResponse", "Kakao Email jwt: ${jwt}")
                     }
                 }
@@ -265,7 +265,7 @@ class MyoSignUpActivity : AppCompatActivity() {
                         returnCode = signUpResponse.code
 
                         // 응답 데이터 처리
-                        Toast.makeText(this@MyoSignUpActivity, signUpResponse.message, Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@MyoSignUpActivity, signUpResponse.message, Toast.LENGTH_SHORT).show()
 
                         Log.d("Retrofit",signUpResponse.message)
                         Log.d("signUp", "userEmail: ${email}")
@@ -280,7 +280,7 @@ class MyoSignUpActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
                 // 네트워크 요청 실패 처리
-                Toast.makeText(this@MyoSignUpActivity, "네트워크 요청 실패!", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@MyoSignUpActivity, "네트워크 요청 실패!", Toast.LENGTH_SHORT).show()
             }
         })
     }

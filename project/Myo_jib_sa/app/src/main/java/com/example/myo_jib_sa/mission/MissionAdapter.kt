@@ -95,6 +95,8 @@ class MissionAdapter(
             binding.missionEndTimeTxt.text = formattedEndAt
             binding.missionChallengerTxt.text="${item.challengerCnt} 명"
 
+            binding.missionImg.clipToOutline=true
+
             Log.d("home",item.missionId.toString())
 
             // 롱클릭 이벤트 처리(신고)
