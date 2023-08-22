@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
     <!-- 인터넷 접근 권한 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 외부 저장소 접근 권한 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -15,7 +15,10 @@
         android:roundIcon="@drawable/ic_app"
         android:supportsRtl="true"
         android:theme="@style/Theme.Myo_jib_sa"
-        tools:targetApi="31">
+        tools:targetApi="31" >
+        <activity
+            android:name=".community.ImageActivity"
+            android:exported="false" />
         <activity
             android:name=".community.ManagerMissionCreateActivity"
             android:exported="false" />
@@ -45,7 +48,7 @@
             android:name=".community.PostActivity"
             android:exported="false"
             android:label="@string/title_activity_post"
-            android:theme="@style/Theme.Myo_jib_sa.NoActionBar"/>
+            android:theme="@style/Theme.Myo_jib_sa.NoActionBar" />
         <activity
             android:name=".community.BoardFreeActivity"
             android:exported="false" />
@@ -60,11 +63,11 @@
             android:label="Mission Certification Activity" >
         </activity>
         <activity
-            android:name="com.example.myo_jib_sa.community.missionCert.MissionCertificationWriteActivity"
+            android:name=".community.missionCert.MissionCertificationWriteActivity"
             android:label="MissionCertificationWriteActivity" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

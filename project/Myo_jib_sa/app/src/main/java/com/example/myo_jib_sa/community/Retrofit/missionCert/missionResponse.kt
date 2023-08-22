@@ -22,7 +22,8 @@ data class Rank(
 data class MissionProofImages(
     val imageId:Long,
     val userId:Long,
-    val filePath:String
+    val filePath:String,
+    val isLike:Boolean
 )
 
 data class MCrecyclrImg(

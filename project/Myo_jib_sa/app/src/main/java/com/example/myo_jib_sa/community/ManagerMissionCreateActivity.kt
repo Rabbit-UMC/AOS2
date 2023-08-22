@@ -89,6 +89,13 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
         startCalendarRvItemClickEvent()
 
         //완료 버튼
+        complete()
+
+    }
+
+    //미션 생성 완료하기
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun complete(){
         binding.missionCompleteTxt.setOnClickListener {
             var is30Down=true
             checkDate { callback->
@@ -120,10 +127,7 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
                 }
             }
         }
-
-
     }
-
 
 
     //month화면에 보여주기

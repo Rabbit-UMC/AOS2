@@ -71,28 +71,7 @@ class BoardExerciseActivity : AppCompatActivity() {
         }
 
         //페이징
-        binding.boardExcsPostRecyclr.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val visibleItemCount = layoutManager.childCount
-                val totalItemCount = layoutManager.itemCount
-                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-
-                // 스크롤이 최하단에 도달했을 때만 페이지 요청
-                if (!isLoading && !isLoadingMore && visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
-                    // 스크롤이 마지막 아이템에 도달하면 다음 페이지 요청
-                    isLoadingMore = true
-                    page++
-                    getBoardData(Constance.jwt, boardId.toLong())
-                }
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                // 스크롤 상태 변경 시 호출되는 부분
-                // newState: 스크롤 상태
-                // 이곳에서 스크롤 상태에 따른 작업을 수행
-            }
-        })
+        paging()
 
 
         //관리자 페이지 넘어가기
@@ -117,6 +96,32 @@ class BoardExerciseActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    //페이징 기능
+    private fun paging(){
+        binding.boardExcsPostRecyclr.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                // 스크롤이 최하단에 도달했을 때만 페이지 요청
+                if (!isLoading && !isLoadingMore && visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
+                    // 스크롤이 마지막 아이템에 도달하면 다음 페이지 요청
+                    isLoadingMore = true
+                    page++
+                    getBoardData(Constance.jwt, boardId.toLong())
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                // 스크롤 상태 변경 시 호출되는 부분
+                // newState: 스크롤 상태
+                // 이곳에서 스크롤 상태에 따른 작업을 수행
+            }
+        })
     }
 
     //API 연결, 리사이클러뷰 띄우기
