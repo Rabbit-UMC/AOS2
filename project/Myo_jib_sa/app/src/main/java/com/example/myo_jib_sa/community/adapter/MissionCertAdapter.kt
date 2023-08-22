@@ -15,6 +15,8 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import androidx.core.os.postDelayed
+import com.example.myo_jib_sa.community.ImageActivity
 import com.example.myo_jib_sa.community.PostActivity
 import com.example.myo_jib_sa.community.Retrofit.BoardPost.Articles
 import com.example.myo_jib_sa.community.Retrofit.Constance
@@ -23,6 +25,7 @@ import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
 import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularArticle
 import com.example.myo_jib_sa.community.Retrofit.missionCert.MCrecyclrImg
 import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionCertRetrofitManager
+import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionProofImages
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.databinding.ItemMissionCertificationImgBinding
 
@@ -32,8 +35,9 @@ class MissionCertAdapter(
     : RecyclerView.Adapter<MissionCertAdapter.ViewHolder>(){
 
     private var doubleTap = false
-    private val doubleTapDelay: Long = 1000 // 1초 (1초 동안 길게 눌러야 두 번 터치로 인식)
+    private val doubleTapDelay: Long = 800 // 0.8초안에 두번 눌러야 인식
     private val handler = Handler(Looper.getMainLooper())
+
     private lateinit var sharedPreferences: SharedPreferences
 
 
@@ -47,62 +51,96 @@ class MissionCertAdapter(
             sharedPreferences = itemView.context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
         }
         fun bind(item: MCrecyclrImg){
+
+            //둥근 모서리
+            binding.missionImg1.clipToOutline=true
+            binding.missionImg2.clipToOutline=true
+            binding.missionImg3.clipToOutline=true
+
+            //좋아요 설정
+            setLike(item, binding)
+
             //이미지 설정
             if(item.data1.filePath=="empty"){
                 binding.missionImg1.visibility=View.INVISIBLE
             }else{
+                Log.d("미션 리사이클러 이미지 확인",item.data1.filePath )
                 Glide.with(context)
                     .load(item.data1.filePath)
                     .into(binding.missionImg1)
             }
+
             if(item.data2.filePath=="empty"){
                 binding.missionImg2.visibility=View.INVISIBLE
             }else{
+                Log.d("미션 리사이클러 이미지 확인",item.data2.filePath )
                 Glide.with(context)
                     .load(item.data2.filePath)
                     .into(binding.missionImg2)
             }
+
             if(item.data3.filePath=="empty"){
                 binding.missionImg3.visibility=View.INVISIBLE
             }else{
+                Log.d("미션 리사이클러 이미지 확인",item.data3.filePath )
                 Glide.with(context)
                     .load(item.data3.filePath)
                     .into(binding.missionImg3)
             }
 
             //클릭 이벤트
-            imgTouch(binding.missionImg1, item.data1.imageId)
-            imgTouch(binding.missionImg2, item.data2.imageId)
-            imgTouch(binding.missionImg3, item.data3.imageId)
+            imgTouch(binding.missionImg1, item.data1, binding.missionHeart1)
+            imgTouch(binding.missionImg2, item.data2, binding.missionHeart2)
+            imgTouch(binding.missionImg3, item.data3, binding.missionHeart3)
+        }
+    }
+
+    //처음 좋아요 상태 설정
+    private fun setLike(item: MCrecyclrImg, binding: ItemMissionCertificationImgBinding){
+        if(item.data1.isLike){
+            binding.missionHeart1.visibility=View.VISIBLE
+            sharedPreferences.edit().putBoolean("isLiked_${item.data1.imageId}", true).apply()
+        }else{
+            binding.missionHeart1.visibility=View.GONE
+            sharedPreferences.edit().putBoolean("isLiked_${item.data1.imageId}", false).apply()
+        }
+
+        if(item.data2.isLike){
+            binding.missionHeart2.visibility=View.VISIBLE
+            sharedPreferences.edit().putBoolean("isLiked_${item.data2.imageId}", true).apply()
+        }else{
+            binding.missionHeart2.visibility=View.GONE
+            sharedPreferences.edit().putBoolean("isLiked_${item.data2.imageId}", false).apply()
+        }
+
+        if(item.data3.isLike){
+            binding.missionHeart3.visibility=View.VISIBLE
+            sharedPreferences.edit().putBoolean("isLiked_${item.data3.imageId}", true).apply()
+        }else{
+            binding.missionHeart3.visibility=View.GONE
+            sharedPreferences.edit().putBoolean("isLiked_${item.data3.imageId}", false).apply()
         }
     }
 
     //클릭 이벤트
-    private fun imgTouch(img:ImageView, imgId:Long){
+    private fun imgTouch(img:ImageView, data:MissionProofImages, heart:ImageView){
+        val imgId=data.imageId
         img.setOnTouchListener(object : View.OnTouchListener {
             private var numTaps = 0
 
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                 when (event?.action) {
-                    MotionEvent.ACTION_DOWN -> {
+                    MotionEvent.ACTION_UP -> {
                         numTaps++
                         if (numTaps == 1) {
 
                             handler.postDelayed({
                                 if (!doubleTap) {
-
-                                    val DelDialog = CommunityPopupOk(context,"해당 게시물을 신고 하나요?")
-                                    DelDialog.setCustomDialogListener(object : CommunityPopupOk.CustomDialogListener {
-                                        override fun onPositiveButtonClicked(value: Boolean) {
-                                            if (value){
-                                                //신고 재확인 팝업창 띄우고 확인 누르면 api 연결
-                                                Log.d("미션 인증 게시물 신고", "미션 인증 게시물 신고")
-                                                //todo: dialog 띄우고 확인 눌렀을 떄만 신고하기
-                                                report(Constance.jwt, imgId)
-                                            }
-                                        }
-                                    })
-                                    DelDialog.show()
+                                    val intent=Intent(context,ImageActivity::class.java)
+                                    intent.putExtra("filePath", data.filePath)
+                                    intent.putExtra("imgId", data.imageId)
+                                    intent.putExtra("isReportable", true)
+                                    context.startActivity(intent)
                                 }
                                 numTaps = 0
                             }, doubleTapDelay)
@@ -116,27 +154,27 @@ class MissionCertAdapter(
                             // Toggle like/unlike based on the current like status
                             if (isLiked) {
                                 Log.d("미션 인증 게시물 좋아요 취소", "미션 인증 게시물 좋아요 취소")
+                                Log.d("미션 인증 게시물 좋아요 취소", "이미지 아이디 $imgId")
                                 unlike(Constance.jwt, imgId) { isSuccess ->
                                     if (isSuccess) {
+                                        heart.visibility=View.GONE
                                         // Update the like status in SharedPreferences
                                         sharedPreferences.edit().putBoolean("isLiked_$imgId", false).apply()
                                         showToast("좋아요 취소")
                                         Log.d("미션 인증 게시물 좋아요 취소 성공", "미션 인증 게시물 좋아요 취소 성공")
-                                    } else {
-                                        showToast("좋아요 취소 실패")
                                     }
                                 }
                             } else {
                                 Log.d("미션 인증 게시물 좋아요", "미션 인증 게시물 좋아요")
+                                Log.d("미션 인증 게시물 좋아요 취소", "이미지 아이디 $imgId")
                                 like(Constance.jwt, imgId) { isSuccess ->
                                     if (isSuccess) {
+                                        heart.visibility=View.VISIBLE
                                         // Update the like status in SharedPreferences
                                         sharedPreferences.edit().putBoolean("isLiked_$imgId", true).apply()
                                         showToast("좋아요")
                                         Log.d("미션 인증 게시물 좋아요 성공", "미션 인증 게시물 좋아요 성공")
 
-                                    } else {
-                                        showToast("좋아요 실패")
                                     }
                                 }
                             }
@@ -167,6 +205,7 @@ class MissionCertAdapter(
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                 Log.d("missionImgLike", "missionImgLike 실패")
+                showToast("좋아요 실패")
                 callback(true)
             }
 
@@ -185,31 +224,13 @@ class MissionCertAdapter(
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                 Log.d("missionImgUnlike", "missionImgUnlike 실패")
+                showToast("좋아요 취소 실패")
                 callback(true)
             }
 
 
         }
     }
-
-    //신고하기
-    private fun report(author:String ,imgId:Long){
-        val retrofitManager = MissionCertRetrofitManager.getInstance(context)
-        retrofitManager.report(author, imgId){response ->
-            if(response){
-                Log.d("mission report", "mission report 성공")
-                showToast("신고 완료")
-            } else {
-                // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-
-                Log.d("mission report", "mission report 실패")
-                showToast("신고 실패")
-            }
-
-
-        }
-    }
-
 
     // 뷰홀더를 생성하여 반환
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

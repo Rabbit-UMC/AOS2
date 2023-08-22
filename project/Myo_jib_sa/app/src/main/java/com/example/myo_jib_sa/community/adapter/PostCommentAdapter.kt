@@ -1,11 +1,13 @@
 package com.example.myo_jib_sa.community.adapter
 
 import android.content.Context
+import android.graphics.Outline
 import android.graphics.Rect
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewOutlineProvider
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
@@ -40,7 +42,19 @@ class PostCommentAdapter(
             //댓글 작성자 이름, 내용 세팅
             binding.commentWriterNameTxt.text=item.commentAuthorName
             binding.commentPostTextTxt.text=item.commentContent.replace("<br>", "\n")
+            //원형 이미지
+            binding.commentProfileImg.apply {
+                background = ContextCompat.getDrawable(context, R.drawable.background_circle)
+                clipToOutline = true
 
+                // 원형 모양의 OutlineProvider 설정
+                outlineProvider = object : ViewOutlineProvider() {
+                    override fun getOutline(view: View, outline: Outline) {
+                        val radius = view.width / 2.0f
+                        outline.setRoundRect(0, 0, view.width, view.height, radius)
+                    }
+                }
+            }
 
             if(item.commentAuthorProfileImage.isNotEmpty()&&item.commentAuthorProfileImage!=null){
                 Glide.with(context)
