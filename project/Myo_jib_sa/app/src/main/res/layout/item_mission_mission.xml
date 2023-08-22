@@ -23,7 +23,7 @@
             android:id="@+id/mission_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_mission_exercise"
+            android:src="@drawable/ic_mission_exercise_p"
             android:background="@android:color/transparent"
             />
     </FrameLayout>
