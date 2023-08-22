@@ -50,27 +50,13 @@ class CommunityFragment : Fragment() {
         retrofitManager = CommunityHomeManager.getInstance(requireContext())
 
         //터치시 게시판 이동
-        binding.communityBoardArt.setOnClickListener {
-            val intent=Intent(requireActivity(), BoardExerciseActivity::class.java )
-            intent.putExtra("boardId", Constance.ART_ID)
-            startActivity(intent)
-        }
-        binding.communityBoardExcs.setOnClickListener {
-            val intent=Intent(requireActivity(), BoardExerciseActivity::class.java )
-            intent.putExtra("boardId", Constance.EXERCISE_ID)
-            startActivity(intent)
-        }
-        binding.communityBoardFree.setOnClickListener {
-            val intent=Intent(requireActivity(), BoardExerciseActivity::class.java )
-            intent.putExtra("boardId", Constance.FREE_ID)
-            startActivity(intent)
-        }
+        moveBoard()
 
-        //더보기 터치 시 이동 구현 필요
-        binding.homePulsTxt.setOnClickListener {
-            val intent=Intent(requireActivity(), BoardExerciseActivity::class.java )
-            intent.putExtra("isBest", true)
-            startActivity(intent)
+        //더보기 터치 시 이동
+       binding.homePulsTxt.setOnClickListener {
+           val intent=Intent(requireActivity(), BoardExerciseActivity::class.java )
+           intent.putExtra("isBest", true)
+           startActivity(intent)
         }
 
         //api 연결, 뷰 띄우기
@@ -120,6 +106,25 @@ class CommunityFragment : Fragment() {
         getMissionData(Constance.jwt, requireContext())
     }
 
+    //게시판 이동
+    private fun moveBoard(){
+        binding.communityBoardArt.setOnClickListener {
+            val intent=Intent(requireActivity(), BoardExerciseActivity::class.java )
+            intent.putExtra("boardId", Constance.ART_ID)
+            startActivity(intent)
+        }
+        binding.communityBoardExcs.setOnClickListener {
+            val intent=Intent(requireActivity(), BoardExerciseActivity::class.java )
+            intent.putExtra("boardId", Constance.EXERCISE_ID)
+            startActivity(intent)
+        }
+        binding.communityBoardFree.setOnClickListener {
+            val intent=Intent(requireActivity(), BoardExerciseActivity::class.java )
+            intent.putExtra("boardId", Constance.FREE_ID)
+            startActivity(intent)
+        }
+
+    }
 
 
     //API 연결, 리사이클러뷰 띄우기
@@ -128,26 +133,15 @@ class CommunityFragment : Fragment() {
             if(homeResponse.isSuccess=="true"){
                 val missionList:List<MainMission> = homeResponse.result.mainMission
                 val postList:List<PopularArticle> = homeResponse.result.popularArticle
-                if(missionList?.isNotEmpty() == true || postList?.isNotEmpty() == true){
-
-                    //로그
-                    Log.d("MissionList 확인", missionList[0].mainMissionTitle)
-                    Log.d("MissionList 확인", missionList[0].categoryName)
-                    Log.d("hMissionList 확인", missionList[1].categoryImage)
-                    Log.d("MissionList 확인", missionList[0].dday.toString())
-
-                    Log.d("PostList 확인", postList[0].articleTitle)
-                    Log.d("PostList 확인", postList[0].commentCount.toString())
-                    Log.d("PostList 확인", postList[0].likeCount.toString())
-
-
-                    //리사이클러뷰 연결
+                if(missionList.isNotEmpty()){
                     linkMrecyclr(context, missionList)
-                    linkePrecyclr(context, postList)
-
-
                 }else{
-                    Log.d("리사이클러뷰 어댑터로 리스트 전달", "List가 비었다네요")
+                    Log.d("리사이클러뷰 어댑터로 리스트 전달", "MissionList가 비었다네요")
+                }
+                if(postList.isNotEmpty()){
+                    linkePrecyclr(context, postList)
+                }else{
+                    Log.d("리사이클러뷰 어댑터로 리스트 전달", "PostList가 비었다네요")
                 }
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
@@ -191,7 +185,6 @@ class CommunityFragment : Fragment() {
 
 
     //5초 마다 페이지 넘기기
-    // 5초 마다 페이지 넘기기
     private var currentPage = 0
     private lateinit var thread: Thread
 

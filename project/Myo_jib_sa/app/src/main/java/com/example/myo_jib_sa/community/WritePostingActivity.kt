@@ -37,12 +37,13 @@ class WritePostingActivity : AppCompatActivity() {
     private var imgListEdit:List<ImageList> = listOf(ImageList(0,""), ImageList(0, ""))
     private var isEdit:Boolean=false
     private var postId:Long=0 //수정할 때만 씀
+    private var boardId:Int=0
 
     //이미지 url 저장
     private var imgUrlList:MutableList<String> = mutableListOf("","")
 
-    //이미지가 있는 지
-    private var isHasImg:Boolean=false
+    //이미지가 있는 지, 갤러리에서 첨부한 이미지만 api를 통해 업로드하기 위해 사용하는 변수
+    private var isHasNewImg:Boolean=false
 
 
     companion object {
@@ -59,23 +60,11 @@ class WritePostingActivity : AppCompatActivity() {
         //수정인지, 그냥 글쓰기인지 구별
         isEdit=intent.getBooleanExtra("isEdit", false)
         if(isEdit){
-            binding.postWritePostTextEtxt.setText(intent.getStringExtra("postText"))
-            binding.writePostTitleEtxt.setText(intent.getStringExtra("title"))
-            //이미지 설정
-            if(!intent.getStringExtra("imgList1_path").toString().isNullOrBlank()){
-                isHasImg=true
-            }
-            setImgGlide(binding.missionCertImg, intent.getStringExtra("imgList1_path").toString())
-            setImgGlide(binding.missionCertImg1, intent.getStringExtra("imgList2_path").toString())
-
-            //이후 사용될 데이터 저장
-            postId=intent.getLongExtra("postId",0)
-            val list1=ImageList(intent.getLongExtra("imgList1_id",0), intent.getStringExtra("imgList1_path").toString())
-            val list2=ImageList(intent.getLongExtra("imgList2_id",0), intent.getStringExtra("imgList2_path").toString())
-            imgListEdit = listOf(list1, list2)
+            setData()
+            Log.d("새로운 이미지 유무", isHasNewImg.toString())
         }
 
-        val boardId=intent.getIntExtra("boardId", 0)
+        boardId=intent.getIntExtra("boardId", 0)
         //게시판 이름
         when(boardId){
             Constance.ART_ID-> {
@@ -93,12 +82,99 @@ class WritePostingActivity : AppCompatActivity() {
 
 
         //게시글 쓰기, 수정 완료
+        complete()
+
+
+        //이미지뷰 터치시 갤러리로 가서 사진 선택 후 해당 이미지 뷰에 뷰 설정
+        binding.missionCertImg.setOnClickListener {
+            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE1)
+        }
+
+        binding.missionCertImg1.setOnClickListener {
+            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE2)
+        }
+        //뒤로가기 버튼
+        binding.postWriteBackBtn.setOnClickListener {
+            finish()
+        }
+
+    }
+
+
+    //사진 설정을 위한 onActivityResult
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if ((requestCode == GALLERY_REQUEST_CODE1||requestCode == GALLERY_REQUEST_CODE2)
+            && resultCode == Activity.RESULT_OK && data != null) {
+            val selectedImageUri: Uri? = data.data
+            // 선택한 이미지를 해당 이미지뷰에 표시
+            selectedImageUri?.let { uri ->
+
+
+                if(requestCode== GALLERY_REQUEST_CODE1){
+                    binding.writePostPlusImgLayout.backgroundTintList=
+                        ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+                    binding.missionCertImg.setImageURI(uri)
+                    isHasNewImg=true
+                    imgList = imgList.toMutableList().apply {
+                        set(0, getRealPathFromURI(uri).toString())
+                    }
+                }else{
+                    binding.writePostPlusImgLayout1.backgroundTintList=
+                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+                    binding.missionCertImg1.setImageURI(uri)
+                    isHasNewImg=true
+                    imgList = imgList.toMutableList().apply {
+                        set(1, getRealPathFromURI(uri).toString())
+                    }
+                }
+            }
+        }
+    }
+
+    //수정일시 데이터 설정
+    private fun setData(){
+        binding.postWritePostTextEtxt.setText(intent.getStringExtra("postText"))
+        binding.writePostTitleEtxt.setText(intent.getStringExtra("title"))
+
+        //이미지 설정
+        if(!intent.getStringExtra("imgList1_path").toString().isNullOrBlank()){
+            //이미지 설정
+            setImgGlide(binding.missionCertImg, intent.getStringExtra("imgList1_path").toString())
+            //배경
+            binding.writePostPlusImgLayout.backgroundTintList=
+                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+
+            //url 저장
+            imgUrlList[0]= intent.getStringExtra("imgList1_path").toString()
+        }
+        if(!intent.getStringExtra("imgList2_path").toString().isNullOrBlank()){
+            setImgGlide(binding.missionCertImg1, intent.getStringExtra("imgList2_path").toString())
+            //배경
+            binding.writePostPlusImgLayout1.backgroundTintList=
+                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+
+            //url 저장
+            imgUrlList[0]= intent.getStringExtra("imgList2_path").toString()
+        }
+
+        //이후 사용될 데이터 저장
+        postId=intent.getLongExtra("postId",0)
+        val list1=ImageList(intent.getLongExtra("imgList1_id",0), intent.getStringExtra("imgList1_path").toString())
+        val list2=ImageList(intent.getLongExtra("imgList2_id",0), intent.getStringExtra("imgList2_path").toString())
+        imgListEdit = listOf(list1, list2)
+    }
+
+    //글쓰기, 수정 완료
+    private fun complete(){
         binding.postWriteCompleteBtn.setOnClickListener {
-            ImgUpload(imgList){isSuccess->
+            ImgUpload(imgList){isSuccess-> //이미지 있는 경우만 업로드 함
                 if(isSuccess){
-                    if(!isEdit){
+                    if(!isEdit){ //새로운 글쓰기
                         var request:PostCreateRequest
-                        if(!isHasImg){
+                        if(!isHasNewImg){
                             request=PostCreateRequest(
                                 binding.writePostTitleEtxt.text.toString(),
                                 binding.postWritePostTextEtxt.text.toString().replace("\n", "<br>"),
@@ -119,10 +195,10 @@ class WritePostingActivity : AppCompatActivity() {
                                 showToast("게시글 쓰기 실패")
                             }
                         }
-                    }else{
+                    }else{ //글 수정
                         var request:PostEditRequest
                         //이미지 유무에 따라 분기 나누기
-                        if(isHasImg){
+                        if(isHasNewImg){
                             imgListEdit[0].filePath=imgUrlList[0]
                             imgListEdit[1].filePath=imgUrlList[1]
                             request= PostEditRequest(
@@ -147,61 +223,11 @@ class WritePostingActivity : AppCompatActivity() {
                         }
                     }
 
-                }else{
-                    showToast("이미지 업로드에 실패했습니다")
                 }
             }
 
         }
-
-        //이미지뷰 터치시 갤러리로 가서 사진 선택 후 해당 이미지 뷰에 뷰 설정
-        binding.missionCertImg.setOnClickListener {
-            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE1)
-        }
-
-        binding.missionCertImg1.setOnClickListener {
-            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE2)
-        }
-        //뒤로가기 버튼
-        binding.postWriteBackBtn.setOnClickListener {
-            finish()
-        }
-
     }
-
-    //사진 설정을 위한 onActivityResult
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if ((requestCode == GALLERY_REQUEST_CODE1||requestCode == GALLERY_REQUEST_CODE2)
-            && resultCode == Activity.RESULT_OK && data != null) {
-            val selectedImageUri: Uri? = data.data
-            // 선택한 이미지를 해당 이미지뷰에 표시
-            selectedImageUri?.let { uri ->
-
-
-                if(requestCode== GALLERY_REQUEST_CODE1){
-                    binding.writePostPlusImgLayout.backgroundTintList=
-                        ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
-                    binding.missionCertImg.setImageURI(uri)
-                    isHasImg=true
-                    imgList = imgList.toMutableList().apply {
-                        set(0, getRealPathFromURI(uri).toString())
-                    }
-                }else{
-                    binding.writePostPlusImgLayout1.backgroundTintList=
-                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
-                    binding.missionCertImg1.setImageURI(uri)
-                    isHasImg=true
-                    imgList = imgList.toMutableList().apply {
-                        set(1, getRealPathFromURI(uri).toString())
-                    }
-                }
-            }
-        }
-    }
-
 
     //게시글쓰기 api 연결
     private fun posting(author:String,request: PostCreateRequest, categoryId:Long
@@ -274,7 +300,7 @@ class WritePostingActivity : AppCompatActivity() {
 
     //이미지 업로드 api
     private fun ImgUpload(imgPath:List<String>, callback: (Boolean) -> Unit){
-        if(isHasImg){
+        if(isHasNewImg){ //새로운 이미지가 있는 경우만 이미지 업로드
             val imgList:MutableList<File> = mutableListOf()
             for(i in 1..imgPath.size){
                 //있는 사진 부터 순차적으로
@@ -321,10 +347,10 @@ class WritePostingActivity : AppCompatActivity() {
             }
         }else{
             callback(true)
-            showToast("이미지 업로드 실패")
         }
 
     }
+
     //Base64로 인코딩하기
     fun encodeImageToBase64(imagePath: String): String? {
         val bitmap = BitmapFactory.decodeFile(imagePath)

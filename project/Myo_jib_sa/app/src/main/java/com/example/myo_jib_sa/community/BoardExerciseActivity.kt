@@ -8,6 +8,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.community.Retrofit.BoardPost.Articles
+import com.example.myo_jib_sa.community.Retrofit.BoardPost.PopularPostResult
 import com.example.myo_jib_sa.community.Retrofit.BoardPost.PostBoardRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.adapter.BoardAdapter
@@ -33,6 +34,7 @@ class BoardExerciseActivity : AppCompatActivity() {
     private lateinit var Badapter: BoardAdapter
 
     //베스트 게시판인지
+    private var isBest:Boolean=false
 
     private var boardList:MutableList<Articles> = mutableListOf()
 
@@ -47,7 +49,11 @@ class BoardExerciseActivity : AppCompatActivity() {
         isResume=false
 
         boardId=intent.getIntExtra("boardId", 0)
+        isBest=intent.getBooleanExtra("isBest", false)
 
+        if(isBest){
+            setBestBoard()
+        }
 
         //게시판 화면 띄우기
         getBoardData(Constance.jwt, boardId.toLong())
@@ -65,28 +71,7 @@ class BoardExerciseActivity : AppCompatActivity() {
         }
 
         //페이징
-        binding.boardExcsPostRecyclr.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val visibleItemCount = layoutManager.childCount
-                val totalItemCount = layoutManager.itemCount
-                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-
-                // 스크롤이 최하단에 도달했을 때만 페이지 요청
-                if (!isLoading && !isLoadingMore && visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
-                    // 스크롤이 마지막 아이템에 도달하면 다음 페이지 요청
-                    isLoadingMore = true
-                    page++
-                    getBoardData(Constance.jwt, boardId.toLong())
-                }
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                // 스크롤 상태 변경 시 호출되는 부분
-                // newState: 스크롤 상태
-                // 이곳에서 스크롤 상태에 따른 작업을 수행
-            }
-        })
+        paging()
 
 
         //관리자 페이지 넘어가기
@@ -113,11 +98,36 @@ class BoardExerciseActivity : AppCompatActivity() {
 
     }
 
+    //페이징 기능
+    private fun paging(){
+        binding.boardExcsPostRecyclr.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                // 스크롤이 최하단에 도달했을 때만 페이지 요청
+                if (!isLoading && !isLoadingMore && visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
+                    // 스크롤이 마지막 아이템에 도달하면 다음 페이지 요청
+                    isLoadingMore = true
+                    page++
+                    getBoardData(Constance.jwt, boardId.toLong())
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                // 스크롤 상태 변경 시 호출되는 부분
+                // newState: 스크롤 상태
+                // 이곳에서 스크롤 상태에 따른 작업을 수행
+            }
+        })
+    }
+
     //API 연결, 리사이클러뷰 띄우기
     private fun getBoardData(author:String ,id:Long){
 
         //게시판 이름
-
             when(id.toInt()){
                 Constance.ART_ID-> {
                     binding.boardExcsNameTxt.text="예술 게시판"
@@ -128,7 +138,11 @@ class BoardExerciseActivity : AppCompatActivity() {
                 Constance.EXERCISE_ID-> {
                     binding.boardExcsNameTxt.text="운동 게시판"
                 }
-
+        }
+        if(isBest){
+            binding.boardExcsNameTxt.text="인기 게시글"
+            getBestData(author)
+            return
         }
 
 
@@ -157,7 +171,12 @@ class BoardExerciseActivity : AppCompatActivity() {
                         Log.d("게시판 API missionID 확인", response.result.mainMissionId.toString())
 
                         missionId=response.result.mainMissionId
-                        missionImg=response.result.categoryImage
+                        if(response.result.categoryImage.isNotEmpty()){
+                            missionImg=response.result.categoryImage
+                        }else{
+                            missionImg=""
+                        }
+
 
                         //리사이클러뷰 연결
                         linkBrecyclr(boardList)
@@ -209,4 +228,61 @@ class BoardExerciseActivity : AppCompatActivity() {
 
     }
 
+    private fun getBestData(author:String){
+        val retrofitManager = PostBoardRetrofitManager.getInstance(this)
+        retrofitManager.popular(author,page){response ->
+            if(response.isSuccess=="true"){
+                val list:MutableList<Articles> = mutableListOf()
+                var tempList=Articles(0,",",",",-1,-1)
+                for(i in 1..response.result.size){
+                    tempList= Articles(response.result[i-1].articleId
+                        ,response.result[i-1].articleTitle
+                        ,response.result[i-1].uploadTime
+                        ,response.result[i-1].likeCount
+                        ,response.result[i-1].commentCount)
+                    list.add(tempList)
+                }
+
+                boardList=list.toMutableList()
+                //hostId=response.result.categoryHostId
+                //missionId=response.result.mainMissionId
+                Log.d("페이지 수", page.toString())
+                if(list?.isNotEmpty()==true){
+                    if(page!=0){
+                        boardList.addAll(list)
+                        Badapter.updateData(boardList)
+                        Badapter.notifyDataSetChanged()
+
+                    }else{
+                        //로그
+                        Log.d("게시판 API boardList 확인", boardList[0].articleTitle)
+                        Log.d("게시판 API boardList 확인", boardList[0].likeCount.toString())
+                        Log.d("게시판 API boardList 확인", boardList[0].commentCount.toString())
+                        Log.d("게시판 API boardList 확인", boardList[0].uploadTime.toString())
+
+                        //리사이클러뷰 연결
+                        linkBrecyclr(boardList)
+                    }
+                    isLoadingMore = false // 페이지 요청 완료 후 isLoadingMore를 false로 설정
+                }else{
+                    Log.d("게시판 API 리사이클러뷰 어댑터로 리스트 전달", "List가 비었다네요")
+                    page--
+                }
+                isLoading = false
+            } else {
+                // API 호출은 성공했으나 isSuccess가 false인 경우 처리
+                val returnCode = response.code
+                val returnMsg = response.message
+
+                Log.d("게시판 API isSuccess가 false", "${returnCode}  ${returnMsg}")
+            }
+
+
+        }
+    }
+
+    private fun setBestBoard(){
+        binding.boardExcsMissiomTxt.visibility=View.INVISIBLE
+        binding.boardPostingBtn.hide()
+    }
 }

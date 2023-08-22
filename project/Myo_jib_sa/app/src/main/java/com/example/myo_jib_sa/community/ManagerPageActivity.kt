@@ -4,11 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
@@ -35,13 +37,20 @@ class ManagerPageActivity : AppCompatActivity() {
         val boardId= intent.getIntExtra("boardId",0)
 
         //이미지 설정
+        binding.managerPageImg.clipToOutline=true //모서리 둥글게
         missionImg=intent.getStringExtra("missionImg").toString()
-        if(!missionImg.isNullOrBlank()){
+
+        if(missionImg.isNotBlank()){
+            binding.managerPageImgIc.visibility= View.GONE
             binding.constraintLayout.backgroundTintList=
                 ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
             Glide.with(this)
                 .load(missionImg)
                 .into(binding.managerPageImg)
+        }else{
+            binding.constraintLayout.backgroundTintList =
+                ColorStateList.valueOf(Color.parseColor("#F1F1F1"))
+            setMissionIcon(boardId.toLong())
         }
 
         //게시판 이름
@@ -76,7 +85,6 @@ class ManagerPageActivity : AppCompatActivity() {
         }
 
         //미션 생성 페이지로 이동
-        //todo: 진행중인 미션이 없다면 미션 생성 페이지로 이동
         binding.managerPageMissionBtn.setOnClickListener {
             Log.d("미션 생성 페이지로 이동", "미션 생성 페이지로 이동")
             val intent=Intent(this, ManagerMissionCreateActivity::class.java)
@@ -94,16 +102,34 @@ class ManagerPageActivity : AppCompatActivity() {
     //이미지 설정
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            val imgPath = data?.getStringExtra("imgPath")
-            val imageUri = Uri.parse(imgPath)
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            val imgPath = data.getStringExtra("imgPath")
+            Log.d("바뀐 이미지", imgPath.toString())
+            Glide.with(this)
+                .load(imgPath)
+                .into(binding.managerPageImg)
 
-            binding.managerPageImg.setImageURI(imageUri)
 
         }
     }
 
-
+    //기본 이미지 설정
+    private fun setMissionIcon(boardId:Long){
+        when(boardId.toInt()){
+            Constance.ART_ID-> {
+                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_art)
+                binding.managerPageImgIc.setImageDrawable(drawable)
+            }
+            Constance.FREE_ID-> {
+                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_free)
+                binding.managerPageImgIc.setImageDrawable(drawable)
+            }
+            Constance.EXERCISE_ID-> {
+                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_exercise)
+                binding.managerPageImgIc.setImageDrawable(drawable)
+            }
+        }
+    }
 
 
 }
