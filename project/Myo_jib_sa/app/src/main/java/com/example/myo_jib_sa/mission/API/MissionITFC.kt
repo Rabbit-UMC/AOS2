@@ -19,7 +19,8 @@ interface MissionITFC {
     //카테고리별로 미션 확인
     @GET("app/mission/category/{categoryId}")
     fun MissionCategory(
-        @Query ("categoryId") categoryId: Int
+        @Header("X-ACCESS-TOKEN") accessToken: String,
+        @Path ("categoryId") categoryId: Int
     ): Call<MissionCategoryResponse>
 
     //미션 상세보기

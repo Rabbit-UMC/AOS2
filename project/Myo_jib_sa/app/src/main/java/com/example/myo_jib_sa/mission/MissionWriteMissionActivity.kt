@@ -67,8 +67,8 @@ class MissionWriteMissionActivity : AppCompatActivity(),DataTransferInterface{
     private var isSelectingStartTime = false
     private var isSelectingEndTime = false
 
-    //카테고리 설정 상태 변수
-    private var isSelectingCategory = false
+/*    //카테고리 설정 상태 변수
+    private var category: Int = 1*/
 
     companion object {
         lateinit var missionRequest: MissionWriteRequest
