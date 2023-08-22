@@ -44,7 +44,7 @@ class MissionDetailDialogFragment(private val item: MissionItem) : DialogFragmen
         // API 호출 및 데이터 처리
         val accessToken = jwt.toString()
         val missionId = item.missionId
-        Log.d("detail",missionId.toString())
+        Log.d("home","{상세보기 ID: $missionId.toString()}")
 
         retrofit.MissionDetail(accessToken, missionId).enqueue(object : Callback<MissionDetailResponse> {
             override fun onResponse(
@@ -87,6 +87,7 @@ class MissionDetailDialogFragment(private val item: MissionItem) : DialogFragmen
 
         binding.missionWithBtn.setOnClickListener {
             // 미션 같이하기 api 연결 로직
+            Log.d("home","{같이하기 ID: $missionId.toString()}")
             retrofit.MissionWith(accessToken,item.missionId).enqueue(object : Callback<MissionWithResponse> {
                 override fun onResponse(call: Call<MissionWithResponse>, response: Response<MissionWithResponse>) {
                     if (response.isSuccessful) {
@@ -95,13 +96,15 @@ class MissionDetailDialogFragment(private val item: MissionItem) : DialogFragmen
                             if (withResponse.isSuccess) {
                                 // 성공적으로 미션 같이하기가 완료된 경우 처리
                                 val message = withResponse.message
+                                val result = withResponse.result
 
-                                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), result, Toast.LENGTH_SHORT).show()
                             } else {
                                 // 미션 같이하기에 실패한 경우 처리
                                 val message = withResponse.message
+                                val result = withResponse.result
 
-                                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), result, Toast.LENGTH_SHORT).show()
                             }
                         }
                     } else {
@@ -168,7 +171,7 @@ class MissionDetailDialogFragment(private val item: MissionItem) : DialogFragmen
         return Math.round(dp.toFloat() * density)
     }
 
-    private fun setDialogSize(dialog: Dialog, widthPercentage: Double, height: Int) {
+/*    private fun setDialogSize(dialog: Dialog, widthPercentage: Double, height: Int) {
         val layoutParams = WindowManager.LayoutParams()
         layoutParams.copyFrom(dialog.window?.attributes)
 
@@ -182,5 +185,5 @@ class MissionDetailDialogFragment(private val item: MissionItem) : DialogFragmen
         layoutParams.height = height
 
         dialog.window?.attributes = layoutParams
-    }
+    }*/
 }

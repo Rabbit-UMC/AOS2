@@ -86,6 +86,7 @@ class MissionFragment : Fragment() {
                     val missionHomeResponse = response.body()
                     val dataList = missionHomeResponse?.result ?: emptyList()
 
+                    Log.d("home",missionHomeResponse.toString())
                     // 어댑터 생성 및 리사이클러뷰에 설정
                     setUpMissionAdapter(dataList)
 
@@ -112,7 +113,7 @@ class MissionFragment : Fragment() {
                 if (response.isSuccessful) {
                     val missionCategoryResponse = response.body()
                     val cateDataList = missionCategoryResponse?.result ?: emptyList()
-
+                    Log.d("home",missionCategoryResponse.toString())
                     // 어댑터 생성 및 리사이클러뷰에 설정
                     setUpMissionAdapter(cateDataList)
 
