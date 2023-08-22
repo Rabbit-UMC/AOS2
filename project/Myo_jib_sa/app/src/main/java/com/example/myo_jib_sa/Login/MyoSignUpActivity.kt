@@ -43,9 +43,8 @@ class MyoSignUpActivity : AppCompatActivity() {
         // SharedPreferences 객체 가져오기
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
-        val jwt = sharedPreferences.getString("jwt", null)
-
-       // val jwt="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoyMDIsImlhdCI6MTY5MjU0Mjc0MiwiZXhwIjoxNjkyNTQ2MzQyfQ.FEksV9BFIeDBVOsTVHwNPuMlctCLrJmCa6xaZTjYXew"
+        var jwt = sharedPreferences.getString("jwt", null)
+        Log.d("signToken","signUpjwt:{$jwt}")
 
         val ageCheckBox = binding.signUpAgeCheckBox
         val useCheckBox = binding.signUpUseCheckBox
@@ -56,50 +55,12 @@ class MyoSignUpActivity : AppCompatActivity() {
 
         val userEmail=intent.getStringExtra("email").toString()
 
+        if(jwt==null){
+            jwt=intent.getStringExtra("jwtToken").toString()
+        }
+
 
         Log.d("token","email:{$userEmail}")
-
-        //로그인 api 연결
-        // 카카오 로그인 API 호출
-       /* val clientId = BuildConfig.KAKAO_API_KEY
-        val redirectUri = BuildConfig.Redirect_URI
-        val responseType = "code"
-
-        //Login API 연결
-        retrofit.Login(accessToken,clientId, redirectUri, responseType).enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                if (response.isSuccessful) {
-                    val loginResponse = response.body()
-                    loginResponse?.let {
-                        Log.d("LoginResponse", "isSuccess: ${it.isSucces}")
-                        Log.d("LoginResponse", "code: ${it.code}")
-                        Log.d("LoginResponse", "message: ${it.message}")
-                        it.result?.let { loginResult ->
-                            jwtToken = loginResult.jwtAccessToken
-                            Log.d("LoginResponse", "id: ${loginResult.id}")
-                            Log.d("LoginResponse", "jwt: ${jwtToken}")
-
-                            // jwtToken을 sharedPreference에 저장하기
-                            val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-                            val getJwt = sharedPreferences.edit()
-                            // JWT 저장
-                            val jwt = jwtToken
-                            if (jwt != null) {
-                                getJwt.putString("jwt", jwt)
-                            }
-                            getJwt.apply()
-                        }
-                    }
-                } else {
-                    val errorBody = response.errorBody()?.string()
-                    Log.e("LoginResponse", "API 호출 실패: ${response.code()}, ${response.message()}")
-                    Log.e("LoginResponse", "Error Body: $errorBody")}
-            }
-
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.e("LoginResponse", "onFail API 호출 실패: ${t.message}")
-            }
-        })*/
 
         UserApiClient.instance.me { user, error ->
             if (error != null) {
@@ -134,25 +95,6 @@ class MyoSignUpActivity : AppCompatActivity() {
             }
         }
 
-
-
-
-      /*  binding.signUpTestNickNameBtn.setOnClickListener{
-            //Log.d("LoginResponse","check jwt:{$jwtToken}")
-            //카카오 이메일 입력 받은 경우 카카오 이메일 넣어주기
-            //현재 오류 있음,, 고칠 것
-            if (kakaoEmail != null){
-                jwtToken.toString()?.let { signUpUser(jwtToken.toString(),kakaoEmail,userNickname) }
-                while(returnCode!=409)
-                    checkUserName()
-            }
-            //카카오 이메일 입력 받지 않은 경우는 따로 입력 받은 이메일 넣어주기
-            else{
-                jwtToken.toString()?.let { signUpUser(jwtToken.toString(),userEmail,userNickname) }
-                while(returnCode!=409)
-                    checkUserName()
-            }
-        }*/
 
 
 
@@ -290,25 +232,6 @@ class MyoSignUpActivity : AppCompatActivity() {
 
         }
     }
-    /*fun checkUserName(){
-        //닉네임 중복 체크
-        //returnMsg가 "중복된 닉네임입니다." 일 경우에는 중복됐다고 알려주기
-        //binding.signUpCheckUserName 색이랑 문구 바꿔주기
-        //정상일 경우: #FF8EBE59 사용가능합니다.
-        //중복일 경우: #FFE93425 중복됐습니다.
-        //중복일 경우는 닉네임 다시 입력 받고 api에 올려주기(while문 사용해서 사용가능 뜰 때까지 반복)
-        if (returnCode !== 409) {
-            // 정상일 경우
-            binding.signUpCheckUserName.setText("사용 가능합니다.");
-            binding.signUpCheckUserName.setTextColor(0xFF8EBE59.toInt())
-        } else {
-            // 중복일 경우
-            binding.signUpCheckUserName.setText("중복됐습니다.");
-            binding.signUpCheckUserName.setTextColor(0xFFE93425.toInt())
-            // 닉네임 재입력 로직 구현
-            // 예시: 사용자로부터 새로운 닉네임을 입력받고, 다시 API에 올려주는 로직 등을 구현해야 합니다.
-        }
-    }*/
 
     fun signUpUser(jwtToken:String,email: String?, nickName: String?) {
 

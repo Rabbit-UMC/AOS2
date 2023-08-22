@@ -22,6 +22,7 @@ import retrofit2.Response
 class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
     private lateinit var binding: ActivityKakaoLoginBinding
     private lateinit var accessToken:String
+    private lateinit var jwtToken:String
     var kakaoEmail: String? = null
     // Retrofit 객체 가져오기
     val retrofit = RetrofitInstance.getInstance().create(LoginITFC::class.java)
@@ -72,17 +73,19 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                     kakaoEmail = user.kakaoAccount?.email
                     accessToken = token.accessToken
                     Log.d("token", accessToken)
-                    if (kakaoEmail != null) {
-                        // 카카오이메일 있으면 바로 묘집사 회원가입으로 이동
-                        LoginApi(accessToken)
-                        val intent = Intent(this@KakaoLoginActivity, MyoSignUpActivity::class.java)
-                        intent.putExtra("accessToken", accessToken)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        startActivity(intent)
-                        Log.d("token", accessToken)
-                    } else {
-                        // 카카오이메일 없으면 추가 이메일 입력 다이얼로그로 이동
-                        showAddEmailDialog()
+
+                    LoginApi(accessToken) { jwtToken ->
+                        if (kakaoEmail != null) {
+                            // 카카오 이메일이 있으면 바로 묘집사 회원가입으로 이동
+                            val intent = Intent(this@KakaoLoginActivity, MyoSignUpActivity::class.java)
+                            intent.putExtra("jwtToken", jwtToken)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            startActivity(intent)
+                            Log.d("token", accessToken)
+                        } else {
+                            // 카카오 이메일이 없으면 추가 이메일 입력 다이얼로그로 이동
+                            showAddEmailDialog()
+                        }
                     }
                 }
             }
@@ -90,7 +93,7 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
         }
     }
 
-    private fun LoginApi(accessToken: String) {
+    private fun LoginApi(accessToken: String, callback: (String) -> Unit) {
         val clientId = BuildConfig.KAKAO_API_KEY
         val redirectUri = BuildConfig.Redirect_URI
         val responseType = "code"
@@ -103,9 +106,10 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                         Log.d("LoginResponse", "code: ${it.code}")
                         Log.d("LoginResponse", "message: ${it.message}")
                         it.result?.let { loginResult ->
-                            val jwtToken = loginResult.jwtAccessToken
+                            jwtToken = loginResult.jwtAccessToken
+                            callback(jwtToken)
                             Log.d("LoginResponse", "id: ${loginResult.id}")
-                            Log.d("LoginResponse", "jwt: ${jwtToken}")
+                            Log.d("signToken", "kakaojwt: ${jwtToken}")
 
                             // jwtToken을 sharedPreference에 저장하기
                             val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
@@ -116,6 +120,7 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                                 getJwt.putString("jwt", jwt)
                             }
                             getJwt.apply()
+                            Log.d("signToken", "apijwt: ${jwt}")
                         }
                     }
                 } else {
@@ -140,7 +145,7 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.putExtra("email", email)
         intent.putExtra("accessToken",accessToken)
-        LoginApi(accessToken)
+       // LoginApi(accessToken)
         startActivity(intent)
     }
     private fun showAddEmailDialog() {
