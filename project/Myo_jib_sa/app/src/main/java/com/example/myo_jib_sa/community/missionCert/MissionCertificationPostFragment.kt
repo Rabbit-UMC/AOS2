@@ -49,7 +49,7 @@ class MissionCertificationPostFragment : Fragment() {
                 var rlist: MutableList<MCrecyclrImg> = mutableListOf()
                 var tempList:MutableList<MissionProofImages> = mutableListOf()
 
-                val empty=MissionProofImages(-1, -1, "empty")
+                val empty=MissionProofImages(-1, -1, "empty", false)
 
                 for (i in 1..data.size) { // 데이터 3개씩 나눠 담기
                     tempList.add(data[i - 1])

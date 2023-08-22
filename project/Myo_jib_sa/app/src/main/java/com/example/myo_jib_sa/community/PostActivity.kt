@@ -65,9 +65,13 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 }
             }
         }
+
+        //정보 저장
         boardId=intent.getIntExtra("boardId", 0).toLong()
         postId=intent.getLongExtra("postId", 0L)
         Log.d("게시물 ID", "게시물 id : ${postId}")
+
+        //게시글 뷰 설정
         setPostData(Constance.jwt, binding, boardId.toInt(), postId)
 
 
@@ -118,7 +122,6 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
 
     //    팝업 메뉴 보여주는 커스텀 메소드
-    //작성자 아이디와 본인 아이디 비교해서 서로 다른 메뉴를 보여주는 부분 구현 필요
     private fun showPopup(v: View) {
         if(myPost){
             val popup = PopupMenu(this, v) // PopupMenu 객체 선언
@@ -134,7 +137,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
     }
 
-    // 팝업 메뉴 아이템 클릭 시 실행되는 메소드
+    // 팝업 메뉴 아이템 클릭 시 실행되는 메소드, 글 작성자와 일반 유저가 보이는 메뉴가 다름
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         if(myPost){
             when (item?.itemId) { // 메뉴 아이템에 따라 동작 다르게 하기
@@ -269,19 +272,12 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         //이미지 리사이클러뷰 todo:다시 바꾸기
         if(contents.result.articleImage.isNotEmpty()){
             Log.d("게시글 이미지",contents.result.articleImage.toString() )
-            binding.postLineLinear.backgroundTintList=
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+
+            //이미지가 있으면 아래 구분선 없애기
+            binding.postLineLinear.visibility=View.INVISIBLE
+
             linkImgRecyclr(contents.result.articleImage)
         }
-
-        /*if(contents.result.articleImage[0].filePath.isNotBlank()){
-            Log.d("게시글 이미지",contents.result.articleImage.toString() )
-            binding.postLineLinear.backgroundTintList=
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
-            linkImgRecyclr(contents.result.articleImage)
-        }else{
-            linkImgRecyclr(contents.result.articleImage)
-        }*/
 
 
         //댓글 리사이클러뷰

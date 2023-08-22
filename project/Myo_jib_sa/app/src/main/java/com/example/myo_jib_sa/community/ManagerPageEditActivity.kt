@@ -61,7 +61,7 @@ class ManagerPageEditActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(missionImg)
                 .into(binding.managerPageImg)
-        }else{
+        }else{ //기본 이미지로 설정
             binding.constraintLayout.backgroundTintList =
                 ColorStateList.valueOf(Color.parseColor("#F1F1F1"))
             setMissionIcon(boardId)

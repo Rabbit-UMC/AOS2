@@ -39,6 +39,7 @@ class ManagerPageActivity : AppCompatActivity() {
         //이미지 설정
         binding.managerPageImg.clipToOutline=true //모서리 둥글게
         missionImg=intent.getStringExtra("missionImg").toString()
+
         if(missionImg.isNotBlank()){
             binding.managerPageImgIc.visibility= View.GONE
             binding.constraintLayout.backgroundTintList=
@@ -84,7 +85,6 @@ class ManagerPageActivity : AppCompatActivity() {
         }
 
         //미션 생성 페이지로 이동
-        //todo: 진행중인 미션이 없다면 미션 생성 페이지로 이동
         binding.managerPageMissionBtn.setOnClickListener {
             Log.d("미션 생성 페이지로 이동", "미션 생성 페이지로 이동")
             val intent=Intent(this, ManagerMissionCreateActivity::class.java)
