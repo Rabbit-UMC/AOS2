@@ -457,6 +457,7 @@ class ScheduleFragment(context: Context) : Fragment() {
         val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
         val token = sharedPreferences.getString("jwt", "")
+
         Log.d("LoginRespons", "token = "+token)
         //val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");

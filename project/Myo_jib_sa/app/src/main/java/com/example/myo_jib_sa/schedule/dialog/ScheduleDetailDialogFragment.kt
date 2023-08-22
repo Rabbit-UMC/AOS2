@@ -204,8 +204,10 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
         // JWT 값 가져오기
         val token = sharedPreferences.getString("jwt", null)
 
+     /*   val token ="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTI3MjE1OTMsImV4cCI6MTY5MjcyNTE5M30.QQBX4y9UIAnMMS_8sbU7tbXti2TU8TsosXRVEWBs_FM"
+*/
         //val token: String = BuildConfig.API_TOKEN
-        Log.d("debug", "token = "+token+"l");
+        Log.d("token", "token D= "+token);
 
         val service = RetrofitClient.getInstance().create(ScheduleDetailService::class.java)
         val listCall = service.scheduleDetail(token, scheduleId)
