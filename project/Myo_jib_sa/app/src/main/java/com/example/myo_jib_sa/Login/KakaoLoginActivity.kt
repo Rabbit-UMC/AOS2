@@ -120,8 +120,8 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                             val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
                             val getJwt = sharedPreferences.edit()
                             // JWT 저장
-                            val jwt ="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoyMDEsImlhdCI6MTY5MTM5NTg1MiwiZXhwIjoxNjkyODY3MDgxfQ.gGkATX_PrVj3waDaiAXbF3zwEAsR_2GVBy65xeji25k"
-                                if (jwt != null) {
+                            val jwt ="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTI3MjE1OTMsImV4cCI6MTY5MjcyNTE5M30.QQBX4y9UIAnMMS_8sbU7tbXti2TU8TsosXRVEWBs_FM"
+                            if (jwt != null) {
                                 getJwt.putString("jwt", jwt)
                             }
                             getJwt.apply()
