@@ -23,10 +23,7 @@ import com.example.myo_jib_sa.community.Retrofit.post.ImageList
 import com.example.myo_jib_sa.community.Retrofit.post.PostCreateRequest
 import com.example.myo_jib_sa.community.Retrofit.post.PostEditRequest
 import com.example.myo_jib_sa.community.Retrofit.post.PostRetrofitManager
-import com.example.myo_jib_sa.community.adapter.PostImgAdapter
-import com.example.myo_jib_sa.community.adapter.WritePostImgAdapter
 import com.example.myo_jib_sa.databinding.ActivityWritePostingBinding
-import kotlinx.coroutines.flow.emptyFlow
 import java.io.ByteArrayOutputStream
 import java.io.File
 
