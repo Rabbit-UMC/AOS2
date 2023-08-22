@@ -5,18 +5,14 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
-import com.example.myo_jib_sa.community.adapter.WritePostImgAdapter
 import com.example.myo_jib_sa.databinding.ActivityManagerPageBinding
 
 class ManagerPageActivity : AppCompatActivity() {
@@ -117,15 +113,15 @@ class ManagerPageActivity : AppCompatActivity() {
     private fun setMissionIcon(boardId:Long){
         when(boardId.toInt()){
             Constance.ART_ID-> {
-                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_art)
+                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_art_p)
                 binding.managerPageImgIc.setImageDrawable(drawable)
             }
             Constance.FREE_ID-> {
-                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_free)
+                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_free_p)
                 binding.managerPageImgIc.setImageDrawable(drawable)
             }
             Constance.EXERCISE_ID-> {
-                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_exercise)
+                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_exercise_p)
                 binding.managerPageImgIc.setImageDrawable(drawable)
             }
         }

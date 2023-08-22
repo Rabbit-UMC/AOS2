@@ -43,8 +43,7 @@ class MyoSignUpActivity : AppCompatActivity() {
         // SharedPreferences 객체 가져오기
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
-        var jwt = sharedPreferences.getString("jwt", null)
-        Log.d("signToken","signUpjwt:{$jwt}")
+        val jwt = sharedPreferences.getString("jwt", null)
 
         val ageCheckBox = binding.signUpAgeCheckBox
         val useCheckBox = binding.signUpUseCheckBox
@@ -54,10 +53,6 @@ class MyoSignUpActivity : AppCompatActivity() {
         val signUpButton = binding.signUpSignUpBtn
 
         val userEmail=intent.getStringExtra("email").toString()
-
-        if(jwt==null){
-            jwt=intent.getStringExtra("jwtToken").toString()
-        }
 
 
         Log.d("token","email:{$userEmail}")
@@ -232,6 +227,25 @@ class MyoSignUpActivity : AppCompatActivity() {
 
         }
     }
+    /*fun checkUserName(){
+        //닉네임 중복 체크
+        //returnMsg가 "중복된 닉네임입니다." 일 경우에는 중복됐다고 알려주기
+        //binding.signUpCheckUserName 색이랑 문구 바꿔주기
+        //정상일 경우: #FF8EBE59 사용가능합니다.
+        //중복일 경우: #FFE93425 중복됐습니다.
+        //중복일 경우는 닉네임 다시 입력 받고 api에 올려주기(while문 사용해서 사용가능 뜰 때까지 반복)
+        if (returnCode !== 409) {
+            // 정상일 경우
+            binding.signUpCheckUserName.setText("사용 가능합니다.");
+            binding.signUpCheckUserName.setTextColor(0xFF8EBE59.toInt())
+        } else {
+            // 중복일 경우
+            binding.signUpCheckUserName.setText("중복됐습니다.");
+            binding.signUpCheckUserName.setTextColor(0xFFE93425.toInt())
+            // 닉네임 재입력 로직 구현
+            // 예시: 사용자로부터 새로운 닉네임을 입력받고, 다시 API에 올려주는 로직 등을 구현해야 합니다.
+        }
+    }*/
 
     fun signUpUser(jwtToken:String,email: String?, nickName: String?) {
 
