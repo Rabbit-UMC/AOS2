@@ -110,8 +110,8 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                             Log.d("LoginResponse", "id: ${loginResult.id}")
                             Log.d("LoginResponse", "jwt: ${jwtToken}")
 
-                            /*// jwtToken을 sharedPreference에 저장하기
-                            val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+                            // jwtToken을 sharedPreference에 저장하기
+                           /* val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
                             val getJwt = sharedPreferences.edit()
                             // JWT 저장
                             val jwt = jwtToken
@@ -122,8 +122,8 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                             val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
                             val getJwt = sharedPreferences.edit()
                             // JWT 저장
-                            val jwt ="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTI3MjY0NDQsImV4cCI6MTY5MjczMDA0NH0.1O842SB5KUqefN17OtLp3EJrFHHfHEDqXKCdD_f7MzU"
-                                if (jwt != null) {
+                            val jwt ="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTE2NjUwMzIsImV4cCI6MTY5MzEzNjI2MX0.mlOx8WnywdEYGNDHkhlqP3agL3rVMyvwgwWP8VlvsXM"
+                            if (jwt != null) {
                                 getJwt.putString("jwt", jwt)
                             }
                             getJwt.apply()
