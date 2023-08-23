@@ -28,6 +28,7 @@ class ImageActivity: AppCompatActivity()  {
     private var isReportable:Boolean=false //신고가능인지
     private var imgId:Long=0 //이미지 아이디
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityImageBinding.inflate(layoutInflater)
