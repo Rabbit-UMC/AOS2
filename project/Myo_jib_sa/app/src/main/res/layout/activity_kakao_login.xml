@@ -39,7 +39,7 @@
         android:fontFamily="@font/font_inter"
         android:text="카카오 이메일 미선택시\n다른 이메일 인증 과정이 있습니다."
         android:textColor="@color/white"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"

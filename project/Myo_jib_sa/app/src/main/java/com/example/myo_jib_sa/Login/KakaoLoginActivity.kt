@@ -26,49 +26,34 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
     // Retrofit 객체 가져오기
     val retrofit = RetrofitInstance.getInstance().create(LoginITFC::class.java)
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityKakaoLoginBinding.inflate(layoutInflater)
         installSplashScreen()
         setContentView(binding.root)
 
-        // 자동로그인 처리
+        // 앱 시작 시 자동 로그인 체크
+
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-
-
-
-
-
-
-
-
-
-        val savedJwt = sharedPreferences.getString("jwt", null)
-
-        Log.d("Login","${savedJwt}")
-
-
-
-
-        //저장된 Jwt가 있다면 바로 홈으로
-        if (savedJwt != null ) {
-            // 로그인 성공 처리
-            Log.d("Login","${savedJwt}")
-            val intent = Intent(this@KakaoLoginActivity, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(intent)
+        val jwtToken = sharedPreferences.getString("jwt", null)
+        if (jwtToken != null) {
+            // 저장된 토큰이 있다면 자동으로 로그인
+            autoLogin(jwtToken)
         }
-        //아닐경우 회원가입
 
-            binding.kakaoLoginBtn.setOnClickListener {
 
-                //kakao로그인
-                if (UserApiClient.instance.isKakaoTalkLoginAvailable(this@KakaoLoginActivity)) {
-                    UserApiClient.instance.loginWithKakaoTalk(this@KakaoLoginActivity, callback = callback)
-                } else {
-                    UserApiClient.instance.loginWithKakaoAccount(this@KakaoLoginActivity, callback = callback)
-                }
+
+
+        binding.kakaoLoginBtn.setOnClickListener {
+
+
+            if (UserApiClient.instance.isKakaoTalkLoginAvailable(this@KakaoLoginActivity)) {
+                UserApiClient.instance.loginWithKakaoTalk(this@KakaoLoginActivity, callback = callback)
+            } else {
+                UserApiClient.instance.loginWithKakaoAccount(this@KakaoLoginActivity, callback = callback)
             }
+        }
 
 
     }
@@ -82,55 +67,16 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                     Log.e("kakao", "사용자 정보 요청 실패", error)
                 } else if (user != null) {
                     kakaoEmail = user.kakaoAccount?.email
-                    accessToken=token.accessToken
+                    accessToken = token.accessToken
                     Log.d("token", accessToken)
                     if (kakaoEmail != null) {
                         // 카카오이메일 있으면 바로 묘집사 회원가입으로 이동
-                        val clientId = BuildConfig.KAKAO_API_KEY
-                        val redirectUri = BuildConfig.Redirect_URI
-                        val responseType = "code"
-
-                        //Login API 연결
-                        retrofit.Login(accessToken,clientId, redirectUri, responseType).enqueue(object :
-                            Callback<LoginResponse> {
-                            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                                if (response.isSuccessful) {
-                                    val loginResponse = response.body()
-                                    loginResponse?.let {
-                                        Log.d("LoginResponse", "isSuccess: ${it.isSucces}")
-                                        Log.d("LoginResponse", "code: ${it.code}")
-                                        Log.d("LoginResponse", "message: ${it.message}")
-                                        it.result?.let { loginResult ->
-                                            val jwtToken = loginResult.jwtAccessToken
-                                            Log.d("LoginResponse", "id: ${loginResult.id}")
-                                            Log.d("LoginResponse", "jwt: ${jwtToken}")
-
-                                            // jwtToken을 sharedPreference에 저장하기
-                                            val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-                                            val getJwt = sharedPreferences.edit()
-                                            // JWT 저장
-                                            val jwt = jwtToken
-                                            if (jwt != null) {
-                                                getJwt.putString("jwt", jwt)
-                                            }
-                                            getJwt.apply()
-                                        }
-                                    }
-                                } else {
-                                    val errorBody = response.errorBody()?.string()
-                                    Log.e("LoginResponse", "API 호출 실패: ${response.code()}, ${response.message()}")
-                                    Log.e("LoginResponse", "Error Body: $errorBody")}
-                            }
-
-                            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                                Log.e("LoginResponse", "onFail API 호출 실패: ${t.message}")
-                            }
-                        })
+                        LoginApi(accessToken)
                         val intent = Intent(this@KakaoLoginActivity, MyoSignUpActivity::class.java)
-                        intent.putExtra("accessToken",accessToken)
+                        intent.putExtra("accessToken", accessToken)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        startActivity(intent)
                         Log.d("token", accessToken)
-                        finish()
                     } else {
                         // 카카오이메일 없으면 추가 이메일 입력 다이얼로그로 이동
                         showAddEmailDialog()
@@ -140,15 +86,72 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
             Log.d("token", "카카오계정으로 로그인 성공 ${token.accessToken}")
         }
     }
+    private fun autoLogin(jwtToken: String) {
+        // 로그인 성공 시 메인 화면으로 이동
+        val intent = Intent(this@KakaoLoginActivity, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+    }
+
+    private fun LoginApi(accessToken: String) {
+        val clientId = BuildConfig.KAKAO_API_KEY
+        val redirectUri = BuildConfig.Redirect_URI
+        val responseType = "code"
+
+        retrofit.Login(accessToken, clientId, redirectUri, responseType).enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                if (response.isSuccessful) {
+                    val loginResponse = response.body()
+                    loginResponse?.let {
+                        Log.d("LoginResponse", "code: ${it.code}")
+                        Log.d("LoginResponse", "message: ${it.message}")
+                        it.result?.let { loginResult ->
+                            val jwtToken = loginResult.jwtAccessToken
+                            Log.d("LoginResponse", "id: ${loginResult.id}")
+                            Log.d("LoginResponse", "jwt: ${jwtToken}")
+
+                            /*// jwtToken을 sharedPreference에 저장하기
+                            val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+                            val getJwt = sharedPreferences.edit()
+                            // JWT 저장
+                            val jwt = jwtToken
+                            if (jwt != null) {
+                                getJwt.putString("jwt", jwt)
+                            }
+                            getJwt.apply()*/
+                            val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+                            val getJwt = sharedPreferences.edit()
+                            // JWT 저장
+                            val jwt ="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTI3MjY0NDQsImV4cCI6MTY5MjczMDA0NH0.1O842SB5KUqefN17OtLp3EJrFHHfHEDqXKCdD_f7MzU"
+                                if (jwt != null) {
+                                getJwt.putString("jwt", jwt)
+                            }
+                            getJwt.apply()
+                        }
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("LoginResponse", "API 호출 실패: ${response.code()}, ${response.message()}")
+                    Log.e("LoginResponse", "Error Body: $errorBody")
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("LoginResponse", "onFail API 호출 실패: ${t.message}")
+            }
+        })
+    }
+
+
 
     // 이메일 입력 완료 시 호출되는 콜백 함수
     override fun onEmailEntered(email: String) {
         // 이메일 값 처리 후 MyoSignUpActivity로 이동
         val intent = Intent(this@KakaoLoginActivity, MyoSignUpActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.putExtra("email", email)
         intent.putExtra("accessToken",accessToken)
         startActivity(intent)
-        finish()
     }
     private fun showAddEmailDialog() {
         val dialog = LoginAddEmailDialogFragment(this)

@@ -10,7 +10,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="249dp"
         android:layout_height="259dp"
-        android:background="@drawable/background_post_item"
+        android:background="@drawable/background_mission"
         android:backgroundTint="#F1F1F1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/managerPage_img"
+            android:id="@+id/managerPage_ic_img"
             android:layout_width="130dp"
             android:layout_height="130dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -26,6 +26,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_schedule_new_schedule" />
+
+        <ImageView
+            android:id="@+id/managerPage_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_mission"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
@@ -50,6 +61,7 @@
         android:background="@drawable/background_community_btn"
         android:backgroundTint="#234BD9"
         android:text="완료"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

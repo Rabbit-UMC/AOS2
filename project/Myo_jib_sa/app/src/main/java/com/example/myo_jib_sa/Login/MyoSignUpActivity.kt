@@ -57,48 +57,6 @@ class MyoSignUpActivity : AppCompatActivity() {
 
         Log.d("token","email:{$userEmail}")
 
-        //로그인 api 연결
-        // 카카오 로그인 API 호출
-       /* val clientId = BuildConfig.KAKAO_API_KEY
-        val redirectUri = BuildConfig.Redirect_URI
-        val responseType = "code"
-
-        //Login API 연결
-        retrofit.Login(accessToken,clientId, redirectUri, responseType).enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                if (response.isSuccessful) {
-                    val loginResponse = response.body()
-                    loginResponse?.let {
-                        Log.d("LoginResponse", "isSuccess: ${it.isSucces}")
-                        Log.d("LoginResponse", "code: ${it.code}")
-                        Log.d("LoginResponse", "message: ${it.message}")
-                        it.result?.let { loginResult ->
-                            jwtToken = loginResult.jwtAccessToken
-                            Log.d("LoginResponse", "id: ${loginResult.id}")
-                            Log.d("LoginResponse", "jwt: ${jwtToken}")
-
-                            // jwtToken을 sharedPreference에 저장하기
-                            val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-                            val getJwt = sharedPreferences.edit()
-                            // JWT 저장
-                            val jwt = jwtToken
-                            if (jwt != null) {
-                                getJwt.putString("jwt", jwt)
-                            }
-                            getJwt.apply()
-                        }
-                    }
-                } else {
-                    val errorBody = response.errorBody()?.string()
-                    Log.e("LoginResponse", "API 호출 실패: ${response.code()}, ${response.message()}")
-                    Log.e("LoginResponse", "Error Body: $errorBody")}
-            }
-
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.e("LoginResponse", "onFail API 호출 실패: ${t.message}")
-            }
-        })*/
-
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 Log.e("kakao", "사용자 정보 요청 실패", error)
@@ -114,7 +72,7 @@ class MyoSignUpActivity : AppCompatActivity() {
                         Log.d("LoginResponse", "Kakao Email jwt: ${jwt}")
                     }
                     else{
-                        Toast.makeText(this@MyoSignUpActivity, "서버 오류 발생", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@MyoSignUpActivity, "서버 오류 발생", Toast.LENGTH_SHORT).show()
                         Log.d("LoginResponse", "Kakao Email jwt: ${jwt}")
                     }
                 }
@@ -132,25 +90,6 @@ class MyoSignUpActivity : AppCompatActivity() {
             }
         }
 
-
-
-
-      /*  binding.signUpTestNickNameBtn.setOnClickListener{
-            //Log.d("LoginResponse","check jwt:{$jwtToken}")
-            //카카오 이메일 입력 받은 경우 카카오 이메일 넣어주기
-            //현재 오류 있음,, 고칠 것
-            if (kakaoEmail != null){
-                jwtToken.toString()?.let { signUpUser(jwtToken.toString(),kakaoEmail,userNickname) }
-                while(returnCode!=409)
-                    checkUserName()
-            }
-            //카카오 이메일 입력 받지 않은 경우는 따로 입력 받은 이메일 넣어주기
-            else{
-                jwtToken.toString()?.let { signUpUser(jwtToken.toString(),userEmail,userNickname) }
-                while(returnCode!=409)
-                    checkUserName()
-            }
-        }*/
 
 
 
@@ -326,7 +265,7 @@ class MyoSignUpActivity : AppCompatActivity() {
                         returnCode = signUpResponse.code
 
                         // 응답 데이터 처리
-                        Toast.makeText(this@MyoSignUpActivity, signUpResponse.message, Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this@MyoSignUpActivity, signUpResponse.message, Toast.LENGTH_SHORT).show()
 
                         Log.d("Retrofit",signUpResponse.message)
                         Log.d("signUp", "userEmail: ${email}")
@@ -341,11 +280,10 @@ class MyoSignUpActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
                 // 네트워크 요청 실패 처리
-                Toast.makeText(this@MyoSignUpActivity, "네트워크 요청 실패!", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@MyoSignUpActivity, "네트워크 요청 실패!", Toast.LENGTH_SHORT).show()
             }
         })
     }
-
 
     //다이얼로그 크기 설정
     fun setDialogSize(dialog: Dialog, widthPercentage: Double, height: Int) {

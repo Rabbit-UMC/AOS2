@@ -13,8 +13,7 @@
         android:id="@+id/img_layout"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:background="@drawable/ic_mission_img_background"
-        android:padding="8dp"
+        android:background="@drawable/view_round_r15"
         android:layout_margin="10dp"
         app:layout_constraintStart_toStartOf="@id/layout"
         app:layout_constraintTop_toTopOf="@id/layout"
@@ -23,8 +22,9 @@
             android:id="@+id/mission_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_mission_exercise"
-            android:background="@android:color/transparent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_app"
+            android:background="@drawable/ic_mission_img_background"
             />
     </FrameLayout>
 

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
@@ -457,6 +458,7 @@ class ScheduleFragment(context: Context) : Fragment() {
         // JWT 값 가져오기
         val token = sharedPreferences.getString("jwt", "")
 
+        Log.d("LoginRespons", "token = "+token)
         //val token : String = BuildConfig.API_TOKEN
 //        Log.d("retrofit", "token = "+token+"l");
 

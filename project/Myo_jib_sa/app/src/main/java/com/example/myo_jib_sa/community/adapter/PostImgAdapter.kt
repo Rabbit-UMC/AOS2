@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.community.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.myo_jib_sa.community.ImageActivity
 import com.example.myo_jib_sa.community.Retrofit.post.ArticleImage
 import com.example.myo_jib_sa.community.Retrofit.post.CommentList
 import com.example.myo_jib_sa.databinding.ItemCommentBinding
@@ -26,13 +28,22 @@ class PostImgAdapter(
         fun bind(item: ArticleImage){
 
             //이미지 설정
-            Glide.with(context)
-                .load(item.filePath)
-                .into(binding.postImgImg)
+            if(item.filePath.isNotBlank()){
+                Glide.with(context)
+                    .load(item.filePath)
+                    .into(binding.postImgImg)
+            }else{
+                binding.postImgImg.visibility=View.GONE
+            }
 
             //클릭 이벤트
             binding.postImgImg.setOnClickListener {
                 //누르면 사진 자세히 보기
+                val intent= Intent(context, ImageActivity::class.java)
+                intent.putExtra("filePath", item.filePath)
+                intent.putExtra("isReportable", false)
+                intent.putExtra("imgId", item.imageId)
+                context.startActivity(intent)
             }
 
 

@@ -16,24 +16,26 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_back"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#D8D8D8"
         android:orientation="vertical"
+        android:background="#F1F1F1"
         app:layout_constraintHeight_default="percent"
         app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/layout_2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <ImageButton
             android:id="@+id/myPage_profile_img_btn"
@@ -44,8 +46,8 @@
             android:src="@drawable/ic_mypage_edit_profile"
             android:background="@android:color/transparent"
             android:scaleType="fitXY"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
@@ -55,35 +57,38 @@
             android:layout_marginTop="30dp"
             android:layout_gravity="center"
             android:hint="이름(편집모드)"
-            android:textSize="25sp"
+            android:textSize="12sp"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:background="@android:color/transparent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/layout_1"
-            />
-    </LinearLayout>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/myPage_profile_img_btn" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_1">
+        app:layout_constraintTop_toBottomOf="@+id/layout_1">
 
         <LinearLayout
             android:id="@+id/layout_myPage_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="100dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="80dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/txt_myPage_email"
@@ -92,17 +97,10 @@
                 android:fontFamily="@font/font_inter"
                 android:text="이메일"
                 android:textColor="@color/black"
-                android:textSize="25sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" (편집불가)"
-                android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/txt_myPage_email" />
+
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -111,11 +109,15 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/font_inter"
             android:layout_gravity="center"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="70dp"
             android:background="@drawable/mypage_edit_btn"
             android:text="완료"
             android:textColor="@color/white"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_myPage_email" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
