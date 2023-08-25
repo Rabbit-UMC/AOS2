@@ -3,20 +3,19 @@ package com.example.myo_jib_sa.community.adapter
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat.startActivities
-import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.BoardArtActivity
 import com.example.myo_jib_sa.community.BoardExerciseActivity
-import com.example.myo_jib_sa.community.BoardFreeActivity
+import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
 import com.example.myo_jib_sa.databinding.ItemCommunityMissionBinding
 
@@ -32,13 +31,20 @@ class HomeMissionAdapter(
             fun bind(item:MainMission){
                 Log.d("리사이클러뷰","linkMrecyclr 어댑터 뷰홀더")
                 binding.homeMissionItemNameTxt.text=item.mainMissionTitle
-                binding.homeMissionItemBoardNameTxt.text=item.categoryName
+                //binding.homeMissionItemBoardNameTxt.text=item.categoryName
                 binding.homeMissionItemDdayTxt.text=item.dday
 
+                binding.homeMissionItemImgImg.clipToOutline=true
+
                 //이미지 설정
-               Glide.with(context)
-                    .load(item.categoryImage)
-                    .into(binding.homeMissionItemImgImg)
+                if(item.categoryImage.isNotEmpty()&&item.categoryImage!=""){
+                    Glide.with(context)
+                        .load(item.categoryImage)
+                        .into(binding.homeMissionItemImgImg)
+                }else{
+                    setMissionIcon(item.mainMissionTitle, binding)
+                }
+
 
                 //클릭 이벤트
                 binding.MissionItemConstraintLayout.setOnClickListener{
@@ -95,30 +101,55 @@ class HomeMissionAdapter(
     private fun boardMove(name:String, imageView: ImageView ){
         when(name){
             "예술 게시판"-> {
-                val intent = Intent(imageView.context, BoardArtActivity::class.java )
+                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                intent.putExtra("boardId", Constance.ART_ID)
                 imageView.context.startActivity(intent)
             }
             "운동 게시판"-> {
                 val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                intent.putExtra("boardId", Constance.EXERCISE_ID)
                 imageView.context.startActivity(intent)
             }
             "자유 게시판"-> {
-                val intent = Intent(imageView.context, BoardFreeActivity::class.java )
+                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                intent.putExtra("boardId", Constance.FREE_ID)
                 imageView.context.startActivity(intent)
             }
             "예술"-> {
-                val intent = Intent(imageView.context, BoardArtActivity::class.java )
+                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                intent.putExtra("boardId", Constance.ART_ID)
                 imageView.context.startActivity(intent)
             }
             "운동"-> {
                 val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                intent.putExtra("boardId", Constance.EXERCISE_ID)
                 imageView.context.startActivity(intent)
             }
             "자유"-> {
-                val intent = Intent(imageView.context, BoardFreeActivity::class.java )
+                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                intent.putExtra("boardId", Constance.FREE_ID)
                 imageView.context.startActivity(intent)
             }
 
         }
     }
-}
+
+    //기본 이미지 설정
+    private fun setMissionIcon(name:String, binding: ItemCommunityMissionBinding){
+        when(name){
+            "예술"-> {
+                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_art_p)
+                binding.homeMissionItemImgImg.setImageDrawable(drawable)
+            }
+            "자유"-> {
+                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_free_p)
+                binding.homeMissionItemImgImg.setImageDrawable(drawable)
+            }
+            "운동"-> {
+                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_exercise_p)
+                binding.homeMissionItemImgImg.setImageDrawable(drawable)
+            }
+        }
+    }
+
+    }

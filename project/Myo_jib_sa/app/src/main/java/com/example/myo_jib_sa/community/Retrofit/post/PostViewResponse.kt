@@ -10,15 +10,17 @@ data class PostViewResponse(
     val result:PostResult
 )
 data class PostResult(
+    val categoryName:String,
     val articleId:Long,
     val authorId:Long,
     val authorProfileImage:String,
     val authorName:String,
     val uploadTime:String,
     val articleTitle:String,
-        val articleContent:String,
+    val articleContent:String,
     val articleImage:List<ArticleImage>,
-    val commentList:List<CommentList>
+    val commentList:List<CommentList>,
+    val likeArticle:Boolean
 )
 data class ArticleImage(
     val imageId:Long,
@@ -46,7 +48,7 @@ data class SimpleResponse(
 data class PostCreateRequest(
     val articleTitle: String,
     val articleContent:String,
-    val imageList:List<ImageListC>
+    val imageList:List<String>
 )
 data class ImageListC(
     val filePath:String

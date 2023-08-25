@@ -9,30 +9,63 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.databinding.ItemMissionMissionBinding
-import com.example.myo_jib_sa.mission.API.Home
 import com.example.myo_jib_sa.mission.API.MissionHomeResponse
+
+sealed class MissionItem {
+    abstract val missionId: Long
+    abstract val title: String
+    abstract val challengerCnt: Int
+    abstract val startAt: String
+    abstract val endAt: String
+    abstract val content: String
+    abstract val categoryId: Long
+    abstract val image: String
+}
+
+data class Home(
+    override val missionId: Long,
+    override val title: String,
+    override val challengerCnt: Int,
+    override val startAt: String,
+    override val endAt: String,
+    override val content: String,
+    override val categoryId: Long,
+    override val image: String
+) : MissionItem()
+
+data class Category(
+    override val missionId: Long,
+    override val title: String,
+    override val challengerCnt: Int,
+    override val startAt: String,
+    override val endAt: String,
+    override val content: String,
+    override val categoryId: Long,
+    override val image: String
+) : MissionItem()
+
 
 class MissionAdapter(
     private val context: Context,
-    private val dataList: List<Home>,
+    private val dataList: List<MissionItem>,
     private val onItemClickListener: OnItemClickListener,
     private val onItemLongClickListener: OnItemLongClickListener
 ) : RecyclerView.Adapter<MissionAdapter.ViewHolder>() {
 
 
     interface OnItemLongClickListener {
-        fun onItemLongClick(item:Home)
+        fun onItemLongClick(item:MissionItem)
     }
 
     interface OnItemClickListener {
-        fun onItemClick(item:Home)
+        fun onItemClick(item:MissionItem)
     }
 
     inner class ViewHolder(
         private val binding: ItemMissionMissionBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Home) {
+        fun bind(item: MissionItem) {
 
             binding.missionTitleTxt.text = item.title
 
@@ -47,10 +80,12 @@ class MissionAdapter(
             }
 
             //미션 홈에 날짜 mm-dd로 표시되도록
+            // 미션 홈에 날짜 mm.dd로 표시되도록
             val startAt = item.startAt
-            val formattedStartAt = startAt.substring(5, 10)
+            val formattedStartAt = startAt.substring(5, 7) + "." + startAt.substring(8, 10)
             val endAt = item.endAt
-            val formattedEndAt = endAt.substring(5, 10)
+            val formattedEndAt = endAt.substring(5, 7) + "." + endAt.substring(8, 10)
+
 
             binding.missionIntroTxt.text = truncatedContent
             Glide.with(binding.root.context)
@@ -59,6 +94,8 @@ class MissionAdapter(
             binding.missionStartTimeTxt.text = formattedStartAt
             binding.missionEndTimeTxt.text = formattedEndAt
             binding.missionChallengerTxt.text="${item.challengerCnt} 명"
+
+            binding.missionImg.clipToOutline=true
 
             Log.d("home",item.missionId.toString())
 

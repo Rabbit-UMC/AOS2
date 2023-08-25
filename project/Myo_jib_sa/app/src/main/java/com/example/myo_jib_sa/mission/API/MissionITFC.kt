@@ -12,13 +12,15 @@ interface MissionITFC {
     //미션 생성
     @POST("app/mission")
     fun MissionWrite(
+        @Header("X-ACCESS-TOKEN") accessToken: String,
         @Body requestBody: MissionWriteRequest
     ):Call<MissionWriteResponse>
 
     //카테고리별로 미션 확인
     @GET("app/mission/category/{categoryId}")
     fun MissionCategory(
-        @Query ("categoryId") categoryId: Int
+        @Header("X-ACCESS-TOKEN") accessToken: String,
+        @Path ("categoryId") categoryId: Int
     ): Call<MissionCategoryResponse>
 
     //미션 상세보기

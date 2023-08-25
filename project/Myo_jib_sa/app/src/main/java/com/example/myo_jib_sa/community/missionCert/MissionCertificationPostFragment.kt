@@ -21,6 +21,7 @@ import com.example.myo_jib_sa.databinding.FragmentMissionCertificationPostBindin
 class MissionCertificationPostFragment : Fragment() {
 
     private lateinit var binding:FragmentMissionCertificationPostBinding
+    private var data:MutableList<MissionProofImages> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,42 +31,55 @@ class MissionCertificationPostFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        updateView(data)
+    }
+
     //주어진 데이터에 따라 뷰를 업데이트
-    fun updateView(data:List<MissionProofImages>, day:Int, lastDay:Int){
-        //텍스트 설정
-        binding.missionCertDay.text=day.toString()
-        binding.missionCertLeftDay.text=(day-1).toString()
-        binding.missionCertRightDay.text=(day+1).toString()
-        if(day==1){
-            binding.missionCertLeftBtn.visibility=View.GONE
-            binding.missionCertLeftDay.text=""
-        }
-        if(day==lastDay){
-            binding.missionCertRightDay.visibility=View.GONE
-            binding.missionCertRightDay.text=""
-        }
+    fun updateView(dataa:List<MissionProofImages>){
+        Log.d("updateView 실행", "실행함")
 
+        data= dataa.toMutableList()
 
-        //리사이클러 뷰 설정
-        var rlist: MutableList<MCrecyclrImg> = mutableListOf()
-        var tempList:MutableList<MissionProofImages> = mutableListOf()
-        for(i in 1..data.size){ //데이터 3개씩 나눠 담기
-            tempList.add(data[i])
-            if ((i + 1) % 3 == 0 || i == data.size - 1) {
-                val item = MCrecyclrImg(tempList[0], tempList[1], tempList[2])
-                rlist.add(item)
-                tempList.clear()
+        if(::binding.isInitialized){
+
+            if(data.isNotEmpty()){
+                //리사이클러 뷰 설정
+                var rlist: MutableList<MCrecyclrImg> = mutableListOf()
+                var tempList:MutableList<MissionProofImages> = mutableListOf()
+
+                val empty=MissionProofImages(-1, -1, "empty", false)
+
+                for (i in 1..data.size) { // 데이터 3개씩 나눠 담기
+                    tempList.add(data[i - 1])
+                    Log.d("updateView 데이터", i.toString() + "번째 데이터 : " + data[i - 1].filePath)
+
+                    if (i % 3 == 0 || i == data.size) { // 3개씩 추가하거나 마지막 데이터인 경우
+                        val item = when ((i % 3)) {
+                            0 -> MCrecyclrImg(tempList[0], tempList[1], tempList[2])
+                            2 -> MCrecyclrImg(tempList[0], tempList[1], empty)
+                            1 -> MCrecyclrImg(tempList[0], empty, empty)
+                            else -> MCrecyclrImg(empty, empty, empty) // 예외 처리
+                        }
+                        rlist.add(item)
+                        tempList.clear()
+                    }
+                }
+
+                val Madapter = MissionCertAdapter(requireContext(),rlist)
+                val MlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+                binding.missionCertRecyclr.layoutManager = MlayoutManager
+                Log.d("리사이클러뷰","binding.missionCertRecyclr.layoutManager 시작")
+                binding.missionCertRecyclr.adapter = Madapter
+                Log.d("리사이클러뷰","binding.missionCertRecyclr.adapter 시작")
+
+                //Madapter.setItemSpacing(binding.missionCertRecyclr, 15)
             }
         }
-        val Madapter = MissionCertAdapter(requireContext(),rlist)
-        val MlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
-        binding.missionCertRecyclr.layoutManager = MlayoutManager
-        Log.d("리사이클러뷰","binding.missionCertRecyclr.layoutManager 시작")
-        binding.missionCertRecyclr.adapter = Madapter
-        Log.d("리사이클러뷰","binding.missionCertRecyclr.adapter 시작")
-
-        //Madapter.setItemSpacing(binding.missionCertRecyclr, 15)
-
     }
+
+
+
 }

@@ -14,4 +14,10 @@ interface PostBoardRetrofitITFC {
         @Header(Constance.author)author:String,
         @Query("page") page: Int,
         @Query("categoryId")categoryId: Long): Call<PostBoardResponse>
+
+    @GET("app/popular-posts")
+    fun popular(
+        @Header(Constance.author) author:String
+        ,@Query("page") page:Int
+    ): Call<PopularPostResponse>
 }

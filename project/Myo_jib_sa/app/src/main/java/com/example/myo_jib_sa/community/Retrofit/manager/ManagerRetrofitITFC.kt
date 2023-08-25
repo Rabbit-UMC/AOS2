@@ -13,16 +13,17 @@ import retrofit2.http.Path
 interface ManagerRetrofitITFC {
 
     //메인 미션 이미지 바꾸기
-    @PATCH("app/admin/main-image/{categoryId}")
+    @PATCH("app/host/main-image/{categoryId}")
     fun EditPhoto(@Header(Constance.author)author:String
-                  ,@Body filePath:String
-            ,@Path("categoryId") categoryId: Long): Call<SimpleResponse>
+                  ,@Path("categoryId") categoryId: Long,
+                  @Body request: PatchCategoryImageReq): Call<SimpleResponse>
 
     //미션 생성
-    @POST("/app/host/main-mission/{categoryId}")
+    @POST("app/host/main-mission/{categoryId}")
     fun missionCreate(@Header(Constance.author)author:String
+                      ,@Path("categoryId")categoryId:Long
                       ,@Body request: MissionCreateRequest
-                      ,@Path("categoryId")categoryId:Long): Call<SimpleResponse>
+                      ): Call<SimpleResponse>
 }
 
 data class MissionCreateRequest(
@@ -31,4 +32,8 @@ data class MissionCreateRequest(
     val missionStartTime:String,
     val missionEndTime:String,
     val lastMission:Boolean
+)
+
+data class PatchCategoryImageReq(
+    val filePath: String
 )

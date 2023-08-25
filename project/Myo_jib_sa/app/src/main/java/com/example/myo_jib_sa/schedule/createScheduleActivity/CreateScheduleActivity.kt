@@ -368,8 +368,12 @@ class CreateScheduleActivity : AppCompatActivity() {
         // JWT 값 가져오기
         val token = sharedPreferences.getString("jwt", null)
 
+/*
+        val token="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTI3MjE1OTMsImV4cCI6MTY5MjcyNTE5M30.QQBX4y9UIAnMMS_8sbU7tbXti2TU8TsosXRVEWBs_FM"
+*/
+
         //val token : String = BuildConfig.API_TOKEN
-//        Log.d("retrofit", "token = "+token+"l");
+        Log.d("token", "token C= "+token)
 //
         val requestBody = ScheduleAddRequest(
             title = binding.scheduleTitleEtv.text.toString(),
@@ -435,20 +439,27 @@ class CreateScheduleActivity : AppCompatActivity() {
 
     //startTime, endTime 포맷
     private fun scheduleTimeFormatter(startAt: String?): String {
+        if (startAt.isNullOrBlank()) {
+            return ""
+        }
+
         val formatter = DecimalFormat("00")
 
-        val time = startAt!!.split(":")
+        val time = startAt.split(":")
         val hour = time[0].toInt()
         val minute = time[1].toInt()
+
         if (hour < 12) {
             return "오전 ${formatter.format(hour)}:${formatter.format(minute)}"
         } else {
-            if (hour == 12)
+            if (hour == 12) {
                 return "오후 ${formatter.format(hour)}:${formatter.format(minute)}"
-            else
+            } else {
                 return "오후 ${formatter.format(hour - 12)}:${formatter.format(minute)}"
+            }
         }
     }
+
 
     //화면의 날짜를 yyyy-mm-dd형식으로 포맷
     private fun scheduleDateFormatter():String{
