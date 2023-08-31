@@ -25,7 +25,9 @@ class MainActivity : AppCompatActivity() {
         //바텀 네비게이션 설정
         binding.mainBottomNavi.itemIconTintList = null //아이콘 태마색 변경 방지
         //초기 프레그먼트 설정
-        supportFragmentManager.beginTransaction().replace(R.id.main_layout, ScheduleFragment(this)).commitAllowingStateLoss()
+       // supportFragmentManager.beginTransaction().replace(R.id.main_layout, ScheduleFragment(this)).commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().replace(R.id.main_layout, MissionFragment()).commitAllowingStateLoss()
+
         setBottomNavi()
 
 
