@@ -12,34 +12,92 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingVertical="10dp"
-        android:paddingLeft="20dp"
+        android:layout_marginStart="20dp"
         android:fontFamily="@font/font_inter"
-        android:text="집사 페이지"
+        android:text="집사 프로필"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/layout_myPage_tab" />
+         />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/myPage_profile_img"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="18dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_mypage_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_myPage_title"
+        />
+
+<!--    <ImageView
+        android:id="@+id/myPage_profile_img"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="18dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_mypage_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_myPage_title" />-->
+
+    <TextView
+        android:id="@+id/txt_myPage_ninkName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/font_inter"
+        android:background="@android:color/transparent"
+        android:text="닉네임"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@+id/myPage_profile_img"
+        app:layout_constraintStart_toEndOf="@id/myPage_profile_img" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/myPage_edit_btn"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="30dp"
+        android:fontFamily="@font/font_inter"
+        android:background="@drawable/mypage_edit_btn"
+        android:text="편집"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@+id/myPage_profile_img"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_myPage_tab"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_myPage_title">
+        app:layout_constraintTop_toBottomOf="@+id/myPage_profile_img">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/myPage_tab"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#FFF0F0F0"
             app:layout_constraintTop_toTopOf="parent"
-            app:tabIndicatorColor="#F0F0F0"
+            app:tabIndicatorColor="#234BD9"
             app:tabIconTint="@color/black"
             app:tabIndicatorHeight="1dp"
             app:tabTextColor="@color/black"
-            app:tabSelectedTextColor="#234BD9"
             app:tabTextAppearance="@style/BoldTabTextAppearance"
             />
 
