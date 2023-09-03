@@ -198,7 +198,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
     }
 
     //scheduleDetail api연결
-    fun scheduleDetailApi(scheduleId: Long) {
+    private fun scheduleDetailApi(scheduleId: Long) {
         // SharedPreferences 객체 가져오기
         val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기

@@ -13,7 +13,6 @@ import com.example.myo_jib_sa.databinding.ItemCreateScheudleCalendarDayBinding
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActivity
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.CurrentMissionCurrentMissionAdapter
-import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.CurrentMissionData
 import java.time.LocalDate
 
 var prePosition : Int = -1
