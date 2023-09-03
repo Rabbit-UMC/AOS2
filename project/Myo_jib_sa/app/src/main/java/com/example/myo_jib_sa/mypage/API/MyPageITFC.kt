@@ -11,7 +11,6 @@ interface MyPageITFC {
     fun getMyPost(
         @Header("X-ACCESS-TOKEN") accessToken: String,
         @Query("page") page: Int,
-        @Query("userId") userId: Long,
         ): Call<getMyPostResponse>
 
     //유저 작성 댓글 조회
@@ -19,7 +18,6 @@ interface MyPageITFC {
     fun getMyComment(
         @Header("X-ACCESS-TOKEN") accessToken: String,
         @Query("page") page: Int,
-        @Query("userId") userId: Long,
     ): Call<getMyCommentResponse>
 
     //이미지 업로드
@@ -33,13 +31,12 @@ interface MyPageITFC {
     @PATCH("app/users/nickname")
     fun putUserName(
         @Header("X-ACCESS-TOKEN") accessToken: String,
-        @Query("userProfileImage") userName: String
+        @Query("userName") userName: String
     ): Call<putUserNameResponse>
 
     //유저 정보 가져오기
-    @GET("app/users/profile/{userId}")
+    @GET("app/users/profile")
     fun getUserProfile(
         @Header("X-ACCESS-TOKEN") accessToken: String,
-        @Path("userId") userId: Long
     ): Call<getUserProfileResponse>
 }

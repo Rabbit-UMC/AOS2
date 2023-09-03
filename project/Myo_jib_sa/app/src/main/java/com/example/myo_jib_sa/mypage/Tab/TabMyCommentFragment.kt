@@ -55,7 +55,7 @@ class TabMyCommentFragment : Fragment() {
         val userId = sharedPreferences.getLong("userId", 0L)
 
         if (jwt != null) {
-            retrofit.getMyComment(jwt, 0, userId).enqueue(object : Callback<getMyCommentResponse> {
+            retrofit.getMyComment(jwt, 0).enqueue(object : Callback<getMyCommentResponse> {
                 override fun onResponse(call: Call<getMyCommentResponse>, response: Response<getMyCommentResponse>) {
                     if (response.isSuccessful) {
                         val commentResponse = response.body()
@@ -73,7 +73,7 @@ class TabMyCommentFragment : Fragment() {
                                 if (dataList != null) {
                                     Log.d("mypost", commentResponse.toString())
                                     // 어댑터 생성 및 리사이클러뷰에 설정
-                                    setUpMissionAdapter(listOf(dataList))
+                                    setUpMissionAdapter(dataList)
 
                                 }
                             }

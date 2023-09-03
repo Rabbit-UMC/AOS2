@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.Login.API.RetrofitInstance
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.FragmentMypageBinding
@@ -31,6 +32,7 @@ import com.kakao.sdk.user.UserApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class MypageFragment : Fragment() {
     lateinit var binding: FragmentMypageBinding
@@ -63,16 +65,26 @@ class MypageFragment : Fragment() {
             }
         }.attach()
 
-        UserApiClient.instance.me { user, error ->
+        /*UserApiClient.instance.me { user, error ->
             if (error != null) {
                 Log.e("kakao", "사용자 정보 요청 실패", error)
+            } else if (user != null) {
+                val kakaoEmail = user.kakaoAccount?.email
+                Log.d("kakaoM", kakaoEmail.toString())
+
+                // '@' 문자열을 기준으로 이메일을 분리
+                val indexOfAtSymbol = kakaoEmail?.indexOf("@")
+                val nickname = if (indexOfAtSymbol != null && indexOfAtSymbol > 0) {
+                    kakaoEmail.substring(0, indexOfAtSymbol)
+                } else {
+                    kakaoEmail // '@' 문자열이 없으면 그대로 사용
+                }
+
+                binding.txtMyPageNinkName.text = nickname
             }
-            else if (user != null) {
-                var kakaoEmail=user.kakaoAccount?.email
-                Log.d("kakaoM",kakaoEmail.toString())
-                binding.txtMyPageNinkName.text=kakaoEmail
-            }
-        }
+        }*/
+
+
 
         binding.myPageEditBtn.setOnClickListener{
             val intent = Intent(requireActivity(), EditMypageActivity::class.java)
@@ -88,28 +100,37 @@ class MypageFragment : Fragment() {
         ProfileAPI()
     }
 
-    fun ProfileAPI(){
+
+    fun ProfileAPI() {
         val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val jwt = sharedPreferences.getString("jwt", null)
         val userId = sharedPreferences.getLong("userId", 0L)
 
+
+
         if (jwt != null) {
-            retrofit.getUserProfile(jwt,userId).enqueue(object : Callback<getUserProfileResponse> {
+            retrofit.getUserProfile(jwt).enqueue(object : Callback<getUserProfileResponse> {
                 override fun onResponse(call: Call<getUserProfileResponse>, response: Response<getUserProfileResponse>) {
                     if (response.isSuccessful) {
                         val profileResponse = response.body()
                         val profileData = profileResponse?.result
 
                         if (profileData != null) {
-                            val userProfileImageUri = Uri.parse(profileData.userProfileImage)
+                            //val userProfileImageUri = Uri.parse(profileData.userProfileImage)
+
+                            Log.d("img",profileData.userProfileImage)
                             binding.txtMyPageNinkName.text = profileData.userName
-                            binding.myPageProfileImg.setImageURI(userProfileImageUri)
+
+                            // Glide를 사용하여 이미지 설정
+                            Glide.with(requireContext())
+                                .load(profileData.userProfileImage)
+                                .error(R.drawable.ic_mypage_profile)
+                                .into(binding.myPageProfileImg)
                         }
 
                     } else {
                         // API 요청 실패 처리
                         Toast.makeText(requireContext(), "API 요청 실패 처리", Toast.LENGTH_SHORT).show()
-
                     }
                 }
 
@@ -120,6 +141,7 @@ class MypageFragment : Fragment() {
             })
         }
     }
+
 
 
 }
