@@ -33,9 +33,24 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
         installSplashScreen()
         setContentView(binding.root)
 
+
+
         // 앱 시작 시 자동 로그인 체크
 
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+
+
+        //여기 추가함================================
+        val getJwt = sharedPreferences.edit()
+// JWT 저장
+        val jwt = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoyMDksImlhdCI6MTY5MzczMDc2MiwiZXhwIjoxNjkzNzM0MzYyfQ.MgIrg6UpJPt7aTlpNJrwQ599GnqLRq-fGS_MdxKVwtE"
+//if (jwt != null) {
+        //val jwt = null
+        getJwt.putString("jwt", jwt)
+//}
+        getJwt.apply()
+//여기 추가함================================
+
         val jwtToken = sharedPreferences.getString("jwt", null)
         if (jwtToken != null) {
             // 저장된 토큰이 있다면 자동으로 로그인

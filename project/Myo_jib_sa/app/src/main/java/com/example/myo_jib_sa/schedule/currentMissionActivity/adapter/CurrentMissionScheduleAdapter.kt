@@ -9,10 +9,7 @@ import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionScheduleBinding
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
 
-data class ScheduleAdapterData(
-    var scheduleTitle:String,
-    var scheduleDate:String
-)
+
 
 class CurrentMissionScheduleAdapter(private val missionList:ArrayList<CurrentMissionScheduleResult>,
                                     private val height:Int):

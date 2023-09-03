@@ -2,7 +2,6 @@ package com.example.myo_jib_sa.schedule
 
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -11,16 +10,12 @@ import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.BuildConfig
-import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.example.myo_jib_sa.schedule.adapter.*
@@ -37,6 +32,7 @@ import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActi
 import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActivity
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDeleteDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
+import com.example.myo_jib_sa.schedule.historyActivity.SuccessMissionActivity
 import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
@@ -414,7 +410,7 @@ class ScheduleFragment(context: Context) : Fragment() {
     fun switchScreen(){
         //history누르면 HistoryActivity로 화면 전환
         binding.historyTv.setOnClickListener{
-            var historyIntent = Intent(requireActivity(), HistoryActivity::class.java)
+            var historyIntent = Intent(requireActivity(), SuccessMissionActivity::class.java)
             startActivity(historyIntent)
         }
         //미션리스트 위에 모두보기 누르면 CurrentMissionActivity로 화면 전환
@@ -529,7 +525,7 @@ class ScheduleFragment(context: Context) : Fragment() {
                             scheduleList[i].scheduleWhen
                         ))
                     }
-                    if(binding.calenderLayout.visibility == View.VISIBLE)
+                    //if(binding.F.visibility == View.VISIBLE)
                         setScheduleAdapter(selectedDate)
                 }else {
                     Log.e("retrofit", "onResponse: Error ${response.code()}")
@@ -594,12 +590,12 @@ class ScheduleFragment(context: Context) : Fragment() {
                 if (response.isSuccessful) {
                     Log.d("retrofit", response.body().toString());
                     val scheduleList = response.body()?.result?.dayList
-
+                    val formatter = DecimalFormat("00")
 
                     //현재 미션 데이터 리스트 리사이클러뷰 연결
                     //디데이 얼마 안남은 미션부터 많이 남은 순으로 정렬돼 있음
                     for(i in 0 until scheduleList!!.size){
-                        hasScheduleMap["$monthDate-${scheduleList[i]}"] = true
+                        hasScheduleMap["$monthDate-${formatter.format(scheduleList[i])}"] = true
                     }
 
                     val dayList = dayInMonthArray(selectedDate)
