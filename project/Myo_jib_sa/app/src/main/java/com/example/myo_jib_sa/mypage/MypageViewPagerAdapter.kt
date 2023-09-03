@@ -9,14 +9,13 @@ import com.example.myo_jib_sa.mypage.Tab.TabMyPostFragment
 import com.example.myo_jib_sa.mypage.Tab.TabProfileFragment
 
 class MypageViewPagerAdapter (fragmentManager: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fragmentManager, lifecycle){
-    override fun getItemCount(): Int=3
+    override fun getItemCount(): Int=2
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> TabProfileFragment()
-            1 -> TabMyPostFragment()
-            2-> TabMyCommentFragment()
-            else -> TabProfileFragment()
+            0 -> TabMyPostFragment()
+            1 -> TabMyCommentFragment()
+            else -> TabMyPostFragment()
         }
     }
 }
