@@ -4,7 +4,7 @@ data class getMyPostResponse(
     val isSucess:String,
     val code:Int,
     val messeage:String,
-    val result: Post?
+    val result: List<Post>?
 )
 
 data class Post(

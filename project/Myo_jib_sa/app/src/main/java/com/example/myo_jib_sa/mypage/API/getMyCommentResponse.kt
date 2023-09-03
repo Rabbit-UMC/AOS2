@@ -5,7 +5,7 @@ data class getMyCommentResponse(
 val isSucess:String,
 val code:Int,
 val messeage:String,
-val result: Comment?
+val result: List<Comment>?
 )
 
 data class Comment(

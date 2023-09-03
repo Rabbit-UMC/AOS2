@@ -102,6 +102,36 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/myPage_profile_img_btn" />
+
+<!--
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/signUp_test_nickName_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_inter"
+            android:layout_marginLeft="5dp"
+            android:text="중복 확인"
+            android:textColor="@color/community_selected_color"
+            android:textStyle="bold"
+            android:background="@drawable/view_round_r10_stroke"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/myPage_input_ninkName" />
+-->
+
+        <TextView
+            android:id="@+id/check_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/font_inter"
+            android:text=" "
+            android:textStyle="bold"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/myPage_input_ninkName"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

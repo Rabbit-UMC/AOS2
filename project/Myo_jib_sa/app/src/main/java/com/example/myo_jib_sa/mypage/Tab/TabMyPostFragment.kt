@@ -56,8 +56,10 @@ class TabMyPostFragment : Fragment() {
         val jwt = sharedPreferences.getString("jwt", null)
         val userId = sharedPreferences.getLong("userId", 0L)
 
+        Log.d("jwt",jwt.toString())
+
         if (jwt != null) {
-            retrofit.getMyPost(jwt, 0, userId).enqueue(object : Callback<getMyPostResponse> {
+            retrofit.getMyPost(jwt, 0).enqueue(object : Callback<getMyPostResponse> {
                 override fun onResponse(call: Call<getMyPostResponse>, response: Response<getMyPostResponse>) {
                     if (response.isSuccessful) {
                         val postResponse = response.body()
@@ -75,7 +77,7 @@ class TabMyPostFragment : Fragment() {
                                 if (dataList != null) {
                                     Log.d("mypost", postResponse.toString())
                                     // 어댑터 생성 및 리사이클러뷰에 설정
-                                    setUpMissionAdapter(listOf(dataList))
+                                    setUpMissionAdapter(dataList)
 
                                 }
                             }
