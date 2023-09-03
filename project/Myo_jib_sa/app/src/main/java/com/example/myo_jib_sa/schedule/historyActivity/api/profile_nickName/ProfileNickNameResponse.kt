@@ -12,6 +12,7 @@ data class ProfileNickNameResponse(
 
 data class ProfileNickNameResult(
     val userEmail:String,
+    @SerializedName("userName")
     val userName:String,
     val userProfileImage:String
 )

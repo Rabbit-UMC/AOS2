@@ -11,7 +11,7 @@ interface ProfileNickNameService {
         private const val authKey = "" //Authorization쓰기!!
     }
 
-    @GET("app/mission/success")//?Authorization=$authKey
+    @GET("app/users/profile")//?Authorization=$authKey
     fun profileNickNameMission(
         @Header("X-ACCESS-TOKEN")
         accessToken: String?
