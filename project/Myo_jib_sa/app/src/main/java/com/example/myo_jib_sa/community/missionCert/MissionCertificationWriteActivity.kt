@@ -33,7 +33,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
     private var imgUrl:String=""
 
     companion object {
-        private const val GALLERY_REQUEST_CODE = 1001
+        const val GALLERY_REQUEST_CODE = 1001
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
