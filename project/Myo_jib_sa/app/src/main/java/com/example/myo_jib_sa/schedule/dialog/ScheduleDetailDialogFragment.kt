@@ -106,7 +106,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
                 Log.d("timeDebug", "scheduleStartTime = ${result?.startAt}")
                 Log.d("Datedebug", "Detail = ${binding.scheduleDateTv.text.toString()}")
 
-                buttonClickListener.onClickEditBtn()
+                //buttonClickListener.onClickEditBtn()
                 val scheduleEditDialog = ScheduleEditDialogFragment()
                 scheduleEditDialogItemClickEvent(scheduleEditDialog)//scheduleEditDialog Item클릭 이벤트 setting
                 scheduleEditDialog.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
