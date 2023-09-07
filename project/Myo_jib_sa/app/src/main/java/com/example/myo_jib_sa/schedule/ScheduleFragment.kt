@@ -11,6 +11,7 @@ import android.view.*
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -47,12 +48,12 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 
-class ScheduleFragment(context: Context) : Fragment() {
+class ScheduleFragment() : Fragment() {
 
     lateinit var binding: FragmentScheduleBinding
     lateinit var calendarAdapter : CalendarAdapter //calendarRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
     lateinit var scheduleAdaptar : ScheduleAdaptar //scheduleRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
-    var scheduleDetailDialog = ScheduleDetailDialogFragment(context)
+    lateinit var scheduleDetailDialog : ScheduleDetailDialogFragment
     lateinit var selectedDate : LocalDate //오늘 날짜
 
     var mDataList = ArrayList<Mission>() //미션 리스트 데이터
@@ -72,6 +73,7 @@ class ScheduleFragment(context: Context) : Fragment() {
     ): View? {
         binding = FragmentScheduleBinding.inflate(inflater, container, false)
 
+        scheduleDetailDialog =  ScheduleDetailDialogFragment(requireContext())//scheduleDetailDialog 설정
 
         //scheduleHomeApi()//scheduleHome api연결
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
@@ -301,7 +303,7 @@ class ScheduleFragment(context: Context) : Fragment() {
                 //bundle.putLong("scheduleId", scheduleData.scheduleId)
 
                 //dialog연결 2안
-                var scheduleDeleteDialog = ScheduleDeleteDialogFragment(requireContext(), binding.scheduleRv.adapter as ScheduleAdaptar, position)
+                var scheduleDeleteDialog = ScheduleDeleteDialogFragment(binding.scheduleRv.adapter as ScheduleAdaptar, position)
                 scheduleDeleteDialog.setButtonClickListener(object: ScheduleDeleteDialogFragment.OnButtonClickListener{
                     override fun onClickExitBtn() {
                         //scheduleAdaptar.notifyItemChanged(viewHolder.adapterPosition);
@@ -454,9 +456,7 @@ class ScheduleFragment(context: Context) : Fragment() {
         // JWT 값 가져오기
         val token = sharedPreferences.getString("jwt", "")
 
-        Log.d("LoginRespons", "token = "+token)
-        //val token : String = BuildConfig.API_TOKEN
-//        Log.d("retrofit", "token = "+token+"l");
+        mDataList.clear()//mDataList초기화
 
         val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
         val listCall = service.scheduleHome(token)
