@@ -58,6 +58,11 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
         }
 
+        //뒤로가기
+        binding.missionCertBackBtn.setOnClickListener {
+            finish()
+        }
+
 
         binding.missionCertImgBtn.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)

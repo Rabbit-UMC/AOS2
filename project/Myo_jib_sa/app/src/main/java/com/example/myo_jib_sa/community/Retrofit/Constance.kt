@@ -10,8 +10,25 @@ object Constance {
     const val author="X-ACCESS-TOKEN"
 
     //유저 id 1인 토큰
-    const val jwt:String="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTE2NjUwMzIsImV4cCI6MTY5MzEzNjI2MX0.mlOx8WnywdEYGNDHkhlqP3agL3rVMyvwgwWP8VlvsXM"
+    const val jwt:String="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTM4MzE4NTYsImV4cCI6MTY5NTMwMzA4NX0.n4fIThuf9FEnLo_GsvTmE9jgPUTDGS24xGGLJTOh7v0"
     const val USER_ID:Long=1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
