@@ -18,6 +18,7 @@ import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission
 import com.example.myo_jib_sa.schedule.historyActivity.adapter.MissionData
 import com.example.myo_jib_sa.schedule.historyActivity.adapter.MissionHistoryAdapter
 import com.example.myo_jib_sa.schedule.historyActivity.adapter.MissionHistoryRVDecoration
+import com.example.myo_jib_sa.schedule.historyActivity.api.profile_nickName.ProfileNickNameService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,13 +33,14 @@ class FailedMissionActivity : AppCompatActivity() {
         binding = ActivityFailedMissionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setMissionHistoryAdapter() //todo: 지우기
+        //setMissionHistoryAdapter() //todo: 지우기
         setButton()
+        profileNickNameApi()
     }
 
     override fun onResume(){
         super.onResume()
-        //failuresMissionHistoryApi() //todo: 주석 해제
+        failuresMissionHistoryApi() //todo: 주석 해제
     }
 
     private fun setButton(){
@@ -56,9 +58,10 @@ class FailedMissionActivity : AppCompatActivity() {
 
     //MissionHistoryAdapter 연결
     private fun setMissionHistoryAdapter(){
-        for(i in 0 until 9) {
-            failuresMissionList.add(HistoryMissionList(i.toLong(), 20, i.toLong(), "content$i", "2023-08-30", "2023-08-20", "https://rabbit-umc-bucket.s3.ap-northeast-2.amazonaws.com/dfdfdfd/dadf18f5-379d-4a44-8e15-bdc05ed63596%E1%84%8B%E1%85%AE%E1%86%AB%E1%84%83%E1%85%A9%E1%86%BC%E1%84%8F%E1%85%A1%E1%84%90%E1%85%A6%E1%84%80%E1%85%A9%E1%84%85%E1%85%B5.png", 1,"미션$i"))
-        }
+        //todo: 지우기
+//        for(i in 0 until 9) {
+//            failuresMissionList.add(HistoryMissionList(i.toLong(), 20, i.toLong(), "content$i", "2023-08-30", "2023-08-20", "https://rabbit-umc-bucket.s3.ap-northeast-2.amazonaws.com/dfdfdfd/dadf18f5-379d-4a44-8e15-bdc05ed63596%E1%84%8B%E1%85%AE%E1%86%AB%E1%84%83%E1%85%A9%E1%86%BC%E1%84%8F%E1%85%A1%E1%84%90%E1%85%A6%E1%84%80%E1%85%A9%E1%84%85%E1%85%B5.png", 1,"미션$i"))
+//        }
 
         missionHistoryAdapter = MissionHistoryAdapter(failuresMissionList, getDisplayWidthSize(), getDisplayHeightSize())
         binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
@@ -114,6 +117,46 @@ class FailedMissionActivity : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<HistoryMissionResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
+
+    //profileNickName api연결
+    private fun profileNickNameApi() {
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        //val token: String = BuildConfig.API_TOKEN
+        Log.d("debug", "token = "+token+"l");
+
+
+
+        val service = RetrofitClient.getInstance().create(ProfileNickNameService::class.java)
+        val listCall = service.profileNickNameMission(token)
+
+        listCall.enqueue(object : Callback<ProfileNickNameResponse> {
+            override fun onResponse(
+                call: Call<ProfileNickNameResponse>,
+                response: Response<ProfileNickNameResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("retrofit", response.body().toString());
+                    val result = response.body()!!.result
+
+                    binding.nameTv.text = result.userName
+
+
+                } else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+
+                }
+            }
+            override fun onFailure(call: Call<ProfileNickNameResponse>, t: Throwable) {
                 Log.e("retrofit", "onFailure: ${t.message}")
             }
         })

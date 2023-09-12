@@ -38,7 +38,7 @@ class SuccessMissionActivity : AppCompatActivity() {
     }
     override fun onResume(){
         super.onResume()
-        successMissionHistoryApi()//todo: 주석해제
+        successMissionHistoryApi()
     }
 
 
