@@ -33,16 +33,18 @@
             android:exported="false" />
         <activity
             android:name=".community.WritePostingActivity"
-            android:exported="false" /> <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+            android:exported="false" />
         <activity
             android:name=".schedule.currentMissionActivity.DeleteCurrentMissionActivity"
             android:exported="false" />
         <activity
             android:name=".mission.MissionWriteMissionActivity"
-            android:windowSoftInputMode="adjustPan" /> <!-- ${AD_APP_ID} Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+            android:windowSoftInputMode="adjustPan" />
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <!-- ${AD_APP_ID} Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-1350635755184504~2813602960" />
+            android:value="${AD_APP_ID}" />
 
         <activity
             android:name=".schedule.currentMissionActivity.CurrentMissionActivity"
