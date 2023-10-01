@@ -65,15 +65,17 @@ class ManagerPageEditActivity : AppCompatActivity() {
 
         //바꾼 사진 저장
         binding.managerPageCompleteBtn.setOnClickListener {
-            setPhoto(Constance.jwt, boardId){isSuccess->
-                if(isSuccess){ //저장 성공 시에만 종료
-                    val resultIntent = Intent()
-                    resultIntent.putExtra("imgPath", imgUrl)
-                    Log.d("바뀐 이미지 intent에 넣어", imgUrl)
-                    setResult(Activity.RESULT_OK, resultIntent)
-                    finish()
-                }
+            Constance.jwt?.let { it1 ->
+                setPhoto(it1, boardId){ isSuccess->
+                    if(isSuccess){ //저장 성공 시에만 종료
+                        val resultIntent = Intent()
+                        resultIntent.putExtra("imgPath", imgUrl)
+                        Log.d("바뀐 이미지 intent에 넣어", imgUrl)
+                        setResult(Activity.RESULT_OK, resultIntent)
+                        finish()
+                    }
 
+                }
             }
         }
 
