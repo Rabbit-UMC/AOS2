@@ -33,7 +33,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
     private var imgUrl:String=""
 
     companion object {
-        private const val GALLERY_REQUEST_CODE = 1001
+        const val GALLERY_REQUEST_CODE = 1001
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +70,11 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         }
 
         binding.missionCertCompleteTxt.setOnClickListener {
-            postImg(Constance.jwt, boardId.toLong()){ isSuccess->
-                if(isSuccess){
-                    finish()
+            Constance.jwt?.let { it1 ->
+                postImg(it1, boardId.toLong()){ isSuccess->
+                    if(isSuccess){
+                        finish()
+                    }
                 }
             }
 

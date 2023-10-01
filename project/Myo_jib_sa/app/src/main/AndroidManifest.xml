@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-sdk tools:overrideLibrary="androidx.core.splashscreen" />
     <!-- 인터넷 접근 권한 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 외부 저장소 접근 권한 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".Login.KakaoApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,7 +18,7 @@
         android:roundIcon="@drawable/ic_app"
         android:supportsRtl="true"
         android:theme="@style/Theme.Myo_jib_sa"
-        tools:targetApi="31" >
+        tools:targetApi="31">
         <activity
             android:name=".community.ImageActivity"
             android:exported="false" />
@@ -30,48 +33,76 @@
             android:exported="false" />
         <activity
             android:name=".community.WritePostingActivity"
-            android:exported="false" /> <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+            android:exported="false" />
+        <activity
+            android:name=".schedule.currentMissionActivity.DeleteCurrentMissionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mission.MissionWriteMissionActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <!-- ${AD_APP_ID} Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-1350635755184504~2813602960" />
+            android:value="${AD_APP_ID}" />
 
         <activity
-            android:name=".schedule.CurrentMissionActivity"
+            android:name=".schedule.currentMissionActivity.CurrentMissionActivity"
             android:exported="false" />
         <activity
-            android:name=".schedule.CreateScheduleActivity"
+            android:name=".schedule.createScheduleActivity.CreateScheduleActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".schedule.historyActivity.FailedMissionActivity"
             android:exported="false" />
         <activity
-            android:name=".schedule.HistoryActivity"
+            android:name=".schedule.historyActivity.SuccessMissionActivity"
             android:exported="false" />
         <activity
             android:name=".community.PostActivity"
             android:exported="false"
             android:label="@string/title_activity_post"
             android:theme="@style/Theme.Myo_jib_sa.NoActionBar" />
+        <!--
         <activity
             android:name=".community.BoardFreeActivity"
             android:exported="false" />
         <activity
             android:name=".community.BoardArtActivity"
             android:exported="false" />
+        -->
         <activity
             android:name=".community.BoardExerciseActivity"
             android:exported="false" />
         <activity
             android:name=".community.missionCert.MissionCertificationActivity"
-            android:label="Mission Certification Activity" >
-        </activity>
+            android:label="Mission Certification Activity" />
         <activity
             android:name=".community.missionCert.MissionCertificationWriteActivity"
             android:label="MissionCertificationWriteActivity" />
         <activity
+            android:name=".Login.AddEmailDialogActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.PopupActivity" />
+        <activity
+            android:name=".mypage.EditMypageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Login.MyoSignUpActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="false" />
+        <activity
+            android:name=".Login.KakaoLoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
     </application>

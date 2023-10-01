@@ -3,9 +3,16 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+// local.properties에서 선언한 값 부르기 위해
+//def localProperties = new Properties()
+//localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+
 android {
     namespace 'com.example.myo_jib_sa'
-    compileSdk 33
+    compileSdkVersion 34
 
     viewBinding {
         enabled = true
@@ -18,7 +25,27 @@ android {
         versionCode 1
         versionName "1.0"
 
+
+        //카카오 로그인 API 연결
+        buildConfigField "String", "KAKAO_API_KEY", properties['KAKAO_API_KEY']
+        buildConfigField "String", "Redirect_URI", properties['Redirect_URI']
+        buildConfigField "String", "NATIVE_APP_KEY", properties['NATIVE_APP_KEY']
+
+        buildConfigField "String", "JWT", properties['JWT']
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // 타입 - 키 - 값
+        //애드몹 광고 아이디
+        buildConfigField "String", "AD_UNIT_ID", properties['adUnitId']
+
+
+
+        //키 - 값
+        // 매니페스트에서 사용 가능
+        //애드몹: 앱 아이디
+        manifestPlaceholders["AD_APP_ID"] = properties.getProperty('adAppId')
+
     }
 
 
@@ -28,6 +55,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // 릴리즈 빌드 타입에서만 API_KEY 값을 설정
             buildConfigField("String", "API_KEY", "\"eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxMywiaWF0IjoxNjkxMjk4NjA1LCJleHAiOjE2OTI3Njk4MzR9.D198cUO6Gh9eDIXGLfJfuMLHVYHU0jugAAyhI5pO6Ck\"")
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
@@ -43,6 +71,10 @@ android {
 }
 
 dependencies {
+
+    //API 연결 에러 확인
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+
     //마테리얼 디자인
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'com.google.android.material:material:1.3.0-alpha03'
@@ -69,7 +101,13 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
-  annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    implementation 'androidx.core:core-ktx:+'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    //이메일 인증 코드 전송
+    implementation files('..\\libs\\activation.jar')
+    implementation files('..\\libs\\additionnal.jar')
+    implementation files('..\\libs\\mail.jar')
 
     //Handler
     implementation 'androidx.core:core-ktx:1.6.0'
@@ -85,6 +123,35 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime:2.3.1" // 필요한 경우
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2" // 코루틴 지원
 
+
+    //viewpager2 Tablayout 위 마테리얼로 대체
+    //implementation 'com.google.android.material:material:1.4.0'
+
+    //slidinguppanel
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    // RxJava
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+
+    //gson 컨버터
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+
+    //splash screen (앱 시작 화면)
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
+
+    //카카오 로그인
+    implementation "com.kakao.sdk:v2-user:2.9.0"
+
+    // 코루틴
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0"
+
+    //extended floation button
+    implementation 'com.google.android.material:material:1.6.1'
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'

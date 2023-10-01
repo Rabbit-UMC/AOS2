@@ -138,15 +138,15 @@ class HomeMissionAdapter(
     private fun setMissionIcon(name:String, binding: ItemCommunityMissionBinding){
         when(name){
             "예술"-> {
-                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_art)
+                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_art_p)
                 binding.homeMissionItemImgImg.setImageDrawable(drawable)
             }
             "자유"-> {
-                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_free)
+                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_free_p)
                 binding.homeMissionItemImgImg.setImageDrawable(drawable)
             }
             "운동"-> {
-                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_exercise)
+                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_exercise_p)
                 binding.homeMissionItemImgImg.setImageDrawable(drawable)
             }
         }

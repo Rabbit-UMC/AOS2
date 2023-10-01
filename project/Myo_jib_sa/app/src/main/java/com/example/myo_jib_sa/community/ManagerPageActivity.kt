@@ -113,15 +113,15 @@ class ManagerPageActivity : AppCompatActivity() {
     private fun setMissionIcon(boardId:Long){
         when(boardId.toInt()){
             Constance.ART_ID-> {
-                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_art)
+                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_art_p)
                 binding.managerPageImgIc.setImageDrawable(drawable)
             }
             Constance.FREE_ID-> {
-                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_free)
+                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_free_p)
                 binding.managerPageImgIc.setImageDrawable(drawable)
             }
             Constance.EXERCISE_ID-> {
-                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_exercise)
+                val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_exercise_p)
                 binding.managerPageImgIc.setImageDrawable(drawable)
             }
         }

@@ -56,7 +56,7 @@ class BoardExerciseActivity : AppCompatActivity() {
         }
 
         //게시판 화면 띄우기
-        getBoardData(Constance.jwt, boardId.toLong())
+        Constance.jwt?.let { getBoardData(it, boardId.toLong()) }
 
         //뒤로가기 버튼
         binding.boardExcsBackBtn.setOnClickListener {
@@ -112,7 +112,7 @@ class BoardExerciseActivity : AppCompatActivity() {
                     // 스크롤이 마지막 아이템에 도달하면 다음 페이지 요청
                     isLoadingMore = true
                     page++
-                    getBoardData(Constance.jwt, boardId.toLong())
+                    Constance.jwt?.let { getBoardData(it, boardId.toLong()) }
                 }
             }
 
@@ -224,7 +224,7 @@ class BoardExerciseActivity : AppCompatActivity() {
         //게시판 화면 띄우기
         page=0
         isResume=true
-        getBoardData(Constance.jwt, boardId.toLong())
+        Constance.jwt?.let { getBoardData(it, boardId.toLong()) }
 
     }
 

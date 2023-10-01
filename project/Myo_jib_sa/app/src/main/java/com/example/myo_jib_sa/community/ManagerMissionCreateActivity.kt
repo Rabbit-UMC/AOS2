@@ -110,11 +110,13 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
                     Log.d("request 데이터", request.missionStartTime)
                     Log.d("request 데이터", request.missionEndTime)
                     Log.d("request 데이터", request.lastMission.toString())
-                    missionCreate(Constance.jwt ,request){isSuccess->
-                        if(isSuccess){
-                            finish()
-                        }else{
-                            Toast.makeText(this, "미션 생성에 실패 했습니다.", Toast.LENGTH_SHORT).show()
+                    Constance.jwt?.let { it1 ->
+                        missionCreate(it1,request){ isSuccess->
+                            if(isSuccess){
+                                finish()
+                            }else{
+                                Toast.makeText(this, "미션 생성에 실패 했습니다.", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
@@ -378,7 +380,7 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
                 isSelectingStartTime = true
                 isSelectingEndTime = false
                 isClickEndCalendarImgBtn=false
-            // 시작일 선택 중일 때는 종료일 선택 모드 해제
+                // 시작일 선택 중일 때는 종료일 선택 모드 해제
             } else { //캘린더 안보이게
                 binding.calendarLayout.visibility = View.GONE
                 binding.guidebanner.visibility = View.VISIBLE
@@ -399,7 +401,7 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
                 isSelectingEndTime = true
                 isSelectingStartTime = false
                 isClickStartCalendarImgBtn=false
-            // 종료일 선택 중일 때는 시작일 선택 모드 해제
+                // 종료일 선택 중일 때는 시작일 선택 모드 해제
             } else {//캘린더 안보이게
                 binding.calendarLayout.visibility = View.GONE
                 binding.guidebanner.visibility = View.VISIBLE
