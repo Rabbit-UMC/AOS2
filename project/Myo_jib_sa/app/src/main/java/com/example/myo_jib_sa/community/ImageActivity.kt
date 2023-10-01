@@ -75,7 +75,7 @@ class ImageActivity: AppCompatActivity()  {
                     if (value){
                         //신고 재확인 팝업창 띄우고 확인 누르면 api 연결
                         Log.d("미션 인증 게시물 신고", "미션 인증 게시물 신고")
-                        report(Constance.jwt, imgId)
+                        Constance.jwt?.let { it1 -> report(it1, imgId) }
                     }
                 }
             })

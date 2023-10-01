@@ -185,11 +185,13 @@ class WritePostingActivity : AppCompatActivity() {
                             )
                         }
 
-                        posting(Constance.jwt,request, boardId.toLong()){isSuccess->
-                            if(isSuccess){
-                                finish()
-                            }else{
-                                showToast("게시글 쓰기 실패")
+                        Constance.jwt?.let { it1 ->
+                            posting(it1,request, boardId.toLong()){ isSuccess->
+                                if(isSuccess){
+                                    finish()
+                                }else{
+                                    showToast("게시글 쓰기 실패")
+                                }
                             }
                         }
                     }else{ //글 수정
@@ -211,11 +213,13 @@ class WritePostingActivity : AppCompatActivity() {
                         }
 
                         //api로 콜 보냄
-                        editing(Constance.jwt, request, postId){isSuccess->
-                            if(isSuccess){
-                                finish()
-                            }else{
-                                showToast("게시글 수정 실패")
+                        Constance.jwt?.let { it1 ->
+                            editing(it1, request, postId){ isSuccess->
+                                if(isSuccess){
+                                    finish()
+                                }else{
+                                    showToast("게시글 수정 실패")
+                                }
                             }
                         }
                     }

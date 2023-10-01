@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter
 
 data class CalendarData(
     val date: LocalDate?,
-    var hasSchedule :Boolean = false//ture이면 일정 있음, false이면 일정 없음
+    var hasSchedule :Boolean? = false//ture이면 일정 있음, false이면 일정 없음
 )
 
 
@@ -39,7 +39,6 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 
-
         //날짜 변수에 담기
         var day = dayList[position].date
         if(day==null){
@@ -51,6 +50,8 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
 
         if(dayList[position].hasSchedule == true)
             holder.hasScheduleImg.visibility = View.VISIBLE
+        else
+            holder.hasScheduleImg.visibility = View.INVISIBLE
 
         //날짜 클릭 이벤트
         holder.itemView.setOnClickListener{
@@ -62,8 +63,8 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
                 var iMonth = day?.monthValue
                 var iDay = day?.dayOfMonth
 
-                Toast.makeText(holder.itemView.context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
-                    .show()
+//                Toast.makeText(holder.itemView.context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
+//                    .show()
             }
 
         }
