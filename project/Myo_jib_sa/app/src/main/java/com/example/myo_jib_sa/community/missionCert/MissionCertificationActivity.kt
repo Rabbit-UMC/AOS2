@@ -182,7 +182,12 @@ class MissionCertificationActivity: AppCompatActivity() {
 
                             Log.d("미션 인증 n일차", "$date")
 
-
+                            //미션 시작 전일 경우
+                            if(day<1){
+                                beforeMission()
+                            }else{
+                                binding.missionCertNotMissionTxt.visibility=View.GONE
+                            }
                             //뷰페이져 어댑터 연결
                             binding.missionCertVpr2.adapter = mAdapter
                             mAdapter.setData(Constance.jwt, date,missionId,this)
@@ -251,6 +256,17 @@ class MissionCertificationActivity: AppCompatActivity() {
 
         //미션 몇일차인지 설정
         return (referenceDate.toEpochDay()-missionStartDate.toEpochDay()).toInt()+1
+    }
+
+    //미션 시작 전일 경우, 텍스트 다 안보이게
+    private fun beforeMission(){
+        binding.missionCertRightBtn.visibility=View.GONE
+        binding.missionCertLeftBtn.visibility=View.GONE
+        binding.missionCertDay.visibility=View.GONE
+        binding.missionCertLeftDay.visibility=View.GONE
+        binding.missionCertRightBtn.visibility=View.GONE
+        binding.missionCertNotMissionTxt.visibility=View.VISIBLE
+        binding.missionCertNotMissionTxt.text="진행 중인 미션이 없습니다."
     }
 }
 
