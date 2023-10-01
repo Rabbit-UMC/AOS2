@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk tools:overrideLibrary="androidx.core.splashscreen" />
-
     <!-- 인터넷 접근 권한 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 외부 저장소 접근 권한 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -34,18 +33,18 @@
             android:exported="false" />
         <activity
             android:name=".community.WritePostingActivity"
-            android:exported="false" /> <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+            android:exported="false" />
         <activity
             android:name=".schedule.currentMissionActivity.DeleteCurrentMissionActivity"
             android:exported="false" />
         <activity
             android:name=".mission.MissionWriteMissionActivity"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <!--  ${AD_APP_ID} Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+            android:windowSoftInputMode="adjustPan" />
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <!-- ${AD_APP_ID} Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-1350635755184504~2813602960" />
+            android:value="${AD_APP_ID}" />
 
         <activity
             android:name=".schedule.currentMissionActivity.CurrentMissionActivity"
@@ -53,29 +52,33 @@
         <activity
             android:name=".schedule.createScheduleActivity.CreateScheduleActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".schedule.historyActivity.FailedMissionActivity"
             android:exported="false" />
         <activity
-            android:name=".schedule.HistoryActivity"
+            android:name=".schedule.historyActivity.SuccessMissionActivity"
             android:exported="false" />
         <activity
             android:name=".community.PostActivity"
             android:exported="false"
             android:label="@string/title_activity_post"
             android:theme="@style/Theme.Myo_jib_sa.NoActionBar" />
-<!--        <activity
+        <!--
+        <activity
             android:name=".community.BoardFreeActivity"
             android:exported="false" />
         <activity
             android:name=".community.BoardArtActivity"
-            android:exported="false" />-->
+            android:exported="false" />
+        -->
         <activity
             android:name=".community.BoardExerciseActivity"
             android:exported="false" />
         <activity
             android:name=".community.missionCert.MissionCertificationActivity"
-            android:label="Mission Certification Activity" >
-        </activity>
+            android:label="Mission Certification Activity" />
         <activity
             android:name=".community.missionCert.MissionCertificationWriteActivity"
             android:label="MissionCertificationWriteActivity" />
@@ -97,7 +100,9 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
     </application>

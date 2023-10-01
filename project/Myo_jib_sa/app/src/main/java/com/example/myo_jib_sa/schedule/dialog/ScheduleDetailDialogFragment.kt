@@ -106,7 +106,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
                 Log.d("timeDebug", "scheduleStartTime = ${result?.startAt}")
                 Log.d("Datedebug", "Detail = ${binding.scheduleDateTv.text.toString()}")
 
-                buttonClickListener.onClickEditBtn()
+                //buttonClickListener.onClickEditBtn()
                 val scheduleEditDialog = ScheduleEditDialogFragment()
                 scheduleEditDialogItemClickEvent(scheduleEditDialog)//scheduleEditDialog Item클릭 이벤트 setting
                 scheduleEditDialog.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
@@ -198,7 +198,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
     }
 
     //scheduleDetail api연결
-    fun scheduleDetailApi(scheduleId: Long) {
+    private fun scheduleDetailApi(scheduleId: Long) {
         // SharedPreferences 객체 가져오기
         val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
