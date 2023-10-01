@@ -15,10 +15,10 @@ import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.manager.ManagerRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.manager.MissionCreateRequest
+import com.example.myo_jib_sa.community.adapter.CreateScheduleCalendarAdapter
+import com.example.myo_jib_sa.community.adapter.SelectDateData
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.databinding.ActivityManagerPageMissionBinding
-import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.CreateScheduleCalendarAdapter
-import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDateData
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -110,11 +110,13 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
                     Log.d("request 데이터", request.missionStartTime)
                     Log.d("request 데이터", request.missionEndTime)
                     Log.d("request 데이터", request.lastMission.toString())
-                    missionCreate(Constance.jwt ,request){isSuccess->
-                        if(isSuccess){
-                            finish()
-                        }else{
-                            Toast.makeText(this, "미션 생성에 실패 했습니다.", Toast.LENGTH_SHORT).show()
+                    Constance.jwt?.let { it1 ->
+                        missionCreate(it1,request){ isSuccess->
+                            if(isSuccess){
+                                finish()
+                            }else{
+                                Toast.makeText(this, "미션 생성에 실패 했습니다.", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }

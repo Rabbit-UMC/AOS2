@@ -70,9 +70,11 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         }
 
         binding.missionCertCompleteTxt.setOnClickListener {
-            postImg(Constance.jwt, boardId.toLong()){ isSuccess->
-                if(isSuccess){
-                    finish()
+            Constance.jwt?.let { it1 ->
+                postImg(it1, boardId.toLong()){ isSuccess->
+                    if(isSuccess){
+                        finish()
+                    }
                 }
             }
 

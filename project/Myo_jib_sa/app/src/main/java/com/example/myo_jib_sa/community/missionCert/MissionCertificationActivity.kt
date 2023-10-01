@@ -50,7 +50,7 @@ class MissionCertificationActivity: AppCompatActivity() {
         missionImg= intent.getStringExtra("missionImg").toString()
         hostId=intent.getLongExtra("hostId",0)
 
-        setMissionCert(Constance.jwt, 1, missionId)
+        Constance.jwt?.let { setMissionCert(it, 1, missionId) }
 
         //게시판 이름
         when (boardId) {
@@ -131,7 +131,7 @@ class MissionCertificationActivity: AppCompatActivity() {
     //돌아왔을 때
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
-        setMissionCert(Constance.jwt, 1, missionId)
+        Constance.jwt?.let { setMissionCert(it, 1, missionId) }
         super.onResume()
     }
 
@@ -190,7 +190,7 @@ class MissionCertificationActivity: AppCompatActivity() {
                             }
                             //뷰페이져 어댑터 연결
                             binding.missionCertVpr2.adapter = mAdapter
-                            mAdapter.setData(Constance.jwt, date,missionId,this)
+                            Constance.jwt?.let { mAdapter.setData(it, date,missionId,this) }
                             binding.missionCertVpr2.currentItem = date-1
                         }
 
