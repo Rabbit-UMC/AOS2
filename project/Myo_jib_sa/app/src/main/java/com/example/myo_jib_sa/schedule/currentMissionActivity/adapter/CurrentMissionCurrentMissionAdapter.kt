@@ -12,13 +12,7 @@ import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.adapter.CalendarData
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
 
-data class CurrentMissionData(
-    var missionTitle:String,
-    var missionDday:String,
-    var missionChallengerCnt:Int,
-    var missionImg:Int,
-    var missionId:Long
-)
+
 
 class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<CurrentMissionResult>,
                                            private val width:Int, private val height:Int):

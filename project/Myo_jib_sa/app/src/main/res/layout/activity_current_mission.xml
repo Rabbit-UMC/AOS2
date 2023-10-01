@@ -42,6 +42,7 @@
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_currentmission_go_back" />
 
+
             <ImageView
                 android:id="@+id/imageView4"
                 android:layout_width="wrap_content"

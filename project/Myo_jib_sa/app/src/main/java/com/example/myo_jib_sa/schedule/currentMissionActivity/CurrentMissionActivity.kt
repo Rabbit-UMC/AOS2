@@ -153,9 +153,11 @@ class CurrentMissionActivity : AppCompatActivity() {
                     for(i in 0 until result.size) {
                         missionList.add(result[i])
                     }
-                    setCurrentMissionCurrentMissionAdapter()//CurrentMission rv 연결
-                    currentMissionScheduleApi(missionList[0].missionId)//하위 스케쥴 데이터 추가+schedule rv연결+clickevent
-                    currentMissionCurrentMissionRvItemClickEvent()
+                    if(result.isNotEmpty()) {
+                        setCurrentMissionCurrentMissionAdapter()//CurrentMission rv 연결
+                        currentMissionScheduleApi(missionList[0].missionId)//하위 스케쥴 데이터 추가+schedule rv연결+clickevent
+                        currentMissionCurrentMissionRvItemClickEvent()
+                    }
 
                 } else {
                     Log.e("retrofit", "onResponse: Error ${response.code()}")

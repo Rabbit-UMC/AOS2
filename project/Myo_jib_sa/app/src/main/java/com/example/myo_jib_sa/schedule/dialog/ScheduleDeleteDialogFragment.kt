@@ -22,7 +22,6 @@ import retrofit2.Response
 
 
 class ScheduleDeleteDialogFragment(
-    context: Context,
     val scheduleAdaptar: ScheduleAdaptar,
     val position:Int
 ) : DialogFragment() {
@@ -56,7 +55,7 @@ class ScheduleDeleteDialogFragment(
         //취소
         binding.exitBtn.setOnClickListener {
             dismiss()
-            //buttonClickListener.onClickExitBtn()
+            buttonClickListener.onClickExitBtn()
         }
     }
 
