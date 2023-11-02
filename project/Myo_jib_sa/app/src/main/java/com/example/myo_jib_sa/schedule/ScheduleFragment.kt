@@ -479,12 +479,12 @@ class ScheduleFragment() : Fragment() {
                     setCurrentMissionAdapter()
 
                 }else {
-                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    Log.e("retrofit", "onResponse_scheduleHomeApi: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                    Log.e("retrofit", "onResponse_scheduleHomeApi: Error Body $errorBody")
                 }}
             override fun onFailure(call: Call<ScheduleHomeResponse>, t: Throwable) {
-                Log.e("retrofit", "onFailure: ${t.message}")
+                Log.e("retrofit", "onFailure_scheduleHomeApi: ${t.message}")
             }
         })
     }
@@ -609,12 +609,12 @@ class ScheduleFragment() : Fragment() {
                     calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
 
                 }else {
-                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    Log.e("retrofit", "onResponse_scheduleMonthApi: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                    Log.e("retrofit", "onResponse_scheduleMonthApi: Error Body $errorBody")
                 }}
             override fun onFailure(call: Call<ScheduleMonthResponse>, t: Throwable) {
-                Log.e("retrofit", "onFailure: ${t.message}")
+                Log.e("retrofit", "onFailure_scheduleMonthApi: ${t.message}")
             }
         })
     }
