@@ -72,7 +72,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         Log.d("게시물 ID", "게시물 id : ${postId}")
 
         //게시글 뷰 설정
-        setPostData(Constance.jwt, binding, boardId.toInt(), postId)
+        Constance.jwt?.let { setPostData(it, binding, boardId.toInt(), postId) }
 
 
         binding.postBackBtn.setOnClickListener {
@@ -81,14 +81,17 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
         //댓글 달기
         binding.postEnterBtn.setOnClickListener {
-            commenting(Constance.jwt,
-                binding.postCommentInputEtxt.text.toString().replace("\n", "<br>"),postId){isSuccess->
-                if(isSuccess){
-                    setPostData(Constance.jwt, binding, boardId.toInt(), postId)
-                }else{
-                    showToast("댓글 달기 실패")
+            Constance.jwt?.let { it1 ->
+                commenting(
+                    it1,
+                    binding.postCommentInputEtxt.text.toString().replace("\n", "<br>"),postId){isSuccess->
+                    if(isSuccess){
+                        setPostData(Constance.jwt!!, binding, boardId.toInt(), postId)
+                    }else{
+                        showToast("댓글 달기 실패")
+                    }
+                    binding.postCommentInputEtxt.text.clear()
                 }
-                binding.postCommentInputEtxt.text.clear()
             }
         }
 
@@ -98,10 +101,12 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         setHeartButtonIcon()
         //좋아요 누르기 기능
         binding.postHeartBtn.setOnClickListener {
-            setHeartApi(Constance.jwt, postId){ isSuccess->
-                if(isSuccess){
-                    isHearted = !isHearted
-                    setHeartButtonIcon()
+            Constance.jwt?.let { it1 ->
+                setHeartApi(it1, postId){ isSuccess->
+                    if(isSuccess){
+                        isHearted = !isHearted
+                        setHeartButtonIcon()
+                    }
                 }
             }
         }
@@ -117,7 +122,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
     override fun onResume() {
         super.onResume()
-        setPostData(Constance.jwt, binding, boardId.toInt(), postId)
+        Constance.jwt?.let { setPostData(it, binding, boardId.toInt(), postId) }
     }
 
 
@@ -163,11 +168,13 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                         override fun onPositiveButtonClicked(value: Boolean) {
                             if (value){
                                 //신고 재확인 팝업창 띄우고 확인 누르면 api 연결
-                                postDelete(Constance.jwt, postId){isSuccess->
-                                    if(isSuccess){
-                                        finish()
-                                    }else{
-                                        showToast("게시글 삭제 실패")
+                                Constance.jwt?.let {
+                                    postDelete(it, postId){ isSuccess->
+                                        if(isSuccess){
+                                            finish()
+                                        }else{
+                                            showToast("게시글 삭제 실패")
+                                        }
                                     }
                                 }
 
@@ -188,11 +195,13 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                         override fun onPositiveButtonClicked(value: Boolean) {
                             if (value){
                                 //신고 재확인 팝업창 띄우고 확인 누르면 api 연결
-                                postReport(Constance.jwt,postId){isSuccess->
-                                    if(isSuccess){
-                                        showToast("해당 게시글이 신고 되었습니다")
-                                    }else{
-                                        showToast("신고 실패했습니다")
+                                Constance.jwt?.let {
+                                    postReport(it,postId){ isSuccess->
+                                        if(isSuccess){
+                                            showToast("해당 게시글이 신고 되었습니다")
+                                        }else{
+                                            showToast("신고 실패했습니다")
+                                        }
                                     }
                                 }
                             }
@@ -242,7 +251,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 setHeartButtonIcon()
 
 
-+77
+
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
                 val returnCode = response.code
@@ -368,13 +377,15 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     //댓글 리사이클러뷰, 어댑터 연결
     private fun linkCommentRecyclr(list:List<CommentList>, isPostWriter:Boolean, postId: Long){
         //이미지 뷰
-        val adapter = PostCommentAdapter(this,list,isPostWriter, postId, Constance.jwt)
+        val adapter = Constance.jwt?.let { PostCommentAdapter(this,list,isPostWriter, postId, it) }
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.postCommentRecyclr.layoutManager = layoutManager
         binding.postCommentRecyclr.adapter = adapter
 
-        adapter.setItemSpacing(binding.postCommentRecyclr, 15)
+        if (adapter != null) {
+            adapter.setItemSpacing(binding.postCommentRecyclr, 15)
+        }
     }
 
     //하트 버튼 아이콘 설정
