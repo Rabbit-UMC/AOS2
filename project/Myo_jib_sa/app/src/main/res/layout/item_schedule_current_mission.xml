@@ -16,38 +16,44 @@
                 android:id="@+id/mission_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/font_inter"
+                android:fontFamily="@font/font_pretendard_semibold"
                 android:text="미션제목"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="16dp" />
-
-            <TextView
-                android:id="@+id/mission_numOfchallenger_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:text="도전자 수"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                tools:layout_editor_absoluteX="104dp"
-                tools:layout_editor_absoluteY="78dp" />
+                android:textSize="14sp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginRight="14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/mission_dDay_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:text="D - 10"
-                android:textColor="#337CCF"
-                android:textSize="12sp"
-                android:textStyle="bold"
+                android:layout_gravity="bottom"
+                android:fontFamily="@font/font_pretendard_bold"
+                android:text="D-10"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:layout_marginRight="14dp"
+                android:layout_marginBottom="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/mission_numOfchallenger_tv"
+                android:layout_width="42dp"
+                android:layout_height="19dp"
+                android:gravity="center"
                 android:background="@drawable/view_round_r12_white"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="80dp" />
+                android:fontFamily="@font/font_pretendard_regular"
+                android:text="10명"
+                android:textColor="#337CCF"
+                android:textSize="10sp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginBottom="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
