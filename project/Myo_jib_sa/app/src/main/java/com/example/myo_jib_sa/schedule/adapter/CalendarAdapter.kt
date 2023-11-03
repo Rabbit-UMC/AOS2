@@ -49,9 +49,9 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
         }
 
         if(dayList[position].hasSchedule == true)
-            holder.hasScheduleImg.visibility = View.VISIBLE
+           holder.hasScheduleImg.visibility = View.VISIBLE
         else
-            holder.hasScheduleImg.visibility = View.INVISIBLE
+           holder.hasScheduleImg.visibility = View.INVISIBLE
 
         //날짜 클릭 이벤트
         holder.itemView.setOnClickListener{

@@ -92,7 +92,7 @@ class ScheduleFragment() : Fragment() {
         adLoader?.loadAd(AdRequest.Builder().build())
 
         //yyyy년 m월 (예: 2023년 6월 표시)
-        binding.selectedYearMonthTv.text = YYYYMMFromDate(selectedDate)
+        binding.selectedMonthDayTv.text = YYYYMMFromDate(selectedDate)
         //m월 d일 일정 표시 (예: 6월 1일 일정 표시)
         binding.selectedMonthDayTv.text = "${MMDDFromDate(selectedDate)} 일정"
 
@@ -101,18 +101,10 @@ class ScheduleFragment() : Fragment() {
         setScheduleAdapter(selectedDate)
         scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
 
-        //캘린더 visible버튼
-        binding.calenderVisibleBtn.setOnClickListener{
-            if(binding.calenderLayout.visibility == View.GONE)
-                binding.calenderLayout.visibility = View.VISIBLE
-            else
-                binding.calenderLayout.visibility = View.GONE
-        }
-
 
         //화면전환
         switchScreen()
-        //캘린더에 이전달 다음달 이동 버튼 세팅
+        //캘린더 관련 모든 버튼
         calenderBtn()
 
 
@@ -159,7 +151,7 @@ class ScheduleFragment() : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setCalendarAdapter(){
         //month를 month text view에 보여주기 (결과: 1월)
-        binding.monthTv.text = monthFromDate(selectedDate)
+        binding.selectedMonthTv.text = monthFromDate(selectedDate)
 
 
         //일정 있는지 없는지 api로 체크
@@ -323,15 +315,17 @@ class ScheduleFragment() : Fragment() {
 
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
-                val sItemRectangleImg: ImageView = viewHolder.itemView.findViewById(R.id.sechedule_rectangle_img)
-                sItemRectangleImg.setImageResource(R.drawable.ic_schedule_rectangle)
+                //todo
+                //val sItemRectangleImg: ImageView = viewHolder.itemView.findViewById(R.id.sechedule_rectangle_img)
+                //sItemRectangleImg.setImageResource(R.drawable.ic_schedule_rectangle)
             }
 
             override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
                 super.onSelectedChanged(viewHolder, actionState)
                 if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                    val sItemRectangleImg: ImageView? = viewHolder?.itemView?.findViewById(R.id.sechedule_rectangle_img)
-                    sItemRectangleImg?.setImageResource(R.drawable.ic_schedule_delete_rectangle)
+                    //todo
+                   // val sItemRectangleImg: ImageView? = viewHolder?.itemView?.findViewById(R.id.sechedule_rectangle_img)
+                   // sItemRectangleImg?.setImageResource(R.drawable.ic_schedule_delete_rectangle)
                 }
             }
         }).apply {
@@ -353,7 +347,7 @@ class ScheduleFragment() : Fragment() {
                 // 클릭 시 이벤트 작성
                 Log.d("debug", "클릭!")
                 //2023년 6월 표시
-                binding.selectedYearMonthTv.text = YYYYMMFromDate(calendarData.date)
+                binding.selectedMonthTv.text = YYYYMMFromDate(calendarData.date)
                 //6월 1일 일정 표시
                 binding.selectedMonthDayTv.text = "${MMDDFromDate(calendarData.date)} 일정"
 
@@ -412,10 +406,10 @@ class ScheduleFragment() : Fragment() {
     //화면전환 메소드
     fun switchScreen(){
         //history누르면 HistoryActivity로 화면 전환
-        binding.historyTv.setOnClickListener{
-            var historyIntent = Intent(requireActivity(), SuccessMissionActivity::class.java)
-            startActivity(historyIntent)
-        }
+//        binding.historyTv.setOnClickListener{
+//            var historyIntent = Intent(requireActivity(), SuccessMissionActivity::class.java)
+//            startActivity(historyIntent)
+//        }
         //미션리스트 위에 모두보기 누르면 CurrentMissionActivity로 화면 전환
         binding.viewAllTv.setOnClickListener{
             var missionIntent = Intent(requireActivity(), CurrentMissionActivity::class.java)
@@ -428,9 +422,34 @@ class ScheduleFragment() : Fragment() {
         }
     }
 
-    //캘린더에 이전달 다음달 이동 버튼 세팅
+    //캘린더 관련 버튼
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calenderBtn(){
+
+        //month-day 어제로 이동
+        binding.yesterdayBtn.setOnClickListener {
+            selectedDate = selectedDate.minusDays(1)
+            setCalendarAdapter()
+        }
+
+        //month-day 내일로 이동
+        binding.tomorrowBtn.setOnClickListener {
+            selectedDate =selectedDate.plusDays(1)
+            setCalendarAdapter()
+        }
+
+        //캘린더 visible버튼
+        binding.calendarVisibleBtn.setOnClickListener{
+                binding.calendarLayout.visibility = View.VISIBLE
+                binding.calendarMonthDayHeader.visibility = View.GONE
+        }
+
+        //캘린더 gone 버튼
+        binding.calendarGoneBtn.setOnClickListener{
+            binding.calendarLayout.visibility = View.GONE
+            binding.calendarMonthDayHeader.visibility = View.VISIBLE
+        }
+
         //이전달로 이동
         binding.preMonthBtn.setOnClickListener{
             selectedDate = selectedDate.minusMonths(1)
