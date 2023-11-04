@@ -45,17 +45,31 @@ class SpinnerEndTimeFragment : Fragment() {
 
         //timepicker 초기값 설정
         var endTime = scheduleData.endAt.split(":")
-        binding.endTimePicker.hour = endTime[0].toInt();
-        binding.endTimePicker.minute = endTime[1].toInt();
-        binding.endTimePicker.descendantFocusability =
-            NumberPicker.FOCUS_BLOCK_DESCENDANTS //editText가 눌리는 것을 막는다
+        if (endTime.size == 2) { // endTime 배열에 시간과 분이 둘 다 존재하는지 확인
+            val hour = endTime[0].toIntOrNull() // 시간 문자열을 숫자로 변환
+            val minute = endTime[1].toIntOrNull() // 분 문자열을 숫자로 변환
 
-        binding.endTimePicker.setOnTimeChangedListener(object: TimePicker.OnTimeChangedListener {
+            if (hour != null && minute != null) {
+                binding.endTimePicker.hour = hour
+                binding.endTimePicker.minute = minute
+            } else {
+                // 숫자로 변환할 수 없는 값이 포함된 경우에 대한 예외 처리
+                Log.e("debug", "Invalid time format: ${scheduleData.endAt}")
+            }
+        } else {
+            // endTime 배열이 시간과 분으로 나누어진 형식이 아닌 경우에 대한 예외 처리
+            Log.e("debug", "Invalid time format: ${scheduleData.endAt}")
+        }
+
+        binding.endTimePicker.descendantFocusability =
+            NumberPicker.FOCUS_BLOCK_DESCENDANTS // editText가 눌리는 것을 막는다
+
+        binding.endTimePicker.setOnTimeChangedListener(object : TimePicker.OnTimeChangedListener {
             override fun onTimeChanged(view: TimePicker?, hourOfDay: Int, minute: Int) {
                 val formatter = DecimalFormat("00")
                 Log.d("debug", "endTime : 시:분 | ${formatter.format(hourOfDay)} : ${formatter.format(minute)}")
                 editor.putString("scheduleEndTime", "${formatter.format(hourOfDay)}:${formatter.format(minute)}")
-                editor.apply()// data 저장!
+                editor.apply() // data 저장!
             }
         })
 

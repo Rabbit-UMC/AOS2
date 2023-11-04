@@ -33,7 +33,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
     private var imgUrl:String=""
 
     companion object {
-        private const val GALLERY_REQUEST_CODE = 1001
+        const val GALLERY_REQUEST_CODE = 1001
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +58,11 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
         }
 
+        //뒤로가기
+        binding.missionCertBackBtn.setOnClickListener {
+            finish()
+        }
+
 
         binding.missionCertImgBtn.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -65,9 +70,11 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         }
 
         binding.missionCertCompleteTxt.setOnClickListener {
-            postImg(Constance.jwt, boardId.toLong()){ isSuccess->
-                if(isSuccess){
-                    finish()
+            Constance.jwt?.let { it1 ->
+                postImg(it1, boardId.toLong()){ isSuccess->
+                    if(isSuccess){
+                        finish()
+                    }
                 }
             }
 

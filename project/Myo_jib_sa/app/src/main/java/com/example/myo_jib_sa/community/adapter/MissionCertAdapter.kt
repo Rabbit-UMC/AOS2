@@ -155,26 +155,30 @@ class MissionCertAdapter(
                             if (isLiked) {
                                 Log.d("미션 인증 게시물 좋아요 취소", "미션 인증 게시물 좋아요 취소")
                                 Log.d("미션 인증 게시물 좋아요 취소", "이미지 아이디 $imgId")
-                                unlike(Constance.jwt, imgId) { isSuccess ->
-                                    if (isSuccess) {
-                                        heart.visibility=View.GONE
-                                        // Update the like status in SharedPreferences
-                                        sharedPreferences.edit().putBoolean("isLiked_$imgId", false).apply()
-                                        showToast("좋아요 취소")
-                                        Log.d("미션 인증 게시물 좋아요 취소 성공", "미션 인증 게시물 좋아요 취소 성공")
+                                Constance.jwt?.let {
+                                    unlike(it, imgId) { isSuccess ->
+                                        if (isSuccess) {
+                                            heart.visibility=View.GONE
+                                            // Update the like status in SharedPreferences
+                                            sharedPreferences.edit().putBoolean("isLiked_$imgId", false).apply()
+                                            showToast("좋아요 취소")
+                                            Log.d("미션 인증 게시물 좋아요 취소 성공", "미션 인증 게시물 좋아요 취소 성공")
+                                        }
                                     }
                                 }
                             } else {
                                 Log.d("미션 인증 게시물 좋아요", "미션 인증 게시물 좋아요")
                                 Log.d("미션 인증 게시물 좋아요 취소", "이미지 아이디 $imgId")
-                                like(Constance.jwt, imgId) { isSuccess ->
-                                    if (isSuccess) {
-                                        heart.visibility=View.VISIBLE
-                                        // Update the like status in SharedPreferences
-                                        sharedPreferences.edit().putBoolean("isLiked_$imgId", true).apply()
-                                        showToast("좋아요")
-                                        Log.d("미션 인증 게시물 좋아요 성공", "미션 인증 게시물 좋아요 성공")
+                                Constance.jwt?.let {
+                                    like(it, imgId) { isSuccess ->
+                                        if (isSuccess) {
+                                            heart.visibility=View.VISIBLE
+                                            // Update the like status in SharedPreferences
+                                            sharedPreferences.edit().putBoolean("isLiked_$imgId", true).apply()
+                                            showToast("좋아요")
+                                            Log.d("미션 인증 게시물 좋아요 성공", "미션 인증 게시물 좋아요 성공")
 
+                                        }
                                     }
                                 }
                             }

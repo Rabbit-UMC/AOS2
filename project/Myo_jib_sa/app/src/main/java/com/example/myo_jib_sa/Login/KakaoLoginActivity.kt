@@ -33,13 +33,21 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
         installSplashScreen()
         setContentView(binding.root)
 
+
+
         // 앱 시작 시 자동 로그인 체크
+
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+
+
+
+
         val jwtToken = sharedPreferences.getString("jwt", null)
         if (jwtToken != null) {
             // 저장된 토큰이 있다면 자동으로 로그인
             autoLogin(jwtToken)
         }
+
 
 
 
@@ -67,7 +75,15 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                     kakaoEmail = user.kakaoAccount?.email
                     accessToken = token.accessToken
                     Log.d("token", accessToken)
-                    if (kakaoEmail != null) {
+
+                    LoginApi(accessToken)
+                    val intent = Intent(this@KakaoLoginActivity, MyoSignUpActivity::class.java)
+                    intent.putExtra("accessToken", accessToken)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
+                    Log.d("token", accessToken)
+
+                  /*  if (kakaoEmail != null) {
                         // 카카오이메일 있으면 바로 묘집사 회원가입으로 이동
                         LoginApi(accessToken)
                         val intent = Intent(this@KakaoLoginActivity, MyoSignUpActivity::class.java)
@@ -78,10 +94,10 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                     } else {
                         // 카카오이메일 없으면 추가 이메일 입력 다이얼로그로 이동
                         showAddEmailDialog()
-                    }
+                    }*/
                 }
             }
-            Log.d("token", "카카오계정으로 로그인 성공 ${token.accessToken}")
+            Log.d("LoginResponse", "카카오계정으로 로그인 성공 ${token.accessToken}")
         }
     }
     private fun autoLogin(jwtToken: String) {
@@ -108,23 +124,27 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                             Log.d("LoginResponse", "id: ${loginResult.id}")
                             Log.d("LoginResponse", "jwt: ${jwtToken}")
 
-                            /*// jwtToken을 sharedPreference에 저장하기
+                            // jwtToken을 sharedPreference에 저장하기
                             val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-                            val getJwt = sharedPreferences.edit()
+                            val editor = sharedPreferences.edit()
                             // JWT 저장
                             val jwt = jwtToken
+                            if (jwt != null) {
+                                editor.putString("jwt", jwt)
+                            }
+                            // userId 저장
+                            val userId = loginResult.id // 이 부분을 실제 userId 값으로 바꿔주세요
+                            editor.putLong("userId", userId)
+
+                            editor.apply()
+                           /* val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+                            val getJwt = sharedPreferences.edit()
+                            // JWT 저장
+                            val jwt ="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTE2NjUwMzIsImV4cCI6MTY5MzEzNjI2MX0.mlOx8WnywdEYGNDHkhlqP3agL3rVMyvwgwWP8VlvsXM"
                             if (jwt != null) {
                                 getJwt.putString("jwt", jwt)
                             }
                             getJwt.apply()*/
-                            val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-                            val getJwt = sharedPreferences.edit()
-                            // JWT 저장
-                            val jwt ="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTI3MjE1OTMsImV4cCI6MTY5MjcyNTE5M30.QQBX4y9UIAnMMS_8sbU7tbXti2TU8TsosXRVEWBs_FM"
-                            if (jwt != null) {
-                                getJwt.putString("jwt", jwt)
-                            }
-                            getJwt.apply()
                         }
                     }
                 } else {
@@ -139,7 +159,6 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
             }
         })
     }
-
 
 
     // 이메일 입력 완료 시 호출되는 콜백 함수

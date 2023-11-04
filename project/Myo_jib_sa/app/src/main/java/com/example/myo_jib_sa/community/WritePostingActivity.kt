@@ -23,10 +23,7 @@ import com.example.myo_jib_sa.community.Retrofit.post.ImageList
 import com.example.myo_jib_sa.community.Retrofit.post.PostCreateRequest
 import com.example.myo_jib_sa.community.Retrofit.post.PostEditRequest
 import com.example.myo_jib_sa.community.Retrofit.post.PostRetrofitManager
-import com.example.myo_jib_sa.community.adapter.PostImgAdapter
-import com.example.myo_jib_sa.community.adapter.WritePostImgAdapter
 import com.example.myo_jib_sa.databinding.ActivityWritePostingBinding
-import kotlinx.coroutines.flow.emptyFlow
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -188,11 +185,13 @@ class WritePostingActivity : AppCompatActivity() {
                             )
                         }
 
-                        posting(Constance.jwt,request, boardId.toLong()){isSuccess->
-                            if(isSuccess){
-                                finish()
-                            }else{
-                                showToast("게시글 쓰기 실패")
+                        Constance.jwt?.let { it1 ->
+                            posting(it1,request, boardId.toLong()){ isSuccess->
+                                if(isSuccess){
+                                    finish()
+                                }else{
+                                    showToast("게시글 쓰기 실패")
+                                }
                             }
                         }
                     }else{ //글 수정
@@ -214,11 +213,13 @@ class WritePostingActivity : AppCompatActivity() {
                         }
 
                         //api로 콜 보냄
-                        editing(Constance.jwt, request, postId){isSuccess->
-                            if(isSuccess){
-                                finish()
-                            }else{
-                                showToast("게시글 수정 실패")
+                        Constance.jwt?.let { it1 ->
+                            editing(it1, request, postId){ isSuccess->
+                                if(isSuccess){
+                                    finish()
+                                }else{
+                                    showToast("게시글 수정 실패")
+                                }
                             }
                         }
                     }

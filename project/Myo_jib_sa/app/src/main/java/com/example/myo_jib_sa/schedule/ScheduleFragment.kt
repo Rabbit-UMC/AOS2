@@ -2,7 +2,6 @@ package com.example.myo_jib_sa.schedule
 
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -11,16 +10,14 @@ import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.BuildConfig
-import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.example.myo_jib_sa.schedule.adapter.*
@@ -37,6 +34,7 @@ import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActi
 import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActivity
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDeleteDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
+import com.example.myo_jib_sa.schedule.historyActivity.SuccessMissionActivity
 import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
@@ -51,12 +49,12 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 
-class ScheduleFragment(context: Context) : Fragment() {
+class ScheduleFragment() : Fragment() {
 
     lateinit var binding: FragmentScheduleBinding
     lateinit var calendarAdapter : CalendarAdapter //calendarRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
     lateinit var scheduleAdaptar : ScheduleAdaptar //scheduleRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
-    var scheduleDetailDialog = ScheduleDetailDialogFragment(context)
+    lateinit var scheduleDetailDialog : ScheduleDetailDialogFragment
     lateinit var selectedDate : LocalDate //오늘 날짜
 
     var mDataList = ArrayList<Mission>() //미션 리스트 데이터
@@ -76,6 +74,7 @@ class ScheduleFragment(context: Context) : Fragment() {
     ): View? {
         binding = FragmentScheduleBinding.inflate(inflater, container, false)
 
+        scheduleDetailDialog =  ScheduleDetailDialogFragment(requireContext())//scheduleDetailDialog 설정
 
         //scheduleHomeApi()//scheduleHome api연결
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
@@ -237,7 +236,7 @@ class ScheduleFragment(context: Context) : Fragment() {
     //광고 생성 메소드
     private fun createAd() {
         MobileAds.initialize(requireActivity())
-        adLoader = AdLoader.Builder(requireActivity(), "ca-app-pub-3940256099942544/2247696110")//sample아이디
+        adLoader = AdLoader.Builder(requireActivity(), BuildConfig.AD_UNIT_ID)//sample아이디
             .forNativeAd { ad : NativeAd ->
                 val template: TemplateView = binding.myTemplate
                 template.setNativeAd(ad)
@@ -305,7 +304,7 @@ class ScheduleFragment(context: Context) : Fragment() {
                 //bundle.putLong("scheduleId", scheduleData.scheduleId)
 
                 //dialog연결 2안
-                var scheduleDeleteDialog = ScheduleDeleteDialogFragment(requireContext(), binding.scheduleRv.adapter as ScheduleAdaptar, position)
+                var scheduleDeleteDialog = ScheduleDeleteDialogFragment(binding.scheduleRv.adapter as ScheduleAdaptar, position)
                 scheduleDeleteDialog.setButtonClickListener(object: ScheduleDeleteDialogFragment.OnButtonClickListener{
                     override fun onClickExitBtn() {
                         //scheduleAdaptar.notifyItemChanged(viewHolder.adapterPosition);
@@ -414,7 +413,7 @@ class ScheduleFragment(context: Context) : Fragment() {
     fun switchScreen(){
         //history누르면 HistoryActivity로 화면 전환
         binding.historyTv.setOnClickListener{
-            var historyIntent = Intent(requireActivity(), HistoryActivity::class.java)
+            var historyIntent = Intent(requireActivity(), SuccessMissionActivity::class.java)
             startActivity(historyIntent)
         }
         //미션리스트 위에 모두보기 누르면 CurrentMissionActivity로 화면 전환
@@ -457,9 +456,8 @@ class ScheduleFragment(context: Context) : Fragment() {
         val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
         val token = sharedPreferences.getString("jwt", "")
-        Log.d("LoginRespons", "token = "+token)
-        //val token : String = BuildConfig.API_TOKEN
-//        Log.d("retrofit", "token = "+token+"l");
+
+        mDataList.clear()//mDataList초기화
 
         val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
         val listCall = service.scheduleHome(token)
@@ -528,7 +526,7 @@ class ScheduleFragment(context: Context) : Fragment() {
                             scheduleList[i].scheduleWhen
                         ))
                     }
-                    if(binding.calenderLayout.visibility == View.VISIBLE)
+                    //if(binding.F.visibility == View.VISIBLE)
                         setScheduleAdapter(selectedDate)
                 }else {
                     Log.e("retrofit", "onResponse: Error ${response.code()}")
@@ -593,12 +591,12 @@ class ScheduleFragment(context: Context) : Fragment() {
                 if (response.isSuccessful) {
                     Log.d("retrofit", response.body().toString());
                     val scheduleList = response.body()?.result?.dayList
-
+                    val formatter = DecimalFormat("00")
 
                     //현재 미션 데이터 리스트 리사이클러뷰 연결
                     //디데이 얼마 안남은 미션부터 많이 남은 순으로 정렬돼 있음
                     for(i in 0 until scheduleList!!.size){
-                        hasScheduleMap["$monthDate-${scheduleList[i]}"] = true
+                        hasScheduleMap["$monthDate-${formatter.format(scheduleList[i])}"] = true
                     }
 
                     val dayList = dayInMonthArray(selectedDate)

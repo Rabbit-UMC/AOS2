@@ -15,10 +15,10 @@ import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.manager.ManagerRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.manager.MissionCreateRequest
+import com.example.myo_jib_sa.community.adapter.CreateScheduleCalendarAdapter
+import com.example.myo_jib_sa.community.adapter.SelectDateData
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.databinding.ActivityManagerPageMissionBinding
-import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.CreateScheduleCalendarAdapter
-import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDateData
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -74,14 +74,7 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
         setMonthView()
 
         //오늘날짜 편집 화면에 표시
-        //시작
-        binding.missionStartYearTxt.text = referenceDate?.year.toString()
-        binding.missionStartMonthTxt.text = referenceDate?.monthValue.toString()
-        binding.missionStartDateTxt.text = referenceDate?.dayOfMonth.toString()
-        //종료
-        binding.missionEndYearTxt.text = referenceDate?.year.toString()
-        binding.missionEndMonthTxt.text = referenceDate?.monthValue.toString()
-        binding.missionEndDayTxt.text = referenceDate?.dayOfMonth.toString()
+        setDateTxt()
 
 
         setBtn()//버튼 setting, 뒤로가기, 달력
@@ -117,11 +110,13 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
                     Log.d("request 데이터", request.missionStartTime)
                     Log.d("request 데이터", request.missionEndTime)
                     Log.d("request 데이터", request.lastMission.toString())
-                    missionCreate(Constance.jwt ,request){isSuccess->
-                        if(isSuccess){
-                            finish()
-                        }else{
-                            Toast.makeText(this, "미션 생성에 실패 했습니다.", Toast.LENGTH_SHORT).show()
+                    Constance.jwt?.let { it1 ->
+                        missionCreate(it1,request){ isSuccess->
+                            if(isSuccess){
+                                finish()
+                            }else{
+                                Toast.makeText(this, "미션 생성에 실패 했습니다.", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
@@ -129,6 +124,18 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
         }
     }
 
+    //오늘 날짜 화면에 표시
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setDateTxt(){
+        //시작
+        binding.missionStartYearTxt.text = referenceDate?.year.toString()
+        binding.missionStartMonthTxt.text = referenceDate?.monthValue?.let { dateFormat(it) }
+        binding.missionStartDateTxt.text = referenceDate?.dayOfMonth?.let { dateFormat(it) }
+        //종료
+        binding.missionEndYearTxt.text = referenceDate?.year.toString()
+        binding.missionEndMonthTxt.text = referenceDate?.monthValue?.let { dateFormat(it) }
+        binding.missionEndDayTxt.text = referenceDate?.dayOfMonth?.let { dateFormat(it) }
+    }
 
     //month화면에 보여주기
     @RequiresApi(Build.VERSION_CODES.O)
@@ -253,14 +260,10 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
         var day:String=""
         var month:String=""
         if (date != null) {
-            dateFormat(date.dayOfMonth){date->
-                day=date
-            }
+            day =dateFormat(date.dayOfMonth)
         }
         if (date != null) {
-            dateFormat(date.monthValue){date->
-                month=date
-            }
+            month=dateFormat(date.monthValue)
         }
         // 선택한 시작일을 UI에 반영
         if (date != null) {
@@ -275,14 +278,10 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
         var day:String=""
         var month:String=""
         if (date != null) {
-            dateFormat(date.dayOfMonth){date->
-                day=date
-            }
+            day =dateFormat(date.dayOfMonth)
         }
         if (date != null) {
-            dateFormat(date.monthValue){date->
-                month=date
-            }
+            month=dateFormat(date.monthValue)
         }
         // 선택한 종료일을 UI에 반영
         if (date != null) {
@@ -293,14 +292,15 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun dateFormat(date: Int, callback: (String) -> Unit){
+    private fun dateFormat(date: Int):String{
         if (date != null) {
-            if(date<10){
-                callback("0${date}")
+            return if(date<10){
+                "0${date}"
             }else{
-                callback("${date}")
+                date.toString()
             }
         }
+        return date.toString()
     }
 
     //30일 차이 검증, 30이내면 true

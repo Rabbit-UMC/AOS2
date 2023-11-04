@@ -47,6 +47,8 @@ class CommunityFragment : Fragment() {
     ): View? {
         binding=FragmentCommunityBinding.inflate(inflater, container, false)
 
+        Constance.initializeJwt(requireContext())
+
         retrofitManager = CommunityHomeManager.getInstance(requireContext())
 
         //터치시 게시판 이동
@@ -60,7 +62,7 @@ class CommunityFragment : Fragment() {
         }
 
         //api 연결, 뷰 띄우기
-        getMissionData(Constance.jwt, requireContext())
+        Constance.jwt?.let { getMissionData(it, requireContext()) }
 
         //배너 연결
         val vAdapter=BannerViewpagerAdapter(this)
@@ -103,7 +105,7 @@ class CommunityFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         retrofitManager = CommunityHomeManager.getInstance(requireContext())
-        getMissionData(Constance.jwt, requireContext())
+        Constance.jwt?.let { getMissionData(it, requireContext()) }
     }
 
     //게시판 이동

@@ -12,7 +12,7 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 
 android {
     namespace 'com.example.myo_jib_sa'
-    compileSdk 33
+    compileSdkVersion 34
 
     viewBinding {
         enabled = true
@@ -36,10 +36,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // 타입 - 키 - 값
-        //애드몹 광고 아이디 - 변경필요
+        //애드몹 광고 아이디
         buildConfigField "String", "AD_UNIT_ID", properties['adUnitId']
 
-        //buildConfigField "String", "API_TOKEN", properties['apiToken']//나중에 지우기
 
 
         //키 - 값
@@ -56,6 +55,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // 릴리즈 빌드 타입에서만 API_KEY 값을 설정
             buildConfigField("String", "API_KEY", "\"eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxMywiaWF0IjoxNjkxMjk4NjA1LCJleHAiOjE2OTI3Njk4MzR9.D198cUO6Gh9eDIXGLfJfuMLHVYHU0jugAAyhI5pO6Ck\"")
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
@@ -101,7 +101,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
-  annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    implementation 'androidx.core:core-ktx:+'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     //이메일 인증 코드 전송
     implementation files('..\\libs\\activation.jar')
@@ -123,8 +124,8 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2" // 코루틴 지원
 
 
-    //viewpager2 Tablayout
-    implementation 'com.google.android.material:material:1.4.0'
+    //viewpager2 Tablayout 위 마테리얼로 대체
+    //implementation 'com.google.android.material:material:1.4.0'
 
     //slidinguppanel
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
@@ -148,6 +149,9 @@ dependencies {
 
     // 코루틴
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0"
+
+    //extended floation button
+    implementation 'com.google.android.material:material:1.6.1'
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
