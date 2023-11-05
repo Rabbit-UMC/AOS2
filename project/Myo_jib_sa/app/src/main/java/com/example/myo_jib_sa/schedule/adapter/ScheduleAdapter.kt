@@ -19,7 +19,7 @@ class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):
         val sTitle_tv: TextView = itemView.findViewById(R.id.schedule_title_tv)
         val sStartTime_tv: TextView = itemView.findViewById(R.id.schedule_start_time_tv)
         val sFinishTime_tv: TextView = itemView.findViewById(R.id.schedule_end_time_tv)
-        val sItemRectangle_img: ImageView = itemView.findViewById(R.id.sechedule_rectangle_img)
+        //val sItemRectangle_img: ImageView = itemView.findViewById(R.id.sechedule_rectangle_img) todo
     }
 
     //화면 설정
