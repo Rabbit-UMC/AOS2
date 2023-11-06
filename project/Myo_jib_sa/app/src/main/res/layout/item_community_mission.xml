@@ -51,16 +51,28 @@
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/background_create_mission_memo"
             android:backgroundTint="@color/white"
             android:paddingHorizontal="8dp"
-            android:paddingVertical="3dp"
-            android:text="TextView"
+            android:paddingVertical="2dp"
+            android:text="myo1234"
             android:textColor="@color/black"
             android:textSize="10dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+            app:layout_constraintStart_toEndOf="@+id/imageView8"
+            app:layout_constraintTop_toTopOf="@+id/imageView8" />
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="15dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="7dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/homeMissionItem_name_txt"
-            tools:layout_editor_absoluteX="25dp" />
+            app:srcCompat="@drawable/ic_crown" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
