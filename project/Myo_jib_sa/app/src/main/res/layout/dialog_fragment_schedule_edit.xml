@@ -8,7 +8,8 @@
     android:layout_marginEnd="8dp"
     android:minWidth="354dp"
     android:minHeight="400dp"
-    android:background="@drawable/view_round_r30"
+    android:background="@drawable/view_round_r8_blue"
+    android:backgroundTint="#FFFFFF"
     tools:context=".schedule.dialog.ScheduleEditDialogFragment">
 
 
@@ -19,6 +20,7 @@
         android:id="@+id/modify_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="22dp"
         android:padding="10dp"
         android:src="@drawable/ic_schedule_edit_complete"
         android:background="@android:color/transparent"
@@ -38,7 +40,6 @@
         android:ems="10"
         android:maxLength="10"
         android:maxLines="1"
-        android:enabled="false"
         android:fontFamily="@font/font_pretendard_bold"
         android:inputType="textPersonName"
         android:text="교수님 연구실 방문하기"
@@ -357,6 +358,52 @@
         app:layout_constraintBaseline_toBaselineOf="@id/textView5"
         app:layout_constraintStart_toEndOf="@+id/scheduleEndAt_tv" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:visibility="gone"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView9">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/time_tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/time_viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/time_tablayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <Button
+            android:id="@+id/timeApply_btn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="9:1"
+            android:background="@drawable/view_round_r8_blue"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/font_pretendard_bold"
+            android:textSize="12dp"
+            android:text="적용"
+            app:layout_constraintTop_toBottomOf="@id/time_viewPager"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <View
         android:id="@+id/middle_line4_v"
         android:layout_width="match_parent"
@@ -368,7 +415,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scheduleStartAt_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/time_layout" />
 
 
 
@@ -380,7 +427,6 @@
         android:layout_marginRight="35dp"
         android:layout_marginTop="20dp"
         android:gravity="left"
-        android:enabled="false"
         android:fontFamily="@font/font_pretendard_regular"
         android:background="@null"
         android:inputType="textMultiLine"
@@ -388,7 +434,7 @@
         android:maxLength="30"
         android:maxLines="3"
         android:scrollHorizontally="false"
-        android:text="Name"
+        android:hint="메모"
         android:textColor="#6F6F6F"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
