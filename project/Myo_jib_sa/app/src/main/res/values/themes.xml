@@ -40,11 +40,12 @@
     <!-- numberpicker 테마 -->
     <style name = "NumberPickerStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <!--글자크기-->
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">12sp</item>
         <!--글꼴-->
-        <item name="android:fontFamily">@font/font_inter</item>
+        <item name="android:fontFamily">@font/font_pretendard_semibold</item>
         <!--구분선 색상 변경-->
         <item name="android:colorControlNormal">#C6C6C6</item>
+        <item name="android:numbersTextColor">#707070</item>
         <!-- @android:color/transparent -->
 
     </style>
