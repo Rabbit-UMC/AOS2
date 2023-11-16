@@ -5,17 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/comment_profile_img"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:scaleType="centerCrop"
-        android:background="@drawable/background_circle"
-        android:src="@drawable/ic_profile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
     <!--원형 이미지 맞춤-->
     <!--<de.hdodenhof.circleimageview.CircleImageView
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -33,14 +22,14 @@
         android:id="@+id/comment_writerName_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/font_inter"
         android:text="닉네임"
         android:textColor="@color/black"
         android:textSize="12dp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/comment_profile_img"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
@@ -62,21 +51,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
-        android:layout_marginStart="65dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/background_post"
-        android:backgroundTint="#F1F1F1"
+        android:layout_marginBottom="20dp"
         android:fontFamily="@font/font_inter"
         android:inputType="textMultiLine"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="8dp"
+        android:paddingVertical="5dp"
         android:text="글 내용"
-        android:textColor="@color/black"
+        android:textColor="#3D3D3D"
         android:textSize="12dp"
-        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/comment_profile_img"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/comment_writerName_txt" />
+
+    <View
+        android:id="@+id/top_line_v"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#C1C1C1"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
