@@ -28,42 +28,42 @@ class HomeMissionAdapter(
     inner class ViewHolder(
         private val binding: ItemCommunityMissionBinding)
         :RecyclerView.ViewHolder(binding.root){
-            fun bind(item:MainMission){//todo : 주석 해제
+            fun bind(item:MainMission){
 
-//                Log.d("리사이클러뷰","linkMrecyclr 어댑터 뷰홀더")
-//                binding.homeMissionItemNameTxt.text=item.mainMissionTitle
-//                //binding.homeMissionItemBoardNameTxt.text=item.categoryName
-//                binding.homeMissionItemDdayTxt.text=item.dday
-//
-//                binding.homeMissionItemImgImg.clipToOutline=true
-//
-//                //이미지 설정
-//                if(item.categoryImage.isNotEmpty()&&item.categoryImage!=""){
-//                    Glide.with(context)
-//                        .load(item.categoryImage)
-//                        .into(binding.homeMissionItemImgImg)
-//                }else{
-//                    setMissionIcon(item.mainMissionTitle, binding)
-//                }
-//
-//
-//                //클릭 이벤트
-//                binding.MissionItemConstraintLayout.setOnClickListener{
-//                    //클릭 이벤트 처리
-//                    //미션 터치시 해당 게시판 이동
-//                    boardMove(item.categoryName, binding.homeMissionItemImgImg)
-//               }
-//                //클릭이벤트
-//                binding.MissionItemConstraintLayout.setOnTouchListener { view, event ->
-//                    when (event.action) {
-//                        MotionEvent.ACTION_UP -> {
-//                            // 터치 다운 이벤트 처리
-//                            boardMove(item.categoryName, binding.homeMissionItemImgImg)
-//                            true // 이벤트 소비됨
-//                        }
-//                        else -> false // 다른 이벤트 무시
-//                    }
-//                }
+                Log.d("리사이클러뷰","linkMrecyclr 어댑터 뷰홀더")
+                binding.homeMissionItemNameTxt.text=item.mainMissionTitle
+                //binding.homeMissionItemBoardNameTxt.text=item.categoryName
+                binding.homeMissionItemDdayTxt.text=item.dday
+
+                binding.homeMissionItemImgImg.clipToOutline=true
+
+                //이미지 설정
+                if(item.categoryImage.isNotEmpty()&&item.categoryImage!=""){
+                    Glide.with(context)
+                        .load(item.categoryImage)
+                        .into(binding.homeMissionItemImgImg)
+                }else{
+                    setMissionIcon(item.mainMissionTitle, binding)
+                }
+
+
+                //클릭 이벤트
+                binding.MissionItemConstraintLayout.setOnClickListener{
+                    //클릭 이벤트 처리
+                    //미션 터치시 해당 게시판 이동
+                    boardMove(item.categoryName, binding.homeMissionItemImgImg)
+               }
+                //클릭이벤트
+                binding.MissionItemConstraintLayout.setOnTouchListener { view, event ->
+                    when (event.action) {
+                        MotionEvent.ACTION_UP -> {
+                            // 터치 다운 이벤트 처리
+                            boardMove(item.categoryName, binding.homeMissionItemImgImg)
+                            true // 이벤트 소비됨
+                        }
+                        else -> false // 다른 이벤트 무시
+                    }
+                }
         }
     }
 
@@ -134,23 +134,23 @@ class HomeMissionAdapter(
 
         }
     }
-//todo : 주석 해제
+
     //기본 이미지 설정
-//    private fun setMissionIcon(name:String, binding: ItemCommunityMissionBinding){
-//        when(name){
-//            "예술"-> {
-//                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_art_p)
-//                binding.homeMissionItemImgImg.setImageDrawable(drawable)
-//            }
-//            "자유"-> {
-//                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_free_p)
-//                binding.homeMissionItemImgImg.setImageDrawable(drawable)
-//            }
-//            "운동"-> {
-//                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_exercise_p)
-//                binding.homeMissionItemImgImg.setImageDrawable(drawable)
-//            }
-//        }
-//    }
+    private fun setMissionIcon(name:String, binding: ItemCommunityMissionBinding){
+        when(name){
+            "예술"-> {
+                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_art_p)
+                binding.homeMissionItemImgImg.setImageDrawable(drawable)
+            }
+            "자유"-> {
+                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_free_p)
+                binding.homeMissionItemImgImg.setImageDrawable(drawable)
+            }
+            "운동"-> {
+                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_exercise_p)
+                binding.homeMissionItemImgImg.setImageDrawable(drawable)
+            }
+        }
+    }
 
     }
