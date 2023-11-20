@@ -3,7 +3,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
@@ -174,35 +173,101 @@
 
 
 
-    <LinearLayout
-        android:id="@+id/slidingUp_panel_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mission_schedule_list_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.64"
-        android:background="@drawable/view_round_r20_gray"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.66"
+        android:background="@drawable/view_round_r16_top"
         android:visibility="gone"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent">
 
 
         <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
+            android:id="@+id/missionTitle_in_schedule_list_tv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:fontFamily="@font/font_inter"
+            android:fontFamily="@font/font_pretendard_bold"
             android:text="하위 일정"
-            android:textColor="#707070"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textColor="#000000"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/schedule_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_current_mission_schedule_delete" />
+
+        <LinearLayout
+            android:id="@+id/select_all_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_pretendard_regular"
+                android:text="미션 삭제"
+                android:textColor="#000000"
+                android:textSize="10dp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/cur_mission_count_tv"
+                app:layout_constraintStart_toEndOf="@+id/textView14"
+                tools:layout_editor_absoluteX="100dp"
+                tools:layout_editor_absoluteY="90dp" />
+
+            <ImageButton
+                android:id="@+id/checkAll_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_current_mission_schedue_check_all" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/scheduleList_rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/missionTitle_in_schedule_list_tv" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/delete_tv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            android:background="@drawable/view_round_r8_blue"
+            android:backgroundTint="#DFDFDF"
+            android:fontFamily="@font/font_pretendard_semibold"
+            android:gravity="center"
+            android:layout_marginBottom="15dp"
+            android:text="삭제"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="100:14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.86"  />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
