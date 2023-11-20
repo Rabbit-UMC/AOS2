@@ -69,7 +69,7 @@ class CurrentMissionActivity : AppCompatActivity() {
     private fun setCurrentMissionCurrentMissionAdapter(){
 
         currentMissionAdapter = CurrentMissionCurrentMissionAdapter(missionList, getDisplayWidthSize(), getDisplayHeightSize())
-        binding.missionListRv.layoutManager = GridLayoutManager(this, 2)
+        binding.missionListRv.layoutManager = LinearLayoutManager(this)
         binding.missionListRv.adapter = currentMissionAdapter
     }
 

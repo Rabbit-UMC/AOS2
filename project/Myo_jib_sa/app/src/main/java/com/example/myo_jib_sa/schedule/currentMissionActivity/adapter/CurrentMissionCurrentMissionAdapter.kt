@@ -26,7 +26,7 @@ class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<Cur
     ): ViewHolder {
         val binding =
             ItemCurrentMissionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.root.layoutParams = ConstraintLayout.LayoutParams((width*0.46).toInt(), (width*0.46*1.2).toInt())
+        //binding.root.layoutParams = ConstraintLayout.LayoutParams((width*0.46).toInt(), (width*0.46*1.2).toInt()) todo
         //binding.frameLayout.layoutParams = ConstraintLayout.LayoutParams((width*0.40).toInt(), (height*0.16).toInt())
         return ViewHolder(binding)
     }
@@ -52,16 +52,17 @@ class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<Cur
     class ViewHolder(private val binding: ItemCurrentMissionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: CurrentMissionResult) {
-
-            binding.missionImg.clipToOutline = true //이미지 모서리 둥글게
+            //todo
+            //binding.missionImg.clipToOutline = true //이미지 모서리 둥글게
             binding.missionTitleTv.text = data.missionTitle
             binding.missionDdayTv.text = data.dday
-            binding.missionChallengerTv.text = "${data.challengerCnt}명"
-            Glide.with(itemView)
-                .load(data.image)
-                .error(R.drawable.ic_currentmission_free) //에러시 보여줄 이미지
-                .fallback(R.drawable.ic_currentmission_free) //load할 url이 비어있을 경우 보여줄 이미지
-                .into(binding.missionImg)//이미지 설정
+            binding.missionChallengerTv.text = "${data.challengerCnt}"
+                //todo
+//            Glide.with(itemView)
+//                .load(data.image)
+//                .error(R.drawable.ic_currentmission_free) //에러시 보여줄 이미지
+//                .fallback(R.drawable.ic_currentmission_free) //load할 url이 비어있을 경우 보여줄 이미지
+//                .into(binding.missionImg)//이미지 설정
         }
     }
 
