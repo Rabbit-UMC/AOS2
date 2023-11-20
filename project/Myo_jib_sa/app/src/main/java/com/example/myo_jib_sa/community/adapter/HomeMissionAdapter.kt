@@ -29,6 +29,7 @@ class HomeMissionAdapter(
         private val binding: ItemCommunityMissionBinding)
         :RecyclerView.ViewHolder(binding.root){
             fun bind(item:MainMission){
+
                 Log.d("리사이클러뷰","linkMrecyclr 어댑터 뷰홀더")
                 binding.homeMissionItemNameTxt.text=item.mainMissionTitle
                 //binding.homeMissionItemBoardNameTxt.text=item.categoryName
