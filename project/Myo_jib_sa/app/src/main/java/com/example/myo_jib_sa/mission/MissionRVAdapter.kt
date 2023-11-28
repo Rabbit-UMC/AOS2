@@ -1,15 +1,11 @@
 package com.example.myo_jib_sa.mission
 
-import android.app.Dialog
 import android.content.Context
 import android.graphics.Rect
 import android.util.Log
 import android.view.*
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.databinding.ItemMissionMissionBinding
-import com.example.myo_jib_sa.mission.API.MissionHomeResponse
 
 sealed class MissionItem {
     abstract val missionId: Long
@@ -45,13 +41,12 @@ data class Category(
 ) : MissionItem()
 
 
-class MissionAdapter(
+class MissionRVAdapter(
     private val context: Context,
-    private val dataList: List<MissionItem>,
+    private var dataList: List<MissionItem>,
     private val onItemClickListener: OnItemClickListener,
     private val onItemLongClickListener: OnItemLongClickListener
-) : RecyclerView.Adapter<MissionAdapter.ViewHolder>() {
-
+) : RecyclerView.Adapter<MissionRVAdapter.ViewHolder>() {
 
     interface OnItemLongClickListener {
         fun onItemLongClick(item:MissionItem)
@@ -61,41 +56,12 @@ class MissionAdapter(
         fun onItemClick(item:MissionItem)
     }
 
-    inner class ViewHolder(
-        private val binding: ItemMissionMissionBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-
+    inner class ViewHolder(private val binding: ItemMissionMissionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MissionItem) {
 
             binding.missionTitleTxt.text = item.title
-
-            //메모 15자 이내로 보이도록 설정
-            val maxLength = 15
-            val content = item.content // 원본 문자열
-
-            val truncatedContent = if (content.length > maxLength) {
-                content.substring(0, maxLength) + " ···" // 최대 길이까지 잘라서 '···' 추가
-            } else {
-                content // 원본 문자열 그대로 사용
-            }
-
-            //미션 홈에 날짜 mm-dd로 표시되도록
-            // 미션 홈에 날짜 mm.dd로 표시되도록
-            val startAt = item.startAt
-            val formattedStartAt = startAt.substring(5, 7) + "." + startAt.substring(8, 10)
-            val endAt = item.endAt
-            val formattedEndAt = endAt.substring(5, 7) + "." + endAt.substring(8, 10)
-
-
-            binding.missionIntroTxt.text = truncatedContent
-            Glide.with(binding.root.context)
-                .load(item.image)
-                .into(binding.missionImg)
-            binding.missionStartTimeTxt.text = formattedStartAt
-            binding.missionEndTimeTxt.text = formattedEndAt
-            binding.missionChallengerTxt.text="${item.challengerCnt} 명"
-
-            binding.missionImg.clipToOutline=true
+            binding.missionCntTxt.text = item.challengerCnt.toString()
+            binding.missionDateTxt.text = "D+60"
 
             Log.d("home",item.missionId.toString())
 
@@ -146,4 +112,8 @@ class MissionAdapter(
         recyclerView.addItemDecoration(CustomItemDecoration(spacing))
     }
 
+    fun updateData(/*newItems: List<MissionItem>*/) {
+        //dataList = newItems
+        notifyDataSetChanged()
+    }
 }

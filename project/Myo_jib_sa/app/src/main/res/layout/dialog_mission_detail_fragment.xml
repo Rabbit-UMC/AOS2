@@ -2,169 +2,170 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/view_round_r30"
+    android:background="@drawable/background_mission_detail_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="612dp">
 
-    <ImageButton
+    <ImageView
         android:id="@+id/dialog_exit_btn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="12dp"
-        android:src="@drawable/ic_close_x"
-        android:background="@android:color/transparent"
-        android:textColor="#919191"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="12dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/mission_detail_title_iv"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
-        android:id="@+id/mission_subject_txt"
+        android:id="@+id/mission_detail_category_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        android:fontFamily="@font/font_inter"
-        android:text="주제"
-        android:textColor="@color/black"
-        android:textSize="16sp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="2dp"
+        android:fontFamily="@font/font_caption_text_1"
+        android:background="@drawable/background_mission_detail_category"
+        android:text="운동"
+        android:textColor="@color/white"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_exit_btn"
-        />
-    <View
-        android:id="@+id/view01"
-        android:layout_width="match_parent"
-        android:layout_height="1.5dp"
+        app:layout_constraintTop_toBottomOf="@+id/mission_detail_title_iv" />
+
+    <TextView
+        android:id="@+id/mission_detail_title_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font_title_1"
+        android:text="개강이랑 싸우기"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         android:layout_marginTop="10dp"
-        android:layout_centerInParent="true"
-        android:background="#D8D8D8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mission_subject_txt"/>
-    <TextView
-        android:id="@+id/mission_category_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="20dp"
-        android:fontFamily="@font/font_inter"
-        android:text="카테고리"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view01"
-        />
-    <View
-        android:id="@+id/view02"
-        android:layout_width="match_parent"
-        android:layout_height="1.5dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="9dp"
-        android:background="#D8D8D8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mission_category_txt"/>
+        app:layout_constraintStart_toStartOf="@+id/mission_detail_category_txt"
+        app:layout_constraintTop_toBottomOf="@+id/mission_detail_category_txt" />
 
     <TextView
-        android:id="@+id/mission_start_date_txt"
+        android:id="@+id/mission_detail_period_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="20dp"
-        android:fontFamily="@font/font_inter"
-        android:text="2023.07.01"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="미션 기간"
         android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/view02"
-        app:layout_constraintStart_toStartOf="parent"/>
-    <TextView
-        android:id="@+id/mission_total_date_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:text="32일"
-        android:fontFamily="@font/font_inter"
-        android:textColor="#707070"
-        android:textSize="16sp"
-        app:layout_constraintTop_toTopOf="@id/mission_start_date_txt"
-        app:layout_constraintStart_toEndOf="@id/mission_start_date_txt"
-        app:layout_constraintEnd_toStartOf="@id/mission_end_date_txt"/>
-
-
-    <TextView
-        android:id="@+id/mission_end_date_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
-        android:fontFamily="@font/font_inter"
-        android:text="2023.08.01"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintTop_toTopOf="@id/mission_start_date_txt"
-        app:layout_constraintEnd_toEndOf="parent"/>
-    <View
-        android:id="@+id/view03"
-        android:layout_width="match_parent"
-        android:layout_height="1.5dp"
-        android:layout_marginTop="9dp"
-        android:layout_centerInParent="true"
-        android:background="#D8D8D8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mission_end_date_txt"/>
-    <TextView
-        android:id="@+id/mission_memoTitle_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="20dp"
-        android:fontFamily="@font/font_inter"
-        android:text="메모📌"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view03"/>
-
-    <TextView
-        android:id="@+id/mission_memo_txt"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:textSize="14sp"
         android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="20dp"
-        android:fontFamily="@font/font_inter"
-        android:text="메모 내용"
+        app:layout_constraintStart_toStartOf="@+id/mission_detail_category_txt"
+        app:layout_constraintTop_toBottomOf="@+id/mission_detail_title_txt" />
+
+    <LinearLayout
+        android:id="@+id/mission_detail_period_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/mission_detail_period_txt"
+        app:layout_constraintTop_toBottomOf="@+id/mission_detail_period_txt">
+
+        <TextView
+            android:id="@+id/mission_detail_start_date_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_semibold"
+            android:text="8월 20일"
+            android:textColor="@color/main2"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/mission_detail_category_txt"
+            app:layout_constraintTop_toBottomOf="@+id/mission_detail_title_txt" />
+
+        <TextView
+            android:id="@+id/mission_detail_from_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_semibold"
+            android:text=" 부터 "
+            android:textColor="@color/gray7"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/mission_detail_category_txt"
+            app:layout_constraintTop_toBottomOf="@+id/mission_detail_title_txt" />
+
+        <TextView
+            android:id="@+id/mission_detail_end_date_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_semibold"
+            android:text="8월 26일"
+            android:textColor="@color/main2"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/mission_detail_category_txt"
+            app:layout_constraintTop_toBottomOf="@+id/mission_detail_title_txt" />
+
+        <TextView
+            android:id="@+id/mission_detail_to_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_semibold"
+            android:text=" 까지"
+            android:textColor="@color/gray7"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/mission_detail_category_txt"
+            app:layout_constraintTop_toBottomOf="@+id/mission_detail_title_txt" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/mission_detail_memo_title_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="메모"
         android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:singleLine="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mission_memoTitle_txt"/>
+        android:textSize="14sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/mission_detail_period_ll"
+        app:layout_constraintTop_toBottomOf="@+id/mission_detail_period_ll" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginHorizontal="30dp"
+        app:layout_constraintTop_toBottomOf="@id/mission_detail_memo_title_txt"
+        app:layout_constraintBottom_toTopOf="@id/mission_with_btn"
+        android:scrollbars="none"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/mission_detail_memo_desc_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:fontFamily="@font/pretendard_regular"
+            android:text="@string/mission_detail_memo_test"
+            android:textColor="@color/gray7"
+            android:textSize="10sp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mission_detail_memo_title_txt" />
+    </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/mission_with_btn"
-        android:layout_width="120dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/font_caption_text_1"
         android:text="같이하기"
         android:textSize="16sp"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:background="@drawable/mypage_edit_btn"
+        android:background="@drawable/background_mission_detail_with_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
-<!--    <View
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mission_with_btn"
-        />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

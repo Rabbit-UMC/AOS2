@@ -53,25 +53,13 @@ class MissionDetailDialogFragment(private val item: MissionItem) : DialogFragmen
             ) {
                 if (response.isSuccessful) {
                     val detailData = response.body()?.result // 첫 번째 상세 데이터 가져오기
-                    //날짜 계산
-                    val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-                    val startDateString = detailData?.startAt
-                    val endDateString = detailData?.endAt
 
-                    if (startDateString != null && endDateString != null) {
-                        val startDate = dateFormat.parse(startDateString).time
-                        val endDate = dateFormat.parse(endDateString).time
-                        val calculaterDate = (endDate - startDate) / (24 * 60 * 60 * 1000)
-                        binding.missionTotalDateTxt.text = "${calculaterDate}일"
-                    } else {
-                        Toast.makeText(requireContext(), "null data", Toast.LENGTH_SHORT).show()
-                    }
                     // 상세 데이터를 binding에 설정
-                    binding.missionSubjectTxt.text = detailData?.title
-                    binding.missionCategoryTxt.text = detailData?.categoryTitle
-                    binding.missionStartDateTxt.text = detailData?.startAt
-                    binding.missionEndDateTxt.text = detailData?.endAt
-                    binding.missionMemoTxt.text = detailData?.content
+                    binding.missionDetailCategoryTxt.text = detailData?.title
+                    binding.missionDetailTitleTxt.text = detailData?.categoryTitle
+                    binding.missionDetailStartDateTxt.text = detailData?.startAt
+                    binding.missionDetailEndDateTxt.text = detailData?.endAt
+                    binding.missionDetailMemoTitleTxt.text = detailData?.content
 
                 } else {
                     // API 호출 실패 시 처리
