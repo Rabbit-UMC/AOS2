@@ -17,6 +17,7 @@ import com.example.myo_jib_sa.mission.API.MissionHomeResponse
 import com.example.myo_jib_sa.mission.API.MissionITFC
 import com.example.myo_jib_sa.mission.Dialog.MissionDetailDialogFragment
 import com.example.myo_jib_sa.mission.Dialog.MissionReportDialogFragment
+import com.google.android.material.tabs.TabLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +26,7 @@ class MissionFragment : Fragment() {
 
     private lateinit var binding:FragmentMissionBinding
     private lateinit var recyclerView: RecyclerView
-    private lateinit var missionAdapter: MissionAdapter
+    private lateinit var missionRVAdapter: MissionRVAdapter
     private var category:Int=1
     val retrofit = RetrofitInstance.getInstance().create(MissionITFC::class.java)
     private var decoration: RecyclerView.ItemDecoration? = null
@@ -36,7 +37,6 @@ class MissionFragment : Fragment() {
     ): View? {
         binding = FragmentMissionBinding.inflate(inflater, container, false)
 
-
         return binding.root
     }
 
@@ -45,41 +45,21 @@ class MissionFragment : Fragment() {
         recyclerView = binding.missionMissionRecycler
 
         //미션 home api 호출
-        MissionHomeAPI()
+        //missionHomeAPI()
 
+        // 탭 레이아웃 교체 시 리사이클러뷰 리스트 교체
+        setupCategoryTabs()
 
         //floating 버튼 설정
         binding.newMissionFloatingBtn.setOnClickListener{
-
             val intent = Intent(activity, MissionWriteMissionActivity::class.java)
             startActivity(intent)
-        }
-
-        binding.missionBoardAll.setOnClickListener{
-            MissionHomeAPI()
-        }
-        binding.missionBoardFree.setOnClickListener{
-            category=1
-            missionCategoryApi(category)
-        }
-
-        //운동
-        binding.missionBoardExcs.setOnClickListener{
-            category=2
-            missionCategoryApi(category)
-        }
-
-
-        //예술
-        binding.missionBoardArt.setOnClickListener{
-            category=3
-            missionCategoryApi(category)
         }
 
 
     }
     // Retrofit 요청을 함수로 추출하여 재사용성 높이기
-    fun MissionHomeAPI() {
+    fun missionHomeAPI() {
         retrofit.MissionHome().enqueue(object : Callback<MissionHomeResponse> {
             override fun onResponse(call: Call<MissionHomeResponse>, response: Response<MissionHomeResponse>) {
                 if (response.isSuccessful) {
@@ -129,33 +109,50 @@ class MissionFragment : Fragment() {
     }
 
 
-    fun setUpMissionAdapter(dataList: List<MissionItem>) {
+    private fun setUpMissionAdapter(dataList: List<MissionItem>) {
         decoration?.let { recyclerView.removeItemDecoration(it) }
 
-        missionAdapter = MissionAdapter(
+        missionRVAdapter = MissionRVAdapter(
             requireContext(),
             dataList,
-            onItemLongClickListener = object : MissionAdapter.OnItemLongClickListener {
+            onItemLongClickListener = object : MissionRVAdapter.OnItemLongClickListener {
                 override fun onItemLongClick(reportItem: MissionItem) {
                     showReportDialog(reportItem)
                 }
             },
-            onItemClickListener = object : MissionAdapter.OnItemClickListener {
+            onItemClickListener = object : MissionRVAdapter.OnItemClickListener {
                 override fun onItemClick(detailItem: MissionItem) {
                     showDetailDialog(detailItem)
                 }
             }
         )
 
-        recyclerView.adapter = missionAdapter
+        recyclerView.adapter = missionRVAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // 아이템 간격 설정 (옵션)
-        decoration = MissionAdapter.CustomItemDecoration(15) // decoration 변수 초기화
-        recyclerView.addItemDecoration(decoration as MissionAdapter.CustomItemDecoration)
+        decoration = MissionRVAdapter.CustomItemDecoration(15) // decoration 변수 초기화
+        recyclerView.addItemDecoration(decoration as MissionRVAdapter.CustomItemDecoration)
+    }
 
-        // 어댑터 설정 후 데이터 변경을 알림
-        missionAdapter.notifyDataSetChanged()
+    private fun setupCategoryTabs() {
+        binding.missionCategoryTl.addTab(binding.missionCategoryTl.newTab().setText("전체"))
+        binding.missionCategoryTl.addTab(binding.missionCategoryTl.newTab().setText("자유"))
+        binding.missionCategoryTl.addTab(binding.missionCategoryTl.newTab().setText("운동"))
+        binding.missionCategoryTl.addTab(binding.missionCategoryTl.newTab().setText("예술"))
+
+        binding.missionCategoryTl.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> missionRVAdapter.updateData()
+                    1 -> missionRVAdapter.updateData()
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
     }
 
 
