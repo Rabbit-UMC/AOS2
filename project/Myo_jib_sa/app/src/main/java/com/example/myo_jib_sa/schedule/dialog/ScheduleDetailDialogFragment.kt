@@ -69,10 +69,10 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
 
 
         //x누르면 dialog종료
-//        binding.exitTv.setOnClickListener {
-//            buttonClickListener.onClickEditBtn()
-//            dismiss()
-//        }
+        binding.exitTv.setOnClickListener {
+            buttonClickListener.onClickEditBtn()
+            dismiss()
+        }
 
 
 

@@ -7,7 +7,6 @@ import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionScheduleBinding
-import com.example.myo_jib_sa.databinding.ItemScheduleScheduleBinding
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
 
 
@@ -23,7 +22,7 @@ class CurrentMissionScheduleAdapter(private val missionList:ArrayList<CurrentMis
         viewType: Int
     ): CurrentMissionScheduleAdapter.ViewHolder {
         val binding =
-            ItemScheduleScheduleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemCurrentMissionScheduleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.root.layoutParams.height = (height*0.088).toInt()
         return CurrentMissionScheduleAdapter.ViewHolder(binding)
     }
@@ -39,11 +38,11 @@ override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     }
 }
 
-class ViewHolder(private val binding: ItemScheduleScheduleBinding) :
+class ViewHolder(private val binding: ItemCurrentMissionScheduleBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(data: CurrentMissionScheduleResult) {
         binding.scheduleTitleTv.text = data.scheduleTitle
-        //binding.sch.text =data.scheduleWhen
+        binding.scheduleDateTv.text =data.scheduleWhen
 
     }
 }

@@ -1,16 +1,13 @@
 package com.example.myo_jib_sa.mission.API
 
+import com.example.myo_jib_sa.Login.API.LoginResponse
 import retrofit2.Call
 import retrofit2.http.*
 
 interface MissionITFC {
-    // 일반 미션 리스트 조회
+    //미션 홈
     @GET("app/mission")
-    fun getMissionList(): Call<MissionListResponse>
-
-    // 일반 미션 카테고리 리스트 조회
-    @GET("app/mission/category")
-    fun getCategoryList(): Call<MissionCategoryListResponse>
+    fun MissionHome(): Call<MissionHomeResponse>
 
     //미션 생성
     @POST("app/mission")
@@ -19,12 +16,12 @@ interface MissionITFC {
         @Body requestBody: MissionWriteRequest
     ):Call<MissionWriteResponse>
 
-    // 카테고리 별 미션 조회
+    //카테고리별로 미션 확인
     @GET("app/mission/category/{categoryId}")
-    fun getMissionByCategory(
+    fun MissionCategory(
         @Header("X-ACCESS-TOKEN") accessToken: String,
         @Path ("categoryId") categoryId: Int
-    ): Call<MissionByCategoryResponse>
+    ): Call<MissionCategoryResponse>
 
     //미션 상세보기
     @GET("app/mission/{missionId}")
