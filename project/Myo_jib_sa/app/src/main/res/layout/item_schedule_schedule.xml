@@ -1,66 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp">
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:layout_marginBottom="20dp">
 
-    <ImageView
-        android:id="@+id/sechedule_rectangle_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_schedule_rectangle"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="50dp" />
 
     <TextView
         android:id="@+id/schedule_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:fontFamily="@font/font_inter"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/font_pretendard_semibold"
         android:text="일정 이름"
-        android:textColor="#848484"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/textview8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="4dp"
-        >
+        android:layout_marginRight="5dp"
+        android:fontFamily="@font/font_pretendard_semibold"
+        android:text="시작시간"
+        android:textColor="#A5A5A5"
+        android:textSize="10sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/schedule_start_time_tv"
+        app:layout_constraintEnd_toStartOf="@+id/barrier2" />
+
     <TextView
         android:id="@+id/schedule_start_time_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/font_inter"
-        android:text="시작시간"
-        android:textColor="#848484"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:fontFamily="@font/font_pretendard_regular"
+        android:text="오전 7시 00분"
+        android:textColor="#333333"
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/font_inter"
-        android:text=" - "
-        android:textColor="#848484"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:layout_marginRight="5dp"
+        android:fontFamily="@font/font_pretendard_semibold"
+        android:text="종료시간"
+        android:textColor="#A5A5A5"
+        android:textSize="10sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/schedule_end_time_tv"
+        app:layout_constraintEnd_toStartOf="@+id/barrier2" />
 
     <TextView
         android:id="@+id/schedule_end_time_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/font_inter"
-        android:text="종료시간"
-        android:textColor="#848484"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:paddingEnd="5dp"/>
-    </LinearLayout>
+        android:fontFamily="@font/font_pretendard_regular"
+        android:text="오후 10시 00분"
+        android:textColor="#333333"
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/schedule_start_time_tv" />
 
-</FrameLayout>
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#C1C1C1"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left"
+        app:constraint_referenced_ids="schedule_end_time_tv,schedule_start_time_tv " />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
