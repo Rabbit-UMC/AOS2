@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.*
 import android.util.Log
-import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -49,7 +48,6 @@ class CurrentMissionActivity : AppCompatActivity() {
             finish()
         }
 
-        setBtn()
 
     }
     override fun onResume() {
@@ -71,7 +69,7 @@ class CurrentMissionActivity : AppCompatActivity() {
     private fun setCurrentMissionCurrentMissionAdapter(){
 
         currentMissionAdapter = CurrentMissionCurrentMissionAdapter(missionList, getDisplayWidthSize(), getDisplayHeightSize())
-        binding.missionListRv.layoutManager = LinearLayoutManager(this)
+        binding.missionListRv.layoutManager = GridLayoutManager(this, 2)
         binding.missionListRv.adapter = currentMissionAdapter
     }
 
@@ -123,12 +121,6 @@ class CurrentMissionActivity : AppCompatActivity() {
                 deleteIntent.putExtra("position",position);
                 startActivity(deleteIntent)
 
-            }
-            //작성한 일지 보기 text view 클릭 - [하위 스케줄 보기]
-            override fun onScheduleClick(currentMissionData: CurrentMissionResult) {
-                binding.missionScheduleListLayout.visibility = View.VISIBLE
-                currentMissionScheduleApi(currentMissionData.missionId)
-                binding.scheduleDeleteBtn.visibility = View.VISIBLE
             }
         })
     }
@@ -250,23 +242,4 @@ class CurrentMissionActivity : AppCompatActivity() {
         return display?.heightPixels!! + statusbarHeight + navigationbarHeight
 
     }
-
-
-
-
-    private fun setBtn(){
-        //뒤로가기 버튼 클릭
-        binding.goBackBtn.setOnClickListener {
-            finish()
-        }
-
-        //------------------------하위일정 레이아웃---------------------
-        binding.scheduleDeleteBtn.setOnClickListener{
-            binding.selectAllLayout.visibility = View.VISIBLE
-            binding.deleteTv.visibility = View.VISIBLE
-            binding.scheduleDeleteBtn.visibility = View.GONE
-        }
-
-    }
-
 }

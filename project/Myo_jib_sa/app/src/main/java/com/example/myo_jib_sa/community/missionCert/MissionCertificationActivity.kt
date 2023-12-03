@@ -44,7 +44,6 @@ class MissionCertificationActivity: AppCompatActivity() {
         setContentView(binding.root)
 
 
-
         missionId = intent.getLongExtra("missionId", 0)
         missionId=intent.getLongExtra("missionId",0)
         boardId = intent.getIntExtra("boardId", 0)

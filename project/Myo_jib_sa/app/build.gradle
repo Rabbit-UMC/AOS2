@@ -12,7 +12,7 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 
 android {
     namespace 'com.example.myo_jib_sa'
-    compileSdk 34
+    compileSdkVersion 34
 
     viewBinding {
         enabled = true
@@ -162,7 +162,4 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
-    // StickyScrollView
-    implementation 'com.github.amarjain07:StickyScrollView:1.0.3'
 }

@@ -10,13 +10,13 @@ import com.example.myo_jib_sa.Login.API.RetrofitInstance
 import com.example.myo_jib_sa.databinding.DialogMissionReportFragmentBinding
 import com.example.myo_jib_sa.mission.API.MissionITFC
 import com.example.myo_jib_sa.mission.API.MissionReportResponse
-import com.example.myo_jib_sa.mission.API.Mission
+import com.example.myo_jib_sa.mission.MissionItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class MissionReportDialogFragment(private val item: Mission) : DialogFragment() {
+class MissionReportDialogFragment(private val item: MissionItem) : DialogFragment() {
     private lateinit var binding: DialogMissionReportFragmentBinding
 
     override fun onCreateView(
@@ -28,12 +28,13 @@ class MissionReportDialogFragment(private val item: Mission) : DialogFragment() 
         //미션 report api 호출
         val retrofit = RetrofitInstance.getInstance().create(MissionITFC::class.java)
 
-        binding.missionReportNoBtn.setOnClickListener {
+        binding.dialogExitBtn.setOnClickListener {
             dismiss()
         }
 
 
-        binding.missionReportYesBtn.setOnClickListener {
+        binding.reportCheckTxt.setOnClickListener {
+
             // 신고 api 연결
             retrofit.MissionReport(item.missionId).enqueue(object : Callback<MissionReportResponse> {
                 override fun onResponse(call: Call<MissionReportResponse>, response: Response<MissionReportResponse>) {
