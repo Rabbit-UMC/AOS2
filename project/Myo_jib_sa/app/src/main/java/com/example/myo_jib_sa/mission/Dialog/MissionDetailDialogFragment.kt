@@ -10,18 +10,15 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.Login.API.RetrofitInstance
 import com.example.myo_jib_sa.databinding.DialogMissionDetailFragmentBinding
 import com.example.myo_jib_sa.mission.API.*
-import com.example.myo_jib_sa.mission.MissionItem
+import com.example.myo_jib_sa.mission.API.Mission
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 
-class MissionDetailDialogFragment(private val item: MissionItem) : DialogFragment() {
+class MissionDetailDialogFragment(private val item: Mission) : DialogFragment() {
 
     private lateinit var binding:DialogMissionDetailFragmentBinding
     override fun onCreateView(
@@ -123,55 +120,4 @@ class MissionDetailDialogFragment(private val item: MissionItem) : DialogFragmen
         return dialog
     }
 
-    override fun onResume() {
-        super.onResume()
-        resizeDialog()
-        // 다이얼로그의 크기 설정
-        //dialog?.let { setDialogSize(it, 0.94, WindowManager.LayoutParams.WRAP_CONTENT) }
-    }
-
-    fun resizeDialog() {
-        val windowManager = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val deviceWidth = size.x
-        val deviceHeight = size.y
-
-        var height = (deviceWidth * 0.95 * 1.13).toInt()
-        var minHeight = ConvertDPtoPX(requireContext(), 380)
-        if(minHeight > height){
-            params?.height = minHeight
-        } else{
-            params?.height = height
-
-        }
-        params?.width = (deviceWidth * 0.95).toInt()
-//        params?.height = (deviceWidth * 0.9 * 1.13).toInt()
-
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
-    }
-
-    //dp -> px
-    fun ConvertDPtoPX(context: Context, dp: Int): Int {
-        val density = context.resources.displayMetrics.density
-        return Math.round(dp.toFloat() * density)
-    }
-
-/*    private fun setDialogSize(dialog: Dialog, widthPercentage: Double, height: Int) {
-        val layoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(dialog.window?.attributes)
-
-        val size = Point()
-        val deviceWidth = size.x
-        val deviceHeight = size.y
-
-        val displayMetrics = resources.displayMetrics
-        val dialogWidth = (displayMetrics.widthPixels * widthPercentage).toInt()
-        layoutParams.width = dialogWidth
-        layoutParams.height = height
-
-        dialog.window?.attributes = layoutParams
-    }*/
 }
