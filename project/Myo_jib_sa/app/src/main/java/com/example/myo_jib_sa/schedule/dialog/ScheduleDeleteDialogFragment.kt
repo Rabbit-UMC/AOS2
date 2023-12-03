@@ -53,7 +53,7 @@ class ScheduleDeleteDialogFragment(
 
         }
         //취소
-        binding.exitBtn.setOnClickListener {
+        binding.exitTv.setOnClickListener {
             dismiss()
             buttonClickListener.onClickExitBtn()
         }

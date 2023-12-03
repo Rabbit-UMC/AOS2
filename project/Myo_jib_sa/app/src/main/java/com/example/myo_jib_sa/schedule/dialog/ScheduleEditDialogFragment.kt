@@ -152,9 +152,9 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
     private fun setButton(){
         //나가기 버튼
-        binding.exitTv.setOnClickListener{
-            dismiss()
-        }
+//        binding.exitTv.setOnClickListener{
+//            dismiss()
+//        }
         //수정완료 버튼
         binding.modifyBtn.setOnClickListener{
             saveData()//scheduleData&sharedPreference에 저장

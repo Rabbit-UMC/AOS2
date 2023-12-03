@@ -41,14 +41,15 @@ class CommunityFragment : Fragment() {
     private lateinit var binding:FragmentCommunityBinding
     private lateinit var retrofitManager: CommunityHomeManager
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding=FragmentCommunityBinding.inflate(inflater, container, false)
-
+//
         Constance.initializeJwt(requireContext())
-
+//
         retrofitManager = CommunityHomeManager.getInstance(requireContext())
 
         //터치시 게시판 이동

@@ -4,6 +4,7 @@ package com.example.myo_jib_sa.schedule
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -31,6 +32,7 @@ import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResponse
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayService
 import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActivity
+import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDateData
 import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActivity
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDeleteDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
@@ -57,6 +59,7 @@ class ScheduleFragment() : Fragment() {
     lateinit var scheduleDetailDialog : ScheduleDetailDialogFragment
     lateinit var selectedDate : LocalDate //오늘 날짜
 
+
     var mDataList = ArrayList<Mission>() //미션 리스트 데이터
     var sDataList = ArrayList<ScheduleOfDayResult>() //일정 리스트 데이터
 
@@ -81,6 +84,7 @@ class ScheduleFragment() : Fragment() {
 
         //calendarAdapter 임시 초기화
         calendarAdapter = CalendarAdapter(ArrayList())
+        binding.calendarRv.addItemDecoration(CalendarAdapter.HorizontalSpaceDecoration(getDisplayWidthSize()))
         calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
 
         setCalendarAdapter()//화면 초기화
@@ -91,28 +95,22 @@ class ScheduleFragment() : Fragment() {
         createAd()
         adLoader?.loadAd(AdRequest.Builder().build())
 
-        //yyyy년 m월 (예: 2023년 6월 표시)
-        binding.selectedYearMonthTv.text = YYYYMMFromDate(selectedDate)
         //m월 d일 일정 표시 (예: 6월 1일 일정 표시)
-        binding.selectedMonthDayTv.text = "${MMDDFromDate(selectedDate)} 일정"
+        binding.selectedMonthDayTv.text = MMDDFromDate(selectedDate)
+        //YYYY년 표시 - calendar
+        binding.selectedYearTv.text = yearFromDate(selectedDate)
+        //MM월 표시 - calendar
+        binding.selectedMonthTv.text = monthFromDate(selectedDate)
 
         //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
         //setCurrentMissionAdapter()
         setScheduleAdapter(selectedDate)
         scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
 
-        //캘린더 visible버튼
-        binding.calenderVisibleBtn.setOnClickListener{
-            if(binding.calenderLayout.visibility == View.GONE)
-                binding.calenderLayout.visibility = View.VISIBLE
-            else
-                binding.calenderLayout.visibility = View.GONE
-        }
-
 
         //화면전환
         switchScreen()
-        //캘린더에 이전달 다음달 이동 버튼 세팅
+        //캘린더 관련 모든 버튼
         calenderBtn()
 
 
@@ -158,9 +156,15 @@ class ScheduleFragment() : Fragment() {
     @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setCalendarAdapter(){
-        //month를 month text view에 보여주기 (결과: 1월)
-        binding.monthTv.text = monthFromDate(selectedDate)
 
+//        //month를 month text view에 보여주기 (결과: 1월)
+//        binding.selectedMonthTv.text = monthFromDate(selectedDate)
+        //m월 d일 일정 표시 (예: 6월 1일 일정 표시)
+        binding.selectedMonthDayTv.text = MMDDFromDate(selectedDate)
+        //YYYY년 표시 - calendar
+        binding.selectedYearTv.text = yearFromDate(selectedDate)
+        //MM월 표시 - calendar
+        binding.selectedMonthTv.text = monthFromDate(selectedDate)
 
         //일정 있는지 없는지 api로 체크
         //<api 안에서>
@@ -176,8 +180,8 @@ class ScheduleFragment() : Fragment() {
     //날짜 생성: ArrayList<CalendarData>()생성
     @RequiresApi(Build.VERSION_CODES.O)
     private fun dayInMonthArray(date: LocalDate): ArrayList<CalendarData>{
-        val dayList = ArrayList<CalendarData>()
         var yearMonth = YearMonth.from(date)
+        val dayList = ArrayList<CalendarData>()
 
 
 
@@ -193,6 +197,24 @@ class ScheduleFragment() : Fragment() {
                 if(i>lastDay) {
                     break
                     //dayList.add(CalendarData(null)) //끝에 빈칸 자르기
+                }
+                else if(i == selectedDate.dayOfMonth){
+                    var currentDate = YYYYMMDDFromDate(
+                        LocalDate.of(
+                            selectedDate.year,
+                            selectedDate.monthValue,
+                            i
+                        )
+                    )
+                    dayList.add(
+                        CalendarData(
+                            LocalDate.of(
+                                selectedDate.year,
+                                selectedDate.monthValue,
+                                i
+                            ), hasScheduleMap[currentDate], true
+                        )
+                    )
                 }
                 else {
                     var currentDate = YYYYMMDDFromDate(
@@ -221,6 +243,24 @@ class ScheduleFragment() : Fragment() {
             }
             else if(i>(lastDay + dayOfWeek)){//끝에 빈칸 자르기위해
                 break
+            }
+            else if(i-dayOfWeek == selectedDate.dayOfMonth){
+                var currentDate = YYYYMMDDFromDate(
+                    LocalDate.of(
+                        selectedDate.year,
+                        selectedDate.monthValue,
+                        i-dayOfWeek
+                    )
+                )
+                dayList.add(
+                    CalendarData(
+                        LocalDate.of(
+                            selectedDate.year,
+                            selectedDate.monthValue,
+                            i-dayOfWeek
+                        ), hasScheduleMap[currentDate], true
+                    )
+                )
             }
             else{
                 var currentDate = YYYYMMDDFromDate(LocalDate.of(selectedDate.year, selectedDate.monthValue, i-dayOfWeek))
@@ -323,15 +363,17 @@ class ScheduleFragment() : Fragment() {
 
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
-                val sItemRectangleImg: ImageView = viewHolder.itemView.findViewById(R.id.sechedule_rectangle_img)
-                sItemRectangleImg.setImageResource(R.drawable.ic_schedule_rectangle)
+                //todo
+                //val sItemRectangleImg: ImageView = viewHolder.itemView.findViewById(R.id.sechedule_rectangle_img)
+                //sItemRectangleImg.setImageResource(R.drawable.ic_schedule_rectangle)
             }
 
             override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
                 super.onSelectedChanged(viewHolder, actionState)
                 if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                    val sItemRectangleImg: ImageView? = viewHolder?.itemView?.findViewById(R.id.sechedule_rectangle_img)
-                    sItemRectangleImg?.setImageResource(R.drawable.ic_schedule_delete_rectangle)
+                    //todo
+                   // val sItemRectangleImg: ImageView? = viewHolder?.itemView?.findViewById(R.id.sechedule_rectangle_img)
+                   // sItemRectangleImg?.setImageResource(R.drawable.ic_schedule_delete_rectangle)
                 }
             }
         }).apply {
@@ -350,19 +392,23 @@ class ScheduleFragment() : Fragment() {
 
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onClick(calendarData: CalendarData) {
+
+
                 // 클릭 시 이벤트 작성
                 Log.d("debug", "클릭!")
-                //2023년 6월 표시
-                binding.selectedYearMonthTv.text = YYYYMMFromDate(calendarData.date)
+                //2023년
+                binding.selectedYearTv.text = yearFromDate(calendarData.date)
+                //6월 표시
+                binding.selectedMonthTv.text = monthFromDate(calendarData.date)
                 //6월 1일 일정 표시
-                binding.selectedMonthDayTv.text = "${MMDDFromDate(calendarData.date)} 일정"
+                binding.selectedMonthDayTv.text = MMDDFromDate(calendarData.date)
 
-                var iYear = calendarData.date?.year
-                var iMonth = calendarData.date?.monthValue
-                var iDay = calendarData.date?.dayOfMonth
-
-                selectedDate = calendarData.date!!
-
+//                var iYear = calendarData.date?.year
+//                var iMonth = calendarData.date?.monthValue
+//                var iDay = calendarData.date?.dayOfMonth
+//
+//                selectedDate = calendarData.date!!
+//
 
                 scheduleOfDayApi(YYYYMMDDFromDate(calendarData.date))//scheduleOfDay api연결
 
@@ -412,10 +458,10 @@ class ScheduleFragment() : Fragment() {
     //화면전환 메소드
     fun switchScreen(){
         //history누르면 HistoryActivity로 화면 전환
-        binding.historyTv.setOnClickListener{
-            var historyIntent = Intent(requireActivity(), SuccessMissionActivity::class.java)
-            startActivity(historyIntent)
-        }
+//        binding.historyTv.setOnClickListener{
+//            var historyIntent = Intent(requireActivity(), SuccessMissionActivity::class.java)
+//            startActivity(historyIntent)
+//        }
         //미션리스트 위에 모두보기 누르면 CurrentMissionActivity로 화면 전환
         binding.viewAllTv.setOnClickListener{
             var missionIntent = Intent(requireActivity(), CurrentMissionActivity::class.java)
@@ -428,9 +474,34 @@ class ScheduleFragment() : Fragment() {
         }
     }
 
-    //캘린더에 이전달 다음달 이동 버튼 세팅
+    //캘린더 관련 버튼
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calenderBtn(){
+
+        //month-day 어제로 이동
+        binding.yesterdayBtn.setOnClickListener {
+            selectedDate = selectedDate.minusDays(1)
+            setCalendarAdapter()
+        }
+
+        //month-day 내일로 이동
+        binding.tomorrowBtn.setOnClickListener {
+            selectedDate =selectedDate.plusDays(1)
+            setCalendarAdapter()
+        }
+
+        //캘린더 visible버튼
+        binding.calendarVisibleBtn.setOnClickListener{
+                binding.calendarLayout.visibility = View.VISIBLE
+                binding.calendarMonthDayHeader.visibility = View.GONE
+        }
+
+        //캘린더 gone 버튼
+        binding.calendarGoneBtn.setOnClickListener{
+            binding.calendarLayout.visibility = View.GONE
+            binding.calendarMonthDayHeader.visibility = View.VISIBLE
+        }
+
         //이전달로 이동
         binding.preMonthBtn.setOnClickListener{
             selectedDate = selectedDate.minusMonths(1)
@@ -479,12 +550,12 @@ class ScheduleFragment() : Fragment() {
                     setCurrentMissionAdapter()
 
                 }else {
-                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    Log.e("retrofit", "onResponse_scheduleHomeApi: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                    Log.e("retrofit", "onResponse_scheduleHomeApi: Error Body $errorBody")
                 }}
             override fun onFailure(call: Call<ScheduleHomeResponse>, t: Throwable) {
-                Log.e("retrofit", "onFailure: ${t.message}")
+                Log.e("retrofit", "onFailure_scheduleHomeApi: ${t.message}")
             }
         })
     }
@@ -609,21 +680,27 @@ class ScheduleFragment() : Fragment() {
                     calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
 
                 }else {
-                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    Log.e("retrofit", "onResponse_scheduleMonthApi: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                    Log.e("retrofit", "onResponse_scheduleMonthApi: Error Body $errorBody")
                 }}
             override fun onFailure(call: Call<ScheduleMonthResponse>, t: Throwable) {
-                Log.e("retrofit", "onFailure: ${t.message}")
+                Log.e("retrofit", "onFailure_scheduleMonthApi: ${t.message}")
             }
         })
     }
 
+    //YYYY 형식으로 포맷
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun yearFromDate(date : LocalDate?):String?{
+        var formatter = DateTimeFormatter.ofPattern("YYYY")
+        return date?.format(formatter)
+    }
     //M월 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun monthFromDate(date : LocalDate):String{
+    private fun monthFromDate(date : LocalDate?):String?{
         var formatter = DateTimeFormatter.ofPattern("M월")
-        return date.format(formatter)
+        return date?.format(formatter)
     }
     //YYYY년 M월 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
@@ -650,6 +727,17 @@ class ScheduleFragment() : Fragment() {
         return date?.format(formatter)
     }
 
+    private fun getDisplayWidthSize(): Int {
+
+        val windowManager = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val deviceWidth = size.x
+        //val deviceHeight = size.y
+
+        return deviceWidth
+    }
 
 
 }
