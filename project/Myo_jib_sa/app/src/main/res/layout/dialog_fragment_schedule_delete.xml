@@ -1,101 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/schedule_delete_dialog"
-    android:layout_width="320dp"
-    android:layout_height="248dp"
-    android:background="@drawable/view_round_r8_blue"
-    android:backgroundTint="#FFFFFF"
-    android:minWidth="320dp"
-    android:minHeight="248dp"
+    android:layout_width="275dp"
+    android:layout_height="143dp"
+    android:minWidth="275dp"
+    android:minHeight="143dp"
+    android:background="@drawable/view_round_r15"
     android:orientation="vertical"
     tools:context=".schedule.dialog.ScheduleDeleteDialogFragment">
 
-    <TextView
-        android:id="@+id/textView8"
+    <ImageButton
+        android:id="@+id/exit_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/font_pretendard_bold"
-        android:text="일정을 삭제하실 건가요?"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/vertical_guideline1"
-        app:layout_constraintTop_toTopOf="@+id/horizontal_guideline1" />
+        android:padding="11dp"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_dialog_exit" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/font_pretendard_regular"
-        android:text="미션 하위 일정을 삭제할 경우, 조건 미충족으로 \n미션이 실패 처리될 수 있어요."
+        android:padding="15dp"
+        android:layout_marginTop="5dp"
+        android:text="일정을 삭제 하시나요?"
+        android:fontFamily="@font/font_inter"
         android:textColor="#000000"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/vertical_guideline1"
-        app:layout_constraintTop_toTopOf="@+id/horizontal_guideline2" />
-
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/yes_tv"
-        android:layout_width="0dp"
-        android:layout_height="41dp"
-        android:background="@drawable/view_round_r8_blue"
-        android:fontFamily="@font/font_pretendard_semibold"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:padding="10dp"
-        android:layout_marginBottom="5dp"
-        android:text="그래도 일정을 삭제할래요"
-        android:textColor="#FFFFFF"
+        android:text="확인"
+        android:fontFamily="@font/font_inter"
+        android:textColor="#234BD9"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/exit_tv"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.86" />
-
-    <TextView
-        android:id="@+id/exit_tv"
-        android:layout_width="0dp"
-        android:layout_height="41dp"
-        android:background="@drawable/view_round_r8_stroke"
-        android:fontFamily="@font/font_pretendard_semibold"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:padding="10dp"
-        android:text="아니요, 취소할게요"
-        android:textColor="#A5A5A5"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/horizontal_guideline3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.86" />
+        android:layout_gravity="center"/>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/vertical_guideline1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.08" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horizontal_guideline1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.13" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horizontal_guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.31" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horizontal_guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

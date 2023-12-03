@@ -9,73 +9,57 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/MissionItem_constraintLayout"
-        android:layout_width="157dp"
-        android:layout_height="112dp"
+        android:layout_width="161dp"
+        android:layout_height="131dp"
         android:background="@drawable/background_mission"
-        android:backgroundTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/homeMissionItem_img_img"
+            android:scaleType="centerCrop"
+            android:background="@drawable/background_mission"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_mission_art_p" />
 
         <TextView
             android:id="@+id/homeMissionItem_Dday_txt"
+            android:background="@drawable/background_post"
+            android:backgroundTint="#707070"
+            android:paddingHorizontal="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
             android:fontFamily="@font/font_inter"
-            android:paddingHorizontal="4dp"
             android:text="D-0"
             android:textColor="@color/white"
-            android:textSize="20dp"
+            android:textSize="12dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/homeMissionItem_name_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/font_inter"
-            android:text="미션 이름"
-            android:textColor="@color/white"
-            android:textSize="14dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:background="@drawable/background_create_mission_memo"
-            android:backgroundTint="@color/white"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="2dp"
-            android:text="myo1234"
-            android:textColor="@color/black"
-            android:textSize="10dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-            app:layout_constraintStart_toEndOf="@+id/imageView8"
-            app:layout_constraintTop_toTopOf="@+id/imageView8" />
-
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="15dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="7dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/homeMissionItem_name_txt"
-            app:srcCompat="@drawable/ic_crown" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+    <TextView
+        android:id="@+id/homeMissionItem_name_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="미션 이름"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        android:fontFamily="@font/font_inter"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MissionItem_constraintLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>
