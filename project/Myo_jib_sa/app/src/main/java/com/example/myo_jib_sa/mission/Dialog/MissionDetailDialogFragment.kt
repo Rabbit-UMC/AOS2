@@ -3,7 +3,6 @@ package com.example.myo_jib_sa.mission.Dialog
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
@@ -12,8 +11,8 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.Login.API.RetrofitInstance
 import com.example.myo_jib_sa.databinding.DialogMissionDetailFragmentBinding
-import com.example.myo_jib_sa.mission.API.*
-import com.example.myo_jib_sa.mission.API.Mission
+import com.example.myo_jib_sa.mission.api.*
+import com.example.myo_jib_sa.mission.api.Mission
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,7 +30,7 @@ class MissionDetailDialogFragment(private val item: Mission) : DialogFragment() 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         //미션 report api 호출
-        val retrofit = RetrofitInstance.getInstance().create(MissionITFC::class.java)
+        val retrofit = RetrofitInstance.getInstance().create(MissionAPI::class.java)
 
         val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val jwt = sharedPreferences.getString("jwt", null)

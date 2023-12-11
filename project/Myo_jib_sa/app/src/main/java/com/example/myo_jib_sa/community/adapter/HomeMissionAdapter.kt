@@ -35,30 +35,30 @@ class HomeMissionAdapter(
                 //binding.homeMissionItemBoardNameTxt.text=item.categoryName
                 binding.homeMissionItemDdayTxt.text=item.dday
 
-                binding.homeMissionItemImgImg.clipToOutline=true
+                //binding.homeMissionItemImgImg.clipToOutline=true
 
                 //이미지 설정
-                if(item.categoryImage.isNotEmpty()&&item.categoryImage!=""){
+                /*if(item.categoryImage.isNotEmpty()&&item.categoryImage!=""){
                     Glide.with(context)
                         .load(item.categoryImage)
                         .into(binding.homeMissionItemImgImg)
                 }else{
                     setMissionIcon(item.mainMissionTitle, binding)
-                }
+                }*/
 
 
                 //클릭 이벤트
                 binding.MissionItemConstraintLayout.setOnClickListener{
                     //클릭 이벤트 처리
                     //미션 터치시 해당 게시판 이동
-                    boardMove(item.categoryName, binding.homeMissionItemImgImg)
+                    //boardMove(item.categoryName, binding.homeMissionItemImgImg)
                }
                 //클릭이벤트
                 binding.MissionItemConstraintLayout.setOnTouchListener { view, event ->
                     when (event.action) {
                         MotionEvent.ACTION_UP -> {
                             // 터치 다운 이벤트 처리
-                            boardMove(item.categoryName, binding.homeMissionItemImgImg)
+                            //boardMove(item.categoryName, binding.homeMissionItemImgImg)
                             true // 이벤트 소비됨
                         }
                         else -> false // 다른 이벤트 무시
@@ -137,7 +137,7 @@ class HomeMissionAdapter(
 
     //기본 이미지 설정
     private fun setMissionIcon(name:String, binding: ItemCommunityMissionBinding){
-        when(name){
+        /*when(name){
             "예술"-> {
                 val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_art_p)
                 binding.homeMissionItemImgImg.setImageDrawable(drawable)
@@ -150,7 +150,7 @@ class HomeMissionAdapter(
                 val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_exercise_p)
                 binding.homeMissionItemImgImg.setImageDrawable(drawable)
             }
-        }
+        }*/
     }
 
     }
