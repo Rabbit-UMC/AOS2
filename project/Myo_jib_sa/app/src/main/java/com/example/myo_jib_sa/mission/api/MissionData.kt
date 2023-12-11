@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.mission.API
+package com.example.myo_jib_sa.mission.api
 
 import com.example.myo_jib_sa.base.BaseResponse
 
@@ -28,4 +28,30 @@ data class MissionCategoryListResult(
 
 data class MissionByCategoryResponse(
     val result: List<Mission>
+)
+
+data class MissionCreateRequest(
+    var title:String,
+    var startAt:String,
+    var endAt:String,
+    var categoryId:Long,
+    var isOpen:Int,
+    var content:String
+)
+
+data class MissionCreateResponse(
+    val result: String
+): BaseResponse()
+
+data class MissionDetailResponse(
+    val result: Detail
+): BaseResponse()
+
+data class Detail(
+    val id:Long,
+    val title:String,
+    val categoryTitle:String,
+    val content:String,
+    val startAt:String,
+    val endAt : String
 )

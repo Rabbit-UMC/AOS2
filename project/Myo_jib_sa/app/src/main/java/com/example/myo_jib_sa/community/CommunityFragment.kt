@@ -74,7 +74,7 @@ class CommunityFragment : Fragment() {
         //아이콘 색상 설정
         val selectedColor = R.color.community_selected_color
         val unselectedColor = R.color.community_unselected_color
-        customizeTabIconColors(binding.homeBannerTab, selectedColor, unselectedColor)
+        /*customizeTabIconColors(binding.homeBannerTab, selectedColor, unselectedColor)
 
         // 기본(default) 화면 설정
         val defaultPosition = 0 // 기본 화면의 position을 설정합니다.
@@ -94,7 +94,7 @@ class CommunityFragment : Fragment() {
                     tab.setIcon(R.drawable.ic_dot)
                 }
             }
-        }.attach()
+        }.attach()*/
 
 
 
@@ -213,7 +213,7 @@ class CommunityFragment : Fragment() {
         if (currentPage == 3)
             currentPage = 0
         currentPage += 1
-        binding.homeBannerVpager.setCurrentItem(currentPage, true)
+        //binding.homeBannerVpager.setCurrentItem(currentPage, true)
 
     }
 

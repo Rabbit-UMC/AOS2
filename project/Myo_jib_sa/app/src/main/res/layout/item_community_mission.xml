@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:background="@drawable/background_create_mission_memo"
+            android:background="@drawable/background_mission_create_memo"
             android:backgroundTint="@color/white"
             android:paddingHorizontal="8dp"
             android:paddingVertical="2dp"

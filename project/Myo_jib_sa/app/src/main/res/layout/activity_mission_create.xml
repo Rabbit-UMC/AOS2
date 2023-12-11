@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_mission_create_toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetStart="0dp">
+            <ImageButton
+                android:id="@+id/mission_back_btn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="20dp"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                app:srcCompat="@drawable/ic_back_arrow"
+                android:layout_gravity="start" />
+            <TextView
+                android:id="@+id/title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/font_paragraph_4"
+                android:text="@string/mission_create_title"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/appbar_layout"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gray2"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mission_create_info_cl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingHorizontal="20dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/mission_create_info_title_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/font_paragraph_1"
+                    android:text="@string/mission_create_info_title"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/mission_create_info_desc_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/font_paragraph_1"
+                    android:text="@string/mission_create_info_desc"
+                    android:textColor="@color/gray7"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mission_create_info_title_txt" />
+                <RadioGroup
+                    android:id="@+id/mission_create_category_radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/mission_create_info_desc_txt">
+
+                </RadioGroup>
+                <EditText
+                    android:id="@+id/mission_create_title_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="15dp"
+                    android:textSize="12sp"
+                    android:hint="@string/mission_create_name"
+                    android:fontFamily="@font/font_caption_text_1"
+                    app:layout_constraintTop_toBottomOf="@id/mission_create_category_radio_group"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mission_create_start_date_cl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@color/white"
+                android:paddingHorizontal="20dp">
+
+                <TextView
+                    android:id="@+id/mission_create_start_date_title_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/font_paragraph_1"
+                    android:text="@string/mission_create_start_date_title"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/mission_create_start_date_desc_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/font_paragraph_1"
+                    android:text="@string/mission_create_start_date_desc"
+                    android:textColor="@color/gray7"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mission_create_start_date_title_txt" />
+                <TextView
+                    android:id="@+id/mission_create_start_date_btn_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginVertical="20dp"
+                    android:fontFamily="@font/font_caption_text_1"
+                    android:textSize="12sp"
+                    android:textColor="@color/gray7"
+                    android:text="2023-09-10"
+                    android:gravity="center"
+                    android:background="@drawable/background_mission_create_date_txt"
+                    app:layout_constraintTop_toBottomOf="@id/mission_create_start_date_desc_txt"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mission_create_end_date_cl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@color/white"
+                android:paddingHorizontal="20dp">
+
+                <TextView
+                    android:id="@+id/mission_create_end_date_title_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/font_paragraph_1"
+                    android:text="@string/mission_create_end_date_title"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/mission_create_end_date_desc_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/font_paragraph_1"
+                    android:text="@string/mission_create_end_date_desc"
+                    android:textColor="@color/gray7"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mission_create_end_date_title_txt" />
+                <TextView
+                    android:id="@+id/mission_create_end_date_btn_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginVertical="20dp"
+                    android:fontFamily="@font/font_caption_text_1"
+                    android:textSize="12sp"
+                    android:textColor="@color/gray7"
+                    android:text="2023-09-10"
+                    android:gravity="center"
+                    android:background="@drawable/background_mission_create_date_txt"
+                    app:layout_constraintTop_toBottomOf="@id/mission_create_end_date_desc_txt"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mission_create_memo_cl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@color/white"
+                android:paddingHorizontal="20dp">
+
+                <TextView
+                    android:id="@+id/mission_create_memo_title_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/font_paragraph_1"
+                    android:text="@string/mission_create_memo_title"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/mission_create_memo_desc_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/font_paragraph_1"
+                    android:text="@string/mission_create_memo_desc"
+                    android:textColor="@color/gray7"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mission_create_memo_title_txt" />
+                <EditText
+                    android:id="@+id/mission_create_memo_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:fontFamily="@font/font_caption_text_4"
+                    android:textSize="10sp"
+                    android:textColor="@color/black"
+                    android:hint="@string/mission_create_name"
+                    android:gravity="top"
+                    android:paddingHorizontal="20dp"
+                    android:paddingTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="15dp"
+                    android:maxLength="30"
+                    android:background="@drawable/background_mission_create_memo_et"
+                    app:layout_constraintTop_toBottomOf="@id/mission_create_memo_desc_txt"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+                <TextView
+                    android:id="@+id/mission_create_memo_cnt_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_caption_text_4"
+                    android:text="0"
+                    android:textSize="10sp"
+                    android:textColor="@color/gray4"
+                    app:layout_constraintEnd_toStartOf="@id/mission_create_memo_cnt_max_txt"
+                    app:layout_constraintBottom_toBottomOf="@+id/mission_create_memo_cnt_max_txt"
+                    app:layout_constraintEnd_toEndOf="@+id/mission_create_memo_et" />
+                <TextView
+                    android:id="@+id/mission_create_memo_cnt_max_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_caption_text_4"
+                    android:text="@string/mission_create_memo_cnt_max"
+                    android:textSize="10sp"
+                    android:textColor="@color/gray4"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/mission_create_memo_et"
+                    app:layout_constraintEnd_toEndOf="@+id/mission_create_memo_et" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mission_create_open_cl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@color/white"
+                android:paddingHorizontal="20dp">
+                <TextView
+                    android:id="@+id/mission_create_memo_open_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:fontFamily="@font/font_paragraph_1"
+                    android:text="@string/mission_create_open"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:thumb="@drawable/selector_mission_create_switch_thumb"
+                    android:track="@drawable/mission_create_switch_track"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+                <Button
+                    android:id="@+id/mission_create_create_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:text="생성"
+                    android:elevation="0dp"
+                    android:fontFamily="@font/font_paragraph_4"
+                    android:textSize="14sp"
+                    android:enabled="false"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="61dp"
+                    android:layout_marginBottom="22dp"
+                    android:background="@drawable/selector_basic_btn"
+                    app:layout_constraintTop_toBottomOf="@id/mission_create_memo_open_txt"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

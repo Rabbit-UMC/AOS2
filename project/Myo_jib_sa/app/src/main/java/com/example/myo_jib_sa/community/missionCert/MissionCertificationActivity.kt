@@ -92,14 +92,14 @@ class MissionCertificationActivity: AppCompatActivity() {
 
 
         //다음 페이지 넘어가기
-        binding.missionCertRightBtn.setOnClickListener {
+        /*binding.missionCertRightBtn.setOnClickListener {
             val currentItem = binding.missionCertVpr2.currentItem
             binding.missionCertVpr2.setCurrentItem(currentItem + 1, true)
         }
         binding.missionCertLeftBtn.setOnClickListener {
             val currentItem = binding.missionCertVpr2.currentItem
             binding.missionCertVpr2.setCurrentItem(currentItem - 1, true)
-        }
+        }*/
 
         //인증 사진 올리기 엑티비티로 이동
         binding.MissionCertPostingBtn.setOnClickListener {
@@ -124,9 +124,9 @@ class MissionCertificationActivity: AppCompatActivity() {
         }
 
         //수다 터치
-        binding.missionCertTalkTxt.setOnClickListener {
+        /*binding.missionCertTalkTxt.setOnClickListener {
             finish()
-        }
+        }*/
     }
 
     //돌아왔을 때
@@ -141,7 +141,7 @@ class MissionCertificationActivity: AppCompatActivity() {
         binding.missionCertDay.text = day.toString()
         binding.missionCertLeftDay.text = (day - 1).toString()
         binding.missionCertRightDay.text = (day + 1).toString()
-        if (day == 1) {
+        /*if (day == 1) {
             binding.missionCertLeftBtn.visibility = View.INVISIBLE
             binding.missionCertLeftDay.text = ""
             Log.d("버튼 상태", "왼쪽 버튼 안보임")
@@ -154,7 +154,7 @@ class MissionCertificationActivity: AppCompatActivity() {
             Log.d("버튼 상태", "오른쪽 버튼 안보임")
         } else {
             binding.missionCertRightBtn.visibility = View.VISIBLE
-        }
+        }*/
     }
 
 
@@ -213,7 +213,7 @@ class MissionCertificationActivity: AppCompatActivity() {
     //랭킹 설정
     private fun setRankText(response: MissionResponse){
         if (response.result.rank.isNotEmpty()) {
-            if (response.result.rank.size >= 1 && response.result.rank[0].userName.isNotBlank()) {
+            /*if (response.result.rank.size >= 1 && response.result.rank[0].userName.isNotBlank()) {
                 binding.missionCert1stNameTxt.text = response.result.rank[0].userName
             } else {
                 binding.missionCert1stNameTxt.visibility = View.INVISIBLE
@@ -232,7 +232,7 @@ class MissionCertificationActivity: AppCompatActivity() {
             } else {
                 binding.missionCert3rdNameTxt.visibility = View.INVISIBLE
                 binding.textView15.visibility = View.INVISIBLE
-            }
+            }*/
         } else {
             rankTextGone()
         }
@@ -240,12 +240,12 @@ class MissionCertificationActivity: AppCompatActivity() {
 
     //랭킹이 없을 시 text 안보이게
     private fun rankTextGone(){
-        binding.missionCert1stNameTxt.visibility=View.INVISIBLE
+        /*binding.missionCert1stNameTxt.visibility=View.INVISIBLE
         binding.textView13.visibility=View.INVISIBLE
         binding.missionCert2ndNameTxt.visibility=View.INVISIBLE
         binding.textView14.visibility=View.INVISIBLE
         binding.missionCert3rdNameTxt.visibility=View.INVISIBLE
-        binding.textView15.visibility=View.INVISIBLE
+        binding.textView15.visibility=View.INVISIBLE*/
     }
 
     //미션 몇일차 인지
@@ -261,13 +261,13 @@ class MissionCertificationActivity: AppCompatActivity() {
 
     //미션 시작 전일 경우, 텍스트 다 안보이게
     private fun beforeMission(){
-        binding.missionCertRightBtn.visibility=View.GONE
+        /*binding.missionCertRightBtn.visibility=View.GONE
         binding.missionCertLeftBtn.visibility=View.GONE
         binding.missionCertDay.visibility=View.GONE
         binding.missionCertLeftDay.visibility=View.GONE
         binding.missionCertRightBtn.visibility=View.GONE
         binding.missionCertNotMissionTxt.visibility=View.VISIBLE
-        binding.missionCertNotMissionTxt.text="진행 중인 미션이 없습니다."
+        binding.missionCertNotMissionTxt.text="진행 중인 미션이 없습니다."*/
     }
 }
 
