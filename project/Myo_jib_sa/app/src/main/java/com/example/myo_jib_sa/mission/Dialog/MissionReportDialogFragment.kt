@@ -8,9 +8,9 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.Login.API.RetrofitInstance
 import com.example.myo_jib_sa.databinding.DialogMissionReportFragmentBinding
-import com.example.myo_jib_sa.mission.API.MissionITFC
-import com.example.myo_jib_sa.mission.API.MissionReportResponse
-import com.example.myo_jib_sa.mission.API.Mission
+import com.example.myo_jib_sa.mission.api.MissionAPI
+import com.example.myo_jib_sa.mission.api.MissionReportResponse
+import com.example.myo_jib_sa.mission.api.Mission
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,7 +26,7 @@ class MissionReportDialogFragment(private val item: Mission) : DialogFragment() 
         binding = DialogMissionReportFragmentBinding.inflate(inflater, container, false)
 
         //미션 report api 호출
-        val retrofit = RetrofitInstance.getInstance().create(MissionITFC::class.java)
+        val retrofit = RetrofitInstance.getInstance().create(MissionAPI::class.java)
 
         binding.missionReportNoBtn.setOnClickListener {
             dismiss()
