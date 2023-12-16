@@ -46,7 +46,6 @@ class CommunityFragment : Fragment() {
         //api 연결, 뷰 띄우기
         Constance.jwt?.let { getMissionData(it, requireContext()) }
 
-
         return binding.root
     }
 

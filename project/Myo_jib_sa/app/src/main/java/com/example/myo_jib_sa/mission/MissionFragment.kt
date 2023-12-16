@@ -13,12 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.Login.API.RetrofitInstance
 import com.example.myo_jib_sa.databinding.FragmentMissionBinding
-import com.example.myo_jib_sa.mission.API.Mission
-import com.example.myo_jib_sa.mission.API.MissionByCategoryResponse
-import com.example.myo_jib_sa.mission.API.MissionCategoryListResponse
-import com.example.myo_jib_sa.mission.API.MissionCategoryListResult
-import com.example.myo_jib_sa.mission.API.MissionListResponse
-import com.example.myo_jib_sa.mission.API.MissionITFC
+import com.example.myo_jib_sa.mission.api.Mission
+import com.example.myo_jib_sa.mission.api.MissionCategoryListResponse
+import com.example.myo_jib_sa.mission.api.MissionCategoryListResult
+import com.example.myo_jib_sa.mission.api.MissionListResponse
+import com.example.myo_jib_sa.mission.api.MissionAPI
 import com.example.myo_jib_sa.mission.Dialog.MissionDetailDialogFragment
 import com.example.myo_jib_sa.mission.Dialog.MissionReportDialogFragment
 import com.google.android.material.tabs.TabLayout
@@ -31,7 +30,7 @@ class MissionFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var missionRVAdapter: MissionRVAdapter
     private lateinit var missionList: List<Mission>
-    val retrofit = RetrofitInstance.getInstance().create(MissionITFC::class.java)
+    val retrofit = RetrofitInstance.getInstance().create(MissionAPI::class.java)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,13 +42,18 @@ class MissionFragment : Fragment() {
             .edit().putString("jwt","eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDExNjkzOTIsImV4cCI6MTcwMjY0MDYyMX0.jJfwsl-HSsm7cMXw3ZLKpoMXaUkuETIZbSkf0vQJFM4")
             .apply()
 
-
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         recyclerView = binding.missionMissionRecycler
+
+        binding.missionCategoryTl.removeAllTabs()
+        missionList = emptyList()
+
+        // 전체 리스트 탭
+        binding.missionCategoryTl.addTab(binding.missionCategoryTl.newTab().setText("전체").setId(0))
 
         // 미션 리스트 조회 api 호출
         getMissionListAPI()
@@ -59,7 +63,7 @@ class MissionFragment : Fragment() {
 
         //floating 버튼 설정
         binding.newMissionFloatingBtn.setOnClickListener{
-            startActivity(Intent(activity, MissionWriteMissionActivity::class.java))
+            startActivity(Intent(activity, MissionCreateActivity::class.java))
         }
 
     }
@@ -115,9 +119,6 @@ class MissionFragment : Fragment() {
 
     // 미션 카테고리 리스트 조회
     private fun getMissionCategoryListApi(){
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val jwt = sharedPreferences.getString("jwt", null)
-
         retrofit.getCategoryList().enqueue(object : Callback<MissionCategoryListResponse> {
             override fun onResponse(call: Call<MissionCategoryListResponse>, response: Response<MissionCategoryListResponse>) {
                 if (response.isSuccessful) {
@@ -139,8 +140,6 @@ class MissionFragment : Fragment() {
     // 탭 레이아웃 구성
     private fun setCategoryTabs(categoryList: List<MissionCategoryListResult>) {
         with(binding) {
-            // 전체 리스트 탭
-            missionCategoryTl.addTab(missionCategoryTl.newTab().setText("전체").setId(0))
             // 카테고리 리스트 탭
             categoryList.forEachIndexed { _, category ->
                 missionCategoryTl.addTab(

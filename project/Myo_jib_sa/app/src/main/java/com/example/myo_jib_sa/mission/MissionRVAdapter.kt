@@ -5,7 +5,7 @@ import android.view.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.databinding.ItemMissionMissionBinding
-import com.example.myo_jib_sa.mission.API.Mission
+import com.example.myo_jib_sa.mission.api.Mission
 
 class MissionRVAdapter(
     private var dataList: List<Mission>,
