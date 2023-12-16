@@ -7,8 +7,10 @@
 
 - `main` : 항상 실행 가능한 상태 유지 (최종 버전 올라가는 곳)
 - - Team Leader가 release에서 pull request 후, merge
-- `develop이니셜` : 개인 개발용
-- - **developH**(하나/심세원), **developD**(다비/이유진), **developC**(초코/김현지)
+- `develop` : 항상 최신 버전이 유지된 브랜치
+- `develop기능` : 기능 개발용 (develop 브랜지에서 파야함)
+  - **develop_mission** 미션 기능 개발용
+  - 해당 기능 개발 후 develop 브랜치에 머지
 - `release` : main으로 옮기기 전 검수용
 - - release로 pull request 올리기
 - `hotfix` : 급하게 고쳐야 하는 코드 디버깅용
