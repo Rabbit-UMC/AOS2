@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Button
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.databinding.CommunityPopupOkBinding
+import com.example.myo_jib_sa.databinding.DialogCommunityOkBinding
 
 class CommunityPopupOk(context: Context, private val txt:String) : Dialog(context) {
 
-    private lateinit var binding:CommunityPopupOkBinding
+    private lateinit var binding:DialogCommunityOkBinding
 
     interface CustomDialogListener {
         fun onPositiveButtonClicked(value: Boolean)
@@ -25,7 +25,7 @@ class CommunityPopupOk(context: Context, private val txt:String) : Dialog(contex
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= CommunityPopupOkBinding.inflate(layoutInflater)
+        binding= DialogCommunityOkBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 
