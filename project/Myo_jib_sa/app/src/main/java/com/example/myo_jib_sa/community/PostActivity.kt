@@ -80,7 +80,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         }
 
         //댓글 달기
-        binding.postEnterBtn.setOnClickListener {
+        /*binding.postEnterBtn.setOnClickListener {
             Constance.jwt?.let { it1 ->
                 commenting(
                     it1,
@@ -93,11 +93,11 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     binding.postCommentInputEtxt.text.clear()
                 }
             }
-        }
+        }*/
 
 
         //좋아요 버튼 상태 불러오기
-        heartButton = findViewById(R.id.post_heart_btn)
+        /*heartButton = findViewById(R.id.post_heart_btn)
         setHeartButtonIcon()
         //좋아요 누르기 기능
         binding.postHeartBtn.setOnClickListener {
@@ -109,7 +109,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     }
                 }
             }
-        }
+        }*/
 
         //작성자, 일반 유저 별로 보이는 메뉴 다르게
         //메뉴 클릭
