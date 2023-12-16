@@ -44,6 +44,7 @@ class MissionCertificationActivity: AppCompatActivity() {
         setContentView(binding.root)
 
 
+
         missionId = intent.getLongExtra("missionId", 0)
         missionId=intent.getLongExtra("missionId",0)
         boardId = intent.getIntExtra("boardId", 0)
@@ -72,8 +73,7 @@ class MissionCertificationActivity: AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                    // 페이지가 선택되었을 때 실행되는 로직을 여기에 작성합니다.
                 val day = position + 1
-                //텍스트 설정
-                setBtnTxt(day)
+
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -89,16 +89,6 @@ class MissionCertificationActivity: AppCompatActivity() {
         }
         binding.missionCertVpr2.registerOnPageChangeCallback(onPageChangeListener)
 
-
-        //다음 페이지 넘어가기
-        binding.missionCertRightBtn.setOnClickListener {
-            val currentItem = binding.missionCertVpr2.currentItem
-            binding.missionCertVpr2.setCurrentItem(currentItem + 1, true)
-        }
-        binding.missionCertLeftBtn.setOnClickListener {
-            val currentItem = binding.missionCertVpr2.currentItem
-            binding.missionCertVpr2.setCurrentItem(currentItem - 1, true)
-        }
 
         //인증 사진 올리기 엑티비티로 이동
         binding.MissionCertPostingBtn.setOnClickListener {
@@ -122,10 +112,6 @@ class MissionCertificationActivity: AppCompatActivity() {
             finish()
         }
 
-        //수다 터치
-        binding.missionCertTalkTxt.setOnClickListener {
-            finish()
-        }
     }
 
     //돌아왔을 때
@@ -133,27 +119,6 @@ class MissionCertificationActivity: AppCompatActivity() {
     override fun onResume() {
         Constance.jwt?.let { setMissionCert(it, 1, missionId) }
         super.onResume()
-    }
-
-    //페이지가 선택되었을 때 실행
-    private fun setBtnTxt(day:Int){
-        binding.missionCertDay.text = day.toString()
-        binding.missionCertLeftDay.text = (day - 1).toString()
-        binding.missionCertRightDay.text = (day + 1).toString()
-        if (day == 1) {
-            binding.missionCertLeftBtn.visibility = View.INVISIBLE
-            binding.missionCertLeftDay.text = ""
-            Log.d("버튼 상태", "왼쪽 버튼 안보임")
-        } else {
-            binding.missionCertLeftBtn.visibility = View.VISIBLE
-        }
-        if (day == date) {
-            binding.missionCertRightBtn.visibility = View.INVISIBLE
-            binding.missionCertRightDay.text = ""
-            Log.d("버튼 상태", "오른쪽 버튼 안보임")
-        } else {
-            binding.missionCertRightBtn.visibility = View.VISIBLE
-        }
     }
 
 
@@ -172,7 +137,7 @@ class MissionCertificationActivity: AppCompatActivity() {
                         binding.missionCertDdayTxt.text = response.result.dday
 
                         //랭킹 설정
-                        setRankText(response)
+                        //todo : setRankText(response)
 
                         //LocalDate 형식으로 Formate
                         if(response.result.startDay.isNotEmpty()){
@@ -184,7 +149,7 @@ class MissionCertificationActivity: AppCompatActivity() {
 
                             //미션 시작 전일 경우
                             if(day<1){
-                                beforeMission()
+                                //todo : beforeMission()
                             }else{
                                 binding.missionCertNotMissionTxt.visibility=View.GONE
                             }
@@ -210,7 +175,7 @@ class MissionCertificationActivity: AppCompatActivity() {
         }
 
     //랭킹 설정
-    private fun setRankText(response: MissionResponse){
+    /*private fun setRankText(response: MissionResponse){
         if (response.result.rank.isNotEmpty()) {
             if (response.result.rank.size >= 1 && response.result.rank[0].userName.isNotBlank()) {
                 binding.missionCert1stNameTxt.text = response.result.rank[0].userName
@@ -245,7 +210,7 @@ class MissionCertificationActivity: AppCompatActivity() {
         binding.textView14.visibility=View.INVISIBLE
         binding.missionCert3rdNameTxt.visibility=View.INVISIBLE
         binding.textView15.visibility=View.INVISIBLE
-    }
+    }*/
 
     //미션 몇일차 인지
     @RequiresApi(Build.VERSION_CODES.O)
@@ -258,8 +223,8 @@ class MissionCertificationActivity: AppCompatActivity() {
         return (referenceDate.toEpochDay()-missionStartDate.toEpochDay()).toInt()+1
     }
 
-    //미션 시작 전일 경우, 텍스트 다 안보이게
-    private fun beforeMission(){
+    //todo :  미션 시작 전일 경우 설정
+    /*private fun beforeMission(){
         binding.missionCertRightBtn.visibility=View.GONE
         binding.missionCertLeftBtn.visibility=View.GONE
         binding.missionCertDay.visibility=View.GONE
@@ -267,7 +232,7 @@ class MissionCertificationActivity: AppCompatActivity() {
         binding.missionCertRightBtn.visibility=View.GONE
         binding.missionCertNotMissionTxt.visibility=View.VISIBLE
         binding.missionCertNotMissionTxt.text="진행 중인 미션이 없습니다."
-    }
+    }*/
 }
 
 

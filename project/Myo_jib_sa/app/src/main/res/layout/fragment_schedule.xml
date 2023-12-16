@@ -165,9 +165,9 @@
                     android:layout_gravity="right"
                     android:adjustViewBounds="true"
                     android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
                     android:paddingStart="10dp"
                     android:paddingEnd="25dp"
-                    android:scaleType="fitCenter"
                     android:src="@drawable/ic_schedule_calendar_black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -298,10 +298,10 @@
 
 
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                >
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/calendar_rv"
@@ -313,7 +313,7 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </LinearLayout>
