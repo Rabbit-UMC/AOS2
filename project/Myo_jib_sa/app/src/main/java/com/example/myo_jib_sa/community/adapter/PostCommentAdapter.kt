@@ -42,29 +42,6 @@ class PostCommentAdapter(
             //댓글 작성자 이름, 내용 세팅
             binding.commentWriterNameTxt.text=item.commentAuthorName
             binding.commentPostTextTxt.text=item.commentContent.replace("<br>", "\n")
-            //원형 이미지
-            binding.commentProfileImg.apply {
-                background = ContextCompat.getDrawable(context, R.drawable.background_circle)
-                clipToOutline = true
-
-                // 원형 모양의 OutlineProvider 설정
-                outlineProvider = object : ViewOutlineProvider() {
-                    override fun getOutline(view: View, outline: Outline) {
-                        val radius = view.width / 2.0f
-                        outline.setRoundRect(0, 0, view.width, view.height, radius)
-                    }
-                }
-            }
-
-            if(item.commentAuthorProfileImage.isNotEmpty()&&item.commentAuthorProfileImage!=null){
-                Glide.with(context)
-                    .load(item.commentAuthorProfileImage)
-                    .into(binding.commentProfileImg)
-            }else{
-                val drawable = ContextCompat.getDrawable(context, R.drawable.ic_profile)
-                binding.commentProfileImg.setImageDrawable(drawable)
-            }
-
 
             //commentBtn 아이콘 상태 설정
             if(item.commentUserId==Constance.USER_ID){
