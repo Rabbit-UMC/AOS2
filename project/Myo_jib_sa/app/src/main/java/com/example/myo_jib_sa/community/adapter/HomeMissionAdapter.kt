@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -35,30 +36,19 @@ class HomeMissionAdapter(
                 //binding.homeMissionItemBoardNameTxt.text=item.categoryName
                 binding.homeMissionItemDdayTxt.text=item.dday
 
-                //binding.homeMissionItemImgImg.clipToOutline=true
-
-                //이미지 설정
-                /*if(item.categoryImage.isNotEmpty()&&item.categoryImage!=""){
-                    Glide.with(context)
-                        .load(item.categoryImage)
-                        .into(binding.homeMissionItemImgImg)
-                }else{
-                    setMissionIcon(item.mainMissionTitle, binding)
-                }*/
-
 
                 //클릭 이벤트
                 binding.MissionItemConstraintLayout.setOnClickListener{
                     //클릭 이벤트 처리
                     //미션 터치시 해당 게시판 이동
-                    //boardMove(item.categoryName, binding.homeMissionItemImgImg)
+                    boardMove(item.categoryName, binding.MissionItemConstraintLayout)
                }
                 //클릭이벤트
                 binding.MissionItemConstraintLayout.setOnTouchListener { view, event ->
                     when (event.action) {
                         MotionEvent.ACTION_UP -> {
                             // 터치 다운 이벤트 처리
-                            //boardMove(item.categoryName, binding.homeMissionItemImgImg)
+                            boardMove(item.categoryName, binding.MissionItemConstraintLayout)
                             true // 이벤트 소비됨
                         }
                         else -> false // 다른 이벤트 무시
@@ -99,58 +89,40 @@ class HomeMissionAdapter(
     }
 
     //게시판 이름에 따라 각 게시판으로 이동
-    private fun boardMove(name:String, imageView: ImageView ){
+    private fun boardMove(name:String, layout: ConstraintLayout ){
         when(name){
             "예술 게시판"-> {
-                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                val intent = Intent(layout.context, BoardExerciseActivity::class.java )
                 intent.putExtra("boardId", Constance.ART_ID)
-                imageView.context.startActivity(intent)
+                layout.context.startActivity(intent)
             }
             "운동 게시판"-> {
-                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                val intent = Intent(layout.context, BoardExerciseActivity::class.java )
                 intent.putExtra("boardId", Constance.EXERCISE_ID)
-                imageView.context.startActivity(intent)
+                layout.context.startActivity(intent)
             }
             "자유 게시판"-> {
-                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                val intent = Intent(layout.context, BoardExerciseActivity::class.java )
                 intent.putExtra("boardId", Constance.FREE_ID)
-                imageView.context.startActivity(intent)
+                layout.context.startActivity(intent)
             }
             "예술"-> {
-                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                val intent = Intent(layout.context, BoardExerciseActivity::class.java )
                 intent.putExtra("boardId", Constance.ART_ID)
-                imageView.context.startActivity(intent)
+                layout.context.startActivity(intent)
             }
             "운동"-> {
-                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                val intent = Intent(layout.context, BoardExerciseActivity::class.java )
                 intent.putExtra("boardId", Constance.EXERCISE_ID)
-                imageView.context.startActivity(intent)
+                layout.context.startActivity(intent)
             }
             "자유"-> {
-                val intent = Intent(imageView.context, BoardExerciseActivity::class.java )
+                val intent = Intent(layout.context, BoardExerciseActivity::class.java )
                 intent.putExtra("boardId", Constance.FREE_ID)
-                imageView.context.startActivity(intent)
+                layout.context.startActivity(intent)
             }
 
         }
     }
-
-    //기본 이미지 설정
-    private fun setMissionIcon(name:String, binding: ItemCommunityMissionBinding){
-        /*when(name){
-            "예술"-> {
-                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_art_p)
-                binding.homeMissionItemImgImg.setImageDrawable(drawable)
-            }
-            "자유"-> {
-                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_free_p)
-                binding.homeMissionItemImgImg.setImageDrawable(drawable)
-            }
-            "운동"-> {
-                val drawable: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_mission_exercise_p)
-                binding.homeMissionItemImgImg.setImageDrawable(drawable)
-            }
-        }*/
-    }
-
+   //todo : 기본 색 설정
     }
