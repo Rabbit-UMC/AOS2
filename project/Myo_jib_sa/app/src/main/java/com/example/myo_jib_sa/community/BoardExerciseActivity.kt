@@ -86,7 +86,8 @@ class BoardExerciseActivity : AppCompatActivity() {
         })
 
         //미션 인증 페이지 넘어가기
-        binding.boardExcsMissiomTxt.setOnClickListener {
+        //todo: 플로팅 버튼 터치 시 넘어가기로 바꾸기
+        /*binding.boardExcsMissiomTxt.setOnClickListener {
                 val intent=Intent(this, MissionCertificationActivity::class.java)
                 intent.putExtra("missionId", missionId)
                 intent.putExtra("missionImg", missionImg)
@@ -94,7 +95,7 @@ class BoardExerciseActivity : AppCompatActivity() {
                 intent.putExtra("hostId", hostId)
                 startActivity(intent)
 
-        }
+        }*/
 
     }
 
@@ -282,7 +283,7 @@ class BoardExerciseActivity : AppCompatActivity() {
     }
 
     private fun setBestBoard(){
-        binding.boardExcsMissiomTxt.visibility=View.INVISIBLE
+        //binding.boardExcsMissiomTxt.visibility=View.INVISIBLE todo
         binding.boardPostingBtn.hide()
     }
 }

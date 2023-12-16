@@ -43,7 +43,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
         boardId=intent.getIntExtra("boardId", 0)
 
-        binding.missionCertImg.clipToOutline=true //둥근 모서리
+        //binding.missionCertImg.clipToOutline=true //둥근 모서리 todo
 
         when(boardId){
             Constance.ART_ID-> {
@@ -88,12 +88,12 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
             val selectedImageUri: Uri? = data.data
             // 선택한 이미지를 해당 이미지뷰에 표시
             selectedImageUri?.let { uri ->
-                val imageView: ImageView = binding.missionCertImg
-                imageView.setImageURI(uri)
+                // todo :val imageView: ImageView = binding.missionCertImg
+                //imageView.setImageURI(uri)
                 imgUri=uri
 
-                binding.missionWriteImgLayout.backgroundTintList=
-                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+                //todo : binding.missionWriteImgLayout.backgroundTintList=
+                    //ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
             }
         }
     }
