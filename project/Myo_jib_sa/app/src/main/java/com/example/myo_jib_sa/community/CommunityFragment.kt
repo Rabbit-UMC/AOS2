@@ -2,39 +2,20 @@ package com.example.myo_jib_sa.community
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.text.Spannable
-import android.text.Spanned
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.communityHome.CommunityHomeManager
 import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
 import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularArticle
-import com.example.myo_jib_sa.community.adapter.BannerViewpagerAdapter
 import com.example.myo_jib_sa.community.adapter.HomeMissionAdapter
 import com.example.myo_jib_sa.community.adapter.HomePostAdapter
-import com.example.myo_jib_sa.community.banner.Banner1Fragment
-import com.example.myo_jib_sa.community.banner.Banner2Fragment
-import com.example.myo_jib_sa.community.banner.Banner3Fragment
 import com.example.myo_jib_sa.databinding.FragmentCommunityBinding
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
-import java.sql.Timestamp
 
 class CommunityFragment : Fragment() {
 
