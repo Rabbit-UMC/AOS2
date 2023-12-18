@@ -82,8 +82,8 @@ class WritePostingActivity : AppCompatActivity() {
         complete()
 
 
-        //이미지뷰 터치시 갤러리로 가서 사진 선택 후 해당 이미지 뷰에 뷰 설정
-        binding.missionCertImg.setOnClickListener {
+        //todo: 이미지뷰 터치시 갤러리로 가서 사진 선택 후 해당 이미지 뷰에 뷰 설정
+       /* binding.missionCertImg.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE1)
         }
@@ -91,7 +91,8 @@ class WritePostingActivity : AppCompatActivity() {
         binding.missionCertImg1.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE2)
-        }
+        }*/
+
         //뒤로가기 버튼
         binding.postWriteBackBtn.setOnClickListener {
             finish()
@@ -100,8 +101,8 @@ class WritePostingActivity : AppCompatActivity() {
     }
 
 
-    //사진 설정을 위한 onActivityResult
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    //todo : 사진 설정을 위한 onActivityResult
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if ((requestCode == GALLERY_REQUEST_CODE1||requestCode == GALLERY_REQUEST_CODE2)
             && resultCode == Activity.RESULT_OK && data != null) {
@@ -129,7 +130,7 @@ class WritePostingActivity : AppCompatActivity() {
                 }
             }
         }
-    }
+    }*/
 
     //수정일시 데이터 설정
     private fun setData(){
@@ -138,20 +139,18 @@ class WritePostingActivity : AppCompatActivity() {
 
         //이미지 설정
         if(!intent.getStringExtra("imgList1_path").toString().isNullOrBlank()){
-            //이미지 설정
-            setImgGlide(binding.missionCertImg, intent.getStringExtra("imgList1_path").toString())
+            //todo : 이미지 설정
+            //setImgGlide(binding.missionCertImg, intent.getStringExtra("imgList1_path").toString())
             //배경
-            binding.writePostPlusImgLayout.backgroundTintList=
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+            //binding.writePostPlusImgLayout.backgroundTintList=ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
 
             //url 저장
             imgUrlList[0]= intent.getStringExtra("imgList1_path").toString()
         }
         if(!intent.getStringExtra("imgList2_path").toString().isNullOrBlank()){
-            setImgGlide(binding.missionCertImg1, intent.getStringExtra("imgList2_path").toString())
+           // setImgGlide(binding.missionCertImg1, intent.getStringExtra("imgList2_path").toString())
             //배경
-            binding.writePostPlusImgLayout1.backgroundTintList=
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+            //binding.writePostPlusImgLayout1.backgroundTintList=ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
 
             //url 저장
             imgUrlList[0]= intent.getStringExtra("imgList2_path").toString()
