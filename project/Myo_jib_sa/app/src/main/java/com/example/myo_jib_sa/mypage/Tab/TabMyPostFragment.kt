@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.Login.API.RetrofitInstance
 import com.example.myo_jib_sa.databinding.FragmentTabMyPostBinding
-import com.example.myo_jib_sa.mission.MissionAdapter
 import com.example.myo_jib_sa.mypage.API.MyPageITFC
 import com.example.myo_jib_sa.mypage.API.Post
 import com.example.myo_jib_sa.mypage.API.getMyPostResponse

@@ -20,8 +20,6 @@ import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.Login.API.RetrofitInstance
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.FragmentMypageBinding
-import com.example.myo_jib_sa.mission.MissionAdapter
-import com.example.myo_jib_sa.mission.MissionItem
 import com.example.myo_jib_sa.mypage.API.MyPageITFC
 import com.example.myo_jib_sa.mypage.API.Post
 import com.example.myo_jib_sa.mypage.API.getUserProfileResponse
