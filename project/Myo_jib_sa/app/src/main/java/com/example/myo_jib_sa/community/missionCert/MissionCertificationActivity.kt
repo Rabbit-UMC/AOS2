@@ -111,7 +111,6 @@ class MissionCertificationActivity: AppCompatActivity() {
         binding.missionCertBackBtn.setOnClickListener {
             finish()
         }
-
     }
 
     //돌아왔을 때
@@ -120,7 +119,6 @@ class MissionCertificationActivity: AppCompatActivity() {
         Constance.jwt?.let { setMissionCert(it, 1, missionId) }
         super.onResume()
     }
-
 
     //미션 인증 사진 화면 프레그먼트 설정 + 미션 인증 화면 설정
     @RequiresApi(Build.VERSION_CODES.O)
@@ -177,7 +175,7 @@ class MissionCertificationActivity: AppCompatActivity() {
     //랭킹 설정
     /*private fun setRankText(response: MissionResponse){
         if (response.result.rank.isNotEmpty()) {
-            if (response.result.rank.size >= 1 && response.result.rank[0].userName.isNotBlank()) {
+            /*if (response.result.rank.size >= 1 && response.result.rank[0].userName.isNotBlank()) {
                 binding.missionCert1stNameTxt.text = response.result.rank[0].userName
             } else {
                 binding.missionCert1stNameTxt.visibility = View.INVISIBLE
@@ -196,7 +194,7 @@ class MissionCertificationActivity: AppCompatActivity() {
             } else {
                 binding.missionCert3rdNameTxt.visibility = View.INVISIBLE
                 binding.textView15.visibility = View.INVISIBLE
-            }
+            }*/
         } else {
             rankTextGone()
         }
@@ -204,7 +202,7 @@ class MissionCertificationActivity: AppCompatActivity() {
 
     //랭킹이 없을 시 text 안보이게
     private fun rankTextGone(){
-        binding.missionCert1stNameTxt.visibility=View.INVISIBLE
+        /*binding.missionCert1stNameTxt.visibility=View.INVISIBLE
         binding.textView13.visibility=View.INVISIBLE
         binding.missionCert2ndNameTxt.visibility=View.INVISIBLE
         binding.textView14.visibility=View.INVISIBLE

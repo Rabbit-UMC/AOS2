@@ -124,7 +124,5 @@ class HomeMissionAdapter(
 
         }
     }
-
    //todo : 기본 색 설정
-
     }
