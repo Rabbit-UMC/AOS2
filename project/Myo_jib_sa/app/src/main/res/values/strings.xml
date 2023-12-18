@@ -526,4 +526,17 @@ Rabbit-UMC 은(는) 정보주체의 이용정보를 저장하고 수시로 불�
     <string name="mission_report_desc">다른 사용자에게 불쾌감을\n조성하는 미션인지 다시 확인해주세요!</string>
     <string name="mission_report_yes">그래도 신고할래요</string>
     <string name="mission_report_no">아니요, 취소할게요</string>
+    <string name="mission_create_title">미션 생성</string>
+    <string name="mission_create_info_title">미션 정보 작성</string>
+    <string name="mission_create_info_desc">미션 분류를 선택한 후 이름을 작성해주세요.</string>
+    <string name="mission_create_name">미션 이름</string>
+    <string name="mission_create_start_date_title">시작일</string>
+    <string name="mission_create_start_date_desc">미션 시작일을 선택해주세요.</string>
+    <string name="mission_create_end_date_title">종료일</string>
+    <string name="mission_create_end_date_desc">미션 종료일을 선택해주세요.</string>
+    <string name="mission_create_memo_title">메모 작성</string>
+    <string name="mission_create_memo_desc">추가 내용이 있다면 작성해주세요.</string>
+    <string name="mission_create_memo_hint">당신의 한 마디를 입력해주세요.</string>
+    <string name="mission_create_open">공개 설정</string>
+    <string name="mission_create_memo_cnt_max">/30</string>
 </resources>

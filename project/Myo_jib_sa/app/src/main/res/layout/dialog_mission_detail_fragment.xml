@@ -170,7 +170,7 @@
             android:textSize="12sp"
             android:textColor="@color/white"
             android:elevation="0dp"
-            android:background="@drawable/background_mission_detail_with_btn"
+            android:background="@drawable/selector_basic_btn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
