@@ -30,7 +30,7 @@ data class MissionByCategoryResponse(
     val result: List<Mission>
 )
 
-data class MissionCreateRequest(
+data class MissionCreateRequests(
     var title:String,
     var startAt:String,
     var endAt:String,
