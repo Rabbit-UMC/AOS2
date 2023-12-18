@@ -142,17 +142,15 @@ class WritePostingActivity : AppCompatActivity() {
             //todo : 이미지 설정
             //setImgGlide(binding.missionCertImg, intent.getStringExtra("imgList1_path").toString())
             //배경
-            binding.writePostPlusImgLayout.backgroundTintList=
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+            //binding.writePostPlusImgLayout.backgroundTintList=ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
 
             //url 저장
             imgUrlList[0]= intent.getStringExtra("imgList1_path").toString()
         }
         if(!intent.getStringExtra("imgList2_path").toString().isNullOrBlank()){
-            setImgGlide(binding.missionCertImg1, intent.getStringExtra("imgList2_path").toString())
+           // setImgGlide(binding.missionCertImg1, intent.getStringExtra("imgList2_path").toString())
             //배경
-            binding.writePostPlusImgLayout1.backgroundTintList=
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+            //binding.writePostPlusImgLayout1.backgroundTintList=ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
 
             //url 저장
             imgUrlList[0]= intent.getStringExtra("imgList2_path").toString()

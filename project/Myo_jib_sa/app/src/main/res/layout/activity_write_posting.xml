@@ -133,7 +133,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/post_write_complete_btn"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="20dp"
