@@ -27,7 +27,7 @@
             android:layout_marginTop="30dp"
             android:background="@android:color/transparent"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_mypage_profile"
+            android:src="@color/main2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -85,7 +85,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="30dp"
             android:fontFamily="@font/font_inter"
-            android:background="@drawable/mypage_edit_btn"
+            android:background="@drawable/ic_mypage_edit_profile"
             android:text="편집"
             android:textColor="@color/white"
             android:textStyle="bold"
