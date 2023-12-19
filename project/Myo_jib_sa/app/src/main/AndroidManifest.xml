@@ -90,7 +90,7 @@
             android:exported="false"
             android:theme="@style/AppTheme.PopupActivity" />
         <activity
-            android:name=".mypage.EditMypageActivity"
+            android:name=".mypage.EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".Login.MyoSignUpActivity"

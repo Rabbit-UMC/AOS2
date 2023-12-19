@@ -6,33 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.databinding.ItemMyCommentBinding
-import com.example.myo_jib_sa.databinding.ItemMyPostBinding
-import com.example.myo_jib_sa.mypage.API.Comment
-import com.example.myo_jib_sa.mypage.API.Post
+import com.example.myo_jib_sa.databinding.ItemMyPagePostBinding
+import com.example.myo_jib_sa.mypage.api.GetMyCommentResult
 
-class MyCommentAdapter (
+class MyPageCommentRVAdapter (
     private val context: Context,
-    private val dataList: List<Comment>,
-) : RecyclerView.Adapter<MyCommentAdapter.ViewHolder>() {
+    private val dataList: List<GetMyCommentResult>,
+) : RecyclerView.Adapter<MyPageCommentRVAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(
-        private val binding: ItemMyCommentBinding
+        private val binding: ItemMyPagePostBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Comment) {
-            // 다른 바인딩 작업도 추가
-
-            //시간 날짜 포멧
-            val formattedTime = item.uploadTime.substring(11, 16)
-            val formattedDate = item.uploadTime.substring(5, 7) + "/" + item.uploadTime.substring(8, 10)
-
-            binding.commentItemNameTxt.text=item.articleTitle
-            binding.commentItemUploadTimeTxt.text=formattedTime
-            binding.commentItemUploadDateTxt.text=formattedDate
-            binding.postItmeHeartNumTxt.text=item.likeCount.toString()
-            binding.commentItmeCommentCntTxt.text=item.commentCount.toString()
+        fun bind(item: GetMyCommentResult) {
+            binding.myPageTabPostTitleTxt.text=item.articleTitle
+            binding.myPageTabLikeCntTxt.text=item.likeCount.toString()
+            binding.myPageTabCommentCntTxt.text=item.commentCount.toString()
         }
     }
 
@@ -40,7 +30,7 @@ class MyCommentAdapter (
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val binding = ItemMyCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemMyPagePostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 

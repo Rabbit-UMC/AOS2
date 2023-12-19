@@ -32,4 +32,7 @@
     <color name="main3">#337CCF</color>
     <color name="main4">#FFC436</color>
     <color name="main5">#FBEEAC</color>
+
+    <color name="like">#6BBEA0</color>
+    <color name="comment">#688EA0</color>
 </resources>
