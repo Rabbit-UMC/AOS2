@@ -5,14 +5,9 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemCreateScheudleCalendarDayBinding
-import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
-import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActivity
-import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.CurrentMissionCurrentMissionAdapter
 import java.time.LocalDate
 
 var prePosition : Int = -1
