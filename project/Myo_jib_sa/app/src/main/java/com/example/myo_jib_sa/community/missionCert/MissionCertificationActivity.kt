@@ -141,7 +141,7 @@ class MissionCertificationActivity: AppCompatActivity() {
                         if(response.result.startDay.isNotEmpty()){
 
                             //미션 몇일차인지 설정
-                            date=setMissionDate(response.result.startDay)
+//                            date=setMissionDate(response.result.startDay)
 
                             Log.d("미션 인증 n일차", "$date")
 
@@ -171,6 +171,7 @@ class MissionCertificationActivity: AppCompatActivity() {
 
             }
         }
+
 
     //랭킹 설정
     /*private fun setRankText(response: MissionResponse){
@@ -222,7 +223,7 @@ class MissionCertificationActivity: AppCompatActivity() {
     }
 
     //todo :  미션 시작 전일 경우 설정
-    /*private fun beforeMission(){
+    private fun beforeMission(){
         binding.missionCertRightBtn.visibility=View.GONE
         binding.missionCertLeftBtn.visibility=View.GONE
         binding.missionCertDay.visibility=View.GONE
@@ -232,6 +233,3 @@ class MissionCertificationActivity: AppCompatActivity() {
         binding.missionCertNotMissionTxt.text="진행 중인 미션이 없습니다."
     }*/
 }
-
-
-
