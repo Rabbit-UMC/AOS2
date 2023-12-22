@@ -15,14 +15,13 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import com.example.myo_jib_sa.Login.API.RetrofitInstance
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.ActivityMissionCreateBinding
+import com.example.myo_jib_sa.mission.api.MissionAPI
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResponse
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResult
-import com.example.myo_jib_sa.mission.api.MissionAPI
-import com.example.myo_jib_sa.mission.api.MissionCreateRequest
+import com.example.myo_jib_sa.mission.api.MissionCreateRequests
 import com.example.myo_jib_sa.mission.api.MissionCreateResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -48,7 +47,7 @@ class MissionCreateActivity : AppCompatActivity() {
     private var isMissionMemoInputted = false
 
     companion object {
-        lateinit var missionRequest: MissionCreateRequest
+        lateinit var missionRequest: MissionCreateRequests
     }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {

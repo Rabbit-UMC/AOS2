@@ -15,7 +15,7 @@ interface MissionAPI {
     //미션 생성
     @POST("app/mission")
     fun postMissionCreate(
-        @Body requestBody: MissionCreateRequest
+        @Body requestBody: MissionCreateRequests
     ):Call<MissionCreateResponse>
 
     // 카테고리 별 미션 조회

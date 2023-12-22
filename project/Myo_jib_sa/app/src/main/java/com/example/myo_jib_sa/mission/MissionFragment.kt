@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.Login.API.RetrofitInstance
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.spfManager
 import com.example.myo_jib_sa.databinding.FragmentMissionBinding
 import com.example.myo_jib_sa.mission.api.Mission
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResponse
@@ -38,9 +39,7 @@ class MissionFragment : Fragment() {
     ): View? {
         binding = FragmentMissionBinding.inflate(inflater, container, false)
 
-        requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-            .edit().putString("jwt","eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDExNjkzOTIsImV4cCI6MTcwMjY0MDYyMX0.jJfwsl-HSsm7cMXw3ZLKpoMXaUkuETIZbSkf0vQJFM4")
-            .apply()
+        spfManager.setUserToken("eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDI2NjM2MTgsImV4cCI6MTcwNDEzNDg0N30.va4im_CNjnmyRRZxtPxxHc7v4b2SstL3XLebcJ1EXm0")
 
         return binding.root
     }

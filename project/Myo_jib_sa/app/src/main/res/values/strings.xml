@@ -526,6 +526,8 @@ Rabbit-UMC 은(는) 정보주체의 이용정보를 저장하고 수시로 불�
     <string name="mission_report_desc">다른 사용자에게 불쾌감을\n조성하는 미션인지 다시 확인해주세요!</string>
     <string name="mission_report_yes">그래도 신고할래요</string>
     <string name="mission_report_no">아니요, 취소할게요</string>
+
+    <!--미션 생성-->
     <string name="mission_create_title">미션 생성</string>
     <string name="mission_create_info_title">미션 정보 작성</string>
     <string name="mission_create_info_desc">미션 분류를 선택한 후 이름을 작성해주세요.</string>
@@ -539,4 +541,21 @@ Rabbit-UMC 은(는) 정보주체의 이용정보를 저장하고 수시로 불�
     <string name="mission_create_memo_hint">당신의 한 마디를 입력해주세요.</string>
     <string name="mission_create_open">공개 설정</string>
     <string name="mission_create_memo_cnt_max">/30</string>
+
+    <!--마이페이지-->
+    <string name="my_page_hello">안녕하세요</string>
+    <string name="my_page_title">&#160;집사님 :)</string>
+    <string name="my_page_from">부터</string>
+    <string name="my_page_with_myo">묘집사와 함께하고 있어요.</string>
+    <string name="my_page_edit_profile">프로필 편집</string>
+    <string name="my_page_history">히스토리 보기</string>
+
+    <!--프로필 편집-->
+    <string name="edit_profile">프로필 편집</string>
+    <string name="edit_profile_title">프로필 설정</string>
+    <string name="edit_profile_desc">프로필 사진과 닉네임을 변경할 수 있어요.</string>
+    <string name="edit_profile_check_duplication">중복 확인</string>
+    <string name="edit_profile_usable_nickname">사용 가능한 닉네임이에요.</string>
+    <string name="edit_profile_unusable_nickname">사용 불가능한 닉네임이에요.</string>
+    <string name="edit_profile_complete">편집 완료</string>
 </resources>

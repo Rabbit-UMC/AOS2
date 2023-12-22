@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_mission_create_toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetStart="0dp">
+            <ImageButton
+                android:id="@+id/edit_profile_back_btn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="20dp"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                app:srcCompat="@drawable/ic_back_arrow"
+                android:layout_gravity="start" />
+            <TextView
+                android:id="@+id/toolbar_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/font_paragraph_4"
+                android:text="@string/my_page_edit_profile"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/edit_profile_title_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/edit_profile_title"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/font_paragraph_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_layout" />
+
+    <TextView
+        android:id="@+id/edit_profile_desc_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/font_paragraph_1"
+        android:text="@string/edit_profile_desc"
+        android:textColor="@color/gray7"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_title_txt" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/edit_profile_img_btn"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="30dp"
+        android:src="@color/main2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_desc_txt" />
+
+    <EditText
+        android:id="@+id/edit_profile_nickname_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:hint="닉네임"
+        android:textColorHint="@color/gray4"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/font_paragraph_4"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/edit_profile_duplicate_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_img_btn" />
+
+    <Button
+        android:id="@+id/edit_profile_duplicate_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/selector_basic_btn"
+        android:text="@string/edit_profile_check_duplication"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/font_caption_text_3"
+        android:elevation="0dp"
+        android:enabled="false"
+        app:layout_constraintBottom_toBottomOf="@id/edit_profile_nickname_et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/edit_profile_nickname_et" />
+
+    <Button
+        android:id="@+id/edit_profile_complete_btn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/selector_basic_btn"
+        android:fontFamily="@font/font_caption_text_3"
+        android:text="@string/edit_profile_complete"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:layout_margin="20dp"
+        android:elevation="0dp"
+        android:enabled="false"
+        app:layout_constraintBottom_toBottomOf="parent" />
+    <TextView
+        android:id="@+id/edit_profile_duplicate_state_txt"
+        android:text=""
+        android:visibility="gone"
+        android:textSize="10sp"
+        android:fontFamily="@font/font_caption_text_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/edit_profile_nickname_et"
+        app:layout_constraintStart_toStartOf="@id/edit_profile_nickname_et"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
