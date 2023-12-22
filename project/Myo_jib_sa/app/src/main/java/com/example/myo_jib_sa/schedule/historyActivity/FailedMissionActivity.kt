@@ -6,16 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
 import com.example.myo_jib_sa.databinding.ActivityFailedMissionBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.CurrentMissionCurrentMissionAdapter
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.*
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleService
-import com.example.myo_jib_sa.schedule.historyActivity.adapter.MissionData
 import com.example.myo_jib_sa.schedule.historyActivity.adapter.MissionHistoryAdapter
 import com.example.myo_jib_sa.schedule.historyActivity.adapter.MissionHistoryRVDecoration
 import com.example.myo_jib_sa.schedule.historyActivity.api.profile_nickName.ProfileNickNameService
