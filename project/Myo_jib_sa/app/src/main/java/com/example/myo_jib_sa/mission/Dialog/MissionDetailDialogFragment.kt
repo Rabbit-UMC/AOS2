@@ -9,7 +9,7 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.example.myo_jib_sa.Login.API.RetrofitInstance
+import com.example.myo_jib_sa.login.api.RetrofitInstance
 import com.example.myo_jib_sa.databinding.DialogMissionDetailFragmentBinding
 import com.example.myo_jib_sa.mission.api.*
 import com.example.myo_jib_sa.mission.api.Mission

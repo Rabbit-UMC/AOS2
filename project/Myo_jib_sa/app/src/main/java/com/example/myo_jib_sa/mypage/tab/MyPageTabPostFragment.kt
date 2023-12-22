@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.FragmentMyPageTabCommentBinding
-import com.example.myo_jib_sa.mypage.api.UserAPI
+import com.example.myo_jib_sa.mypage.api.MypageAPI
 import com.example.myo_jib_sa.mypage.MyPagePostRVAdapter
 import com.example.myo_jib_sa.mypage.api.GetMyPostResponse
 import com.example.myo_jib_sa.mypage.api.GetMyPostResult
@@ -27,7 +27,7 @@ class MyPageTabPostFragment : Fragment() {
     private lateinit var myPostAdapter: MyPagePostRVAdapter
     private var decoration: RecyclerView.ItemDecoration? = null
 
-    val retrofit: UserAPI = sRetrofit.create(UserAPI::class.java)
+    val retrofit: MypageAPI = sRetrofit.create(MypageAPI::class.java)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
