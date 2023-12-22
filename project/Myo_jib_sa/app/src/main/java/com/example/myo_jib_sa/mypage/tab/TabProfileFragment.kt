@@ -1,6 +1,5 @@
-package com.example.myo_jib_sa.mypage.Tab
+package com.example.myo_jib_sa.mypage.tab
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.myo_jib_sa.databinding.FragmentTabProfileBinding
-import com.example.myo_jib_sa.mypage.EditMypageActivity
+import com.example.myo_jib_sa.mypage.EditProfileActivity
 import com.kakao.sdk.user.UserApiClient
 
 class TabProfileFragment : Fragment() {
@@ -25,7 +24,7 @@ class TabProfileFragment : Fragment() {
 
         binding.myPageEditBtn.setOnClickListener{
             //EditMypageActivity로 이동
-            val intent = Intent(requireActivity(), EditMypageActivity::class.java)
+            val intent = Intent(requireActivity(), EditProfileActivity::class.java)
             startActivity(intent)
         }
         UserApiClient.instance.me { user, error ->

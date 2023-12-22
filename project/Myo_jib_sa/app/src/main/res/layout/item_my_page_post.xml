@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="65dp">
+
+    <TextView
+        android:id="@+id/my_page_tab_post_title_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font_caption_text_3"
+        android:text="글제목"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/my_page_tab_post_like_iv"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:src="@drawable/ic_like"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+        android:id="@+id/my_page_tab_like_cnt_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5"
+        android:textSize="10sp"
+        android:fontFamily="@font/font_caption_text_4"
+        android:textColor="@color/like"
+        android:layout_marginStart="9dp"
+        app:layout_constraintBottom_toBottomOf="@id/my_page_tab_post_like_iv"
+        app:layout_constraintStart_toEndOf="@id/my_page_tab_post_like_iv"
+        app:layout_constraintTop_toTopOf="@id/my_page_tab_post_like_iv"/>
+    <ImageView
+        android:id="@+id/my_page_tab_post_comment_iv"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:src="@drawable/ic_comment"
+        android:layout_marginStart="9dp"
+        app:layout_constraintStart_toEndOf="@id/my_page_tab_like_cnt_txt"
+        app:layout_constraintTop_toTopOf="@id/my_page_tab_like_cnt_txt"
+        app:layout_constraintBottom_toBottomOf="@id/my_page_tab_like_cnt_txt" />
+
+    <TextView
+        android:id="@+id/my_page_tab_comment_cnt_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5"
+        android:textSize="10sp"
+        android:fontFamily="@font/font_caption_text_4"
+        android:textColor="@color/comment"
+        android:layout_marginStart="7dp"
+        app:layout_constraintBottom_toBottomOf="@id/my_page_tab_post_comment_iv"
+        app:layout_constraintStart_toEndOf="@id/my_page_tab_post_comment_iv"
+        app:layout_constraintTop_toTopOf="@id/my_page_tab_post_comment_iv"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:background="@color/gray3"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@ class AuthInterceptor : Interceptor {
 
         // Add the "Bearer" token to the header
         val modifiedRequest: Request = originalRequest.newBuilder()
-            .header("X-ACCESS-TOKEN", "Bearer $accessToken")
+            .header("X-ACCESS-TOKEN", "$accessToken")
             .build()
 
         return chain.proceed(modifiedRequest)
