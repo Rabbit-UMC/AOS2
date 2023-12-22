@@ -1,22 +1,16 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
-import com.example.myo_jib_sa.schedule.adapter.CalendarData
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
 
 
 
-class CurrentMissionCurrentMissionAdapter (private val missionList:ArrayList<CurrentMissionResult>,
-                                           private val width:Int, private val height:Int):
-    RecyclerView.Adapter<CurrentMissionCurrentMissionAdapter.ViewHolder>() {
+class CurrentMissionAdapter (private val missionList:ArrayList<CurrentMissionResult>,
+                             private val width:Int, private val height:Int):
+    RecyclerView.Adapter<CurrentMissionAdapter.ViewHolder>() {
 
     //클릭 이벤트 처리 ==============================================
 //리스너 인터페이스
