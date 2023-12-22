@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.Login
+package com.example.myo_jib_sa.login
 
 import android.app.Dialog
 import android.graphics.Color
@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.DialogFragment
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogLoginAddEmailFragmentBinding
 
 interface OnEmailEnteredInterface {
