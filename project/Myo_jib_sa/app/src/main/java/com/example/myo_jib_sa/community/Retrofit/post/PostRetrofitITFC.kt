@@ -1,6 +1,6 @@
 package com.example.myo_jib_sa.community.Retrofit.post
 
-import com.example.myo_jib_sa.community.Retrofit.Constance
+import com.example.myo_jib_sa.community.Constance
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -31,8 +31,8 @@ interface PostRetrofitITFC {
     fun postEdit(
         @Header(Constance.author)author:String,
         @Body request:PostEditRequest
-        ,@Path("articleID") articleID: Long
-        ,@Query("articleId")  queryArticleId:Long):
+        , @Path("articleID") articleID: Long
+        , @Query("articleId")  queryArticleId:Long):
             Call<SimpleResponse>
 
     //게시물 신고

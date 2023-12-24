@@ -1,7 +1,5 @@
 package com.example.myo_jib_sa.community.missionCert
 
-import android.content.ComponentCallbacks
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -9,21 +7,12 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myo_jib_sa.community.ManagerPageActivity
-import com.example.myo_jib_sa.community.Retrofit.Constance
+import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionCertRetrofitManager
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionResponse
 import com.example.myo_jib_sa.community.adapter.MissionCertViewpagerAdapter
 import com.example.myo_jib_sa.databinding.ActivityMissionCertificationBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class MissionCertificationActivity: AppCompatActivity() {
 

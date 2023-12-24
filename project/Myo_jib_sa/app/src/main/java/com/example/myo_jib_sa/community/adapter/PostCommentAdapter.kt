@@ -1,28 +1,21 @@
 package com.example.myo_jib_sa.community.adapter
 
 import android.content.Context
-import android.graphics.Outline
 import android.graphics.Rect
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewOutlineProvider
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.Retrofit.Constance
-import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
+import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.Retrofit.post.ArticleImage
 import com.example.myo_jib_sa.community.Retrofit.post.CommentList
 import com.example.myo_jib_sa.community.Retrofit.post.PostRetrofitManager
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
-import com.example.myo_jib_sa.databinding.ActivityPostBinding
 import com.example.myo_jib_sa.databinding.ItemCommentBinding
-import com.example.myo_jib_sa.databinding.ItemCommunityMissionBinding
 
 class PostCommentAdapter(
     private val context: Context,
@@ -44,7 +37,7 @@ class PostCommentAdapter(
             binding.commentPostTextTxt.text=item.commentContent.replace("<br>", "\n")
 
             //commentBtn 아이콘 상태 설정
-            if(item.commentUserId==Constance.USER_ID){
+            if(item.commentUserId== Constance.USER_ID){
                 //댓글 작성자 일떄
                 binding.commentBtn.setImageResource(R.drawable.ic_delete)
                 binding.commentBtn.isEnabled = true // Enable the button
@@ -61,7 +54,7 @@ class PostCommentAdapter(
 
             binding.commentBtn.setOnClickListener {
                 Log.d("댓글 id", "${item.commentId}")
-                if(item.commentUserId==Constance.USER_ID){
+                if(item.commentUserId== Constance.USER_ID){
                     //댓글 작성자 일떄
                         val DelDialog = CommunityPopupOk(context,"해당 댓글을 삭제 하나요?")
 
