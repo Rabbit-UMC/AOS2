@@ -8,13 +8,9 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.community.Retrofit.BoardPost.Articles
-import com.example.myo_jib_sa.community.Retrofit.BoardPost.PopularPostResult
 import com.example.myo_jib_sa.community.Retrofit.BoardPost.PostBoardRetrofitManager
-import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.adapter.BoardAdapter
-import com.example.myo_jib_sa.community.missionCert.MissionCertificationActivity
 import com.example.myo_jib_sa.databinding.ActivityBoardExerciseBinding
-import java.sql.Timestamp
 
 class BoardExerciseActivity : AppCompatActivity() {
 
@@ -76,7 +72,7 @@ class BoardExerciseActivity : AppCompatActivity() {
 
         //관리자 페이지 넘어가기
         binding.boardExcsNameTxt.setOnClickListener(View.OnClickListener {
-            if(hostId==Constance.USER_ID){
+            if(hostId== Constance.USER_ID){
                 val intent=Intent(this, ManagerPageActivity::class.java)
                 intent.putExtra("boardId", boardId)
                 intent.putExtra("missionImg", missionImg)

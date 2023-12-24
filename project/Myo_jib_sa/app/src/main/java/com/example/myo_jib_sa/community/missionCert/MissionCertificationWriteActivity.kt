@@ -2,7 +2,6 @@ package com.example.myo_jib_sa.community.missionCert
 
 import android.app.Activity
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -10,16 +9,12 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.Retrofit.Constance
-import com.example.myo_jib_sa.community.Retrofit.ImgPath
+import com.example.myo_jib_sa.community.Constance
+import com.example.myo_jib_sa.community.ImgPath
 import com.example.myo_jib_sa.community.Retrofit.imgUploadRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionCertRetrofitManager
-import com.example.myo_jib_sa.community.WritePostingActivity
 import com.example.myo_jib_sa.databinding.ActivityMissionCertificationWriteBinding
 import java.io.ByteArrayOutputStream
 import java.io.File

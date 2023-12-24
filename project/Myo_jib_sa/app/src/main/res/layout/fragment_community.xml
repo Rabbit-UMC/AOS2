@@ -229,15 +229,16 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/home_constraintLayout" />
 
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/home_bestPost_recyclr"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/home_bestPostName_txt" />
-
 
                     <TextView
                         android:id="@+id/home_puls_txt"
@@ -262,7 +263,7 @@
 
     <!--묘집사 버튼-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/myo_fab_btn"
+            android:id="@+id/myo_zip_main_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
@@ -276,6 +277,54 @@
             app:fabCustomSize="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:maxImageSize="50dp"
+            app:tint="@null" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/myo_zip1_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="Add New Post"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:fabCustomSize="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/myo_zip_main_btn"
+            app:layout_constraintEnd_toEndOf="@+id/myo_zip_main_btn"
+            app:layout_constraintStart_toStartOf="@+id/myo_zip_main_btn"
+            app:layout_constraintTop_toTopOf="@+id/myo_zip_main_btn"
+            app:maxImageSize="50dp"
+            app:tint="@null" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/myo_zip2_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="Add New Post"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:fabCustomSize="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/myo_zip_main_btn"
+            app:layout_constraintEnd_toEndOf="@+id/myo_zip_main_btn"
+            app:layout_constraintStart_toStartOf="@+id/myo_zip_main_btn"
+            app:layout_constraintTop_toTopOf="@+id/myo_zip_main_btn"
+            app:maxImageSize="50dp"
+            app:tint="@null" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/myo_zip3_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:contentDescription="Add New Post"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:fabCustomSize="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/myo_zip_main_btn"
+            app:layout_constraintEnd_toEndOf="@+id/myo_zip_main_btn"
+            app:layout_constraintStart_toStartOf="@+id/myo_zip_main_btn"
+            app:layout_constraintTop_toTopOf="@+id/myo_zip_main_btn"
             app:maxImageSize="50dp"
             app:tint="@null" />
 
