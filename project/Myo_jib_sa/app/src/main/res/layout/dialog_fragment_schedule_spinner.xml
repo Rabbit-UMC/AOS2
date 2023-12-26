@@ -8,7 +8,7 @@
     android:minHeight="400dp"
     android:background="@drawable/view_round_r30"
     android:orientation="vertical"
-    tools:context=".schedule.dialog.ScheduleSpinnerDialogFragment">
+    tools:context=".Schedule.dialog.ScheduleSpinnerDialogFragment">
 
 
     <com.google.android.material.tabs.TabLayout
