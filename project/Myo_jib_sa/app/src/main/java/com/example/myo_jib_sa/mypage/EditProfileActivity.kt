@@ -18,7 +18,9 @@ import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.community.missionCert.MissionCertificationWriteActivity
 import com.example.myo_jib_sa.databinding.ActivityEditProfileBinding
-import com.example.myo_jib_sa.mypage.api.*
+import com.example.myo_jib_sa.mypage.api.GetCheckDuplicationResponse
+import com.example.myo_jib_sa.mypage.api.MypageAPI
+import com.example.myo_jib_sa.mypage.api.PutUserImageResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
