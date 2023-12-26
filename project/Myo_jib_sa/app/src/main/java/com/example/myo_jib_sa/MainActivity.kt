@@ -1,16 +1,13 @@
 package com.example.myo_jib_sa
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import com.example.myo_jib_sa.community.CommunityFragment
 import com.example.myo_jib_sa.databinding.ActivityMainBinding
 import com.example.myo_jib_sa.mission.MissionFragment
 import com.example.myo_jib_sa.mypage.MypageFragment
-import com.example.myo_jib_sa.schedule.ScheduleFragment
-import java.util.Calendar
+import com.example.myo_jib_sa.Schedule.ScheduleFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

@@ -8,7 +8,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toBottomOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
-    tools:context=".schedule.createScheduleActivity.CreateScheduleActivity">
+    tools:context=".Schedule.CreateScheduleActivity.CreateScheduleActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -156,7 +156,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/missionList_rv"
                 android:layout_width="match_parent"
-                android:layout_height="27dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -257,7 +257,7 @@
 
 
             <EditText
-                android:id="@+id/scheduleStartAt_tv"
+                android:id="@+id/scheduleStartAt_etv"
                 android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/main2"
@@ -269,6 +269,7 @@
                 android:layout_marginLeft="18dp"
                 android:layout_marginTop="20dp"
                 android:paddingTop="0dp"
+                android:focusableInTouchMode="false"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -283,11 +284,11 @@
                 android:includeFontPadding="false"
                 android:paddingBottom="0dp"
                 android:layout_marginBottom="10dp"
-                app:layout_constraintStart_toEndOf="@+id/scheduleStartAt_tv"
-                app:layout_constraintBottom_toBottomOf="@id/scheduleStartAt_tv" />
+                app:layout_constraintStart_toEndOf="@+id/scheduleStartAt_etv"
+                app:layout_constraintBottom_toBottomOf="@id/scheduleStartAt_etv" />
 
             <EditText
-                android:id="@+id/scheduleEndAt_tv"
+                android:id="@+id/scheduleEndAt_etv"
                 android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/main2"
@@ -297,8 +298,10 @@
                 android:textColor="#000000"
                 android:textSize="12sp"
                 android:includeFontPadding="false"
+                android:paddingTop="0dp"
+                android:focusableInTouchMode="false"
                 app:layout_constraintStart_toEndOf="@+id/textView8"
-                app:layout_constraintBaseline_toBaselineOf="@id/scheduleStartAt_tv" />
+                app:layout_constraintBaseline_toBaselineOf="@id/scheduleStartAt_etv" />
 
             <TextView
                 android:id="@+id/textView9"
@@ -309,7 +312,7 @@
                 android:textColor="@color/gray7"
                 android:textSize="10sp"
                 app:layout_constraintBaseline_toBaselineOf="@id/textView8"
-                app:layout_constraintStart_toEndOf="@+id/scheduleEndAt_tv" />
+                app:layout_constraintStart_toEndOf="@+id/scheduleEndAt_etv" />
 
             <View
                 android:id="@+id/view4"
@@ -371,8 +374,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
-            <TextView
-                android:id="@+id/create_tv"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/create_btn"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center"
@@ -395,9 +398,11 @@
 
 
             <View
+                android:id="@+id/toneDownView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="#33000000"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -427,7 +432,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/my_template">
 
                     <TextView
-                        android:id="@+id/selected_year_tv"
+                        android:id="@+id/year_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="35dp"
@@ -440,7 +445,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/selected_month_tv"
+                        android:id="@+id/month_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -464,7 +469,7 @@
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_schedule_calendar_left_arrow"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/selected_month_tv"
+                        app:layout_constraintEnd_toStartOf="@+id/month_tv"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageButton
@@ -478,7 +483,7 @@
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_schedule_calendar_right_arrow"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/selected_month_tv"
+                        app:layout_constraintStart_toEndOf="@+id/month_tv"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -592,7 +597,7 @@
                 android:background="@drawable/view_round_r20_indigo"
                 android:backgroundTint="@color/white"
                 android:orientation="vertical"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:weightSum="20"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
