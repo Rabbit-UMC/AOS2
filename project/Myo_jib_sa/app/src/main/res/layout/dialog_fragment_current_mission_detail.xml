@@ -7,7 +7,7 @@
     android:background="@drawable/view_round_r30"
     android:minWidth="354dp"
     android:minHeight="400dp"
-    tools:context=".schedule.currentMissionActivity.CurrentMissionDetailDialogFragment">
+    tools:context=".Schedule.currentMissionActivity.CurrentMissionDetailDialogFragment">
 
     <ImageButton
         android:id="@+id/check_btn"

@@ -38,7 +38,7 @@
             android:name=".community.WritePostingActivity"
             android:exported="false" />
         <activity
-            android:name=".schedule.currentMissionActivity.DeleteCurrentMissionActivity"
+            android:name=".Schedule.currentMissionActivity.DeleteCurrentMissionActivity"
             android:exported="false" />
         <activity
             android:name=".mission.MissionCreateActivity"
@@ -50,18 +50,18 @@
             android:value="${AD_APP_ID}" />
 
         <activity
-            android:name=".schedule.currentMissionActivity.CurrentMissionActivity"
+            android:name=".Schedule.currentMissionActivity.CurrentMissionActivity"
             android:exported="false" />
         <activity
-            android:name=".schedule.createScheduleActivity.CreateScheduleActivity"
+            android:name=".Schedule.CreateScheduleActivity.CreateScheduleActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".schedule.historyActivity.FailedMissionActivity"
+            android:name=".Schedule.historyActivity.FailedMissionActivity"
             android:exported="false" />
         <activity
-            android:name=".schedule.historyActivity.SuccessMissionActivity"
+            android:name=".Schedule.historyActivity.SuccessMissionActivity"
             android:exported="false" />
         <activity
             android:name=".community.PostActivity"

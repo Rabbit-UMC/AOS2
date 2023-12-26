@@ -141,8 +141,8 @@ class MissionCertificationActivity: AppCompatActivity() {
                     //LocalDate 형식으로 Formate
                     if (response.result.startDay.isNotEmpty()) {
 
-                        //미션 몇일차인지 설정
-                        //date=setMissionDate(response.result.startDay)
+                        //미션  몇일차인지 설정
+                        //todo: date = setMissionDate(response.result.startDay)
 
                         Log.d("미션 인증 n일차", "$date")
 
@@ -173,67 +173,64 @@ class MissionCertificationActivity: AppCompatActivity() {
         }
     }
 }
+
     //랭킹 설정
-    /*private fun setRankText(response: MissionResponse){
-        if (response.result.rank.isNotEmpty()) {
-            /*if (response.result.rank.size >= 1 && response.result.rank[0].userName.isNotBlank()) {
-                binding.missionCert1stNameTxt.text = response.result.rank[0].userName
-            } else {
-                binding.missionCert1stNameTxt.visibility = View.INVISIBLE
-                binding.textView13.visibility = View.INVISIBLE
-            }
-
-            if (response.result.rank.size >= 2 && response.result.rank[1].userName.isNotBlank()) {
-                binding.missionCert2ndNameTxt.text = response.result.rank[1].userName
-            } else {
-                binding.missionCert2ndNameTxt.visibility = View.INVISIBLE
-                binding.textView14.visibility = View.INVISIBLE
-            }
-
-            if (response.result.rank.size >= 3 && response.result.rank[2].userName.isNotBlank()) {
-                binding.missionCert3rdNameTxt.text = response.result.rank[2].userName
-            } else {
-                binding.missionCert3rdNameTxt.visibility = View.INVISIBLE
-                binding.textView15.visibility = View.INVISIBLE
-            }*/
-        } else {
-            rankTextGone()
-        }
-    }
-
-    //랭킹이 없을 시 text 안보이게
-    private fun rankTextGone(){
-        /*binding.missionCert1stNameTxt.visibility=View.INVISIBLE
-        binding.textView13.visibility=View.INVISIBLE
-        binding.missionCert2ndNameTxt.visibility=View.INVISIBLE
-        binding.textView14.visibility=View.INVISIBLE
-        binding.missionCert3rdNameTxt.visibility=View.INVISIBLE
-        binding.textView15.visibility=View.INVISIBLE
-    }*/
-
-    //미션 몇일차 인지
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setMissionDate(day:String): Int {
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val missionStartDate = LocalDate.parse(day, formatter)
-        val referenceDate= LocalDate.now()
-
-        //미션 몇일차인지 설정
-        return (referenceDate.toEpochDay()-missionStartDate.toEpochDay()).toInt()+1
-    }
-
-    //todo :  미션 시작 전일 경우 설정
-    /*private fun beforeMission(){
-        binding.missionCertRightBtn.visibility=View.GONE
-        binding.missionCertLeftBtn.visibility=View.GONE
-        binding.missionCertDay.visibility=View.GONE
-        binding.missionCertLeftDay.visibility=View.GONE
-        binding.missionCertRightBtn.visibility=View.GONE
-        binding.missionCertNotMissionTxt.visibility=View.VISIBLE
-        binding.missionCertNotMissionTxt.text="진행 중인 미션이 없습니다."
-    }*/
-}
-
-
-
-*/
+// private fun setRankText(response: MissionResponse){
+// if (response.result.rank.isNotEmpty()) {
+// /*if (response.result.rank.size >= 1 && response.result.rank[0].userName.isNotBlank()) {
+// binding.missionCert1stNameTxt.text = response.result.rank[0].userName
+// } else {
+// binding.missionCert1stNameTxt.visibility = View.INVISIBLE
+// binding.textView13.visibility = View.INVISIBLE
+// }
+//
+// if (response.result.rank.size >= 2 && response.result.rank[1].userName.isNotBlank()) {
+// binding.missionCert2ndNameTxt.text = response.result.rank[1].userName
+// } else {
+// binding.missionCert2ndNameTxt.visibility = View.INVISIBLE
+// binding.textView14.visibility = View.INVISIBLE
+// }
+//
+// if (response.result.rank.size >= 3 && response.result.rank[2].userName.isNotBlank()) {
+// binding.missionCert3rdNameTxt.text = response.result.rank[2].userName
+// } else {
+// binding.missionCert3rdNameTxt.visibility = View.INVISIBLE
+// binding.textView15.visibility = View.INVISIBLE
+// }
+// } else {
+// rankTextGone()
+// }
+// }
+//
+// //랭킹이 없을 시 text 안보이게
+// private fun rankTextGone(){
+// /*binding.missionCert1stNameTxt.visibility=View.INVISIBLE
+// binding.textView13.visibility=View.INVISIBLE
+// binding.missionCert2ndNameTxt.visibility=View.INVISIBLE
+// binding.textView14.visibility=View.INVISIBLE
+// binding.missionCert3rdNameTxt.visibility=View.INVISIBLE
+// binding.textView15.visibility=View.INVISIBLE
+// }
+//
+// //미션 몇일차 인지
+// @RequiresApi(Build.VERSION_CODES.O)
+// private fun setMissionDate(day:String): Int {
+// val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+// val missionStartDate = LocalDate.parse(day, formatter)
+// val referenceDate= LocalDate.now()
+//
+// //미션 몇일차인지 설정
+// return (referenceDate.toEpochDay()-missionStartDate.toEpochDay()).toInt()+1
+// }
+//
+// //todo :  미션 시작 전일 경우 설정
+// private fun beforeMission(){
+// binding.missionCertRightBtn.visibility=View.GONE
+// binding.missionCertLeftBtn.visibility=View.GONE
+// binding.missionCertDay.visibility=View.GONE
+// binding.missionCertLeftDay.visibility=View.GONE
+// binding.missionCertRightBtn.visibility=View.GONE
+// binding.missionCertNotMissionTxt.visibility=View.VISIBLE
+// binding.missionCertNotMissionTxt.text="진행 중인 미션이 없습니다."
+// }
+// }*/
