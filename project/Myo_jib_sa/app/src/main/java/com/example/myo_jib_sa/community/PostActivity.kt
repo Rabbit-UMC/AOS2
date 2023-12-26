@@ -1,13 +1,10 @@
 package com.example.myo_jib_sa.community
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.ColorStateList
 import android.graphics.Outline
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Im
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -23,16 +20,12 @@ import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.post.ArticleImage
 import com.example.myo_jib_sa.community.Retrofit.post.CommentList
-import com.example.myo_jib_sa.community.Retrofit.post.ImageList
 import com.example.myo_jib_sa.community.Retrofit.post.PostRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.post.PostViewResponse
 import com.example.myo_jib_sa.community.adapter.PostCommentAdapter
 import com.example.myo_jib_sa.community.adapter.PostImgAdapter
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.databinding.ActivityPostBinding
-import com.example.myo_jib_sa.mission.MissionFragment
-import com.example.myo_jib_sa.mypage.MypageFragment
-import com.example.myo_jib_sa.schedule.ScheduleFragment
 
 
 class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
