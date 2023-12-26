@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.mypage
+package com.example.myo_jib_sa.mypage.adapter
 
 import android.content.Context
 import android.graphics.Rect
@@ -7,28 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemMyPagePostBinding
-import com.example.myo_jib_sa.mypage.API.GetMyPostResult
+import com.example.myo_jib_sa.mypage.API.GetMyCommentResult
 
-class MyPagePostRVAdapter(
+class MyPageCommentRVAdapter (
     private val context: Context,
-    private val dataList: List<GetMyPostResult>,
-) : RecyclerView.Adapter<MyPagePostRVAdapter.ViewHolder>() {
+    private val dataList: List<GetMyCommentResult>,
+) : RecyclerView.Adapter<MyPageCommentRVAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(
         private val binding: ItemMyPagePostBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: GetMyPostResult) {
-            // 다른 바인딩 작업도 추가
-
-            //시간 날짜 포멧
-            val formattedTime = item.uploadTime.substring(11, 16)
-            val formattedDate = item.uploadTime.substring(5, 7) + "/" + item.uploadTime.substring(8, 10)
-
-            binding.myPageTabPostTitleTxt.text = item.articleTitle
-            binding.myPageTabLikeCntTxt.text = item.likeCount.toString()
-            binding.myPageTabCommentCntTxt.text = item.commentCount.toString()
+        fun bind(item: GetMyCommentResult) {
+            binding.myPageTabPostTitleTxt.text=item.articleTitle
+            binding.myPageTabLikeCntTxt.text=item.likeCount.toString()
+            binding.myPageTabCommentCntTxt.text=item.commentCount.toString()
         }
     }
 
