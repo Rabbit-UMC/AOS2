@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.mypage.api
+package com.example.myo_jib_sa.mypage.API
 
 import com.example.myo_jib_sa.base.BaseResponse
 
