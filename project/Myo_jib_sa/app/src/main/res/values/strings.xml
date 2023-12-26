@@ -9,10 +9,19 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <!-- 로그인 및 회원가입-->
+    <string name="kakao_login_title">묘집사</string>
+    <string name="kakao_login_desc">커뮤니티의 주인이 바뀌다</string>
+    <string name="sign_up_title">회원가입</string>
+    <string name="sign_up_desc">안녕하세요 집사님 :)\n묘집사 이용을 위해 닉네임을 설정하고 이용 약관에 동의해주세요.</string>
+    <string name="sign_up_nickname_title">닉네임 설정</string>
+    <string name="sign_up_nickname_desc">묘집사에서 사용할 닉네임을 등록해주세요.</string>
+    <string name="sign_up_terms_of_use_title">이용약관 동의</string>
+    <string name="sign_up_terms_of_use_desc">묘집사 앱 사용을 위해 이용 약관에 동의해주세요.</string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="sineUp_use_title">이용약관</string>
-    <string name="sineUp_use_content">제 1장 총칙
+    <string name="sine_up_use_old">(필수) 만 14세 이상입니다.</string>
+    <string name="sine_up_use_content">제 1장 총칙
 
 제 1조 (목적)
 
@@ -385,8 +394,9 @@
 (부칙)
 
 (시행일) 이 약관은 2023년 08월 25일부터 시행합니다.</string>
-    <string name="sineUp_privacy_title">개인정보 수집 및 이용</string>
-    <string name="sineUp_privacy_content">"&lt; Rabbit-UMC &gt;('묘집사')은(는) 「개인정보 보호법」 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리방침을 수립·공개합니다.
+    <string name="sine_up_terms_of_use">(필수) 이용 약관</string>
+    <string name="sine_up_privacy_title">(필수) 개인정보 수집 및 이용</string>
+    <string name="sine_up_privacy_content">"&lt; Rabbit-UMC &gt;('묘집사')은(는) 「개인정보 보호법」 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리방침을 수립·공개합니다.
 ○ 이 개인정보처리방침은 2023년 8월 25부터 적용됩니다.
 [카카오 로그인 회원]필수: 프로필정보(닉네임, 프로필사진) 선택: 이메일
 제1조(개인정보의 처리 목적)&lt; Rabbit-UMC &gt;(''묘집사')은(는) 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며 이용 목적이 변경되는 경우에는 「개인정보 보호법」 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.
@@ -509,12 +519,17 @@ Rabbit-UMC 은(는) 정보주체의 이용정보를 저장하고 수시로 불�
 예시 ) - 20XX. X. X ~ 20XX. X. X 적용 (클릭)
 "
     </string>
-    <string name="sineUp_mail_title">묘집사 메일 수신</string>
-    <string name="sineUp_mail_content">묘집사에서 제공하는 이벤트/혜택 등
+    <string name="sine_up_mail_title">(선택) 묘집사 메일 수신 동의</string>
+    <string name="sine_up_mail_content">묘집사에서 제공하는 이벤트/혜택 등
 다양한 정보를 이메일, 묘집사 앱으로 받아보실 수 있습니다. 일부 서비스(별도 회원 체계로 운영하거나 중앙일보 가입 이후 추가 가입하여 이용하는 서비스 등)의 경우, 개별 서비스에 대해 별도 수신 동의를 받을 수 있으며, 이때에도 수신 동의에 대해 별도로 안내하고 동의를 받습니다.</string>
-    <string name="sineUp_identify_title">본인 확인 정보 수집 및 저장</string>
-    <string name="sineUp_identidy_content">필수 : 닉네임, 프로필 사진, 이메일\n목적 : 유료 상품 구매 등 실명 기반 서비스 이용 시, 사용자 식별 목적</string>
-    <string name="signUp_see_content"><u>내용보기</u></string>
+    <string name="sine_up_identification_title">(선택) 본인 확인 정보 수집 및 저장</string>
+    <string name="sine_up_identification_content">필수 : 닉네임, 프로필 사진, 이메일\n목적 : 유료 상품 구매 등 실명 기반 서비스 이용 시, 사용자 식별 목적</string>
+    <string name="sign_up_whole_agree">전체 확인 및 동의합니다.</string>
+    <string name="sign_up">가입하기</string>
+    <string name="sign_up_complete_jibsa">&#160;집사님,</string>
+    <string name="sign_up_complete_welcome_title">묘집사 회원가입을 축하합니다!</string>
+    <string name="sign_up_complete_welcome_desc">묘집사에서 다양한 미션에 참여해보세요!</string>
+    <string name="sign_up_complete_to_main">메인으로</string>
 
     <!--미션 메인-->
     <string name="mission_title">미션 둘러보기</string>

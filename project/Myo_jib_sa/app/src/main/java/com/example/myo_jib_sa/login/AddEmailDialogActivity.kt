@@ -1,19 +1,14 @@
-package com.example.myo_jib_sa.Login
+package com.example.myo_jib_sa.login
 
-import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.StrictMode
 import android.util.Log
 import android.view.MotionEvent
-import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.databinding.ActivityAddEmailDialogBinding
-import com.example.myo_jib_sa.databinding.DialogSignupCompleteBinding
 
 
 class AddEmailDialogActivity : AppCompatActivity() {

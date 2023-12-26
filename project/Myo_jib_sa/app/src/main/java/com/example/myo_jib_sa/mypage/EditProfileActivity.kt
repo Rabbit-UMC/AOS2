@@ -18,7 +18,7 @@ import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.community.missionCert.MissionCertificationWriteActivity
 import com.example.myo_jib_sa.databinding.ActivityEditProfileBinding
-import com.example.myo_jib_sa.mypage.API.*
+import com.example.myo_jib_sa.mypage.api.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +33,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     private var returnCode: Int? = null
 
-    val retrofit: UserAPI = sRetrofit.create(UserAPI::class.java)
+    val retrofit: MypageAPI = sRetrofit.create(MypageAPI::class.java)
 
     companion object {
         private const val GALLERY_REQUEST_CODE = 1001

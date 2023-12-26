@@ -4,7 +4,7 @@ package com.example.myo_jib_sa.mypage.API
 import retrofit2.Call
 import retrofit2.http.*
 
-interface UserAPI {
+interface MypageAPI {
 
     //유저 작성 글 조회
     @GET("app/users/articleList")
