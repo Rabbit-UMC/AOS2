@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.FragmentMypageBinding
+import com.example.myo_jib_sa.mypage.adapter.MypageViewPagerAdapter
 import com.example.myo_jib_sa.mypage.api.GetUserProfileResponse
 /*import com.example.myo_jib_sa.mission.MissionAdapter
 import com.example.myo_jib_sa.mission.MissionItem*/
