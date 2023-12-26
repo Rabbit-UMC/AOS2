@@ -1,6 +1,5 @@
 package com.example.myo_jib_sa.mypage
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -15,19 +14,14 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.Login.API.RetrofitInstance
-import com.example.myo_jib_sa.Login.API.SignUpRequest
-import com.example.myo_jib_sa.Login.API.SignUpResponse
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.community.missionCert.MissionCertificationWriteActivity
 import com.example.myo_jib_sa.databinding.ActivityEditProfileBinding
-import com.example.myo_jib_sa.mypage.api.*
-import com.kakao.sdk.user.UserApiClient
+import com.example.myo_jib_sa.mypage.API.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditProfileBinding

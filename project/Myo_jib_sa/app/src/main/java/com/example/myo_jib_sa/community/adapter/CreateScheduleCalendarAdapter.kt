@@ -8,7 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.databinding.ItemCreateScheudleCalendarDayBinding
+import com.example.myo_jib_sa.databinding.ItemCreateScheduleCalendarDayBinding
+import com.example.myo_jib_sa.databinding.ItemScheduleCalendarDayBinding
 import java.time.LocalDate
 
 var prePosition : Int = -1
@@ -28,7 +29,7 @@ class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData
         viewType: Int
     ): ViewHolder {
         val binding =
-            ItemCreateScheudleCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemCreateScheduleCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -60,7 +61,7 @@ class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData
         }
     }
 
-    class ViewHolder(private val binding: ItemCreateScheudleCalendarDayBinding) :
+    class ViewHolder(private val binding: ItemCreateScheduleCalendarDayBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(data: SelectDateData) {
