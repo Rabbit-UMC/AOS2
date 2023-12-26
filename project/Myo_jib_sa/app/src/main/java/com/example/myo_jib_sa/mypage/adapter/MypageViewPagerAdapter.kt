@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.mypage
+package com.example.myo_jib_sa.mypage.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
