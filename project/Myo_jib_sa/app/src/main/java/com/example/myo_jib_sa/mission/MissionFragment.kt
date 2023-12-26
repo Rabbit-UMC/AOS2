@@ -18,8 +18,8 @@ import com.example.myo_jib_sa.mission.api.MissionCategoryListResponse
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResult
 import com.example.myo_jib_sa.mission.api.MissionListResponse
 import com.example.myo_jib_sa.mission.api.MissionAPI
-import com.example.myo_jib_sa.mission.Dialog.MissionDetailDialogFragment
-import com.example.myo_jib_sa.mission.Dialog.MissionReportDialogFragment
+import com.example.myo_jib_sa.mission.dialog.MissionDetailDialogFragment
+import com.example.myo_jib_sa.mission.dialog.MissionReportDialogFragment
 import com.google.android.material.tabs.TabLayout
 import retrofit2.Call
 import retrofit2.Callback

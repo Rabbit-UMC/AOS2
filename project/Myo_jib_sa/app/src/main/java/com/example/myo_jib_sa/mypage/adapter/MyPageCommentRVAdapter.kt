@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemMyPagePostBinding
-import com.example.myo_jib_sa.mypage.API.GetMyCommentResult
+import com.example.myo_jib_sa.mypage.api.GetMyCommentResult
 
 class MyPageCommentRVAdapter (
     private val context: Context,

@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.mypage.API
+package com.example.myo_jib_sa.mypage.api
 
 
 import retrofit2.Call
