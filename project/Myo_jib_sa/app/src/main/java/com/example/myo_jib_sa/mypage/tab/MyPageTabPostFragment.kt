@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.FragmentMyPageTabCommentBinding
 import com.example.myo_jib_sa.mypage.api.MypageAPI
-import com.example.myo_jib_sa.mypage.adapter.MyPagePostRVAdapter
-import com.example.myo_jib_sa.mypage.api.GetMyPostResponse
-import com.example.myo_jib_sa.mypage.api.GetMyPostResult
+import com.example.myo_jib_sa.mypage.MyPagePostRVAdapter
+import com.example.myo_jib_sa.mypage.API.GetMyPostResponse
+import com.example.myo_jib_sa.mypage.API.GetMyPostResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
