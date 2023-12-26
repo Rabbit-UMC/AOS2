@@ -15,7 +15,7 @@ import com.example.myo_jib_sa.databinding.FragmentMypageBinding
 import com.example.myo_jib_sa.mypage.API.GetUserProfileResponse
 /*import com.example.myo_jib_sa.mission.MissionAdapter
 import com.example.myo_jib_sa.mission.MissionItem*/
-import com.example.myo_jib_sa.mypage.API.UserAPI
+import com.example.myo_jib_sa.mypage.api.MypageAPI
 import com.google.android.material.tabs.TabLayoutMediator
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,7 +25,7 @@ import retrofit2.Response
 class MypageFragment : Fragment() {
     lateinit var binding: FragmentMypageBinding
 
-    val retrofit: UserAPI = sRetrofit.create(UserAPI::class.java)
+    val retrofit: MypageAPI = sRetrofit.create(MypageAPI::class.java)
     val isNotDuplication : Boolean = false
     var nickname: String = ""
     var uri: String = ""

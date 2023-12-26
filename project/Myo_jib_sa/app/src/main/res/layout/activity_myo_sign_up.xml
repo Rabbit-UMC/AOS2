@@ -4,268 +4,354 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login.MyoSignUpActivity">
+    tools:context=".login.MyoSignUpActivity"
+    android:background="@color/white">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetStart="0dp">
+            <ImageButton
+                android:id="@+id/sign_up_back_btn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="20dp"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                app:srcCompat="@drawable/ic_back_arrow"
+                android:layout_gravity="start" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:id="@+id/txt_app_title"
+        android:id="@+id/sign_up_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="묘집사"
-        android:textSize="30sp"
-        android:fontFamily="@font/gugi"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/font_title_3"
+        android:text="@string/sign_up_title"
         android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginTop="21dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/appbar_layout" />
+
     <TextView
-        android:id="@+id/txt_arrow_guide"
+        android:id="@+id/sign_up_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:fontFamily="@font/font_inter"
-        android:text="회원가입을 위해\n묘집사 정책에 동의해 주세요."
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/font_caption_text_3"
+        android:text="@string/sign_up_desc"
+        android:textColor="@color/gray6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/sign_up_title"
+        app:layout_constraintTop_toBottomOf="@id/sign_up_title" />
+    <TextView
+        android:id="@+id/sign_up_nickname_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/font_title_3"
+        android:text="@string/sign_up_nickname_title"
         android:textColor="@color/black"
-        android:textStyle="bold"
         android:textSize="16sp"
-        android:gravity="center"
+        android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_app_title"/>
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_desc" />
 
-    <!--<EditText
-        android:id="@+id/signUp_input_user_name"
+    <TextView
+        android:id="@+id/sign_up_nickname_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/font_caption_text_3"
+        android:text="@string/sign_up_nickname_desc"
+        android:textColor="@color/gray6"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/sign_up_nickname_title"
+        app:layout_constraintTop_toBottomOf="@id/sign_up_nickname_title" />
+
+    <EditText
+        android:id="@+id/sign_up_nickname_et"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:layout_marginTop="23dp"
-        android:fontFamily="@font/font_inter"
-        android:hint="닉네임을 입력해 주세요"
+        android:layout_marginTop="20dp"
+        android:hint="닉네임"
+        android:inputType="text"
+        android:maxLength="6"
+        android:textColorHint="@color/gray4"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/font_paragraph_4"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/sign_up_duplicate_btn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/signUp_test_nickName_btn"
-        app:layout_constraintTop_toBottomOf="@id/txt_arrow_guide"
-        app:layout_constraintWidth_default="percent"
-        app:layout_constraintWidth_percent="0.5"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_nickname_desc" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signUp_test_nickName_btn"
+    <Button
+        android:id="@+id/sign_up_duplicate_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/selector_basic_btn"
+        android:text="@string/edit_profile_check_duplication"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/font_caption_text_3"
+        android:elevation="0dp"
+        android:enabled="false"
+        app:layout_constraintBottom_toBottomOf="@id/sign_up_nickname_et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/sign_up_nickname_et" />
+    <TextView
+        android:id="@+id/sign_up_duplicate_state_txt"
+        android:text=""
+        android:visibility="gone"
+        android:textSize="10sp"
+        android:fontFamily="@font/font_caption_text_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/font_inter"
-        android:layout_marginLeft="5dp"
-        android:text="중복 확인"
-        android:textColor="@color/community_selected_color"
-        android:textStyle="bold"
-        android:background="@drawable/view_round_r10_stroke"
-        app:layout_constraintStart_toEndOf="@id/signUp_input_user_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/signUp_input_user_name"
-        app:layout_constraintHorizontal_chainStyle="packed" />
+        app:layout_constraintTop_toBottomOf="@id/sign_up_nickname_et"
+        app:layout_constraintStart_toStartOf="@id/sign_up_nickname_et"/>
 
     <TextView
-        android:id="@+id/signUp_check_user_name"
+        android:id="@+id/sign_up_terms_of_use_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:fontFamily="@font/font_inter"
-        android:text="닉네임 체크"
-        android:textSize="15sp"
-        app:layout_constraintStart_toStartOf="@id/signUp_input_user_name"
-        app:layout_constraintTop_toBottomOf="@id/signUp_input_user_name"/>
--->
-    <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/signUp_all_check_checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="40dp"
-        android:fontFamily="@font/font_inter"
-        android:text="  전체 동의"
-        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="54dp"
+        android:fontFamily="@font/font_title_3"
+        android:text="@string/sign_up_terms_of_use_title"
+        android:textColor="@color/black"
         android:textSize="16sp"
-        android:button="@drawable/selector_signup_check_box"
-        app:layout_constraintTop_toBottomOf="@id/txt_arrow_guide"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_nickname_et" />
+
+    <TextView
+        android:id="@+id/sign_up_terms_of_use_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font_caption_text_3"
+        android:text="@string/sign_up_terms_of_use_desc"
+        android:textColor="@color/gray6"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@+id/sign_up_nickname_title"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_terms_of_use_title" />
+
+    <CheckBox
+        android:id="@+id/sign_up_old_checkbox"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/selector_signup_check_box"
+        android:button="@null"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="21dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_terms_of_use_desc" />
+    <TextView
+        android:id="@+id/sign_up_old_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sine_up_use_old"
+        android:textColor="@color/gray8"
+        android:layout_marginStart="15dp"
+        android:fontFamily="@font/font_caption_text_3"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_old_checkbox"
+        app:layout_constraintStart_toEndOf="@+id/sign_up_old_checkbox"
+        app:layout_constraintTop_toTopOf="@+id/sign_up_old_checkbox" />
+    <Button
+        android:id="@+id/sign_up_old_detail_btn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/ic_right_arrow"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_old_checkbox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sign_up_old_checkbox" />
+
+    <CheckBox
+        android:id="@+id/sign_up_terms_of_use_checkbox"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/selector_signup_check_box"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_old_checkbox" />
+    <TextView
+        android:id="@+id/sign_up_terms_of_use_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sine_up_terms_of_use"
+        android:textColor="@color/gray8"
+        android:layout_marginStart="15dp"
+        android:fontFamily="@font/font_caption_text_3"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_terms_of_use_checkbox"
+        app:layout_constraintStart_toEndOf="@+id/sign_up_terms_of_use_checkbox"
+        app:layout_constraintTop_toTopOf="@+id/sign_up_terms_of_use_checkbox" />
+    <Button
+        android:id="@+id/sign_up_terms_of_use_detail_btn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/ic_right_arrow"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_terms_of_use_checkbox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sign_up_terms_of_use_checkbox" />
+
+    <CheckBox
+        android:id="@+id/sign_up_privacy_checkbox"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/selector_signup_check_box"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_terms_of_use_checkbox" />
+    <TextView
+        android:id="@+id/sign_up_privacy_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sine_up_privacy_title"
+        android:textColor="@color/gray8"
+        android:layout_marginStart="15dp"
+        android:fontFamily="@font/font_caption_text_3"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_privacy_checkbox"
+        app:layout_constraintStart_toEndOf="@+id/sign_up_privacy_checkbox"
+        app:layout_constraintTop_toTopOf="@+id/sign_up_privacy_checkbox" />
+    <Button
+        android:id="@+id/sign_up_privacy_detail_btn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/ic_right_arrow"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_privacy_checkbox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sign_up_privacy_checkbox" />
+
+    <CheckBox
+        android:id="@+id/sign_up_mail_checkbox"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/selector_signup_check_box"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_privacy_checkbox" />
+    <TextView
+        android:id="@+id/sign_up_mail_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sine_up_mail_title"
+        android:textColor="@color/gray8"
+        android:layout_marginStart="15dp"
+        android:fontFamily="@font/font_caption_text_3"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_mail_checkbox"
+        app:layout_constraintStart_toEndOf="@+id/sign_up_mail_checkbox"
+        app:layout_constraintTop_toTopOf="@+id/sign_up_mail_checkbox" />
+    <Button
+        android:id="@+id/sign_up_mail_detail_btn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/ic_right_arrow"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_mail_checkbox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sign_up_mail_checkbox" />
+
+    <CheckBox
+        android:id="@+id/sign_up_identification_checkbox"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/selector_signup_check_box"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_mail_checkbox" />
+    <TextView
+        android:id="@+id/sign_up_identification_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sine_up_identification_title"
+        android:textColor="@color/gray8"
+        android:layout_marginStart="15dp"
+        android:fontFamily="@font/font_caption_text_3"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_identification_checkbox"
+        app:layout_constraintStart_toEndOf="@+id/sign_up_identification_checkbox"
+        app:layout_constraintTop_toTopOf="@+id/sign_up_identification_checkbox" />
+    <Button
+        android:id="@+id/sign_up_identification_detail_btn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/ic_right_arrow"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_identification_checkbox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sign_up_identification_checkbox" />
+
+
+    <CheckBox
+        android:id="@+id/sign_up_whole_checkbox"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/selector_signup_check_box"
+        android:button="@null"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/sign_up_sign_up_btn"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_txt"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/sign_up_whole_txt"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginHorizontal="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signUp_all_check_checkBox">
-        <TextView
-            android:id="@+id/txt_arrow_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/font_inter"
-            android:text="본인은 만 14세 이상이며 묘집사 이용약관, 개인 정보 수집 밑 이용, 묘집사 메일 수신 동의(선택),본인 확인 정보 수집 및 저장(선택)을 확인 하였으며, 모두 동의합니다."
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+        android:text="@string/sign_up_whole_agree"
+        android:textColor="@color/gray8"
+        android:layout_marginStart="15dp"
+        android:fontFamily="@font/font_paragraph_6"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="@id/sign_up_whole_checkbox"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_whole_checkbox"
+        app:layout_constraintStart_toEndOf="@+id/sign_up_whole_checkbox" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/layout_all_checkBox"
+    <Button
+        android:id="@+id/sign_up_sign_up_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="15dp"
-        android:layout_marginHorizontal="52dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_txt">
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/signUp_age_checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:textStyle="bold"
-            android:fontFamily="@font/font_inter"
-            android:text="  만 14세 이상입니다.(필수)"
-            android:textSize="12sp"
-            android:button="@drawable/selector_signup_check_box"
-            />
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_check_1"
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/signUp_use_checkBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:fontFamily="@font/font_inter"
-                android:text="  이용약관(필수)"
-                android:textSize="12sp"
-                android:button="@drawable/selector_signup_check_box"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-            <TextView
-                android:id="@+id/txt_use_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/font_inter"
-                android:text="@string/signUp_see_content"
-                android:textSize="12sp"
-                android:textColor="#919191"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_check_2"
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/signUp_privacy_checkBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:fontFamily="@font/font_inter"
-                android:text="  개인정보 수집 및 이용(필수)"
-                android:textSize="12sp"
-                android:button="@drawable/selector_signup_check_box"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-            <TextView
-                android:id="@+id/txt_privacy_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/signUp_see_content"
-                android:textSize="12sp"
-                android:textColor="#919191"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_check_3"
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/signUp_mail_checkBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textStyle="bold"
-                android:fontFamily="@font/font_inter"
-                android:text="  묘집사 메일 수신 동의(선택)"
-                android:textSize="12sp"
-                android:button="@drawable/selector_signup_check_box"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-            <TextView
-                android:id="@+id/txt_mail_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/font_inter"
-                android:text="@string/signUp_see_content"
-                android:textSize="12sp"
-                android:textColor="#919191"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_check_4"
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/signUp_identidy_checkBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:fontFamily="@font/font_inter"
-                android:text="  본인확인 정보 수집 및 저장(선택)"
-                android:textSize="12sp"
-                android:button="@drawable/selector_signup_check_box"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-            <TextView
-                android:id="@+id/txt_identify_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/font_inter"
-                android:text="@string/signUp_see_content"
-                android:textSize="12sp"
-                android:textColor="#919191"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signUp_signUp_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginHorizontal="40dp"
-        android:fontFamily="@font/font_inter"
-        android:text="가입하기"
+        android:layout_height="45dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/selector_basic_btn"
+        android:fontFamily="@font/font_paragraph_4"
+        android:text="@string/sign_up"
         android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_all_checkBox"/>
-
+        android:enabled="false"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

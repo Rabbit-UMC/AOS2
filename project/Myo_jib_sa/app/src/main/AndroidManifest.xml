@@ -86,26 +86,28 @@
             android:name=".community.missionCert.MissionCertificationWriteActivity"
             android:label="MissionCertificationWriteActivity" />
         <activity
-            android:name=".Login.AddEmailDialogActivity"
+            android:name=".login.AddEmailDialogActivity"
             android:exported="false"
             android:theme="@style/AppTheme.PopupActivity" />
         <activity
             android:name=".mypage.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".Login.MyoSignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Login.KakaoLoginActivity"
-            android:exported="true">
+            android:name=".login.MyoSignUpActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login.KakaoLoginActivity"
+            android:exported="true">
+
         </activity>
     </application>
 
