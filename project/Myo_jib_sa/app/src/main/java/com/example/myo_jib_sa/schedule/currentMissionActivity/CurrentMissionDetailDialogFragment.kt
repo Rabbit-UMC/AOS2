@@ -9,14 +9,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContentProviderCompat
 import androidx.fragment.app.DialogFragment
-import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.databinding.DialogFragmentCurrentMissionDetailBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResponse
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDetail.CurrentMissionDetailResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDetail.CurrentMissionDetailService
 import retrofit2.Call

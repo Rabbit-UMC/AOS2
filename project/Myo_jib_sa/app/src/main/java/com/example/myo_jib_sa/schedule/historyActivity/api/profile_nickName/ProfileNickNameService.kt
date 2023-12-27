@@ -1,6 +1,5 @@
 package com.example.myo_jib_sa.schedule.historyActivity.api.profile_nickName
 
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.HistoryMissionResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.ProfileNickNameResponse
 import retrofit2.Call
 import retrofit2.http.GET

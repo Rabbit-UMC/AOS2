@@ -1,6 +1,5 @@
 package com.example.myo_jib_sa.schedule.api.scheduleOfDay
 
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.http.*
 

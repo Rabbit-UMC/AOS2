@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
 
 

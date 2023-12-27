@@ -34,7 +34,7 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): CalendarAdapter.ViewHolder {
+    ): ViewHolder {
         val binding =
             ItemScheduleCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)

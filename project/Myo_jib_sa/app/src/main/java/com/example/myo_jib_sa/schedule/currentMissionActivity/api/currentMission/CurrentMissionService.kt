@@ -3,7 +3,6 @@ package com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissio
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
-import retrofit2.http.POST
 
 interface CurrentMissionService {
     companion object {

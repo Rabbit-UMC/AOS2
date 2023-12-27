@@ -1,7 +1,6 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity
 
 import android.annotation.SuppressLint
-import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -14,14 +13,12 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.databinding.ActivityDeleteCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResponse
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteService

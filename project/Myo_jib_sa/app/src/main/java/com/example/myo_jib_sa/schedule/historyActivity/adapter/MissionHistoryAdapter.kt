@@ -1,18 +1,10 @@
 package com.example.myo_jib_sa.schedule.historyActivity.adapter
 
-import android.graphics.Rect
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
 import com.example.myo_jib_sa.databinding.ItemMissionHistoryBinding
-import com.example.myo_jib_sa.schedule.adapter.CalendarData
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.HistoryMissionList
 import java.text.DecimalFormat
 
