@@ -1,6 +1,4 @@
-package com.example.myo_jib_sa.community.Retrofit.post
-
-import java.sql.Timestamp
+package com.example.myo_jib_sa.community.retrofit.post
 
 //30번 api (게시물 조회 data class)
 data class PostViewResponse(

@@ -13,8 +13,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.ImgPath
-import com.example.myo_jib_sa.community.Retrofit.imgUploadRetrofitManager
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionCertRetrofitManager
+import com.example.myo_jib_sa.community.retrofit.imgUploadRetrofitManager
+import com.example.myo_jib_sa.community.retrofit.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.databinding.ActivityMissionCertificationWriteBinding
 import java.io.ByteArrayOutputStream
 import java.io.File

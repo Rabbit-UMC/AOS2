@@ -17,10 +17,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.Retrofit.post.ArticleImage
-import com.example.myo_jib_sa.community.Retrofit.post.CommentList
-import com.example.myo_jib_sa.community.Retrofit.post.PostRetrofitManager
-import com.example.myo_jib_sa.community.Retrofit.post.PostViewResponse
+import com.example.myo_jib_sa.community.retrofit.post.ArticleImage
+import com.example.myo_jib_sa.community.retrofit.post.CommentList
+import com.example.myo_jib_sa.community.retrofit.post.PostRetrofitManager
+import com.example.myo_jib_sa.community.retrofit.post.PostViewResponse
 import com.example.myo_jib_sa.community.adapter.PostCommentAdapter
 import com.example.myo_jib_sa.community.adapter.PostImgAdapter
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk

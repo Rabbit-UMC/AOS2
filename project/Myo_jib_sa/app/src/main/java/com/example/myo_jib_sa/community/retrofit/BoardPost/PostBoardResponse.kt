@@ -1,7 +1,4 @@
-package com.example.myo_jib_sa.community.Retrofit.BoardPost
-
-import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
-import java.sql.Timestamp
+package com.example.myo_jib_sa.community.retrofit.BoardPost
 
 data class PostBoardResponse(
     val isSuccess:String,

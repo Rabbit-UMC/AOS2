@@ -1,7 +1,7 @@
-package com.example.myo_jib_sa.community.Retrofit.manager
+package com.example.myo_jib_sa.community.retrofit.manager
 
 import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.Retrofit.post.SimpleResponse
+import com.example.myo_jib_sa.community.retrofit.post.SimpleResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Header

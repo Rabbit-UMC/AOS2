@@ -1,21 +1,15 @@
 package com.example.myo_jib_sa.community.missionCert
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MCrecyclrImg
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionProofImages
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionResponse
-import com.example.myo_jib_sa.community.adapter.HomeMissionAdapter
+import com.example.myo_jib_sa.community.retrofit.missionCert.MCrecyclrImg
+import com.example.myo_jib_sa.community.retrofit.missionCert.MissionProofImages
 import com.example.myo_jib_sa.community.adapter.MissionCertAdapter
-import com.example.myo_jib_sa.databinding.FragmentCommunityBinding
 import com.example.myo_jib_sa.databinding.FragmentMissionCertificationPostBinding
 
 class MissionCertificationPostFragment : Fragment() {

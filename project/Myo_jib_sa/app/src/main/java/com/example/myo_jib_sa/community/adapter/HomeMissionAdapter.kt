@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.community.BoardExerciseActivity
 import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
+import com.example.myo_jib_sa.community.retrofit.communityHome.MainMission
 import com.example.myo_jib_sa.databinding.ItemCommunityMissionBinding
 
 class HomeMissionAdapter(

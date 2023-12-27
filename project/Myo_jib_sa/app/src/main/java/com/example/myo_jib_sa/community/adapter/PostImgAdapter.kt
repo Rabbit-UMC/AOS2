@@ -10,9 +10,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.community.ImageActivity
-import com.example.myo_jib_sa.community.Retrofit.post.ArticleImage
-import com.example.myo_jib_sa.community.Retrofit.post.CommentList
-import com.example.myo_jib_sa.databinding.ItemCommentBinding
+import com.example.myo_jib_sa.community.retrofit.post.ArticleImage
 import com.example.myo_jib_sa.databinding.ItemPostImgBinding
 
 class PostImgAdapter(
