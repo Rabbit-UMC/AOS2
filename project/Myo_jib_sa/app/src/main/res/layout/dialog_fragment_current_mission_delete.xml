@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/schedule_delete_dialog"
+    android:layout_width="320dp"
+    android:layout_height="248dp"
+    android:background="@drawable/view_round_r8_blue"
+    android:backgroundTint="#FFFFFF"
+    android:minWidth="320dp"
+    android:minHeight="248dp"
+    android:orientation="vertical"
+    tools:context=".Schedule.dialog.ScheduleDeleteDialogFragment">
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font_title_3"
+        android:text="선택한 항목을 삭제하시겠어요?"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline1"
+        app:layout_constraintTop_toTopOf="@+id/horizontal_guideline1" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font_caption_text_3"
+        android:text="한번 삭제한 항목은 되돌릴 수 없어요.\n신중히 선택하세요."
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/vertical_guideline1"
+        app:layout_constraintTop_toTopOf="@+id/horizontal_guideline2" />
+
+
+    <TextView
+        android:id="@+id/yes_tv"
+        android:layout_width="0dp"
+        android:layout_height="41dp"
+        android:background="@drawable/view_round_r8_blue"
+        android:fontFamily="@font/font_pretendard_semibold"
+        android:gravity="center"
+        android:padding="10dp"
+        android:layout_marginBottom="5dp"
+        android:text="선택한 항목을 삭제할래요"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/exit_tv"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.86" />
+
+    <TextView
+        android:id="@+id/exit_tv"
+        android:layout_width="0dp"
+        android:layout_height="41dp"
+        android:background="@drawable/view_round_r8_stroke"
+        android:fontFamily="@font/font_pretendard_semibold"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="아니요, 취소할게요"
+        android:textColor="#A5A5A5"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/horizontal_guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.86" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical_guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.08" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal_guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.13" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal_guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.31" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal_guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

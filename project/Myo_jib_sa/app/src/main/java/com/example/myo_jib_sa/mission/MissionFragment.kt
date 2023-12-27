@@ -1,6 +1,5 @@
 package com.example.myo_jib_sa.mission
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +10,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.Login.API.RetrofitInstance
+import com.example.myo_jib_sa.login.api.RetrofitInstance
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.spfManager
 import com.example.myo_jib_sa.databinding.FragmentMissionBinding
 import com.example.myo_jib_sa.mission.api.Mission
@@ -19,8 +18,8 @@ import com.example.myo_jib_sa.mission.api.MissionCategoryListResponse
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResult
 import com.example.myo_jib_sa.mission.api.MissionListResponse
 import com.example.myo_jib_sa.mission.api.MissionAPI
-import com.example.myo_jib_sa.mission.Dialog.MissionDetailDialogFragment
-import com.example.myo_jib_sa.mission.Dialog.MissionReportDialogFragment
+import com.example.myo_jib_sa.mission.dialog.MissionDetailDialogFragment
+import com.example.myo_jib_sa.mission.dialog.MissionReportDialogFragment
 import com.google.android.material.tabs.TabLayout
 import retrofit2.Call
 import retrofit2.Callback

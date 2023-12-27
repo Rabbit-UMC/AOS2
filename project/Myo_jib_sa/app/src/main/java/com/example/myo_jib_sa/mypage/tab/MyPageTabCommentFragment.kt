@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.databinding.FragmentMyPageTabCommentBinding
-import com.example.myo_jib_sa.mypage.api.*
-import com.example.myo_jib_sa.mypage.MyPageCommentRVAdapter
+import com.example.myo_jib_sa.mypage.api.GetMyCommentResponse
+import com.example.myo_jib_sa.mypage.api.GetMyCommentResult
+import com.example.myo_jib_sa.mypage.api.MypageAPI
+import com.example.myo_jib_sa.mypage.adapter.MyPageCommentRVAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +27,7 @@ class MyPageTabCommentFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private var decoration: RecyclerView.ItemDecoration? = null
 
-    val retrofit: UserAPI = MyojibsaApplication.sRetrofit.create(UserAPI::class.java)
+    val retrofit: MypageAPI = MyojibsaApplication.sRetrofit.create(MypageAPI::class.java)
 
 
     override fun onCreateView(
@@ -70,7 +72,7 @@ class MyPageTabCommentFragment : Fragment() {
                     }
                 } else {
                     // API 요청 실패 처리
-                    Toast.makeText(requireContext(), "", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "${response.body()}", Toast.LENGTH_SHORT).show()
                     val placeholderData = listOf(
                         GetMyCommentResult(0L, "Placeholder Title", "2023-08-25 13:30", 2, 3),
                         GetMyCommentResult(1L, "Another Placeholder Title", "2023-08-21 15:11", 4, 0)
