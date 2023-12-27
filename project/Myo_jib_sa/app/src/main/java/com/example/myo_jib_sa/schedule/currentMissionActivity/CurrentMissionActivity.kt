@@ -9,7 +9,6 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
@@ -20,7 +19,6 @@ import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleService
-import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

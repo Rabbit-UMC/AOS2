@@ -2,49 +2,35 @@ package com.example.myo_jib_sa.schedule.createScheduleActivity
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Point
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
-import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.ScheduleFragment
-import com.example.myo_jib_sa.schedule.adapter.CalendarData
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyResponse
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.CreateScheduleCalendarAdapter
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDateData
 import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddRequest
 import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddResponse
 import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddService
 import com.example.myo_jib_sa.schedule.createScheduleActivity.spinner.ScheduleCreateSpinnerDialogFragment
-import com.example.myo_jib_sa.schedule.dialog.ScheduleSpinnerDialogFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.DecimalFormat
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
-import kotlin.math.roundToInt
 
 class CreateScheduleActivity : AppCompatActivity() {
     private lateinit var binding : ActivityCreateScheduleBinding

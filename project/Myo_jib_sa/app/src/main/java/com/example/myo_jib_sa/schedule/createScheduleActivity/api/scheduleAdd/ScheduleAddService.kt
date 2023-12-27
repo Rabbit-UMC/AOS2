@@ -1,11 +1,9 @@
 package com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd
 
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyResponse
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Header
-import retrofit2.http.PATCH
 import retrofit2.http.POST
 
 interface ScheduleAddService {

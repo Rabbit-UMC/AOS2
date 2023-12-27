@@ -8,17 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
-import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.databinding.FragmentSpinnerMissionBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
 import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
 import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

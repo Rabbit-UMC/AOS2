@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivitySuccessMissionBinding
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.HistoryMissionList

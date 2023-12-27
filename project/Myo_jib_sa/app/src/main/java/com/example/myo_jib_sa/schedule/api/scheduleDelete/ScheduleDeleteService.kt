@@ -1,9 +1,5 @@
 package com.example.myo_jib_sa.schedule.api.scheduleDelete
 
-import android.content.Context
-import androidx.core.content.ContentProviderCompat.requireContext
-import com.example.myo_jib_sa.BuildConfig
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
 import retrofit2.Call
 import retrofit2.http.*
 
