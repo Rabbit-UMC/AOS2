@@ -96,10 +96,9 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/home_mission_recyclr"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="112dp"
                         android:layout_marginVertical="15dp"
                         android:layout_marginTop="7dp"
-                        android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/home_missionName_txt" />
@@ -129,64 +128,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/my_template">
 
 
-                        <Button
-                            android:id="@+id/community_board_free"
-                            android:layout_width="100dp"
-                            android:layout_height="50dp"
-                            android:layout_marginStart="13dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/background_board_btn"
-                            android:fontFamily="@font/font_inter"
-                            android:gravity="center"
-                            android:stateListAnimator="@null"
-                            android:text="자유"
-                            android:textColor="@color/black"
-                            android:textSize="12dp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-                        <Button
-                            android:id="@+id/community_board_excs"
-                            android:layout_width="100dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/background_board_btn"
-                            android:fontFamily="@font/font_inter"
-                            android:gravity="center"
-                            android:stateListAnimator="@null"
-                            android:text="운동"
-                            android:textColor="@color/black"
-                            android:textSize="12dp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-                        <Button
-                            android:id="@+id/community_board_art"
-                            android:layout_width="100dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginEnd="13dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/background_board_btn"
-                            android:fontFamily="@font/font_inter"
-                            android:gravity="center"
-                            android:stateListAnimator="@null"
-                            android:text="예술"
-                            android:textColor="@color/black"
-                            android:textSize="12dp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-
                         <TextView
                             android:id="@+id/textView9"
                             android:layout_width="wrap_content"
@@ -212,6 +153,118 @@
                             app:layout_constraintBottom_toBottomOf="@+id/textView9"
                             app:layout_constraintStart_toEndOf="@+id/textView9"
                             app:layout_constraintTop_toTopOf="@+id/textView9" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout9"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_board_btn"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView9">
+
+                            <LinearLayout
+                                android:layout_width="77dp"
+                                android:layout_height="48dp"
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+                                <ImageView
+                                    android:id="@+id/imageView14"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:src="@drawable/ic_community_home_art" />
+                                <TextView
+                                    android:id="@+id/textView36"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/font_caption_text_2"
+                                    android:text="예술"
+                                    android:textColor="@color/black"
+                                    android:textSize="12dp" />
+                            </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout10"
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_marginEnd="13dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_board_btn"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout9"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout9">
+
+                            <LinearLayout
+                                android:layout_width="77dp"
+                                android:layout_height="48dp"
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+                                <ImageView
+                                    android:id="@+id/imageView15"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:src="@drawable/ic_community_home_free" />
+                                <TextView
+                                    android:id="@+id/textView38"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/font_caption_text_2"
+                                    android:text="자유"
+                                    android:textColor="@color/black"
+                                    android:textSize="12dp" />
+                            </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="100dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="13dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_board_btn"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout9"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout9">
+
+                            <LinearLayout
+                                android:layout_width="77dp"
+                                android:layout_height="48dp"
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+                                <ImageView
+                                    android:id="@+id/imageView12"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:src="@drawable/ic_community_home_exercise" />
+                                <TextView
+                                    android:id="@+id/textView34"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/font_caption_text_2"
+                                    android:text="운동"
+                                    android:textColor="@color/black"
+                                    android:textSize="12dp" />
+                            </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!--인기글-->
@@ -235,6 +288,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        tools:listitem="@layout/item_post"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -317,7 +371,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:contentDescription="Add New Post"
+            android:src="@drawable/ic_myo"
             app:borderWidth="0dp"
             app:elevation="0dp"
             app:fabCustomSize="50dp"
