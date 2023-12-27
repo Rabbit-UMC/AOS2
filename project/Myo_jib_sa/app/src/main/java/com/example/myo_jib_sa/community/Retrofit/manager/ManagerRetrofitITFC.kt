@@ -1,7 +1,6 @@
 package com.example.myo_jib_sa.community.Retrofit.manager
 
-import com.bumptech.glide.load.resource.SimpleResource
-import com.example.myo_jib_sa.community.Retrofit.Constance
+import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.Retrofit.post.SimpleResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -36,4 +35,12 @@ data class MissionCreateRequest(
 
 data class PatchCategoryImageReq(
     val filePath: String
+)
+
+data class ManagerMissionJoinRequest(
+    val missionTitle:String,
+    val missionContent:String,
+    val missionStartTime:String,
+    val missionEndTime:String,
+    val missionImg:String
 )

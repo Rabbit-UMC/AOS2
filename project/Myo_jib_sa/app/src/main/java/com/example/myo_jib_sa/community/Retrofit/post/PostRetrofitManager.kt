@@ -2,9 +2,8 @@ package com.example.myo_jib_sa.community.Retrofit.post
 
 import android.content.Context
 import android.util.Log
-import com.example.myo_jib_sa.community.Retrofit.Constance
+import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.Retrofit.RetrofitClient
-import com.example.myo_jib_sa.community.Retrofit.communityHome.HomeResponse
 import retrofit2.Call
 import retrofit2.Response
 
