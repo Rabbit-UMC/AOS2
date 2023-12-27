@@ -1,6 +1,6 @@
 package com.example.myo_jib_sa.community.Retrofit.missionCert
 
-import com.example.myo_jib_sa.community.Retrofit.Constance
+import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.Retrofit.post.SimpleResponse
 import retrofit2.Call
 import retrofit2.http.DELETE
@@ -21,22 +21,22 @@ interface MissionCertRetrofitITFC {
     //미션 인증 사진 좋아요
     @POST("app/main-mission/proof/{mainMissionProofId}/like")
     fun missionLike(@Header(Constance.author)author:String,
-                     @Path("mainMissionProofId") mainMissionId: Long):Call<SimpleResponse>
+                    @Path("mainMissionProofId") mainMissionId: Long):Call<SimpleResponse>
 
     //미션 인증 사진 좋아요 취소
     @DELETE("app/main-mission/proof/{mainMissionProofId}/unlike")
     fun missionUnlike(@Header(Constance.author)author:String,
-                    @Path("mainMissionProofId") mainMissionId: Long):Call<SimpleResponse>
+                      @Path("mainMissionProofId") mainMissionId: Long):Call<SimpleResponse>
 
     //미션 인증 사진 신고
     @POST("app/main-mission/proof/{mainMissionProofId}/report")
     fun missionReport(@Header(Constance.author)author:String,
-                    @Path("mainMissionProofId") mainMissionId: Long):Call<SimpleResponse>
+                      @Path("mainMissionProofId") mainMissionId: Long):Call<SimpleResponse>
 
     //미션 인증 사진 올리기
     @POST("app/main-mission/upload/{categoryId}")
     fun postImg(@Header(Constance.author)author:String,
-                    @Path("categoryId") categoryId:Long,
-                    @Query("filePath") filePath:String):Call<SimpleResponse>
+                @Path("categoryId") categoryId:Long,
+                @Query("filePath") filePath:String):Call<SimpleResponse>
 
 }

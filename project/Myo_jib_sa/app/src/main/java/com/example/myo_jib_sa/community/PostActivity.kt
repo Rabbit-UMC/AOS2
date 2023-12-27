@@ -17,7 +17,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.post.ArticleImage
 import com.example.myo_jib_sa.community.Retrofit.post.CommentList
 import com.example.myo_jib_sa.community.Retrofit.post.PostRetrofitManager
@@ -283,7 +282,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
 
         //댓글 리사이클러뷰
-        val isWriter:Boolean=(contents.result.authorId==Constance.USER_ID)
+        val isWriter:Boolean=(contents.result.authorId== Constance.USER_ID)
         linkCommentRecyclr(contents.result.commentList,isWriter, contents.result.articleId)
 
         //게시판 이름

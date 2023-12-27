@@ -1,8 +1,5 @@
 package com.example.myo_jib_sa.community
 
-import android.app.Activity
-import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -13,11 +10,7 @@ import android.util.Base64
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.Retrofit.Constance
-import com.example.myo_jib_sa.community.Retrofit.ImgPath
 import com.example.myo_jib_sa.community.Retrofit.imgUploadRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.post.ImageList
 import com.example.myo_jib_sa.community.Retrofit.post.PostCreateRequest

@@ -3,14 +3,9 @@ package com.example.myo_jib_sa.community.Retrofit.missionCert
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.myo_jib_sa.community.Retrofit.Constance
+import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.Retrofit.RetrofitClient
-import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
-import com.example.myo_jib_sa.community.Retrofit.manager.ManagerRetrofitITFC
-import com.example.myo_jib_sa.community.Retrofit.manager.ManagerRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.post.SimpleResponse
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
 
