@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community.Retrofit
+package com.example.myo_jib_sa.community.retrofit
 
 import android.util.Log
 import retrofit2.Retrofit

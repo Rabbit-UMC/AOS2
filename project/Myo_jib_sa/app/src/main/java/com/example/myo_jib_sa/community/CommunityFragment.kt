@@ -10,9 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myo_jib_sa.community.Retrofit.communityHome.CommunityHomeManager
-import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
-import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularArticle
+import com.example.myo_jib_sa.community.retrofit.communityHome.CommunityHomeManager
+import com.example.myo_jib_sa.community.retrofit.communityHome.MainMission
+import com.example.myo_jib_sa.community.retrofit.communityHome.PopularArticle
 import com.example.myo_jib_sa.community.adapter.HomeMissionAdapter
 import com.example.myo_jib_sa.community.adapter.HomePostAdapter
 import com.example.myo_jib_sa.databinding.FragmentCommunityBinding

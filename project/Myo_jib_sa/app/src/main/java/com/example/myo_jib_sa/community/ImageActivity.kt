@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionCertRetrofitManager
+import com.example.myo_jib_sa.community.retrofit.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.databinding.ActivityImageBinding
 import okhttp3.Call

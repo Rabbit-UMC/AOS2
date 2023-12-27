@@ -7,8 +7,8 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.community.Retrofit.BoardPost.Articles
-import com.example.myo_jib_sa.community.Retrofit.BoardPost.PostBoardRetrofitManager
+import com.example.myo_jib_sa.community.retrofit.BoardPost.Articles
+import com.example.myo_jib_sa.community.retrofit.BoardPost.PostBoardRetrofitManager
 import com.example.myo_jib_sa.community.adapter.BoardAdapter
 import com.example.myo_jib_sa.databinding.ActivityBoardExerciseBinding
 

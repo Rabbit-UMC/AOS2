@@ -1,9 +1,9 @@
-package com.example.myo_jib_sa.community.Retrofit
+package com.example.myo_jib_sa.community.retrofit
 
 import android.content.Context
 import android.util.Log
 import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionCertRetrofitManager
+import com.example.myo_jib_sa.community.retrofit.missionCert.MissionCertRetrofitManager
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

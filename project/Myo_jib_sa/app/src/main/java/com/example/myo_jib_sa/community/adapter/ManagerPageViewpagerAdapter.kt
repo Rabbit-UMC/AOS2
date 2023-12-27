@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.myo_jib_sa.community.ManagerMissionFragment
-import com.example.myo_jib_sa.community.Retrofit.manager.ManagerMissionJoinRequest
+import com.example.myo_jib_sa.community.retrofit.manager.ManagerMissionJoinRequest
 
 class ManagerPageViewpagerAdapter (fragmentActivity: FragmentActivity, val dataList:List<ManagerMissionJoinRequest>) : FragmentStateAdapter(fragmentActivity) {
 

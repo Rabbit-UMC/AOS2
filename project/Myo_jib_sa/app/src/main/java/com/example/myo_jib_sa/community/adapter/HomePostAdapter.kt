@@ -7,11 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.community.PostActivity
-import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
-import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularArticle
-import com.example.myo_jib_sa.databinding.ItemCommunityMissionBinding
+import com.example.myo_jib_sa.community.retrofit.communityHome.PopularArticle
 import com.example.myo_jib_sa.databinding.ItemPostBinding
 
 class HomePostAdapter (

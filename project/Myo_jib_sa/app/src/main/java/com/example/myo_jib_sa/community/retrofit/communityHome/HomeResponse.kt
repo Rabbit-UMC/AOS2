@@ -1,6 +1,4 @@
-package com.example.myo_jib_sa.community.Retrofit.communityHome
-
-import java.sql.Timestamp
+package com.example.myo_jib_sa.community.retrofit.communityHome
 
 data class HomeResponse(
     val isSuccess:String,

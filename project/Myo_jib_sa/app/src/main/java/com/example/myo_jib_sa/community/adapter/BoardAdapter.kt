@@ -8,8 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.community.PostActivity
-import com.example.myo_jib_sa.community.Retrofit.BoardPost.Articles
-import com.example.myo_jib_sa.databinding.ActivityPostBinding
+import com.example.myo_jib_sa.community.retrofit.BoardPost.Articles
 import com.example.myo_jib_sa.databinding.ItemPostBinding
 
 class BoardAdapter(

@@ -11,11 +11,11 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.community.Retrofit.imgUploadRetrofitManager
-import com.example.myo_jib_sa.community.Retrofit.post.ImageList
-import com.example.myo_jib_sa.community.Retrofit.post.PostCreateRequest
-import com.example.myo_jib_sa.community.Retrofit.post.PostEditRequest
-import com.example.myo_jib_sa.community.Retrofit.post.PostRetrofitManager
+import com.example.myo_jib_sa.community.retrofit.imgUploadRetrofitManager
+import com.example.myo_jib_sa.community.retrofit.post.ImageList
+import com.example.myo_jib_sa.community.retrofit.post.PostCreateRequest
+import com.example.myo_jib_sa.community.retrofit.post.PostEditRequest
+import com.example.myo_jib_sa.community.retrofit.post.PostRetrofitManager
 import com.example.myo_jib_sa.databinding.ActivityWritePostingBinding
 import java.io.ByteArrayOutputStream
 import java.io.File

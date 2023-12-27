@@ -17,9 +17,9 @@ import android.util.Log
 import android.widget.Toast
 import com.example.myo_jib_sa.community.ImageActivity
 import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MCrecyclrImg
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionCertRetrofitManager
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionProofImages
+import com.example.myo_jib_sa.community.retrofit.missionCert.MCrecyclrImg
+import com.example.myo_jib_sa.community.retrofit.missionCert.MissionCertRetrofitManager
+import com.example.myo_jib_sa.community.retrofit.missionCert.MissionProofImages
 import com.example.myo_jib_sa.databinding.ItemMissionCertificationImgBinding
 
 class MissionCertAdapter(

@@ -2,17 +2,11 @@ package com.example.myo_jib_sa.community.adapter
 
 import android.content.Context
 import android.util.Log
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionCertRetrofitManager
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionResponse
-import com.example.myo_jib_sa.community.missionCert.MissionCertViewModel
+import com.example.myo_jib_sa.community.retrofit.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.community.missionCert.MissionCertificationPostFragment
-import com.example.myo_jib_sa.databinding.ActivityMissionCertificationBinding
-import kotlin.math.log
 
 class MissionCertViewpagerAdapter (fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
 
