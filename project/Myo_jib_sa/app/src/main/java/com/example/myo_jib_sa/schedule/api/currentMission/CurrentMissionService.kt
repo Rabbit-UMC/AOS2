@@ -1,5 +1,6 @@
-package com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission
+package com.example.myo_jib_sa.schedule.api.currentMission
 
+import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -9,7 +10,7 @@ interface CurrentMissionService {
         private const val authKey = "" //Authorization쓰기!!
     }
 
-    @GET("app/mission/my-missions")//?Authorization=$authKey
+    @GET("app/mission/my-missions")
     fun currentMission(
         @Header("X-ACCESS-TOKEN")
         accessToken: String?
