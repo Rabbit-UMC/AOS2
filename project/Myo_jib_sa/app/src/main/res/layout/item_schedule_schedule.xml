@@ -6,83 +6,114 @@
     android:layout_width="match_parent"
     android:layout_height="70dp">
 
-
-    <TextView
-        android:id="@+id/schedule_title_tv"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/font_pretendard_semibold"
-        android:text="일정 이름"
-        android:textColor="#000000"
-        android:textSize="14sp"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textview8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:fontFamily="@font/font_pretendard_semibold"
-        android:text="시작시간"
-        android:textColor="#A5A5A5"
-        android:textSize="10sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/schedule_start_time_tv"
-        app:layout_constraintEnd_toStartOf="@+id/barrier2" />
-
-    <TextView
-        android:id="@+id/schedule_start_time_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/font_pretendard_regular"
-        android:text="오전 7시 00분"
-        android:textColor="#333333"
-        android:textSize="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/schedule_end_time_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <View
+            android:layout_width="20dp"
+            android:layout_height="50dp"
+            android:background="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/delete_tv"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:fontFamily="@font/font_pretendard_semibold"
-        android:text="종료시간"
-        android:textColor="#A5A5A5"
-        android:textSize="10sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/schedule_end_time_tv"
-        app:layout_constraintEnd_toStartOf="@+id/barrier2" />
+        <TextView
+            android:id="@+id/delete_tv"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="@drawable/view_round_r4_right_red"
+            android:fontFamily="@font/font_caption_text_1"
+            android:gravity="center"
+            android:text="삭제"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/schedule_end_time_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/font_pretendard_regular"
-        android:text="오후 10시 00분"
-        android:textColor="#333333"
-        android:textSize="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/schedule_start_time_tv"
-        app:layout_constraintTop_toBottomOf="@+id/schedule_start_time_tv" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="left"
-        app:constraint_referenced_ids="schedule_end_time_tv,schedule_start_time_tv " />
-
-    <View
-        android:id="@+id/view5"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/schedule_layout"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#C1C1C1"
+        android:layout_height="70dp"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/schedule_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_pretendard_semibold"
+            android:text="일정 이름"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textview8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:fontFamily="@font/font_pretendard_semibold"
+            android:text="시작시간"
+            android:textColor="#A5A5A5"
+            android:textSize="10sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/schedule_start_time_tv"
+            app:layout_constraintEnd_toStartOf="@+id/barrier2" />
+
+        <TextView
+            android:id="@+id/schedule_start_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_pretendard_regular"
+            android:text="오전 7시 00분"
+            android:textColor="#333333"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/schedule_end_time_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:fontFamily="@font/font_pretendard_semibold"
+            android:text="종료시간"
+            android:textColor="#A5A5A5"
+            android:textSize="10sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/schedule_end_time_tv"
+            app:layout_constraintEnd_toStartOf="@+id/barrier2" />
+
+        <TextView
+            android:id="@+id/schedule_end_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_pretendard_regular"
+            android:text="오후 10시 00분"
+            android:textColor="#333333"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/schedule_start_time_tv"
+            app:layout_constraintTop_toBottomOf="@+id/schedule_start_time_tv" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="left"
+            app:constraint_referenced_ids="schedule_end_time_tv,schedule_start_time_tv " />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.Schedule.api.scheduleMonth
+package com.example.myo_jib_sa.Schedule.API.scheduleMonth
 
 import com.example.myo_jib_sa.base.BaseResponse
 

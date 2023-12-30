@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
 import com.example.myo_jib_sa.Schedule.ScheduleFragment
-import com.example.myo_jib_sa.Schedule.api.RetrofitClient
-import com.example.myo_jib_sa.Schedule.api.scheduleDetail.ScheduleDetailResult
+import com.example.myo_jib_sa.Schedule.API.RetrofitClient
+import com.example.myo_jib_sa.Schedule.API.scheduleDetail.ScheduleDetailResult
 import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.adapter.CreateScheduleCalendarAdapter
 import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.adapter.MyMissionAdapter
 import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.adapter.SelectDateData
