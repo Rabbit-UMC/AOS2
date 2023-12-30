@@ -1,9 +1,11 @@
 package com.example.myo_jib_sa.Schedule
 
 
+import SwipeHelperCallback
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
@@ -16,24 +18,21 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.BuildConfig
-import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
+import com.example.myo_jib_sa.Schedule.API.RetrofitClient
+import com.example.myo_jib_sa.Schedule.API.currentMission.CurrentMissionResponse
+import com.example.myo_jib_sa.Schedule.API.currentMission.CurrentMissionService
+import com.example.myo_jib_sa.Schedule.API.scheduleDelete.ScheduleMonthService
+import com.example.myo_jib_sa.Schedule.API.scheduleHome.Mission
+import com.example.myo_jib_sa.Schedule.API.scheduleMonth.ScheduleMonthResponse
+import com.example.myo_jib_sa.Schedule.API.scheduleOfDay.ScheduleOfDayResponse
+import com.example.myo_jib_sa.Schedule.API.scheduleOfDay.ScheduleOfDayResult
+import com.example.myo_jib_sa.Schedule.API.scheduleOfDay.ScheduleOfDayService
 import com.example.myo_jib_sa.Schedule.Adapter.*
-import com.example.myo_jib_sa.Schedule.api.RetrofitClient
-import com.example.myo_jib_sa.Schedule.api.scheduleDelete.ScheduleMonthService
-import com.example.myo_jib_sa.Schedule.api.scheduleHome.Mission
-import com.example.myo_jib_sa.Schedule.api.scheduleOfDay.ScheduleOfDayResponse
-import com.example.myo_jib_sa.Schedule.api.scheduleOfDay.ScheduleOfDayResult
-import com.example.myo_jib_sa.Schedule.api.scheduleOfDay.ScheduleOfDayService
 import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.CreateScheduleActivity
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.CurrentMissionActivity
 import com.example.myo_jib_sa.Schedule.dialog.ScheduleDeleteDialogFragment
 import com.example.myo_jib_sa.Schedule.dialog.ScheduleDetailDialogFragment
-import com.example.myo_jib_sa.Schedule.Adapter.CurrentMissionAdapter
-import com.example.myo_jib_sa.Schedule.adapter.CalendarAdapter
-import com.example.myo_jib_sa.Schedule.adapter.CalendarData
-import com.example.myo_jib_sa.Schedule.api.currentMission.CurrentMissionResponse
-import com.example.myo_jib_sa.Schedule.api.currentMission.CurrentMissionService
-import com.example.myo_jib_sa.Schedule.api.scheduleMonth.ScheduleMonthResponse
+import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
@@ -290,13 +289,32 @@ class ScheduleFragment() : Fragment() {
 
 
     //setScheduleAdapterAdapter 리사이클러뷰 연결
+    @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setScheduleAdapter(date: LocalDate?){
 
         Log.d("retrofit", "$date : $sDataList")
         scheduleAdaptar = ScheduleAdaptar(sDataList)
-        binding.scheduleRv.layoutManager = LinearLayoutManager(getActivity())
-        binding.scheduleRv.adapter = scheduleAdaptar
+        val itemDecoration = CustomItemDecoration(requireContext())
+
+        // 리사이클러뷰에 스와이프, 드래그 기능 달기
+        val swipeHelperCallback = SwipeHelperCallback().apply {
+            // 스와이프한 뒤 고정시킬 위치 지정
+            setClamp(requireContext(),100f)//100dp만큼 이동
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
+        itemTouchHelper.attachToRecyclerView(binding.scheduleRv)
+
+        binding.scheduleRv.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = scheduleAdaptar
+            addItemDecoration(itemDecoration)
+
+            setOnTouchListener { _, _ ->
+                swipeHelperCallback.removePreviousClamp(this)
+                false
+            }
+        }
 
         //noScheduleIv의 visibility설정
         if(sDataList.size == 0)
@@ -304,55 +322,58 @@ class ScheduleFragment() : Fragment() {
         else
             binding.noSchedule.visibility = View.GONE
 
-        //swipe시 삭제 이벤트
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                return true
-            }
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//        //swipe시 삭제 이벤트
+//        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+//            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+//                return true
+//            }
+//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//
+//                val position = viewHolder.adapterPosition
+//
+//                var bundle = Bundle()
+//                //bundle.putLong("scheduleId", scheduleData.scheduleId)
+//
+//                //dialog연결 2안
+//                var scheduleDeleteDialog = ScheduleDeleteDialogFragment(binding.scheduleRv.adapter as ScheduleAdaptar, position)
+//                scheduleDeleteDialog.setButtonClickListener(object: ScheduleDeleteDialogFragment.OnButtonClickListener{
+//                    override fun onClickExitBtn() {
+//                        //scheduleAdaptar.notifyItemChanged(viewHolder.adapterPosition);
+//                        //CoroutineScope(Dispatchers.Main).launch{
+//                            //delay(50)
+//                            setCalendarAdapter()//화면 초기화
+//                            scheduleOfDayApi(YYYYMMDDFromDate(selectedDate))//scheduleOfDay api연결
+//                        //}
+//                    }
+//                })
+//                scheduleDeleteDialog.arguments = bundle
+//                scheduleDeleteDialog.show(requireActivity().supportFragmentManager, "scheduleDeleteDialog")
+//
+//              }}
+//
+//
+//            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+//                super.clearView(recyclerView, viewHolder)
+//                //todo
+//                //val sItemRectangleImg: ImageView = viewHolder.itemView.findViewById(R.id.sechedule_rectangle_img)
+//                //sItemRectangleImg.setImageResource(R.drawable.ic_schedule_rectangle)
+//            }
+//
+//            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+//                super.onSelectedChanged(viewHolder, actionState)
+//                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+//                    //todo
+//                   // val sItemRectangleImg: ImageView? = viewHolder?.itemView?.findViewById(R.id.sechedule_rectangle_img)
+//                   // sItemRectangleImg?.setImageResource(R.drawable.ic_schedule_delete_rectangle)
+//                }
+//            }
+//        }).apply {
+//            // ItemTouchHelper에 RecyclerView 설정
+//            attachToRecyclerView(binding.scheduleRv)
+//        }
 
-                val position = viewHolder.adapterPosition
-
-                var bundle = Bundle()
-                //bundle.putLong("scheduleId", scheduleData.scheduleId)
-
-                //dialog연결 2안
-                var scheduleDeleteDialog = ScheduleDeleteDialogFragment(binding.scheduleRv.adapter as ScheduleAdaptar, position)
-                scheduleDeleteDialog.setButtonClickListener(object: ScheduleDeleteDialogFragment.OnButtonClickListener{
-                    override fun onClickExitBtn() {
-                        //scheduleAdaptar.notifyItemChanged(viewHolder.adapterPosition);
-                        //CoroutineScope(Dispatchers.Main).launch{
-                            //delay(50)
-                            setCalendarAdapter()//화면 초기화
-                            scheduleOfDayApi(YYYYMMDDFromDate(selectedDate))//scheduleOfDay api연결
-                        //}
-                    }
-                })
-                scheduleDeleteDialog.arguments = bundle
-                scheduleDeleteDialog.show(requireActivity().supportFragmentManager, "scheduleDeleteDialog")
-
-              }
 
 
-            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
-                super.clearView(recyclerView, viewHolder)
-                //todo
-                //val sItemRectangleImg: ImageView = viewHolder.itemView.findViewById(R.id.sechedule_rectangle_img)
-                //sItemRectangleImg.setImageResource(R.drawable.ic_schedule_rectangle)
-            }
-
-            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-                super.onSelectedChanged(viewHolder, actionState)
-                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                    //todo
-                   // val sItemRectangleImg: ImageView? = viewHolder?.itemView?.findViewById(R.id.sechedule_rectangle_img)
-                   // sItemRectangleImg?.setImageResource(R.drawable.ic_schedule_delete_rectangle)
-                }
-            }
-        }).apply {
-            // ItemTouchHelper에 RecyclerView 설정
-            attachToRecyclerView(binding.scheduleRv)
-        }
 
         //캘린더 클릭할 때 마다 일정리스트가 다시 set되고, 따라서 item클릭 이벤트도 다시 연결해 주어야 함함
        scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
@@ -403,6 +424,25 @@ class ScheduleFragment() : Fragment() {
 
                 scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
                 scheduleDetailDialog.show(requireActivity().supportFragmentManager, "ScheduleDetailDialog")
+            }
+
+            override fun onDeleteClick(scheduleId: Long) {
+                var bundle = Bundle()
+                var scheduleDeleteDialog = ScheduleDeleteDialogFragment(binding.scheduleRv.adapter as ScheduleAdaptar, scheduleId)
+                scheduleDeleteDialog.setButtonClickListener(object: ScheduleDeleteDialogFragment.OnButtonClickListener{
+                    @RequiresApi(Build.VERSION_CODES.O)
+                    override fun onClickExitBtn() {
+                        //scheduleAdaptar.notifyItemChanged(viewHolder.adapterPosition);
+                        //CoroutineScope(Dispatchers.Main).launch{
+                        //delay(50)
+                        setCalendarAdapter()//화면 초기화
+                        scheduleOfDayApi(YYYYMMDDFromDate(selectedDate))//scheduleOfDay api연결
+                        //}
+                    }
+                })
+                scheduleDeleteDialog.arguments = bundle
+                scheduleDeleteDialog.show(requireActivity().supportFragmentManager, "scheduleDeleteDialog")
+
             }
         })
     }

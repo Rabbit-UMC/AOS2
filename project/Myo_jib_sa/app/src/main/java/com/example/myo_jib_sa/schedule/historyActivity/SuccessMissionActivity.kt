@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myo_jib_sa.databinding.ActivitySuccessMissionBinding
-import com.example.myo_jib_sa.Schedule.api.RetrofitClient
+import com.example.myo_jib_sa.Schedule.API.RetrofitClient
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMission.HistoryMissionList
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMission.HistoryMissionResponse
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMission.ProfileNickNameResponse

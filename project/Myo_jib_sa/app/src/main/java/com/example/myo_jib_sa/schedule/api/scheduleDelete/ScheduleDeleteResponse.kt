@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.Schedule.api.scheduleDelete
+package com.example.myo_jib_sa.Schedule.API.scheduleDelete
 
 data class ScheduleDeleteResponse(
     val isSuccess: Boolean,

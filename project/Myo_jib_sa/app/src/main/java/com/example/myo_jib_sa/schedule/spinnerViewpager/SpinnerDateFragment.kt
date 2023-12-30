@@ -12,7 +12,7 @@ import android.widget.DatePicker
 import android.widget.NumberPicker
 import androidx.annotation.RequiresApi
 import com.example.myo_jib_sa.databinding.FragmentSpinnerDateBinding
-import com.example.myo_jib_sa.Schedule.api.scheduleDetail.ScheduleDetailResult
+import com.example.myo_jib_sa.Schedule.API.scheduleDetail.ScheduleDetailResult
 import java.text.DecimalFormat
 import java.util.*
 

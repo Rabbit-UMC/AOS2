@@ -11,7 +11,7 @@ import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.databinding.DialogFragmentCurrentMissionDetailBinding
-import com.example.myo_jib_sa.Schedule.api.RetrofitClient
+import com.example.myo_jib_sa.Schedule.API.RetrofitClient
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionDetail.CurrentMissionDetailResponse
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionDetail.CurrentMissionDetailService
 import retrofit2.Call

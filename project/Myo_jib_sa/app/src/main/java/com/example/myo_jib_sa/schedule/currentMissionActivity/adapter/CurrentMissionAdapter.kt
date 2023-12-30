@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
-import com.example.myo_jib_sa.Schedule.api.currentMission.CurrentMissionResult
+import com.example.myo_jib_sa.Schedule.API.currentMission.CurrentMissionResult
 
 
 
