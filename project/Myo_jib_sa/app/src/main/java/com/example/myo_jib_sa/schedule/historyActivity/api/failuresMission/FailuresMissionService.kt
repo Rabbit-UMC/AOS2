@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission
+package com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMission
 
 import retrofit2.Call
 import retrofit2.http.GET

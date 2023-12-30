@@ -1,46 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="411dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#0F1C4D">
+    android:background="@color/white">
     <TextView
-        android:id="@+id/txt_signUp_complete"
+        android:id="@+id/sign_up_complete_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="회원가입을 축하합니다!\n다양한 미션에 참여해 보세요!"
-        android:fontFamily="@font/font_inter"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:gravity="center"
+        android:text="닉네임"
+        android:fontFamily="@font/font_title_5"
+        android:textColor="@color/main1"
+        android:textSize="18sp"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/sign_up_complete_title"
         app:layout_constraintTop_toTopOf="parent"/>
-    <ImageView
-        android:id="@+id/img_signUp_happyrabbit"
+    <TextView
+        android:id="@+id/sign_up_complete_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/ic_signup_happyrabbit"
-        android:background="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="40dp"
+        android:text="@string/sign_up_complete_jibsa"
+        android:fontFamily="@font/font_title_5"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/sign_up_complete_nickname"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_signUp_complete"/>
-    <androidx.appcompat.widget.AppCompatButton
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/sign_up_complete_welcome_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/font_title_5"
+        android:gravity="center"
+        android:text="@string/sign_up_complete_welcome_title"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sign_up_complete_nickname" />
+
+    <TextView
+        android:id="@+id/sign_up_complete_welcome_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font_caption_text_4"
+        android:gravity="center"
+        android:text="@string/sign_up_complete_welcome_desc"
+        android:textColor="@color/gray7"
+        android:textSize="10sp"
+        android:layout_marginTop="7dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_complete_welcome_title" />
+
+    <ImageView
+        android:id="@+id/sign_up_rabbit_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_sign_up_rabbit"
+        app:layout_constraintBottom_toTopOf="@+id/signUp_complete_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_complete_welcome_desc" />
+
+    <Button
         android:id="@+id/signUp_complete_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:paddingVertical="20dp"
-        android:text="확인"
-        android:fontFamily="@font/font_inter"
-        android:textSize="25sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:background="#F9E54D"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="37.5dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/selector_basic_btn"
+        android:fontFamily="@font/font_caption_text_1"
+        android:text="@string/sign_up_complete_to_main"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_signUp_happyrabbit"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

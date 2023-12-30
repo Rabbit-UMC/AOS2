@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.historyActivity
+package com.example.myo_jib_sa.Schedule.historyActivity
 
 import android.content.Context
 import android.content.Intent
@@ -7,11 +7,11 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myo_jib_sa.databinding.ActivityFailedMissionBinding
-import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.*
-import com.example.myo_jib_sa.schedule.historyActivity.adapter.MissionHistoryAdapter
-import com.example.myo_jib_sa.schedule.historyActivity.adapter.MissionHistoryRVDecoration
-import com.example.myo_jib_sa.schedule.historyActivity.api.profile_nickName.ProfileNickNameService
+import com.example.myo_jib_sa.Schedule.api.RetrofitClient
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMission.*
+import com.example.myo_jib_sa.Schedule.historyActivity.adapter.MissionHistoryAdapter
+import com.example.myo_jib_sa.Schedule.historyActivity.adapter.MissionHistoryRVDecoration
+import com.example.myo_jib_sa.Schedule.historyActivity.api.profile_nickName.ProfileNickNameService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

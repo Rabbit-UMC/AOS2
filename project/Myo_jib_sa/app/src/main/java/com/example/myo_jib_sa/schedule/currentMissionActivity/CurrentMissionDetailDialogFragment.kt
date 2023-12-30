@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.currentMissionActivity
+package com.example.myo_jib_sa.Schedule.currentMissionActivity
 
 import android.content.Context
 import android.graphics.Color
@@ -11,9 +11,9 @@ import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.databinding.DialogFragmentCurrentMissionDetailBinding
-import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDetail.CurrentMissionDetailResponse
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDetail.CurrentMissionDetailService
+import com.example.myo_jib_sa.Schedule.api.RetrofitClient
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionDetail.CurrentMissionDetailResponse
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionDetail.CurrentMissionDetailService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.historyActivity.adapter
+package com.example.myo_jib_sa.Schedule.historyActivity.adapter
 
 import android.graphics.Rect
 import android.view.View

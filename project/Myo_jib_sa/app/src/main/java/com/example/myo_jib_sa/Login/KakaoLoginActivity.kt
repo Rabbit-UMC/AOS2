@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.Login
+package com.example.myo_jib_sa.login
 
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -8,11 +8,11 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.myo_jib_sa.BuildConfig
-import com.example.myo_jib_sa.Login.API.LoginITFC
-import com.example.myo_jib_sa.Login.API.LoginResponse
-import com.example.myo_jib_sa.Login.API.RetrofitInstance
+import com.example.myo_jib_sa.login.api.LoginResponse
 import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.databinding.ActivityKakaoLoginBinding
+import com.example.myo_jib_sa.login.api.LoginITFC
+import com.example.myo_jib_sa.login.api.RetrofitInstance
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import retrofit2.Call
@@ -106,17 +106,14 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
     }
 
     private fun LoginApi(accessToken: String) {
-        val clientId = BuildConfig.KAKAO_API_KEY
-        val redirectUri = BuildConfig.Redirect_URI
-        val responseType = "code"
 
-        retrofit.Login(accessToken, clientId, redirectUri, responseType).enqueue(object : Callback<LoginResponse> {
+        retrofit.getLogin(accessToken).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
                     loginResponse?.let {
-                        Log.d("LoginResponse", "code: ${it.code}")
-                        Log.d("LoginResponse", "message: ${it.message}")
+                        Log.d("LoginResponse", "code: ${it.errorCode}")
+                        Log.d("LoginResponse", "message: ${it.errorMessage}")
                         it.result?.let { loginResult ->
                             val jwtToken = loginResult.jwtAccessToken
                             Log.d("LoginResponse", "id: ${loginResult.id}")

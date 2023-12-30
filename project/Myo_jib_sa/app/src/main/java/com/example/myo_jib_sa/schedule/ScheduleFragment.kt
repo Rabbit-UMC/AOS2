@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule
+package com.example.myo_jib_sa.Schedule
 
 
 import android.annotation.SuppressLint
@@ -16,25 +16,24 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.BuildConfig
-import com.example.myo_jib_sa.schedule.adapter.CalendarAdapter
-import com.example.myo_jib_sa.schedule.adapter.CalendarData
-import com.example.myo_jib_sa.schedule.adapter.ScheduleAdaptar
-import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleMonthResponse
-import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleMonthService
-import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
-import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResponse
-import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
-import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayService
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
-import com.example.myo_jib_sa.schedule.adapter.CurrentMissionAdapter
-
-import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActivity
-import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActivity
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResponse
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionService
-import com.example.myo_jib_sa.schedule.dialog.ScheduleDeleteDialogFragment
-import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
+import com.example.myo_jib_sa.Schedule.Adapter.*
+import com.example.myo_jib_sa.Schedule.api.RetrofitClient
+import com.example.myo_jib_sa.Schedule.api.scheduleDelete.ScheduleMonthService
+import com.example.myo_jib_sa.Schedule.api.scheduleHome.Mission
+import com.example.myo_jib_sa.Schedule.api.scheduleOfDay.ScheduleOfDayResponse
+import com.example.myo_jib_sa.Schedule.api.scheduleOfDay.ScheduleOfDayResult
+import com.example.myo_jib_sa.Schedule.api.scheduleOfDay.ScheduleOfDayService
+import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.CreateScheduleActivity
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.CurrentMissionActivity
+import com.example.myo_jib_sa.Schedule.dialog.ScheduleDeleteDialogFragment
+import com.example.myo_jib_sa.Schedule.dialog.ScheduleDetailDialogFragment
+import com.example.myo_jib_sa.Schedule.Adapter.CurrentMissionAdapter
+import com.example.myo_jib_sa.Schedule.adapter.CalendarAdapter
+import com.example.myo_jib_sa.Schedule.adapter.CalendarData
+import com.example.myo_jib_sa.Schedule.api.currentMission.CurrentMissionResponse
+import com.example.myo_jib_sa.Schedule.api.currentMission.CurrentMissionService
+import com.example.myo_jib_sa.Schedule.api.scheduleMonth.ScheduleMonthResponse
 import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd

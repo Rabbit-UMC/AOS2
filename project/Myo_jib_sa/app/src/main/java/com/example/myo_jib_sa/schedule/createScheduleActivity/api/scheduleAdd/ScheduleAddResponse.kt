@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd
+package com.example.myo_jib_sa.Schedule.CreateScheduleActivity.api.scheduleAdd
 
 data class ScheduleAddResponse (
     val result: String,

@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.createScheduleActivity
+package com.example.myo_jib_sa.Schedule.CreateScheduleActivity
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable

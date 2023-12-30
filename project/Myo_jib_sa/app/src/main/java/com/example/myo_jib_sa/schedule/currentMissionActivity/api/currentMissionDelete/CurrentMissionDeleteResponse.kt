@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete
+package com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionDelete
 
 
 data class CurrentMissionDeleteResponse(

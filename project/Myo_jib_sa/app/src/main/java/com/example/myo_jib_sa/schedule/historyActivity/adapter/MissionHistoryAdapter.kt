@@ -1,11 +1,11 @@
-package com.example.myo_jib_sa.schedule.historyActivity.adapter
+package com.example.myo_jib_sa.Schedule.historyActivity.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemMissionHistoryBinding
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.HistoryMissionList
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMission.HistoryMissionList
 import java.text.DecimalFormat
 
 data class MissionData(

@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa.community
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myo_jib_sa.community.Retrofit.Constance
 import com.example.myo_jib_sa.community.Retrofit.communityHome.CommunityHomeManager
 import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
 import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularArticle
@@ -21,6 +21,7 @@ class CommunityFragment : Fragment() {
 
     private lateinit var binding: FragmentCommunityBinding
     private lateinit var retrofitManager: CommunityHomeManager
+    private var isFabOpen = false
 
 
     override fun onCreateView(
@@ -46,7 +47,29 @@ class CommunityFragment : Fragment() {
         //api 연결, 뷰 띄우기
         Constance.jwt?.let { getMissionData(it, requireContext()) }
 
+        //setFABClickEvent()
+        binding.myoZip3Btn.setOnClickListener {
+            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
+            startActivity(intent)
+        }
+        binding.myoZip2Btn.setOnClickListener {
+            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
+            startActivity(intent)
+        }
+        binding.myoZip1Btn.setOnClickListener {
+            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
+            startActivity(intent)
+        }
+        binding.myoZipMainBtn.setOnClickListener {
+            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
+            startActivity(intent)
+        }
+
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        //setFABClickEvent() //플로팅 버튼 동작 이벤트
     }
 
     //다시 돌아올 때 뷰 업데이트
@@ -54,6 +77,51 @@ class CommunityFragment : Fragment() {
         super.onResume()
         retrofitManager = CommunityHomeManager.getInstance(requireContext())
         Constance.jwt?.let { getMissionData(it, requireContext()) }
+    }
+
+    //플로팅 버튼
+    private fun setFABClickEvent() {
+        // 플로팅 버튼 클릭시 애니메이션 동작 기능
+        binding.myoZipMainBtn.setOnClickListener {
+            toggleFab()
+        }
+
+        // 플로팅 버튼 클릭 이벤트
+        binding.myoZip1Btn.setOnClickListener {
+
+        }
+
+        // 플로팅 버튼 클릭 이벤트
+        binding.myoZip2Btn.setOnClickListener {
+
+        }
+
+        // 플로팅 버튼 클릭 이벤트
+        binding.myoZip3Btn.setOnClickListener {
+
+        }
+    }
+
+    //플로팅 버튼 꺼내기
+    private fun toggleFab() {
+
+        //todo: 관리자 권한에 따라 플로팅 버튼 숨기기 나타내기
+
+        // 플로팅 액션 버튼 닫기 - 열려있는 플로팅 버튼 집어넣는 애니메이션
+        if (isFabOpen) {
+            ObjectAnimator.ofFloat(binding.myoZip3Btn, "translationY", 0f).apply { start() }
+            ObjectAnimator.ofFloat(binding.myoZip2Btn, "translationY", 0f).apply { start() }
+            ObjectAnimator.ofFloat(binding.myoZip1Btn, "translationY", 0f).apply { start() }
+            ObjectAnimator.ofFloat(binding.myoZipMainBtn, View.ROTATION, 45f, 0f).apply { start() }
+        } else { // 플로팅 액션 버튼 열기 - 닫혀있는 플로팅 버튼 꺼내는 애니메이션
+            ObjectAnimator.ofFloat(binding.myoZip3Btn, "translationY", -360f).apply { start() }
+            ObjectAnimator.ofFloat(binding.myoZip2Btn, "translationY", -180f).apply { start() }
+            ObjectAnimator.ofFloat(binding.myoZip1Btn, "translationY", -180f).apply { start() }
+            ObjectAnimator.ofFloat(binding.myoZipMainBtn, View.ROTATION, 0f, 45f).apply { start() }
+        }
+
+        isFabOpen = !isFabOpen
+
     }
 
     //게시판 이동

@@ -2,17 +2,13 @@ package com.example.myo_jib_sa.community.Retrofit
 
 import android.content.Context
 import android.util.Log
+import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionCertRetrofitManager
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionResponse
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Multipart
 import java.io.File
 
 class imgUploadRetrofitManager(context: Context) {

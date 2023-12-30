@@ -1,4 +1,4 @@
-  package com.example.myo_jib_sa.schedule.adapter
+ package com.example.myo_jib_sa.Schedule.adapter
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ItemScheduleCalendarDayBinding
 import java.time.LocalDate
 

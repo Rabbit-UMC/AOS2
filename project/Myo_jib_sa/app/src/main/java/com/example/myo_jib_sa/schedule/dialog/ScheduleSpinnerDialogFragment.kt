@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.dialog
+package com.example.myo_jib_sa.Schedule.dialog
 
 import android.content.Context
 import android.graphics.Color
@@ -16,7 +16,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleSpinnerBinding
-import com.example.myo_jib_sa.schedule.spinnerViewpager.*
+import com.example.myo_jib_sa.Schedule.spinnerViewpager.*
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 

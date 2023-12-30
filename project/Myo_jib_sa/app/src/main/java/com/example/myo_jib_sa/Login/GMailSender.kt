@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.Login
+package com.example.myo_jib_sa.login
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

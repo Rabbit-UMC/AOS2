@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.api
+package com.example.myo_jib_sa.Schedule.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

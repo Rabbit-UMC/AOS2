@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.api.scheduleModify
+package com.example.myo_jib_sa.Schedule.api.scheduleModify
 
 data class ScheduleModifyResponse(
     val result: String,

@@ -11,7 +11,7 @@
         android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_mission_create_toolbar"
+        android:background="@drawable/background_toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:elevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"

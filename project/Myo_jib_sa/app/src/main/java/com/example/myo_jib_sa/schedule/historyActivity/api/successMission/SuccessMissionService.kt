@@ -1,6 +1,6 @@
-package com.example.myo_jib_sa.schedule.historyActivity.api.successMission
+package com.example.myo_jib_sa.Schedule.historyActivity.api.successMission
 
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.HistoryMissionResponse
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMission.HistoryMissionResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header

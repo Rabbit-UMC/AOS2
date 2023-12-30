@@ -1,11 +1,11 @@
-package com.example.myo_jib_sa.schedule.currentMissionActivity.adapter
+package com.example.myo_jib_sa.Schedule.currentMissionActivity.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemScheduleScheduleBinding
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
 
 
 data class ScheduleAdapterData(

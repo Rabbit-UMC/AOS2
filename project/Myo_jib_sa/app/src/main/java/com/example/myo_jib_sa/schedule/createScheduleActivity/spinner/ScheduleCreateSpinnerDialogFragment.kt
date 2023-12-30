@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.createScheduleActivity.spinner
+package com.example.myo_jib_sa.Schedule.CreateScheduleActivity.spinner
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -17,7 +17,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleSpinnerBinding
-import com.example.myo_jib_sa.schedule.spinnerViewpager.*
+import com.example.myo_jib_sa.Schedule.spinnerViewpager.*
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 

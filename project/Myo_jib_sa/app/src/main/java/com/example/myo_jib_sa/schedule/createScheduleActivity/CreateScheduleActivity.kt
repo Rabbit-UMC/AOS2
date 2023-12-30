@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.createScheduleActivity
+package com.example.myo_jib_sa.Schedule.CreateScheduleActivity
 
 import android.content.Context
 import android.content.Intent
@@ -10,19 +10,26 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.NumberPicker
+import android.widget.TimePicker
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
-import com.example.myo_jib_sa.schedule.ScheduleFragment
-import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
-import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.CreateScheduleCalendarAdapter
-import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDateData
-import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddRequest
-import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddResponse
-import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddService
-import com.example.myo_jib_sa.schedule.createScheduleActivity.spinner.ScheduleCreateSpinnerDialogFragment
+import com.example.myo_jib_sa.Schedule.ScheduleFragment
+import com.example.myo_jib_sa.Schedule.api.RetrofitClient
+import com.example.myo_jib_sa.Schedule.api.scheduleDetail.ScheduleDetailResult
+import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.adapter.CreateScheduleCalendarAdapter
+import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.adapter.MyMissionAdapter
+import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.adapter.SelectDateData
+import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.api.getMissionList.GetMyMissionResponse
+import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.api.getMissionList.GetMyMissionResult
+import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.api.getMissionList.GetMyMissionService
+import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.api.scheduleAdd.ScheduleAddRequest
+import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.api.scheduleAdd.ScheduleAddResponse
+import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.api.scheduleAdd.ScheduleAddService
+import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.spinner.ScheduleCreateSpinnerDialogFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -67,17 +74,19 @@ class CreateScheduleActivity : AppCompatActivity() {
 
         //화면 초기화
         setMonthView()
-        //오늘날짜 편집 화면에 표시
-        binding.scheduleYearTv.text = referenceDate?.year.toString()
-        binding.scheduleMonthTv.text = referenceDate?.monthValue.toString()
-        binding.scheduleDayTv.text = referenceDate?.dayOfMonth.toString()
+//        //오늘날짜 편집 화면에 표시
+//        binding.scheduleYearTv.text = referenceDate?.year.toString()
+//        binding.scheduleMonthTv.text = referenceDate?.monthValue.toString()
+//        binding.scheduleDayTv.text = referenceDate?.dayOfMonth.toString()
 
         setBtn()//버튼 setting
         setMemoMaxLine()//메모 최대 3줄로 제한
 
         calendarRvItemClickEvent()//캘린더 아이템 클릭이벤트
-
-
+        getMyMissionApi()//미션
+        //임시
+        val myMissionList = ArrayList<GetMyMissionResult>()
+        myMissionListRv(myMissionList)
     }
 
 
@@ -100,6 +109,30 @@ class CreateScheduleActivity : AppCompatActivity() {
         calendarAdapter = CreateScheduleCalendarAdapter(dayList)
         binding.calendarRv.layoutManager = GridLayoutManager(this, 7)
         binding.calendarRv.adapter = calendarAdapter
+    }
+
+    private fun myMissionListRv(myMissionList :  ArrayList<GetMyMissionResult>){
+        myMissionList.add(GetMyMissionResult(0, "자유", 10, 1L, "image", "D+60"))
+        myMissionList.add(GetMyMissionResult(0, "자유", 10, 1L, "image", "D+60"))
+        myMissionList.add(GetMyMissionResult(0, "운동", 10, 2L, "image", "D+60"))
+        myMissionList.add(GetMyMissionResult(0, "운동", 10, 2L, "image", "D+60"))
+        myMissionList.add(GetMyMissionResult(0, "예술", 10, 3L, "image", "D+60"))
+        myMissionList.add(GetMyMissionResult(0, "예술", 10, 3L, "image", "D+60"))
+
+
+        val myMissionAdapter = MyMissionAdapter(myMissionList)
+        binding.missionListRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.missionListRv.adapter = myMissionAdapter
+
+        //클릭이벤트
+        myMissionAdapter.setItemClickListener(object : MyMissionAdapter.OnItemClickListener {
+
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onClick(data: GetMyMissionResult) {
+                // 클릭 시 이벤트 작성
+                binding.missionTitleTv.text = data.title
+            }
+        })
     }
 
     //날짜 생성
@@ -194,9 +227,10 @@ class CreateScheduleActivity : AppCompatActivity() {
 
 
                 //화면에 표시
-                binding.scheduleYearTv.text = iYear.toString()
-                binding.scheduleMonthTv.text = iMonth.toString()
-                binding.scheduleDayTv.text = iDay.toString()
+                binding.scheduleDateTv.text = "${iYear.toString()}-${iMonth.toString()}-${iDay.toString()}"
+//                binding.scheduleYearTv.text = iYear.toString()
+//                binding.scheduleMonthTv.text = iMonth.toString()
+//                binding.scheduleDayTv.text = iDay.toString()
 
             }
         })
@@ -217,12 +251,16 @@ class CreateScheduleActivity : AppCompatActivity() {
         }
 
         //완료 버튼
-        binding.completeTv.setOnClickListener {
+        binding.createBtn.setOnClickListener {
             if (binding.scheduleTitleEtv.text.isEmpty() || scheduleData.startAt >= scheduleData.endAt) {//제목이 공백이거나 시간이 잘못되면
                 Log.d("exitDebug", "no!!")
-                val errorDialogFragment = ErrorDialogFragment()
-                errorDialogFragment.show(supportFragmentManager, "ErrorDialogFragment")
+                binding.createBtn.isEnabled = false
+                binding.createBtn.setBackgroundResource(R.drawable.view_round_r8_gray3)
+//                val errorDialogFragment = ErrorDialogFragment()
+//                errorDialogFragment.show(supportFragmentManager, "ErrorDialogFragment")
             } else {//정상적일때
+                binding.createBtn.isEnabled = true
+                binding.createBtn.setBackgroundResource(R.drawable.view_round_r8_blue)
                 Log.d("exitDebug", "yes!!")
                 SchduleAddApi()
 
@@ -249,23 +287,20 @@ class CreateScheduleActivity : AppCompatActivity() {
         //캘린더에서 완료 버튼 클릭
         binding.calendarCompleteTv.setOnClickListener {
             binding.calendarLayout.visibility = View.GONE
-            binding.guidebanner.visibility = View.VISIBLE
-            binding.calendarBtn.setImageResource(R.drawable.ic_schedule_calendar_black)
+            binding.toneDownView.visibility = View.GONE
             isClickCalendarImgBtn = false
         }
 
-        //달력이미지 클릭
-        binding.calendarBtn.setOnClickListener {
+        //날짜 클릭
+        binding.scheduleDateTv.setOnClickListener {
             if (!isClickCalendarImgBtn) {//캘린더 보이게
                 binding.calendarLayout.visibility = View.VISIBLE
-                binding.guidebanner.visibility = View.GONE
-                binding.calendarBtn.setImageResource(R.drawable.ic_schedule_calendar)
+                binding.toneDownView.visibility = View.VISIBLE
                 isClickCalendarImgBtn = true
             }
             else{//캘린더 안보이게
                 binding.calendarLayout.visibility = View.GONE
-                binding.guidebanner.visibility = View.VISIBLE
-                binding.calendarBtn.setImageResource(R.drawable.ic_schedule_calendar_black)
+                binding.toneDownView.visibility = View.GONE
                 isClickCalendarImgBtn = false
 
             }
@@ -273,14 +308,62 @@ class CreateScheduleActivity : AppCompatActivity() {
 
         //시간|미션 클릭
         binding.missionTitleTv.setOnClickListener {
-            setSpinnerDialog(0)
+            //setSpinnerDialog(0)
         }
-        binding.scheduleStartAtTv.setOnClickListener{
-            setSpinnerDialog(1)
+        binding.scheduleStartAtEtv.setOnClickListener{
+            //setSpinnerDialog(1)
+            binding.startTimeLayout.visibility = View.VISIBLE
+            binding.toneDownView.visibility = View.VISIBLE
         }
-        binding.scheduleEndAtTv.setOnClickListener{
-            setSpinnerDialog(2)
+        binding.scheduleEndAtEtv.setOnClickListener{
+            //setSpinnerDialog(2)
+            binding.endTimeLayout.visibility = View.VISIBLE
+            binding.toneDownView.visibility = View.VISIBLE
         }
+        //시간spinner에서 완료 버튼 클릭
+        binding.startTimeCompleteTv.setOnClickListener {
+            binding.startTimeLayout.visibility = View.GONE
+            binding.toneDownView.visibility = View.GONE
+            binding.scheduleStartAtEtv.setText(scheduleData.startAt)
+
+            val sharedPreference = getSharedPreferences("scheduleModifiedData", MODE_PRIVATE)
+            if (sharedPreference.contains("scheduleStartTime")){//데이터 있는지 확인
+                scheduleData.startAt = sharedPreference.getString("scheduleStartTime", "").toString()
+                scheduleData.endAt = sharedPreference.getString("scheduleEndTime", "").toString()
+                scheduleData.missionTitle = sharedPreference.getString("missionTitle", "").toString()
+                scheduleData.missionId = sharedPreference.getLong("missionId", -1)
+
+                binding.scheduleStartAtEtv.setText(scheduleTimeFormatter(scheduleData?.startAt))
+                binding.scheduleEndAtEtv.setText(scheduleTimeFormatter(scheduleData?.endAt))
+                binding.missionTitleTv.text = scheduleData.missionTitle
+            }
+        }
+        binding.endTimeCompleteTv.setOnClickListener {
+            binding.endTimeLayout.visibility = View.GONE
+            binding.toneDownView.visibility = View.GONE
+        }
+    }
+
+    private fun timePicker(){
+        //timepicker 초기값 설정
+        var startTime = scheduleData.startAt.split(":")
+        binding.startTimePicker.hour = startTime[0].toInt();
+        binding.startTimePicker.minute = startTime[1].toInt();
+        binding.startTimePicker.descendantFocusability =
+            NumberPicker.FOCUS_BLOCK_DESCENDANTS //editText가 눌리는 것을 막는다
+
+        binding.startTimePicker.setOnTimeChangedListener(object: TimePicker.OnTimeChangedListener {
+            override fun onTimeChanged(view: TimePicker?, hourOfDay: Int, minute: Int) {
+                val formatter = DecimalFormat("00")
+                Log.d("debug", "startTime : 시:분 | ${formatter.format(hourOfDay)} : ${formatter.format(minute)}")
+                val sharedPreference = getSharedPreferences("scheduleData",
+                    Context.MODE_PRIVATE
+                )
+                val editor = sharedPreference.edit()
+                editor.putString("scheduleStartTime", "${formatter.format(hourOfDay)}:${formatter.format(minute)}")
+                editor.apply()// data 저장!
+            }
+        })
 
     }
 
@@ -312,7 +395,7 @@ class CreateScheduleActivity : AppCompatActivity() {
         )
         val editor = sharedPreference.edit()
         editor.putString("scheduleTitle", binding.scheduleTitleEtv.text.toString())
-        editor.putString("scheduleDate", getScheduleDate())
+        editor.putString("scheduleDate", binding.scheduleDateTv.text.toString())
         editor.putString("missionTitle", binding.missionTitleTv.text.toString())
         editor.putString("scheduleStartTime", scheduleData?.startAt)
         editor.putString("scheduleEndTime", scheduleData?.endAt)
@@ -339,8 +422,8 @@ class CreateScheduleActivity : AppCompatActivity() {
                        scheduleData.missionTitle = sharedPreference.getString("missionTitle", "").toString()
                        scheduleData.missionId = sharedPreference.getLong("missionId", -1)
 
-                       binding.scheduleStartAtTv.text = scheduleTimeFormatter(scheduleData?.startAt)
-                       binding.scheduleEndAtTv.text = scheduleTimeFormatter(scheduleData?.endAt)
+                       binding.scheduleStartAtEtv.setText(scheduleTimeFormatter(scheduleData?.startAt))
+                       binding.scheduleEndAtEtv.setText(scheduleTimeFormatter(scheduleData?.endAt))
                        binding.missionTitleTv.text = scheduleData.missionTitle
                    }
                }
@@ -354,11 +437,6 @@ class CreateScheduleActivity : AppCompatActivity() {
         // JWT 값 가져오기
         val token = sharedPreferences.getString("jwt", null)
 
-/*
-        val token="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTI3MjE1OTMsImV4cCI6MTY5MjcyNTE5M30.QQBX4y9UIAnMMS_8sbU7tbXti2TU8TsosXRVEWBs_FM"
-*/
-
-        //val token : String = BuildConfig.API_TOKEN
         Log.d("token", "token C= "+token)
 //
         val requestBody = ScheduleAddRequest(
@@ -392,14 +470,48 @@ class CreateScheduleActivity : AppCompatActivity() {
         })
     }
 
+    private fun getMyMissionApi(){
+        // SharedPreferences 객체 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        // JWT 값 가져오기
+        val token = sharedPreferences.getString("jwt", null)
+
+        Log.d("token", "token C= "+token)
+
+        val service = RetrofitClient.getInstance().create(GetMyMissionService::class.java)
+        val listCall = service.getMyMission(token)
+
+        listCall.enqueue(object : Callback<GetMyMissionResponse> {
+            override fun onResponse(
+                call: Call<GetMyMissionResponse>,
+                response: Response<GetMyMissionResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("retrofit", response.body().toString());
+                    val myMissionList = response.body()?.result
+                    if (myMissionList != null) {
+                        myMissionListRv(myMissionList)
+                    }
+                }else {
+                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                }}
+            override fun onFailure(call: Call<GetMyMissionResponse>, t: Throwable) {
+                Log.e("retrofit", "onFailure: ${t.message}")
+            }
+        })
+    }
+
+
 
     //sharedPreference에 저장할때 사용용
-    private fun getScheduleDate() : String{
-        var year = binding.scheduleYearTv.text.toString()
-        var month = binding.scheduleMonthTv.text.toString()
-        var day = binding.scheduleDayTv.text.toString()
-        return "$year-$month-$day"
-    }
+//    private fun getScheduleDate() : String{
+//        var year = binding.scheduleYearTv.text.toString()
+//        var month = binding.scheduleMonthTv.text.toString()
+//        var day = binding.scheduleDayTv.text.toString()
+//        return "$year-$month-$day"
+//    }
 
     /**
     1. 정규식 패턴 ^[a-z] : 영어 소문자 허용
@@ -451,7 +563,7 @@ class CreateScheduleActivity : AppCompatActivity() {
     private fun scheduleDateFormatter():String{
         val formatter = DecimalFormat("00")
 
-        return "${binding.scheduleYearTv.text}-${formatter.format(binding.scheduleMonthTv.text.toString().toInt())}-${formatter.format(binding.scheduleDayTv.text.toString().toInt())}"
+        return binding.scheduleDateTv.text.toString()
     }
 
     //M월 형식으로 포맷
