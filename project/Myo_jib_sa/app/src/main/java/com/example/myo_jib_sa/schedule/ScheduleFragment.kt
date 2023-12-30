@@ -293,19 +293,7 @@ class ScheduleFragment() : Fragment() {
     //setScheduleAdapterAdapter 리사이클러뷰 연결
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setScheduleAdapter(date: LocalDate?){
-        //var formatter = DateTimeFormatter.ofPattern("D")
-        //var day = date?.format(formatter)
 
-        //ScheduleAdaptar 리사이클러뷰 연결
-
-//        if(date?.dayOfMonth == 15) {
-//            sDataList.add(ScheduleData("헬스 4일차", "19:00", "20:00"))
-//            sDataList.add(ScheduleData("헬스 5일차", "19:00", "20:00"))
-//            sDataList.add(ScheduleData("헬스 6일차", "19:00", "20:00"))
-//            sDataList.add(ScheduleData("헬스 4일차", "19:00", "20:00"))
-//            sDataList.add(ScheduleData("헬스 5일차", "19:00", "20:00"))
-//            sDataList.add(ScheduleData("헬스 6일차", "19:00", "20:00"))
-//        }
         Log.d("retrofit", "$date : $sDataList")
         scheduleAdaptar = ScheduleAdaptar(sDataList)
         binding.scheduleRv.layoutManager = LinearLayoutManager(getActivity())
