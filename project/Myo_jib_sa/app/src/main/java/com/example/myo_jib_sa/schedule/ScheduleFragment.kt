@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,8 +23,6 @@ import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleMonthResponse
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleMonthService
 import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
-import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
-import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeService
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResponse
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayService
@@ -34,6 +31,8 @@ import com.example.myo_jib_sa.schedule.adapter.CurrentMissionAdapter
 
 import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActivity
 import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActivity
+import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResponse
+import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionService
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDeleteDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
 import com.google.android.ads.nativetemplates.TemplateView
@@ -58,16 +57,10 @@ class ScheduleFragment() : Fragment() {
     lateinit var scheduleDetailDialog : ScheduleDetailDialogFragment
     lateinit var selectedDate : LocalDate //오늘 날짜
 
-
     var mDataList = ArrayList<Mission>() //미션 리스트 데이터
     var sDataList = ArrayList<ScheduleOfDayResult>() //일정 리스트 데이터
 
-    private lateinit var createScheduleActivityResultLauncher: ActivityResultLauncher<Intent> //createScheduleActivity의 ResultLauncher
-
-
-
     private var adLoader: AdLoader? = null //광고를 불러올 adLoader 객체
-    //val AD_UNIT_ID = BuildConfig.AD_UNIT_ID
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,17 +70,12 @@ class ScheduleFragment() : Fragment() {
         binding = FragmentScheduleBinding.inflate(inflater, container, false)
 
         scheduleDetailDialog =  ScheduleDetailDialogFragment(requireContext())//scheduleDetailDialog 설정
-
-        //scheduleHomeApi()//scheduleHome api연결
         selectedDate = LocalDate.now()//오늘 날짜 가져오기
 
         //calendarAdapter 임시 초기화
         calendarAdapter = CalendarAdapter(ArrayList())
-        binding.calendarRv.addItemDecoration(CalendarAdapter.HorizontalSpaceDecoration(getDisplayWidthSize()))
+        binding.calendarRv.addItemDecoration(CalendarAdapter.GridSpaceDecoration(getDisplayWidthSize()))
         calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
-
-        setCalendarAdapter()//화면 초기화
-//      calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
 
 
         //애드몹 광고 표시
@@ -102,7 +90,6 @@ class ScheduleFragment() : Fragment() {
         binding.selectedMonthTv.text = monthFromDate(selectedDate)
 
         //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
-        //setCurrentMissionAdapter()
         setScheduleAdapter(selectedDate)
         scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
 
@@ -125,8 +112,7 @@ class ScheduleFragment() : Fragment() {
         super.onResume()
 
         Log.d("debug", "onResume")
-        scheduleHomeApi()//scheduleHome api연결
-
+        currentMissionApi()//scheduleHome api연결
 
 
         //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
@@ -142,11 +128,6 @@ class ScheduleFragment() : Fragment() {
             scheduleOfDayApi(YYYYMMDDFromDate(selectedDate))//scheduleOfDay api연결
 
         }
-
-
-
-
-
     }
 
 
@@ -296,6 +277,12 @@ class ScheduleFragment() : Fragment() {
     //CurrentMissionAdapter 리사이클러뷰 연결
     private fun setCurrentMissionAdapter() {
 
+//        mDataList.add(Mission(1, "미션1", 10, "30"))
+//        mDataList.add(Mission(1, "미션2", 10, "30"))
+//        mDataList.add(Mission(1, "미션3", 10, "30"))
+//        mDataList.add(Mission(1, "미션4", 10, "30"))
+//        mDataList.add(Mission(1, "미션5", 10, "30"))
+
         val currentMissionAdapter = CurrentMissionAdapter(mDataList)
         binding.currentMissionRv.layoutManager =
             LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false)
@@ -440,7 +427,7 @@ class ScheduleFragment() : Fragment() {
             override fun onClickEditBtn() {
                 //화면reload===============================================
 
-                scheduleHomeApi()//scheduleHome api연결
+                currentMissionApi()//scheduleHome api연결
                 setCalendarAdapter()//화면 초기화
 
                 //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
@@ -519,46 +506,42 @@ class ScheduleFragment() : Fragment() {
         }
     }
 
-
-    //scheduleHome api연결
-    private fun scheduleHomeApi() {
-        // SharedPreferences 객체 가져오기
+    //currentMission api연결
+    private fun currentMissionApi() {
         val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        // JWT 값 가져오기
-        val token = sharedPreferences.getString("jwt", "")
+        val token = sharedPreferences.getString("jwt", null)
 
         mDataList.clear()//mDataList초기화
 
-        val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
-        val listCall = service.scheduleHome(token)
-
-        listCall.enqueue(object : Callback<ScheduleHomeResponse> {
+        val service = RetrofitClient.getInstance().create(CurrentMissionService::class.java)
+        val listCall = service.currentMission(token)
+        listCall.enqueue(object : Callback<CurrentMissionResponse> {
             override fun onResponse(
-                call: Call<ScheduleHomeResponse>,
-                response: Response<ScheduleHomeResponse>
+                call: Call<CurrentMissionResponse>,
+                response: Response<CurrentMissionResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.d("retrofit", response.body().toString());
-                    val missionList = response.body()?.result?.missionList
+                    Log.d("retrofit", "currentMissionApi "+response.body().toString());
+                    val missionList = response.body()?.result
 
                     //현재 미션 데이터 리스트 리사이클러뷰 연결
                     //디데이 얼마 안남은 미션부터 많이 남은 순으로 정렬돼 있음
                     for(i in 0 until missionList!!.size){
-                        mDataList.add(Mission(missionList[i].missionId, missionList[i].missionTitle, missionList[i].challengerCnts, missionList[i].dday))
+                        mDataList.add(Mission(missionList[i].missionId, missionList[i].missionTitle, missionList[i].challengerCnt, missionList[i].dday))
                     }
                     setCurrentMissionAdapter()
 
-                }else {
-                    Log.e("retrofit", "onResponse_scheduleHomeApi: Error ${response.code()}")
+                } else {
+                    Log.e("retrofit", "currentMissionApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse_scheduleHomeApi: Error Body $errorBody")
-                }}
-            override fun onFailure(call: Call<ScheduleHomeResponse>, t: Throwable) {
-                Log.e("retrofit", "onFailure_scheduleHomeApi: ${t.message}")
+                    Log.e("retrofit", "currentMissionApi_onResponse: Error Body $errorBody")
+                }
+            }
+            override fun onFailure(call: Call<CurrentMissionResponse>, t: Throwable) {
+                Log.e("retrofit", "currentMissionApi_onFailure: ${t.message}")
             }
         })
     }
-
 
     //scheduleOfDay api연결
     //calendarRvItemClickEvent()안에서만 실행
@@ -599,12 +582,12 @@ class ScheduleFragment() : Fragment() {
                     //if(binding.F.visibility == View.VISIBLE)
                         setScheduleAdapter(selectedDate)
                 }else {
-                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    Log.e("retrofit", "scheduleOfDayApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                    Log.e("retrofit", "scheduleOfDayApi_onResponse: Error Body $errorBody")
                 }}
             override fun onFailure(call: Call<ScheduleOfDayResponse>, t: Throwable) {
-                Log.e("retrofit", "onFailure: ${t.message}")
+                Log.e("retrofit", "scheduleOfDayApi_onFailure: ${t.message}")
             }
         })
     }
@@ -634,19 +617,16 @@ class ScheduleFragment() : Fragment() {
     //scheduleMonthApi 연결: 스케줄 있는지 없는지 체크
     private fun scheduleMonthApi(monthDate: String?, lastDay:Int) {
         var checkResult: Boolean = false
+
         //hasScheduleMap초기화
         for(j in 1..lastDay) {
             val formatter = DecimalFormat("00")
             hasScheduleMap["$monthDate-${formatter.format(j)}"] = false
         }
 
-        // SharedPreferences 객체 가져오기
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", "")
-
-        //val token : String = BuildConfig.API_TOKEN
-        Log.d("retrofit", "monthDate = $monthDate");
 
 
         val service = RetrofitClient.getInstance().create(ScheduleMonthService::class.java)
@@ -679,12 +659,12 @@ class ScheduleFragment() : Fragment() {
                     calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
 
                 }else {
-                    Log.e("retrofit", "onResponse_scheduleMonthApi: Error ${response.code()}")
+                    Log.e("retrofit", "scheduleMonthApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse_scheduleMonthApi: Error Body $errorBody")
+                    Log.e("retrofit", "scheduleMonthApi_onResponse: Error Body $errorBody")
                 }}
             override fun onFailure(call: Call<ScheduleMonthResponse>, t: Throwable) {
-                Log.e("retrofit", "onFailure_scheduleMonthApi: ${t.message}")
+                Log.e("retrofit", "scheduleMonthApi_onFailure: ${t.message}")
             }
         })
     }

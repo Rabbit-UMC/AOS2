@@ -18,8 +18,8 @@ import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionResponse
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMission.CurrentMissionService
+import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResponse
+import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
