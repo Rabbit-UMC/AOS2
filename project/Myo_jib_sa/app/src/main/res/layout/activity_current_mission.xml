@@ -12,7 +12,7 @@
     app:umanoPanelHeight="50dp"
     app:umanoScrollableView="@id/scheduleList_rv"
     app:umanoShadowHeight="0dp"
-    tools:context=".schedule.currentMissionActivity.CurrentMissionActivity">
+    tools:context=".Schedule.currentMissionActivity.CurrentMissionActivity">
 
     <ImageButton
         android:id="@+id/go_back_btn"

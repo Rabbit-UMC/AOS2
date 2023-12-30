@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.spinnerViewpager
+package com.example.myo_jib_sa.Schedule.spinnerViewpager
 
 import android.content.Context
 import android.os.Bundle
@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.NumberPicker
 import android.widget.TimePicker
 import com.example.myo_jib_sa.databinding.FragmentSpinnerStartTimeBinding
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
+import com.example.myo_jib_sa.Schedule.api.scheduleDetail.ScheduleDetailResult
 import java.text.DecimalFormat
 
 

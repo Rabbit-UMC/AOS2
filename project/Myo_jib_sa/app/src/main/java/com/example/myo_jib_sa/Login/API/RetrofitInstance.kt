@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.Login.API
+package com.example.myo_jib_sa.login.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

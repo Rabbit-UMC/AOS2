@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.adapter
+package com.example.myo_jib_sa.Schedule.Adapter
 
 import android.os.Build
 import android.view.LayoutInflater
@@ -8,8 +8,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
-
+import com.example.myo_jib_sa.Schedule.api.scheduleHome.Mission
 
 class CurrentMissionAdapter(private val missionList:ArrayList<Mission>):
     RecyclerView.Adapter<CurrentMissionAdapter.ItemViewHolder>() {

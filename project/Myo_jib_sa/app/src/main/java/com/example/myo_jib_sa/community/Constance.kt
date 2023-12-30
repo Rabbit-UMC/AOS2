@@ -1,5 +1,4 @@
-package com.example.myo_jib_sa.community.Retrofit
-import com.example.myo_jib_sa.BuildConfig
+package com.example.myo_jib_sa.community
 
 import android.content.Context
 
@@ -10,6 +9,10 @@ object Constance {
     const val EXERCISE_ID:Int=2 //운동 게시판 id
     const val FREE_ID:Int=1 //자유 게시판 ID
     const val author="X-ACCESS-TOKEN"
+
+    const val ART_COLOR="#FFC436"
+    const val EXERCISE_COLOR="#234BD9"
+    const val FREE_COLOR="#C1C1C1"
 
     //유저 id 1인 토큰
     var jwt: String? = null

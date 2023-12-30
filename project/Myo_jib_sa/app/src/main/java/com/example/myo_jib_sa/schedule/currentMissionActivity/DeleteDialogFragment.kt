@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.currentMissionActivity
+package com.example.myo_jib_sa.Schedule.currentMissionActivity
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable

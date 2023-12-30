@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.spinnerViewpager
+package com.example.myo_jib_sa.Schedule.spinnerViewpager
 
 import android.content.Context
 import android.os.Bundle
@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
 import com.example.myo_jib_sa.databinding.FragmentSpinnerMissionBinding
-import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
-import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
-import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
-import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeService
+import com.example.myo_jib_sa.Schedule.api.RetrofitClient
+import com.example.myo_jib_sa.Schedule.api.scheduleDetail.ScheduleDetailResult
+import com.example.myo_jib_sa.Schedule.api.scheduleHome.Mission
+import com.example.myo_jib_sa.Schedule.api.scheduleHome.ScheduleHomeResponse
+import com.example.myo_jib_sa.Schedule.api.scheduleHome.ScheduleHomeService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -173,6 +173,9 @@ class SpinnerMissionFragment : Fragment() {
             }
         })
     }
+
+
+
     //미션타이틀 포맷(예: 미션제목(D-5))
     fun missionTitleFormat(mission: Mission):String{
 

@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.dialog
+package com.example.myo_jib_sa.Schedule.dialog
 
 import android.content.Context
 import android.graphics.Color
@@ -10,11 +10,11 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleEditBinding
-import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyResponse
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
+import com.example.myo_jib_sa.Schedule.api.RetrofitClient
+import com.example.myo_jib_sa.Schedule.api.scheduleDetail.ScheduleDetailResult
+import com.example.myo_jib_sa.Schedule.api.scheduleModify.ScheduleModifyRequest
+import com.example.myo_jib_sa.Schedule.api.scheduleModify.ScheduleModifyResponse
+import com.example.myo_jib_sa.Schedule.api.scheduleModify.ScheduleModifyService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.api.scheduleHome
+package com.example.myo_jib_sa.Schedule.api.scheduleHome
 
 //일정 홈 화면
 data class ScheduleHomeResponse(

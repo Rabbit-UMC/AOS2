@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd
+package com.example.myo_jib_sa.Schedule.CreateScheduleActivity.api.scheduleAdd
 
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call

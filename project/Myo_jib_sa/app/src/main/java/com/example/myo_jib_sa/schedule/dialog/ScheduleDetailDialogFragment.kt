@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.dialog
+package com.example.myo_jib_sa.Schedule.dialog
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
@@ -10,10 +10,10 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDetailBinding
-import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResponse
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailService
+import com.example.myo_jib_sa.Schedule.api.RetrofitClient
+import com.example.myo_jib_sa.Schedule.api.scheduleDetail.ScheduleDetailResponse
+import com.example.myo_jib_sa.Schedule.api.scheduleDetail.ScheduleDetailResult
+import com.example.myo_jib_sa.Schedule.api.scheduleDetail.ScheduleDetailService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

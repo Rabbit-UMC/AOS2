@@ -15,18 +15,11 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
-import androidx.core.os.postDelayed
 import com.example.myo_jib_sa.community.ImageActivity
-import com.example.myo_jib_sa.community.PostActivity
-import com.example.myo_jib_sa.community.Retrofit.BoardPost.Articles
-import com.example.myo_jib_sa.community.Retrofit.Constance
-import com.example.myo_jib_sa.community.Retrofit.communityHome.CommunityHomeManager
-import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
-import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularArticle
+import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.Retrofit.missionCert.MCrecyclrImg
 import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionProofImages
-import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.databinding.ItemMissionCertificationImgBinding
 
 class MissionCertAdapter(

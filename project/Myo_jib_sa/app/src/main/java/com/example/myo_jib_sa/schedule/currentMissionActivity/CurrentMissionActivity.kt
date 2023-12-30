@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.currentMissionActivity
+package com.example.myo_jib_sa.Schedule.currentMissionActivity
 
 import android.content.Context
 import android.content.Intent
@@ -11,14 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
-import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResponse
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResult
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionService
-import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleService
+import com.example.myo_jib_sa.Schedule.api.RetrofitClient
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.adapter.*
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleService
+import com.example.myo_jib_sa.Schedule.api.currentMission.CurrentMissionResponse
+import com.example.myo_jib_sa.Schedule.api.currentMission.CurrentMissionResult
+import com.example.myo_jib_sa.Schedule.api.currentMission.CurrentMissionService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.createScheduleActivity.adapter
+package com.example.myo_jib_sa.Schedule.CreateScheduleActivity.adapter
 
 import android.graphics.Color
 import android.os.Build
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.databinding.ItemCreateScheudleCalendarDayBinding
+import com.example.myo_jib_sa.databinding.ItemScheduleCalendarDayBinding
 import java.time.LocalDate
 
 var prePosition : Int = -1
@@ -27,7 +27,7 @@ class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData
         viewType: Int
     ): ViewHolder {
         val binding =
-            ItemCreateScheudleCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemScheduleCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -59,7 +59,7 @@ class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData
         }
     }
 
-    class ViewHolder(private val binding: ItemCreateScheudleCalendarDayBinding) :
+    class ViewHolder(private val binding: ItemScheduleCalendarDayBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(data: SelectDateData) {
@@ -74,12 +74,12 @@ class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData
                 binding.dayTv.text = data.date.dayOfMonth.toString()
             }
             if(data.isSelected){
-                binding.selectedDateIv.visibility = View.VISIBLE
-                binding.dayTv.setTextColor(Color.parseColor("#0F1C4C"));
+                binding.selectedDateCircle.visibility = View.VISIBLE
+                binding.dayTv.setTextColor(Color.parseColor("#FFFFFF"));
             }
             else{
-                binding.selectedDateIv.visibility = View.INVISIBLE
-                binding.dayTv.setTextColor(Color.parseColor("#FFFFFF"));
+                binding.selectedDateCircle.visibility = View.INVISIBLE
+                binding.dayTv.setTextColor(Color.parseColor("#000000"));
             }
 
         }

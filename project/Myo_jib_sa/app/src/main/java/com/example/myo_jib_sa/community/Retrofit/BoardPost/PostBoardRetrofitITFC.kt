@@ -1,6 +1,6 @@
 package com.example.myo_jib_sa.community.Retrofit.BoardPost
 
-import com.example.myo_jib_sa.community.Retrofit.Constance
+import com.example.myo_jib_sa.community.Constance
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header

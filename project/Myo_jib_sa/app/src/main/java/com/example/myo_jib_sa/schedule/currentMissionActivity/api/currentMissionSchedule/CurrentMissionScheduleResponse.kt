@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule
+package com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionSchedule
 
 import com.google.gson.annotations.SerializedName
 

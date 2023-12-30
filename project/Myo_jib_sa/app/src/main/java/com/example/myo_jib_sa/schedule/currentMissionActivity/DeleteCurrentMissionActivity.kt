@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.currentMissionActivity
+package com.example.myo_jib_sa.Schedule.currentMissionActivity
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -14,16 +14,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.databinding.ActivityDeleteCurrentMissionBinding
-import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
-import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteService
-import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResponse
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionService
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteResponse
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteService
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleService
+import com.example.myo_jib_sa.Schedule.api.RetrofitClient
+import com.example.myo_jib_sa.Schedule.api.scheduleDelete.ScheduleDeleteResponse
+import com.example.myo_jib_sa.Schedule.api.scheduleDelete.ScheduleDeleteService
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.adapter.*
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteService
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleService
+import com.example.myo_jib_sa.Schedule.api.currentMission.CurrentMissionResponse
+import com.example.myo_jib_sa.Schedule.api.currentMission.CurrentMissionService
+import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
