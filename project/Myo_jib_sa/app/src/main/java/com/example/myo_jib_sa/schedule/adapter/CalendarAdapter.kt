@@ -14,7 +14,6 @@ import com.example.myo_jib_sa.databinding.ItemScheduleCalendarDayBinding
 import java.time.LocalDate
 
 
-var prePosition : Int = -1
 data class CalendarData(
     val date: LocalDate?,
     var hasSchedule :Boolean? = false,//ture이면 일정 있음, false이면 일정 없음
@@ -24,6 +23,7 @@ data class CalendarData(
 
 class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
     RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
+    var prePosition : Int = -1
 
 
     override fun onCreateViewHolder( //화면 설정

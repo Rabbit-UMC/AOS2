@@ -33,7 +33,6 @@ class ScheduleDeleteDialogFragment(
     ): View? {
         binding = DialogFragmentScheduleDeleteBinding.inflate(inflater, container, false)
 
-
         //requestWindowFeature(Window.FEATURE_NO_TITLE)
         initViews()
 
@@ -45,17 +44,15 @@ class ScheduleDeleteDialogFragment(
     }
 
     private fun initViews() {
-
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         isCancelable = false;//외부 터치 금지
 
         //확인
         binding.yesTv.setOnClickListener{
-
             dismiss()
             scheduleDeleteApi()//: 일정삭제 api
-
         }
+
         //취소
         binding.exitTv.setOnClickListener {
             dismiss()
@@ -93,6 +90,7 @@ class ScheduleDeleteDialogFragment(
         return Math.round(dp.toFloat() * density)
     }
 
+
     // 인터페이스
     interface OnButtonClickListener {
         fun onClickExitBtn()
@@ -109,13 +107,9 @@ class ScheduleDeleteDialogFragment(
 
     //scheduleDelete api연결: 일정삭제
     fun scheduleDeleteApi() {
-        // SharedPreferences 객체 가져오기
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", null)
-
-        //val token : String = BuildConfig.API_TOKEN
-//        Log.d("retrofit", "token = "+token+"l");
 
         val sDataList = scheduleAdaptar.getItem()
         val service = RetrofitClient.getInstance().create(ScheduleDeleteService::class.java)
