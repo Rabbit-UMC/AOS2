@@ -125,8 +125,6 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
             //val totalItemCount = state.itemCount                //총 아이템 수
             //val scrollPosition = state.targetScrollPosition     //스크롤 됬을때 아이템 position
 
-            Log.d("position", "position ${position}")
-            Log.d("position", "position % 7  ${position % 7}")
             val column = position % 7      // 0~6
 
             val leftSpace = (deviceWidth * 0.03).toInt()

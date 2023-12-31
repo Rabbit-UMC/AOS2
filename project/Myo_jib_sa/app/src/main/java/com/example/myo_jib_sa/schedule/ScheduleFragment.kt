@@ -54,6 +54,8 @@ class ScheduleFragment() : Fragment() {
     lateinit var scheduleAdaptar : ScheduleAdaptar //scheduleRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
     lateinit var scheduleDetailDialog : ScheduleDetailDialogFragment
     lateinit var selectedDate : LocalDate //오늘 날짜
+    lateinit var standardDate : LocalDate //캘린더의 기준 날자
+
 
     var mDataList = ArrayList<Mission>() //미션 리스트 데이터
     var sDataList = ArrayList<ScheduleOfDayResult>() //일정 리스트 데이터
@@ -67,19 +69,15 @@ class ScheduleFragment() : Fragment() {
     ): View? {
         binding = FragmentScheduleBinding.inflate(inflater, container, false)
 
-        scheduleDetailDialog =  ScheduleDetailDialogFragment(requireContext())//scheduleDetailDialog 설정
-        selectedDate = LocalDate.now()//오늘 날짜 가져오기
-
-        //calendarAdapter 임시 초기화
-        calendarAdapter = CalendarAdapter(ArrayList())
+        //calendar 간격 설정
         binding.calendarRv.addItemDecoration(CalendarAdapter.GridSpaceDecoration(getDisplayWidthSize()))
-        calendarRvItemClickEvent()//Calendar rv item클릭 이벤트
-
 
         //애드몹 광고 표시
         createAd()
         adLoader?.loadAd(AdRequest.Builder().build())
 
+        //오늘 날짜 가져오기
+        selectedDate = LocalDate.now()
         //m월 d일 일정 표시 (예: 6월 1일 일정 표시)
         binding.selectedMonthDayTv.text = MMDDFromDate(selectedDate)
         //YYYY년 표시 - calendar
@@ -87,17 +85,13 @@ class ScheduleFragment() : Fragment() {
         //MM월 표시 - calendar
         binding.selectedMonthTv.text = monthFromDate(selectedDate)
 
-        //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
-        setScheduleAdapter(selectedDate)
-        scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
-
 
         //화면전환
         switchScreen()
         //캘린더 관련 모든 버튼
         calenderBtn()
-
-
+        //scheduleDetailDialog 설정
+        scheduleDetailDialog =  ScheduleDetailDialogFragment(requireContext())
 
         return binding.root
     }
@@ -110,21 +104,16 @@ class ScheduleFragment() : Fragment() {
         super.onResume()
 
         Log.d("debug", "onResume")
-        currentMissionApi()//scheduleHome api연결
+        currentMissionApi()//currentMission api연결
 
-
-        //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
-        //setCurrentMissionAdapter()
-        //setScheduleAdapter(selectedDate)
-        //scheduleAdaptar.notifyDataSetChanged()
-        //scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
-
+        //ScheduleAdaptar 리사이클러뷰 연결
+        setScheduleAdapter(selectedDate)
+        scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
 
         CoroutineScope(Dispatchers.Main).launch{
             delay(50)
             setCalendarAdapter()//화면 초기화
             scheduleOfDayApi(YYYYMMDDFromDate(selectedDate))//scheduleOfDay api연결
-
         }
     }
 
@@ -135,8 +124,6 @@ class ScheduleFragment() : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setCalendarAdapter(){
 
-//        //month를 month text view에 보여주기 (결과: 1월)
-//        binding.selectedMonthTv.text = monthFromDate(selectedDate)
         //m월 d일 일정 표시 (예: 6월 1일 일정 표시)
         binding.selectedMonthDayTv.text = MMDDFromDate(selectedDate)
         //YYYY년 표시 - calendar
@@ -150,8 +137,6 @@ class ScheduleFragment() : Fragment() {
         //CalendarAdapter리사이클러뷰 연결
         //calendarRvItemClickEvent() //Calendar rv item클릭 이벤트
         setHasScheduleMap(selectedDate)
-
-
     }
 
 
@@ -322,58 +307,6 @@ class ScheduleFragment() : Fragment() {
         else
             binding.noSchedule.visibility = View.GONE
 
-//        //swipe시 삭제 이벤트
-//        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-//            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-//                return true
-//            }
-//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//
-//                val position = viewHolder.adapterPosition
-//
-//                var bundle = Bundle()
-//                //bundle.putLong("scheduleId", scheduleData.scheduleId)
-//
-//                //dialog연결 2안
-//                var scheduleDeleteDialog = ScheduleDeleteDialogFragment(binding.scheduleRv.adapter as ScheduleAdaptar, position)
-//                scheduleDeleteDialog.setButtonClickListener(object: ScheduleDeleteDialogFragment.OnButtonClickListener{
-//                    override fun onClickExitBtn() {
-//                        //scheduleAdaptar.notifyItemChanged(viewHolder.adapterPosition);
-//                        //CoroutineScope(Dispatchers.Main).launch{
-//                            //delay(50)
-//                            setCalendarAdapter()//화면 초기화
-//                            scheduleOfDayApi(YYYYMMDDFromDate(selectedDate))//scheduleOfDay api연결
-//                        //}
-//                    }
-//                })
-//                scheduleDeleteDialog.arguments = bundle
-//                scheduleDeleteDialog.show(requireActivity().supportFragmentManager, "scheduleDeleteDialog")
-//
-//              }}
-//
-//
-//            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
-//                super.clearView(recyclerView, viewHolder)
-//                //todo
-//                //val sItemRectangleImg: ImageView = viewHolder.itemView.findViewById(R.id.sechedule_rectangle_img)
-//                //sItemRectangleImg.setImageResource(R.drawable.ic_schedule_rectangle)
-//            }
-//
-//            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-//                super.onSelectedChanged(viewHolder, actionState)
-//                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-//                    //todo
-//                   // val sItemRectangleImg: ImageView? = viewHolder?.itemView?.findViewById(R.id.sechedule_rectangle_img)
-//                   // sItemRectangleImg?.setImageResource(R.drawable.ic_schedule_delete_rectangle)
-//                }
-//            }
-//        }).apply {
-//            // ItemTouchHelper에 RecyclerView 설정
-//            attachToRecyclerView(binding.scheduleRv)
-//        }
-
-
-
 
         //캘린더 클릭할 때 마다 일정리스트가 다시 set되고, 따라서 item클릭 이벤트도 다시 연결해 주어야 함함
        scheduleRvItemClickEvent()//Schedule rv item클릭 이벤트
@@ -435,6 +368,7 @@ class ScheduleFragment() : Fragment() {
                         //scheduleAdaptar.notifyItemChanged(viewHolder.adapterPosition);
                         //CoroutineScope(Dispatchers.Main).launch{
                         //delay(50)
+                        Log.d("debug",""+selectedDate)
                         setCalendarAdapter()//화면 초기화
                         scheduleOfDayApi(YYYYMMDDFromDate(selectedDate))//scheduleOfDay api연결
                         //}
@@ -495,12 +429,14 @@ class ScheduleFragment() : Fragment() {
         binding.yesterdayBtn.setOnClickListener {
             selectedDate = selectedDate.minusDays(1)
             setCalendarAdapter()
+            scheduleOfDayApi(YYYYMMDDFromDate(selectedDate))
         }
 
         //month-day 내일로 이동
         binding.tomorrowBtn.setOnClickListener {
             selectedDate =selectedDate.plusDays(1)
             setCalendarAdapter()
+            scheduleOfDayApi(YYYYMMDDFromDate(selectedDate))
         }
 
         //캘린더 visible버튼
@@ -573,14 +509,11 @@ class ScheduleFragment() : Fragment() {
     //scheduleOfDay api연결
     //calendarRvItemClickEvent()안에서만 실행
     fun scheduleOfDayApi(date: String?) {
-        // SharedPreferences 객체 가져오기
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", null)
 
-        //val token : String = BuildConfig.API_TOKEN
-//        Log.d("retrofit", "token = "+token+"l");
-//
+
         sDataList.removeAll(sDataList.toSet())//초기화
 
         val service = RetrofitClient.getInstance().create(ScheduleOfDayService::class.java)
@@ -593,7 +526,7 @@ class ScheduleFragment() : Fragment() {
                 response: Response<ScheduleOfDayResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.d("retrofit", "scheduleOfDayApi"+response.body().toString());
+                    Log.d("retrofit", "scheduleOfDayApi_"+response.body().toString());
                     val scheduleList = response.body()?.result
 
                     //일정 데이터 리스트 sDataList에 추가
@@ -695,6 +628,9 @@ class ScheduleFragment() : Fragment() {
             }
         })
     }
+
+
+
 
     //YYYY 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
