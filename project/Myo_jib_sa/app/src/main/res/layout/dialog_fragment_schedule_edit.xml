@@ -10,7 +10,7 @@
     android:minHeight="400dp"
     android:background="@drawable/view_round_r8_blue"
     android:backgroundTint="#FFFFFF"
-    tools:context=".Schedule.dialog.ScheduleEditDialogFragment">
+    tools:context=".schedule.dialog.ScheduleEditDialogFragment">
 
 
 
