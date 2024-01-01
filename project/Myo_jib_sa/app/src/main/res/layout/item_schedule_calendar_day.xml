@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="30dp"
-    android:layout_height="40dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="0dp">
 
@@ -11,7 +11,8 @@
         android:id="@+id/selected_date_circle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="invisible"
+        android:layout_marginBottom="5dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,6 +24,7 @@
         android:id="@+id/day_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:layout_gravity="center"
         android:fontFamily="@font/font_pretendard_regular"
         android:text="1"
@@ -37,11 +39,11 @@
         android:id="@+id/hasSchedule_iv"
         android:layout_width="wrap_content"
         android:layout_height="3dp"
-        android:layout_marginTop="7dp"
-        android:visibility="gone"
+        android:layout_marginTop="5dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/day_tv"
+        app:layout_constraintTop_toBottomOf="@+id/selected_date_circle"
         app:srcCompat="@drawable/ic_schedule_calendar_circle" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,11 +51,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/day_tv">
+        app:layout_constraintTop_toBottomOf="@+id/selected_date_circle">
 
         <ImageView
             android:id="@+id/imageView1"
@@ -80,12 +82,12 @@
         android:id="@+id/threeSchedule_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="5dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/day_tv">
+        app:layout_constraintTop_toBottomOf="@+id/selected_date_circle">
 
         <ImageView
             android:id="@+id/imageView3"

@@ -19,12 +19,10 @@ import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
-    lateinit var selectedDate : LocalDate //오늘 날짜
-    lateinit var standardDate: LocalDate //캘린더의 기준 날짜, selectedDate업데이트 하면 얘도 같이 업데이트 해주기
+    lateinit var selectedDate : LocalDate //선택한 날짜
+    lateinit var standardDate: LocalDate //캘린더 생성하기 위한 기준 날짜, selectedDate업데이트 하면 얘도 같이 업데이트 해주기
     lateinit var calendarAdapter : CalendarAdapter //calendarRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
-    var prePosition : Int = 0 ////calendarRvItemClickEvent() 함수에 사용하기 위해 선언
     var firstSelectedDatePosition : Int = 0
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -153,7 +151,6 @@ class MainActivity : AppCompatActivity() {
             if (dayOfWeek == 7) {//그 달의 첫날이 일요일일때 작동: 한칸 아래줄부터 날짜 표시되는 현상 막기위해
                 if (i > lastDay) {
                     break
-                    //dayList.add(CalendarData(null)) //끝에 빈칸 자르기
                 } else if (standardDate == selectedDate && i == selectedDate.dayOfMonth) {//선택한 날짜일때 파란 동그라미 표시 위해
                     dayList.add(SelectDateData(LocalDate.of(standardDate.year, standardDate.monthValue, i), true))
                     firstSelectedDatePosition = i - 1
@@ -181,15 +178,11 @@ class MainActivity : AppCompatActivity() {
 
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onClick(selectDateData: SelectDateData, position: Int) {
-                //가장 처음 선택한 날짜의 파란 동그라미 해제
+                //오늘 날짜의 파란 동그라미 해제
                 if (firstSelectedDatePosition < dayList.size && dayList[firstSelectedDatePosition].date == selectedDate && dayList[firstSelectedDatePosition].isSelected) {
                     dayList[firstSelectedDatePosition].isSelected = false
                     calendarAdapter.notifyItemChanged(firstSelectedDatePosition)
                 }
-
-                var iYear = selectDateData.date?.year
-                var iMonth = selectDateData.date?.monthValue
-                var iDay = selectDateData.date?.dayOfMonth
 
                 selectedDate = selectDateData.date!!
                 standardDate = selectedDate
