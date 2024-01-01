@@ -126,17 +126,17 @@ class CommunityFragment : Fragment() {
 
     //게시판 이동
     private fun moveBoard() {
-        binding.communityBoardArt.setOnClickListener {
+        binding.communityBoardArtLinear.setOnClickListener {
             val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
             intent.putExtra("boardId", Constance.ART_ID)
             startActivity(intent)
         }
-        binding.communityBoardExcs.setOnClickListener {
+        binding.communityBoardExerciseLinear.setOnClickListener {
             val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
             intent.putExtra("boardId", Constance.EXERCISE_ID)
             startActivity(intent)
         }
-        binding.communityBoardFree.setOnClickListener {
+        binding.communityBoardFreeLinear.setOnClickListener {
             val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
             intent.putExtra("boardId", Constance.FREE_ID)
             startActivity(intent)
