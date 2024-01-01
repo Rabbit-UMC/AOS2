@@ -128,7 +128,7 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
             val column = position % 7      // 0~6
 
             val leftSpace = (deviceWidth * 0.03).toInt()
-            val topSpace = (deviceWidth * 0.04).toInt()
+            val topSpace = (deviceWidth * 0.03).toInt()
 
             outRect.top = topSpace
 

@@ -113,7 +113,7 @@ class ScheduleFragment() : Fragment() {
 
         CoroutineScope(Dispatchers.Main).launch {
             delay(50)
-            setHasScheduleMap(standardDate)//화면 초기화
+            scheduleMonthApi()//달력 초기화
             scheduleOfDayApi(standardDate)//scheduleOfDay api연결
         }
     }
@@ -142,8 +142,8 @@ class ScheduleFragment() : Fragment() {
 
     //날짜 생성: ArrayList<CalendarData>()생성
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun DayInMonthArray(date: LocalDate): ArrayList<CalendarData> {
-        var yearMonth = YearMonth.from(date)
+    private fun DayInMonthArray(): ArrayList<CalendarData> {
+        var yearMonth = YearMonth.from(standardDate)
         val dayList = ArrayList<CalendarData>()
 
         //해당 월의 마지막 날짜 가져오기(결과: 1월이면 31)
@@ -159,13 +159,30 @@ class ScheduleFragment() : Fragment() {
                     break
                     //dayList.add(CalendarData(null)) //끝에 빈칸 자르기
                 } else if (standardDate == selectedDate && i == selectedDate.dayOfMonth) {//선택한 날짜일때 파란 동그라미 표시 위해
-                    var currentDate = YYYYMMDDFromDate(LocalDate.of(standardDate.year, standardDate.monthValue, i))
-                    dayList.add(CalendarData(LocalDate.of(standardDate.year, standardDate.monthValue, i), hasScheduleMap[currentDate], true))
+                    var currentDate = YYYYMMDDFromDate(
+                        LocalDate.of(
+                            standardDate.year, standardDate.monthValue, i
+                        )
+                    )
+                    dayList.add(
+                        CalendarData(
+                            LocalDate.of(
+                                standardDate.year, standardDate.monthValue, i
+                            ), hasScheduleMap[currentDate], true
+                        )
+                    )
                     firstSelectedDatePosition = i - 1
                 } else {
                     var currentDate = YYYYMMDDFromDate(
-                        LocalDate.of(standardDate.year, standardDate.monthValue, i))
-                    dayList.add(CalendarData(LocalDate.of(standardDate.year, standardDate.monthValue, i), hasScheduleMap[currentDate]))
+                        LocalDate.of(standardDate.year, standardDate.monthValue, i)
+                    )
+                    dayList.add(
+                        CalendarData(
+                            LocalDate.of(
+                                standardDate.year, standardDate.monthValue, i
+                            ), hasScheduleMap[currentDate]
+                        )
+                    )
                 }
             } else if (i <= dayOfWeek) { //끝에 빈칸 자르기위해
                 dayList.add(CalendarData(null))
@@ -173,13 +190,27 @@ class ScheduleFragment() : Fragment() {
                 break
             } else if (standardDate == selectedDate && i - dayOfWeek == selectedDate.dayOfMonth) {//선택한 날짜일때 파란 동그라미 표시 위해
                 var currentDate = YYYYMMDDFromDate(
-                    LocalDate.of(standardDate.year, standardDate.monthValue, i - dayOfWeek))
-                dayList.add(CalendarData(LocalDate.of(standardDate.year, standardDate.monthValue, i - dayOfWeek), hasScheduleMap[currentDate], true))
+                    LocalDate.of(standardDate.year, standardDate.monthValue, i - dayOfWeek)
+                )
+                dayList.add(
+                    CalendarData(
+                        LocalDate.of(
+                            standardDate.year, standardDate.monthValue, i - dayOfWeek
+                        ), hasScheduleMap[currentDate], true
+                    )
+                )
                 firstSelectedDatePosition = i - 1
             } else {
                 var currentDate = YYYYMMDDFromDate(
-                    LocalDate.of(standardDate.year, standardDate.monthValue, i - dayOfWeek))
-                dayList.add(CalendarData(LocalDate.of(standardDate.year, standardDate.monthValue, i - dayOfWeek), hasScheduleMap[currentDate]))//얘만 살리기
+                    LocalDate.of(standardDate.year, standardDate.monthValue, i - dayOfWeek)
+                )
+                dayList.add(
+                    CalendarData(
+                        LocalDate.of(
+                            standardDate.year, standardDate.monthValue, i - dayOfWeek
+                        ), hasScheduleMap[currentDate]
+                    )
+                )//얘만 살리기
             }
         }
         return dayList
@@ -305,7 +336,7 @@ class ScheduleFragment() : Fragment() {
                     ScheduleDeleteDialogFragment.OnButtonClickListener {
                     @RequiresApi(Build.VERSION_CODES.O)
                     override fun onClickExitBtn() {
-                        setHasScheduleMap(selectedDate)//화면 초기화
+                        scheduleMonthApi()//달력 초기화
                         scheduleOfDayApi(selectedDate)//scheduleOfDay api연결
                     }
                 })
@@ -326,7 +357,7 @@ class ScheduleFragment() : Fragment() {
                 //화면reload===============================================
 
                 currentMissionApi()//scheduleHome api연결
-                setHasScheduleMap(standardDate)//화면 초기화
+                scheduleMonthApi()//달력 초기화
 
                 //CurrentMissionAdapter,ScheduleAdaptar 리사이클러뷰 연결
                 setCurrentMissionAdapter()
@@ -366,7 +397,7 @@ class ScheduleFragment() : Fragment() {
             selectedDate = standardDate.minusDays(1)
             standardDate = selectedDate
             setCalendarHeader(standardDate)
-            setHasScheduleMap(standardDate)
+            scheduleMonthApi()
             scheduleOfDayApi(standardDate)
         }
 
@@ -375,7 +406,7 @@ class ScheduleFragment() : Fragment() {
             selectedDate = standardDate.plusDays(1)
             standardDate = selectedDate
             setCalendarHeader(standardDate)
-            setHasScheduleMap(standardDate)
+            scheduleMonthApi()
             scheduleOfDayApi(standardDate)
         }
 
@@ -383,6 +414,9 @@ class ScheduleFragment() : Fragment() {
         binding.calendarVisibleBtn.setOnClickListener {
             binding.calendarLayout.visibility = View.VISIBLE
             binding.calendarMonthDayHeader.visibility = View.GONE
+            standardDate = selectedDate
+            setCalendarHeader(standardDate)
+            scheduleMonthApi()
         }
 
         //캘린더 gone 버튼
@@ -394,20 +428,16 @@ class ScheduleFragment() : Fragment() {
         //이전달로 이동
         binding.preMonthBtn.setOnClickListener {
             standardDate = standardDate.minusMonths(1)
-            //CoroutineScope(Dispatchers.Main).launch {
             binding.selectedMonthTv.text = monthFromDate(standardDate)
-            setHasScheduleMap(standardDate)
-            //calendarRvItemClickEvent()
-            //}
+            binding.selectedYearTv.text = yearFromDate(standardDate)
+            scheduleMonthApi()
         }
         //다음달로 이동
         binding.nextMonthBtn.setOnClickListener {
             standardDate = standardDate.plusMonths(1)
-            //CoroutineScope(Dispatchers.Main).launch {
             binding.selectedMonthTv.text = monthFromDate(standardDate)
-            setHasScheduleMap(standardDate)
-            //calendarRvItemClickEvent()
-            //}
+            binding.selectedYearTv.text = yearFromDate(standardDate)
+            scheduleMonthApi()
         }
     }
 
@@ -431,7 +461,7 @@ class ScheduleFragment() : Fragment() {
 
                     //현재 미션 데이터 리스트 리사이클러뷰 연결
                     //디데이 얼마 안남은 미션부터 많이 남은 순으로 정렬돼 있음
-                    if(missionList != null) {
+                    if (missionList != null) {
                         for (i in 0 until missionList!!.size) {
                             mDataList.add(
                                 Mission(
@@ -512,33 +542,21 @@ class ScheduleFragment() : Fragment() {
 
     private var hasScheduleMap: HashMap<String?, Boolean> = HashMap()
 
+    //scheduleMonthApi 연결: 스케줄 있는지 없는지 체크
     @RequiresApi(Build.VERSION_CODES.O)
-    fun setHasScheduleMap(date: LocalDate) {
-        //val dayList = ArrayList<CalendarData>()
-        var yearMonth = YearMonth.from(date)
-
-        //hasScheduleMap.clear()//초기화
+    private fun scheduleMonthApi() {
+        var yyyyMM = YYYY_MMFromDate(standardDate)
+        Log.d("retrofit", "date" + standardDate)
+        Log.d("retrofit", "yyyyMM" + yyyyMM)
 
         //해당 월의 마지막 날짜 가져오기(결과: 1월이면 31)
+        var yearMonth = YearMonth.from(standardDate)
         var lastDay = yearMonth.lengthOfMonth()
-        //해당 월의 첫번째 날 가져오기(결과: 2023-01-01)
-        var firstDay = standardDate.withDayOfMonth(1)
-        //첫 번째날 요일 가져오기(결과: 월 ~일이 1~7에 대응되어 나타남)
-        var dayOfWeek = firstDay.dayOfWeek.value
 
-
-        var currentMonth = YYYY_MMFromDate(standardDate)//MMMM-DD형태로 포맷
-        Log.d("retrofit", "standardDate"+standardDate)
-        Log.d("retrofit", "currentMonth"+currentMonth)
-        scheduleMonthApi(currentMonth, lastDay)//날짜별로 스케줄 있는지 없는지 체크
-    }
-
-    //scheduleMonthApi 연결: 스케줄 있는지 없는지 체크
-    private fun scheduleMonthApi(monthDate: String?, lastDay: Int) {
         //hasScheduleMap초기화
         for (j in 1..lastDay) {
             val formatter = DecimalFormat("00")
-            hasScheduleMap["$monthDate-${formatter.format(j)}"] = false
+            hasScheduleMap["$yyyyMM-${formatter.format(j)}"] = false
         }
 
         // JWT 값 가져오기
@@ -546,9 +564,8 @@ class ScheduleFragment() : Fragment() {
             requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", "")
 
-
         val service = RetrofitClient.getInstance().create(ScheduleMonthService::class.java)
-        val listCall = service.scheduleMonth(token, monthDate)
+        val listCall = service.scheduleMonth(token, yyyyMM)
 
         listCall.enqueue(object : Callback<ScheduleMonthResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
@@ -561,10 +578,10 @@ class ScheduleFragment() : Fragment() {
                     val formatter = DecimalFormat("00")
 
                     for (i in 0 until scheduleList!!.size) {
-                        hasScheduleMap["$monthDate-${formatter.format(scheduleList[i])}"] = true
+                        hasScheduleMap["$yyyyMM-${formatter.format(scheduleList[i])}"] = true
                     }
 
-                    val dayList = DayInMonthArray(standardDate)
+                    val dayList = DayInMonthArray()
 
                     //CalendarAdapter리사이클러뷰 연결
                     calendarAdapter = CalendarAdapter(dayList)
@@ -601,14 +618,7 @@ class ScheduleFragment() : Fragment() {
         return date?.format(formatter)
     }
 
-    //YYYY년 M월 형식으로 포맷
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun YYYYMMFromDate(date: LocalDate?): String? {
-        var formatter = DateTimeFormatter.ofPattern("yyyy년 M월")
-        return date?.format(formatter)
-    }
-
-    //YYYY- MM 형식으로 포맷
+    //YYYY-MM 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
     private fun YYYY_MMFromDate(date: LocalDate?): String? {
         var formatter = DateTimeFormatter.ofPattern("yyyy-MM")

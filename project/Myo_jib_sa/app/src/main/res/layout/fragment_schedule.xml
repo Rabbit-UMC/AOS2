@@ -273,7 +273,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="13dp"
+                        android:layout_marginEnd="35dp"
                         android:adjustViewBounds="true"
                         android:background="@android:color/transparent"
                         android:scaleType="fitCenter"
@@ -286,7 +286,7 @@
                         android:id="@+id/nextMonth_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="13dp"
+                        android:layout_marginLeft="35dp"
                         android:layout_gravity="center_vertical"
                         android:adjustViewBounds="true"
                         android:background="@android:color/transparent"
@@ -302,6 +302,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                 >
 
                     <androidx.recyclerview.widget.RecyclerView
