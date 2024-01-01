@@ -8,11 +8,11 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.myo_jib_sa.BuildConfig
+import com.example.myo_jib_sa.login.api.LoginITFC
 import com.example.myo_jib_sa.login.api.LoginResponse
+import com.example.myo_jib_sa.login.api.RetrofitInstance
 import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.databinding.ActivityKakaoLoginBinding
-import com.example.myo_jib_sa.login.api.LoginITFC
-import com.example.myo_jib_sa.login.api.RetrofitInstance
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import retrofit2.Call
@@ -81,18 +81,18 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                     startActivity(intent)
                     Log.d("token", accessToken)
 
-                  /*  if (kakaoEmail != null) {
-                        // 카카오이메일 있으면 바로 묘집사 회원가입으로 이동
-                        LoginApi(accessToken)
-                        val intent = Intent(this@KakaoLoginActivity, MyoSignUpActivity::class.java)
-                        intent.putExtra("accessToken", accessToken)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        startActivity(intent)
-                        Log.d("token", accessToken)
-                    } else {
-                        // 카카오이메일 없으면 추가 이메일 입력 다이얼로그로 이동
-                        showAddEmailDialog()
-                    }*/
+                    /*  if (kakaoEmail != null) {
+                          // 카카오이메일 있으면 바로 묘집사 회원가입으로 이동
+                          LoginApi(accessToken)
+                          val intent = Intent(this@KakaoLoginActivity, MyoSignUpActivity::class.java)
+                          intent.putExtra("accessToken", accessToken)
+                          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                          startActivity(intent)
+                          Log.d("token", accessToken)
+                      } else {
+                          // 카카오이메일 없으면 추가 이메일 입력 다이얼로그로 이동
+                          showAddEmailDialog()
+                      }*/
                 }
             }
             Log.d("LoginResponse", "카카오계정으로 로그인 성공 ${token.accessToken}")
@@ -132,14 +132,14 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
                             editor.putLong("userId", userId)
 
                             editor.apply()
-                           /* val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-                            val getJwt = sharedPreferences.edit()
-                            // JWT 저장
-                            val jwt ="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTE2NjUwMzIsImV4cCI6MTY5MzEzNjI2MX0.mlOx8WnywdEYGNDHkhlqP3agL3rVMyvwgwWP8VlvsXM"
-                            if (jwt != null) {
-                                getJwt.putString("jwt", jwt)
-                            }
-                            getJwt.apply()*/
+                            /* val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+                             val getJwt = sharedPreferences.edit()
+                             // JWT 저장
+                             val jwt ="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTE2NjUwMzIsImV4cCI6MTY5MzEzNjI2MX0.mlOx8WnywdEYGNDHkhlqP3agL3rVMyvwgwWP8VlvsXM"
+                             if (jwt != null) {
+                                 getJwt.putString("jwt", jwt)
+                             }
+                             getJwt.apply()*/
                         }
                     }
                 } else {
