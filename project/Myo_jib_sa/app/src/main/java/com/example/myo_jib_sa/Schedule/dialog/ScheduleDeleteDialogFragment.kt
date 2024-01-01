@@ -2,18 +2,20 @@ package com.example.myo_jib_sa.Schedule.dialog
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import com.example.myo_jib_sa.Schedule.API.RetrofitClient
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDeleteBinding
+import com.example.myo_jib_sa.Schedule.API.scheduleDelete.ScheduleDeleteResponse
+import com.example.myo_jib_sa.Schedule.API.scheduleDelete.ScheduleDeleteService
 import com.example.myo_jib_sa.Schedule.Adapter.ScheduleAdaptar
-import com.example.myo_jib_sa.Schedule.api.RetrofitClient
-import com.example.myo_jib_sa.Schedule.api.scheduleDelete.ScheduleDeleteResponse
-import com.example.myo_jib_sa.Schedule.api.scheduleDelete.ScheduleDeleteService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,7 +23,7 @@ import retrofit2.Response
 
 class ScheduleDeleteDialogFragment(
     val scheduleAdaptar: ScheduleAdaptar,
-    val position:Int
+    val scheduleId:Long
 ) : DialogFragment() {
     private lateinit var binding: DialogFragmentScheduleDeleteBinding
 
@@ -31,31 +33,63 @@ class ScheduleDeleteDialogFragment(
     ): View? {
         binding = DialogFragmentScheduleDeleteBinding.inflate(inflater, container, false)
 
-
         //requestWindowFeature(Window.FEATURE_NO_TITLE)
         initViews()
 
         return binding.root
     }
+    override fun onResume() {
+        super.onResume()
+        resizeDialog()
+    }
 
     private fun initViews() {
-
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
+        isCancelable = false;//외부 터치 금지
 
         //확인
         binding.yesTv.setOnClickListener{
-
             dismiss()
             scheduleDeleteApi()//: 일정삭제 api
-
         }
+
         //취소
         binding.exitTv.setOnClickListener {
             dismiss()
             buttonClickListener.onClickExitBtn()
         }
     }
+
+    //dialog크기 조절
+    fun resizeDialog() {
+        val windowManager = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+        val deviceWidth = size.x
+        val deviceHeight = size.y
+
+        var height = (deviceWidth * 0.89 * 0.77).toInt()
+        var minHeight = ConvertDPtoPX(requireContext(), 248)
+        if(minHeight > height){
+            params?.height = minHeight
+        } else{
+            params?.height = height
+
+        }
+        params?.width = (deviceWidth * 0.89).toInt()
+//        params?.height = (deviceWidth * 0.9 * 1.13).toInt()
+
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
+    }
+
+    //dp -> px
+    fun ConvertDPtoPX(context: Context, dp: Int): Int {
+        val density = context.resources.displayMetrics.density
+        return Math.round(dp.toFloat() * density)
+    }
+
 
     // 인터페이스
     interface OnButtonClickListener {
@@ -73,17 +107,13 @@ class ScheduleDeleteDialogFragment(
 
     //scheduleDelete api연결: 일정삭제
     fun scheduleDeleteApi() {
-        // SharedPreferences 객체 가져오기
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", null)
-
-        //val token : String = BuildConfig.API_TOKEN
-//        Log.d("retrofit", "token = "+token+"l");
 
         val sDataList = scheduleAdaptar.getItem()
         val service = RetrofitClient.getInstance().create(ScheduleDeleteService::class.java)
-        val listCall = service.scheduleDelete(token, sDataList[position].scheduleId)
+        val listCall = service.scheduleDelete(token, scheduleId)
 
         listCall.enqueue(object : Callback<ScheduleDeleteResponse> {
             override fun onResponse(

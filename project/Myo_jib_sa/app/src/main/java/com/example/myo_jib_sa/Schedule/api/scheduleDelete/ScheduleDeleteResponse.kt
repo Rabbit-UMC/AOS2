@@ -1,8 +1,7 @@
-package com.example.myo_jib_sa.Schedule.api.scheduleDelete
+package com.example.myo_jib_sa.Schedule.API.scheduleDelete
+
+import com.example.myo_jib_sa.base.BaseResponse
 
 data class ScheduleDeleteResponse(
-    val isSuccess: Boolean,
-    val code: Int,
-    val message: String,
     val result: String
-)
+):BaseResponse()

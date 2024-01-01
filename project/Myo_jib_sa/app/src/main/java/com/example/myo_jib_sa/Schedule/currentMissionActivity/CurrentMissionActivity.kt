@@ -10,15 +10,15 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myo_jib_sa.Schedule.API.RetrofitClient
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
-import com.example.myo_jib_sa.Schedule.api.RetrofitClient
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.adapter.*
-import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMission.CurrentMissionResponse
-import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMission.CurrentMissionResult
-import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMission.CurrentMissionService
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleService
+import com.example.myo_jib_sa.Schedule.API.currentMission.CurrentMissionResponse
+import com.example.myo_jib_sa.Schedule.API.currentMission.CurrentMissionResult
+import com.example.myo_jib_sa.Schedule.API.currentMission.CurrentMissionService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -169,13 +169,8 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     //currentMission api연결
     private fun currentMissionApi() {
-        // SharedPreferences 객체 가져오기
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        // JWT 값 가져오기
         val token = sharedPreferences.getString("jwt", null)
-
-        //val token: String = BuildConfig.API_TOKEN
-        Log.d("debug", "token = "+token+"l");
 
         missionList = ArrayList<CurrentMissionResult>()
 

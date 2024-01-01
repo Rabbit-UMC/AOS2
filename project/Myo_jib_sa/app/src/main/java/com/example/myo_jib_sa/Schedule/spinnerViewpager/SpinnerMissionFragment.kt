@@ -8,12 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
+import com.example.myo_jib_sa.Schedule.API.RetrofitClient
 import com.example.myo_jib_sa.databinding.FragmentSpinnerMissionBinding
-import com.example.myo_jib_sa.Schedule.api.RetrofitClient
-import com.example.myo_jib_sa.Schedule.api.scheduleDetail.ScheduleDetailResult
-import com.example.myo_jib_sa.Schedule.api.scheduleHome.Mission
-import com.example.myo_jib_sa.Schedule.api.scheduleHome.ScheduleHomeResponse
-import com.example.myo_jib_sa.Schedule.api.scheduleHome.ScheduleHomeService
+import com.example.myo_jib_sa.Schedule.API.scheduleDetail.ScheduleDetailResult
+import com.example.myo_jib_sa.Schedule.API.scheduleHome.Mission
+import com.example.myo_jib_sa.Schedule.API.scheduleHome.ScheduleHomeResponse
+import com.example.myo_jib_sa.Schedule.API.scheduleHome.ScheduleHomeService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

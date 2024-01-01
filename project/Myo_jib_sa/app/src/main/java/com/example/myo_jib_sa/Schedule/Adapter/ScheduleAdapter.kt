@@ -1,6 +1,8 @@
 package com.example.myo_jib_sa.Schedule.Adapter
 
+import android.graphics.Color
 import android.os.Build
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,58 +10,50 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.Schedule.api.scheduleOfDay.ScheduleOfDayResult
-
+import com.example.myo_jib_sa.Schedule.API.scheduleOfDay.ScheduleOfDayResult
+import com.example.myo_jib_sa.databinding.ItemScheduleCalendarDayBinding
+import com.example.myo_jib_sa.databinding.ItemScheduleScheduleBinding
 
 class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):
-    RecyclerView.Adapter<ScheduleAdaptar.ItemViewHolder>() {
-
-    class ItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val sTitle_tv: TextView = itemView.findViewById(R.id.schedule_title_tv)
-        val sStartTime_tv: TextView = itemView.findViewById(R.id.schedule_start_time_tv)
-        val sFinishTime_tv: TextView = itemView.findViewById(R.id.schedule_end_time_tv)
-        //val sItemRectangle_img: ImageView = itemView.findViewById(R.id.sechedule_rectangle_img) todo
-    }
+    RecyclerView.Adapter<ScheduleAdaptar.ViewHolder>() {
 
     //화면 설정
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_schedule_schedule, parent, false)
-
-        return ItemViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemScheduleScheduleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     //데이터 설정
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        var schedule = scheduleList[position]
-        holder.sTitle_tv.text = schedule.scheduleTitle
-        holder.sStartTime_tv.text = schedule.scheduleStart
-        holder.sFinishTime_tv.text = schedule.scheduleEnd
-
-        //일정 클릭 이벤트
-        holder.itemView.setOnClickListener{
-
-            itemClickListener.onClick(schedule)
-
-//            var iYear = day?.year
-//            var iMonth = day?.monthValue
-//            var iDay = day?.dayOfMonth
-//
-//            Toast.makeText(holder.itemView.context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
-//                .show()
-        }
-
-
-
+        holder.bind(scheduleList[position])
     }
 
+
+    inner class ViewHolder(private val binding: ItemScheduleScheduleBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun bind(data: ScheduleOfDayResult) {
+            binding.scheduleTitleTv.text = data.scheduleTitle
+            binding.scheduleStartTimeTv.text = data.scheduleStart
+            binding.scheduleEndTimeTv.text = data.scheduleEnd
+
+            binding.scheduleLayout.setOnClickListener {
+                itemClickListener.onClick(data)
+            }
+
+            binding.deleteTv.setOnClickListener {
+                itemClickListener.onDeleteClick(data.scheduleId)
+            }
+        }
+    }
 
     //클릭 이벤트 처리 ==============================================
     //리스너 인터페이스
     interface  OnItemClickListener{
         fun onClick(scheduleData: ScheduleOfDayResult)
+        fun onDeleteClick(scheduleId: Long)
     }
     // (3) 외부에서 클릭 시 이벤트 설정
     fun setItemClickListener(onItemClickListener: OnItemClickListener) {
