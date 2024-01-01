@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
-import com.example.myo_jib_sa.databinding.FragmentSpinnerMissionBinding
 import com.example.myo_jib_sa.Schedule.API.RetrofitClient
+import com.example.myo_jib_sa.databinding.FragmentSpinnerMissionBinding
 import com.example.myo_jib_sa.Schedule.API.scheduleDetail.ScheduleDetailResult
 import com.example.myo_jib_sa.Schedule.API.scheduleHome.Mission
 import com.example.myo_jib_sa.Schedule.API.scheduleHome.ScheduleHomeResponse

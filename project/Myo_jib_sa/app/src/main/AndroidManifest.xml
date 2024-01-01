@@ -100,7 +100,6 @@
         <activity
             android:name=".login.MyoSignUpActivity"
             android:exported="false">
-
         </activity>
         <activity
             android:name=".MainActivity"

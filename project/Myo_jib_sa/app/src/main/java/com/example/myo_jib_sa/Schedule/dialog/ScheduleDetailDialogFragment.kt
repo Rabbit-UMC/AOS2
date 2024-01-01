@@ -9,8 +9,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.DialogFragment
-import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDetailBinding
 import com.example.myo_jib_sa.Schedule.API.RetrofitClient
+import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDetailBinding
 import com.example.myo_jib_sa.Schedule.API.scheduleDetail.ScheduleDetailResponse
 import com.example.myo_jib_sa.Schedule.API.scheduleDetail.ScheduleDetailResult
 import com.example.myo_jib_sa.Schedule.API.scheduleDetail.ScheduleDetailService

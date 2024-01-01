@@ -13,8 +13,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myo_jib_sa.databinding.ActivityDeleteCurrentMissionBinding
 import com.example.myo_jib_sa.Schedule.API.RetrofitClient
+import com.example.myo_jib_sa.databinding.ActivityDeleteCurrentMissionBinding
 import com.example.myo_jib_sa.Schedule.API.scheduleDelete.ScheduleDeleteResponse
 import com.example.myo_jib_sa.Schedule.API.scheduleDelete.ScheduleDeleteService
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.adapter.*

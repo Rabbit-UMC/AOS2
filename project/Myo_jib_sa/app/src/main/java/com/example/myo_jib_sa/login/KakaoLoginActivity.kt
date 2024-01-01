@@ -39,15 +39,6 @@ class KakaoLoginActivity : AppCompatActivity(),OnEmailEnteredInterface {
 
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
 
-//여기 추가함================================
-        val getJwt = sharedPreferences.edit()
-// JWT 저장
-        val jwt = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDI2NjM2MTgsImV4cCI6MTcwNDEzNDg0N30.va4im_CNjnmyRRZxtPxxHc7v4b2SstL3XLebcJ1EXm0"
-//if (jwt != null) {
-        getJwt.putString("jwt", jwt)
-//}
-        getJwt.apply()
-//여기 추가함================================
 
         val jwtToken = sharedPreferences.getString("jwt", null)
         if (jwtToken != null) {

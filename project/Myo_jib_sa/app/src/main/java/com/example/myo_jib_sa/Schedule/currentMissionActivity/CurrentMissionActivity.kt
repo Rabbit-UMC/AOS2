@@ -10,8 +10,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
 import com.example.myo_jib_sa.Schedule.API.RetrofitClient
+import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.adapter.*
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
 import com.example.myo_jib_sa.Schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult

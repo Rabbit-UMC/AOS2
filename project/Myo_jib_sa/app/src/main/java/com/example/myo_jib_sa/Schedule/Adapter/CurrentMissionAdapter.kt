@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.Schedule.API.scheduleHome.Mission
+import com.example.myo_jib_sa.Schedule.API.currentMission.CurrentMissionResult
 
-class CurrentMissionAdapter(private val missionList:ArrayList<Mission>):
+class CurrentMissionAdapter(private val missionList:ArrayList<CurrentMissionResult>):
     RecyclerView.Adapter<CurrentMissionAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -33,7 +33,7 @@ class CurrentMissionAdapter(private val missionList:ArrayList<Mission>):
 
         var mission = missionList[position]
         holder.mTitle_tv.text = mission.missionTitle
-        holder.mNum_tv.text = "${mission.challengerCnts}명"
+        holder.mNum_tv.text = "${mission.challengerCnt}명"
         holder.mDDay_tv.text = "${mission.dday}"
 
         //미션 클릭 이벤트

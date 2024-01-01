@@ -14,7 +14,6 @@ import com.example.myo_jib_sa.Schedule.API.scheduleOfDay.ScheduleOfDayResult
 import com.example.myo_jib_sa.databinding.ItemScheduleCalendarDayBinding
 import com.example.myo_jib_sa.databinding.ItemScheduleScheduleBinding
 
-
 class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):
     RecyclerView.Adapter<ScheduleAdaptar.ViewHolder>() {
 
