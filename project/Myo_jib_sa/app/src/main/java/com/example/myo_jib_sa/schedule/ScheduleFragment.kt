@@ -431,15 +431,17 @@ class ScheduleFragment() : Fragment() {
 
                     //현재 미션 데이터 리스트 리사이클러뷰 연결
                     //디데이 얼마 안남은 미션부터 많이 남은 순으로 정렬돼 있음
-                    for (i in 0 until missionList!!.size) {
-                        mDataList.add(
-                            Mission(
-                                missionList[i].missionId,
-                                missionList[i].missionTitle,
-                                missionList[i].challengerCnt,
-                                missionList[i].dday
+                    if(missionList != null) {
+                        for (i in 0 until missionList!!.size) {
+                            mDataList.add(
+                                Mission(
+                                    missionList[i].missionId,
+                                    missionList[i].missionTitle,
+                                    missionList[i].challengerCnt,
+                                    missionList[i].dday
+                                )
                             )
-                        )
+                        }
                     }
                     setCurrentMissionAdapter()
 
@@ -525,7 +527,9 @@ class ScheduleFragment() : Fragment() {
         var dayOfWeek = firstDay.dayOfWeek.value
 
 
-        var currentMonth = YYYY_MMFromDate(LocalDate.of(standardDate.year, standardDate.monthValue, standardDate.dayOfMonth))//MMMM-DD형태로 포맷
+        var currentMonth = YYYY_MMFromDate(standardDate)//MMMM-DD형태로 포맷
+        Log.d("retrofit", "standardDate"+standardDate)
+        Log.d("retrofit", "currentMonth"+currentMonth)
         scheduleMonthApi(currentMonth, lastDay)//날짜별로 스케줄 있는지 없는지 체크
     }
 
@@ -586,7 +590,7 @@ class ScheduleFragment() : Fragment() {
     //YYYY 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
     private fun yearFromDate(date: LocalDate?): String? {
-        var formatter = DateTimeFormatter.ofPattern("YYYY")
+        var formatter = DateTimeFormatter.ofPattern("yyyy")
         return date?.format(formatter)
     }
 
@@ -600,14 +604,14 @@ class ScheduleFragment() : Fragment() {
     //YYYY년 M월 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
     private fun YYYYMMFromDate(date: LocalDate?): String? {
-        var formatter = DateTimeFormatter.ofPattern("YYYY년 M월")
+        var formatter = DateTimeFormatter.ofPattern("yyyy년 M월")
         return date?.format(formatter)
     }
 
     //YYYY- MM 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
     private fun YYYY_MMFromDate(date: LocalDate?): String? {
-        var formatter = DateTimeFormatter.ofPattern("YYYY-MM")
+        var formatter = DateTimeFormatter.ofPattern("yyyy-MM")
         return date?.format(formatter)
     }
 
@@ -621,7 +625,7 @@ class ScheduleFragment() : Fragment() {
     //YYYY-MM-DD 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
     private fun YYYYMMDDFromDate(date: LocalDate?): String? {
-        var formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd")
+        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         return date?.format(formatter)
     }
 

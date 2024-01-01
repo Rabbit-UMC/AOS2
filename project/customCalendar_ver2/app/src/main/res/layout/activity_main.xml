@@ -6,79 +6,100 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- calendar -->
+
     <LinearLayout
+        android:id="@+id/calendar_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-
-        <TextView
-            android:id="@+id/year_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="55dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="2023"
-            android:textSize="16sp"
-            />
-
-
-        <ImageButton
-            android:id="@+id/preMonth_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="18dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/month_tv"
-            android:background="@android:color/transparent"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_schedule_calendar_left" />
-
-            <TextView
-                android:id="@+id/month_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="6월"
-                android:textSize="16sp" />
-
-        <ImageButton
-            android:id="@+id/nextMonth_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="18dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/month_tv"
-            android:background="@android:color/transparent"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_schedule_calendar_right" />
-
-    </RelativeLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/calendar_rv"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/calendar_year_month_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp"
-            />
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_template">
+
+            <TextView
+                android:id="@+id/selected_year_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:fontFamily="@font/font_pretendard_semibold"
+                android:text="2023"
+                android:textColor="#234BD9"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/selected_month_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/font_pretendard_bold"
+                android:text="8월"
+                android:textColor="#234BD9"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/preMonth_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="13dp"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_schedule_calendar_left_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/selected_month_tv"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/nextMonth_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="13dp"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_schedule_calendar_right_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/selected_month_tv"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/calendar_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.9" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </LinearLayout>
 
