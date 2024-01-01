@@ -5,21 +5,21 @@ import SwipeHelperCallback
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.Schedule.API.RetrofitClient
 import com.example.myo_jib_sa.Schedule.API.currentMission.CurrentMissionResponse
+import com.example.myo_jib_sa.Schedule.API.currentMission.CurrentMissionResult
 import com.example.myo_jib_sa.Schedule.API.currentMission.CurrentMissionService
 import com.example.myo_jib_sa.Schedule.API.scheduleDelete.ScheduleMonthService
 import com.example.myo_jib_sa.Schedule.API.scheduleHome.Mission
@@ -58,7 +58,7 @@ class ScheduleFragment() : Fragment() {
     var firstSelectedDatePosition: Int = -1
 
 
-    var mDataList = ArrayList<Mission>() //미션 리스트 데이터
+    var mDataList = ArrayList<CurrentMissionResult>() //미션 리스트 데이터
     var sDataList = ArrayList<ScheduleOfDayResult>() //일정 리스트 데이터
 
     private var adLoader: AdLoader? = null //광고를 불러올 adLoader 객체
@@ -464,10 +464,12 @@ class ScheduleFragment() : Fragment() {
                     if (missionList != null) {
                         for (i in 0 until missionList!!.size) {
                             mDataList.add(
-                                Mission(
+                                CurrentMissionResult(
                                     missionList[i].missionId,
                                     missionList[i].missionTitle,
                                     missionList[i].challengerCnt,
+                                    missionList[i].categoryId,
+                                    missionList[i].image,
                                     missionList[i].dday
                                 )
                             )

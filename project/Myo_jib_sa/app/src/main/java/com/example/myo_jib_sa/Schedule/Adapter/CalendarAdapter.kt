@@ -1,4 +1,4 @@
- package com.example.myo_jib_sa.Schedule.Adapter
+package com.example.myo_jib_sa.Schedule.Adapter
 
 import android.annotation.SuppressLint
 import android.graphics.Color

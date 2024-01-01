@@ -1,5 +1,4 @@
 package com.example.myo_jib_sa.Schedule.API.scheduleDetail
-
 import com.google.gson.annotations.SerializedName
 
 

@@ -11,8 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDeleteBinding
 import com.example.myo_jib_sa.Schedule.API.RetrofitClient
+import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDeleteBinding
 import com.example.myo_jib_sa.Schedule.API.scheduleDelete.ScheduleDeleteResponse
 import com.example.myo_jib_sa.Schedule.API.scheduleDelete.ScheduleDeleteService
 import com.example.myo_jib_sa.Schedule.Adapter.ScheduleAdaptar
