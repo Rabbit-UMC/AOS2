@@ -16,7 +16,7 @@ import java.time.LocalDate
 
 data class CalendarData(
     val date: LocalDate?,
-    var hasSchedule :Boolean? = false,//ture이면 일정 있음, false이면 일정 없음
+    var scheduleCnt :Int? = 0,//일정 개수
     var isSelected : Boolean = false//ture이면 선택, false이면 미션택
 )
 
@@ -46,17 +46,6 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
             itemClickListener.onClick(dayList[position])
             Log.d("position", "position ${position}")
 
-            if(dayList[position].hasSchedule == true) {
-
-//                var iYear = day?.year
-//                var iMonth = day?.monthValue
-//                var iDay = day?.dayOfMonth
-//
-////                Toast.makeText(holder.itemView.context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
-////                    .show()
-            }
-
-
             dayList[position].isSelected = true
             notifyItemChanged(position)
 
@@ -82,12 +71,19 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
                 binding.dayTv.text = data.date.dayOfMonth.toString()
             }
             //스케줄 가지고 있으면 표시
-            if(data.hasSchedule == true)
-                binding.hasScheduleIv.visibility = View.VISIBLE
-            else
-                binding.hasScheduleIv.visibility = View.INVISIBLE
+            Log.d("debug", ""+data.scheduleCnt)
 
+            binding.hasScheduleIv.visibility = View.GONE
+            binding.twoScheduleLayout.visibility = View.GONE
+            binding.threeScheduleLayout.visibility = View.GONE
+            when(data.scheduleCnt){
+                null, 0 -> binding.hasScheduleIv.visibility = View.GONE
+                1-> binding.hasScheduleIv.visibility = View.VISIBLE
+                2->binding.twoScheduleLayout.visibility = View.VISIBLE
+                else ->binding.threeScheduleLayout.visibility = View.VISIBLE
+            }
 
+            //선택하면 파란 동그라미 & 글자 색 변경
             if(data.isSelected){
                 binding.selectedDateCircle.visibility = View.VISIBLE
                 binding.dayTv.setTextColor(Color.parseColor("#FFFFFF"));

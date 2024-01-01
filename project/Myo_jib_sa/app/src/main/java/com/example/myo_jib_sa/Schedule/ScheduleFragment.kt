@@ -168,7 +168,7 @@ class ScheduleFragment() : Fragment() {
                         CalendarData(
                             LocalDate.of(
                                 standardDate.year, standardDate.monthValue, i
-                            ), hasScheduleMap[currentDate], true
+                            ), scheduleCntMap["$i"], true
                         )
                     )
                     firstSelectedDatePosition = i - 1
@@ -180,7 +180,7 @@ class ScheduleFragment() : Fragment() {
                         CalendarData(
                             LocalDate.of(
                                 standardDate.year, standardDate.monthValue, i
-                            ), hasScheduleMap[currentDate]
+                            ), scheduleCntMap["$i"]
                         )
                     )
                 }
@@ -196,7 +196,7 @@ class ScheduleFragment() : Fragment() {
                     CalendarData(
                         LocalDate.of(
                             standardDate.year, standardDate.monthValue, i - dayOfWeek
-                        ), hasScheduleMap[currentDate], true
+                        ), scheduleCntMap["${i-dayOfWeek}"], true
                     )
                 )
                 firstSelectedDatePosition = i - 1
@@ -208,7 +208,7 @@ class ScheduleFragment() : Fragment() {
                     CalendarData(
                         LocalDate.of(
                             standardDate.year, standardDate.monthValue, i - dayOfWeek
-                        ), hasScheduleMap[currentDate]
+                        ), scheduleCntMap["${i-dayOfWeek}"]
                     )
                 )//얘만 살리기
             }
@@ -543,6 +543,7 @@ class ScheduleFragment() : Fragment() {
 
 
     private var hasScheduleMap: HashMap<String?, Boolean> = HashMap()
+    private lateinit var scheduleCntMap : Map<String, Int>
 
     //scheduleMonthApi 연결: 스케줄 있는지 없는지 체크 | standardDate기준으로 달력 생성
     @RequiresApi(Build.VERSION_CODES.O)
@@ -555,11 +556,12 @@ class ScheduleFragment() : Fragment() {
         var yearMonth = YearMonth.from(standardDate)
         var lastDay = yearMonth.lengthOfMonth()
 
-        //hasScheduleMap초기화
-        for (j in 1..lastDay) {
-            val formatter = DecimalFormat("00")
-            hasScheduleMap["$yyyyMM-${formatter.format(j)}"] = false
-        }
+        scheduleCntMap = HashMap<String, Int>()
+//        //hasScheduleMap초기화
+//        for (j in 1..lastDay) {
+//            val formatter = DecimalFormat("00")
+//            hasScheduleMap["$yyyyMM-${formatter.format(j)}"] = false
+//        }
 
         // JWT 값 가져오기
         val sharedPreferences =
@@ -576,11 +578,17 @@ class ScheduleFragment() : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     Log.d("retrofit", response.body().toString());
-                    val scheduleList = response.body()?.result?.dayList
-                    val formatter = DecimalFormat("00")
+                    val scheduleList = response.body()?.result?.schedulesOfDay
 
-                    for (i in 0 until scheduleList!!.size) {
-                        hasScheduleMap["$yyyyMM-${formatter.format(scheduleList[i])}"] = true
+                    if(scheduleList != null) {//스케줄이 있는 달일때만 map에 값 넣어주기
+                        Log.d("debug", "" + scheduleList)
+                        scheduleCntMap = scheduleList!!
+                        Log.d("debug", "" + scheduleCntMap)
+
+
+                        for (i in 0 until scheduleList!!.size) {
+//                        hasScheduleMap["$yyyyMM-${formatter.format(scheduleList[i])}"] = true
+                        }
                     }
 
                     val dayList = DayInMonthArray()

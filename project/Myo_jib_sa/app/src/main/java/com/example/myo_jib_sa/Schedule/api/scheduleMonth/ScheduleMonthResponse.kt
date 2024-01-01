@@ -7,5 +7,5 @@ data class ScheduleMonthResponse(
 ):BaseResponse()
 
 data class ScheduleMonthResult(
-    val dayList: List<Int>
+    val schedulesOfDay: Map<String, Int>
 )
