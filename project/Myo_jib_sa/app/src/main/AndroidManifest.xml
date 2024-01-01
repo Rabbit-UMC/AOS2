@@ -20,6 +20,12 @@
         android:theme="@style/Theme.Myo_jib_sa"
         tools:targetApi="31">
         <activity
+            android:name=".community.ManagerImgActivity"
+            android:exported="false" />
+       <activity           
+            android:name=".mypage.history.MypageHistoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".MissionCertificationWriteCheckActivity"
             android:exported="false" />
         <activity
@@ -38,30 +44,29 @@
             android:name=".community.WritePostingActivity"
             android:exported="false" />
         <activity
-            android:name=".schedule.currentMissionActivity.DeleteCurrentMissionActivity"
+            android:name=".Schedule.currentMissionActivity.DeleteCurrentMissionActivity"
             android:exported="false" />
         <activity
             android:name=".mission.MissionCreateActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+            android:windowSoftInputMode="adjustPan" /> <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <!-- ${AD_APP_ID} Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="${AD_APP_ID}" />
 
         <activity
-            android:name=".schedule.currentMissionActivity.CurrentMissionActivity"
+            android:name=".Schedule.currentMissionActivity.CurrentMissionActivity"
             android:exported="false" />
         <activity
-            android:name=".schedule.createScheduleActivity.CreateScheduleActivity"
+            android:name=".Schedule.CreateScheduleActivity.CreateScheduleActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".schedule.historyActivity.FailedMissionActivity"
+            android:name=".Schedule.historyActivity.FailedMissionActivity"
             android:exported="false" />
         <activity
-            android:name=".schedule.historyActivity.SuccessMissionActivity"
+            android:name=".Schedule.historyActivity.SuccessMissionActivity"
             android:exported="false" />
         <activity
             android:name=".community.PostActivity"
@@ -86,27 +91,28 @@
             android:name=".community.missionCert.MissionCertificationWriteActivity"
             android:label="MissionCertificationWriteActivity" />
         <activity
-            android:name=".Login.AddEmailDialogActivity"
+            android:name=".login.AddEmailDialogActivity"
             android:exported="false"
             android:theme="@style/AppTheme.PopupActivity" />
         <activity
             android:name=".mypage.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".Login.MyoSignUpActivity"
-            android:exported="false" />
+            android:name=".login.MyoSignUpActivity"
+            android:exported="false">
+
+        </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Login.KakaoLoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="true" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
+        <activity
+            android:name=".login.KakaoLoginActivity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

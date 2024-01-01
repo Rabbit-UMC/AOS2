@@ -542,7 +542,7 @@ class ScheduleFragment() : Fragment() {
 
     private var hasScheduleMap: HashMap<String?, Boolean> = HashMap()
 
-    //scheduleMonthApi 연결: 스케줄 있는지 없는지 체크
+    //scheduleMonthApi 연결: 스케줄 있는지 없는지 체크 | standardDate기준으로 달력 생성
     @RequiresApi(Build.VERSION_CODES.O)
     private fun scheduleMonthApi() {
         var yyyyMM = YYYY_MMFromDate(standardDate)
