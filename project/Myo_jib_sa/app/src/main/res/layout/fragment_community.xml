@@ -167,20 +167,23 @@
                             app:layout_constraintTop_toBottomOf="@+id/textView9">
 
                             <LinearLayout
+                                android:id="@+id/community_board_art_linear"
                                 android:layout_width="77dp"
                                 android:layout_height="48dp"
-                                android:orientation="horizontal"
                                 android:gravity="center"
+                                android:orientation="horizontal"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
+
                                 <ImageView
                                     android:id="@+id/imageView14"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:src="@drawable/ic_community_home_art" />
+
                                 <TextView
                                     android:id="@+id/textView36"
                                     android:layout_width="wrap_content"
@@ -204,20 +207,23 @@
                             app:layout_constraintTop_toTopOf="@+id/constraintLayout9">
 
                             <LinearLayout
+                                android:id="@+id/community_board_free_linear"
                                 android:layout_width="77dp"
                                 android:layout_height="48dp"
-                                android:orientation="horizontal"
                                 android:gravity="center"
+                                android:orientation="horizontal"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
+
                                 <ImageView
                                     android:id="@+id/imageView15"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:src="@drawable/ic_community_home_free" />
+
                                 <TextView
                                     android:id="@+id/textView38"
                                     android:layout_width="wrap_content"
@@ -240,20 +246,23 @@
                             app:layout_constraintTop_toTopOf="@+id/constraintLayout9">
 
                             <LinearLayout
+                                android:id="@+id/community_board_exercise_linear"
                                 android:layout_width="77dp"
                                 android:layout_height="48dp"
-                                android:orientation="horizontal"
                                 android:gravity="center"
+                                android:orientation="horizontal"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
+
                                 <ImageView
                                     android:id="@+id/imageView12"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:src="@drawable/ic_community_home_exercise" />
+
                                 <TextView
                                     android:id="@+id/textView34"
                                     android:layout_width="wrap_content"
