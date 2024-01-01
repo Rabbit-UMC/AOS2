@@ -1,12 +1,11 @@
-package com.example.myo_jib_sa.Schedule.api.scheduleOfDay
+package com.example.myo_jib_sa.Schedule.API.scheduleOfDay
+
+import com.example.myo_jib_sa.base.BaseResponse
 
 
 data class ScheduleOfDayResponse(
-    val isSuccess: Boolean,
-    val code: Int,
-    val message: String,
     val result: List<ScheduleOfDayResult>
-)
+):BaseResponse()
 data class ScheduleOfDayResult(
     val scheduleId: Long,
     val scheduleTitle: String,

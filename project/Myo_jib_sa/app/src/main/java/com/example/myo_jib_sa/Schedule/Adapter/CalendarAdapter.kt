@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa.Schedule.Adapter
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Build
@@ -13,54 +14,37 @@ import com.example.myo_jib_sa.databinding.ItemScheduleCalendarDayBinding
 import java.time.LocalDate
 
 
-var prePosition : Int = -1
 data class CalendarData(
     val date: LocalDate?,
-    var hasSchedule :Boolean? = false,//ture이면 일정 있음, false이면 일정 없음
+    var scheduleCnt :Int? = 0,//일정 개수
     var isSelected : Boolean = false//ture이면 선택, false이면 미션택
 )
 
 
 class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
     RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
+    var prePosition : Int = -1
 
-//    class ItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
-//        val dayText: TextView = itemView.findViewById(R.id.day_tv)
-//        val hasScheduleImg: ImageView = itemView.findViewById(R.id.hasSchedule_iv)
-//        val isSelectedImg : ImageView = itemView.findViewById(R.id.selected_date_circle)
-//    }
 
-    //화면 설정
-    override fun onCreateViewHolder(
+    override fun onCreateViewHolder( //화면 설정
         parent: ViewGroup,
         viewType: Int
-    ): CalendarAdapter.ViewHolder {
+    ): ViewHolder {
         val binding =
             ItemScheduleCalendarDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    //데이터 설정
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(dayList[position])
 
+    @SuppressLint("ResourceAsColor")
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {//데이터 설정
+        holder.bind(dayList[position])
 
         //날짜 클릭 이벤트
         holder.itemView.setOnClickListener{
             itemClickListener.onClick(dayList[position])
             Log.d("position", "position ${position}")
-
-            if(dayList[position].hasSchedule == true) {
-
-//                var iYear = day?.year
-//                var iMonth = day?.monthValue
-//                var iDay = day?.dayOfMonth
-//
-////                Toast.makeText(holder.itemView.context, "${iYear}년 ${iMonth}월 ${iDay}일", Toast.LENGTH_SHORT)
-////                    .show()
-            }
-
 
             dayList[position].isSelected = true
             notifyItemChanged(position)
@@ -87,12 +71,19 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
                 binding.dayTv.text = data.date.dayOfMonth.toString()
             }
             //스케줄 가지고 있으면 표시
-            if(data.hasSchedule == true)
-                binding.hasScheduleIv.visibility = View.VISIBLE
-            else
-                binding.hasScheduleIv.visibility = View.INVISIBLE
+            Log.d("debug", ""+data.scheduleCnt)
 
+            binding.hasScheduleIv.visibility = View.GONE
+            binding.twoScheduleLayout.visibility = View.GONE
+            binding.threeScheduleLayout.visibility = View.GONE
+            when(data.scheduleCnt){
+                null, 0 -> binding.hasScheduleIv.visibility = View.GONE
+                1-> binding.hasScheduleIv.visibility = View.VISIBLE
+                2->binding.twoScheduleLayout.visibility = View.VISIBLE
+                else ->binding.threeScheduleLayout.visibility = View.VISIBLE
+            }
 
+            //선택하면 파란 동그라미 & 글자 색 변경
             if(data.isSelected){
                 binding.selectedDateCircle.visibility = View.VISIBLE
                 binding.dayTv.setTextColor(Color.parseColor("#FFFFFF"));
@@ -123,45 +114,23 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
         return dayList.size
     }
 
-    class HorizontalSpaceDecoration(private val deviceWidth: Int) : RecyclerView.ItemDecoration() {
+    class GridSpaceDecoration(private val deviceWidth: Int) : RecyclerView.ItemDecoration() {
         override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
 
             val position = parent.getChildAdapterPosition(view) //각 아이템뷰의 순서 (index)
             //val totalItemCount = state.itemCount                //총 아이템 수
             //val scrollPosition = state.targetScrollPosition     //스크롤 됬을때 아이템 position
 
-            Log.d("position", "position ${position}")
-            val spanCount =7
-            val column = position % spanCount      // 1부터 시작
+            val column = position % 7      // 0~6
 
             val leftSpace = (deviceWidth * 0.03).toInt()
-            val topSpace = (deviceWidth * 0.04).toInt()
+            val topSpace = (deviceWidth * 0.03).toInt()
 
-            /** 첫번째 행(row-1) 이후부터 있는 아이템에만 상단에 [space] 만큼의 여백을 추가한다. 즉, 첫번째 행에 있는 아이템에는 상단에 여백을 주지 않는다.*/
-
-                outRect.top = topSpace
-            /** 첫번째 열이 아닌(None Column-1) 아이템들만 좌측에 [space] 만큼의 여백을 추가한다. 즉, 첫번째 열에 있는 아이템에는 좌측에 여백을 주지 않는다. */
-            //outRect.left = leftSpace
-            if(column != 0)
-                outRect.left = leftSpace
-            //outRect.right = leftSpace
+            outRect.top = topSpace
 
 
-
-
-
-
-
-
-            //첫번째 아이템이 아닐때 left -margin
-            //if (position % 7 != 0){
-                //outRect.left = leftSpace
-                //outRect.top =topSpace
-            //}
-
-            //outRect.set(0,0,0,0)   //left, top, bottom, right 한번에 주는 속성
-
-
+            outRect.left = (deviceWidth * 0.03).toInt()
+            outRect.right = (deviceWidth * 0.03).toInt()
 
         }
     }

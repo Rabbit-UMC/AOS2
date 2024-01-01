@@ -16,10 +16,10 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.Schedule.API.RetrofitClient
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
 import com.example.myo_jib_sa.Schedule.ScheduleFragment
-import com.example.myo_jib_sa.Schedule.api.RetrofitClient
-import com.example.myo_jib_sa.Schedule.api.scheduleDetail.ScheduleDetailResult
+import com.example.myo_jib_sa.Schedule.API.scheduleDetail.ScheduleDetailResult
 import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.adapter.CreateScheduleCalendarAdapter
 import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.adapter.MyMissionAdapter
 import com.example.myo_jib_sa.Schedule.CreateScheduleActivity.adapter.SelectDateData
@@ -150,40 +150,25 @@ class CreateScheduleActivity : AppCompatActivity() {
 
         for(i in 1..42){
 
-            if(dayOfWeek == 7){//그 달의 첫날이 일요일일때 작동: 한칸 아래줄부터 날짜 표시되는 현상 막기위해
-                if(i>lastDay) {
+            if (dayOfWeek == 7) {//그 달의 첫날이 일요일일때 작동: 한칸 아래줄부터 날짜 표시되는 현상 막기위해
+                if (i > lastDay) {
                     //break
                     dayList.add(SelectDateData(null))
-                }
-                else {
+                } else {
                     if (i == referenceDate.dayOfMonth) {//referenceDate의 dayList에서 index값
                         selectedDateIndex = i - 1
                     }
                     if (selectedDate == LocalDate.of(
-                            referenceDate.year,
-                            referenceDate.monthValue,
-                            i
+                            referenceDate.year, referenceDate.monthValue, i
                         )
                     ) { //현재 선택한 date
                         dayList.add(
                             SelectDateData(
-                                LocalDate.of(
-                                    referenceDate.year,
-                                    referenceDate.monthValue,
-                                    i
-                                ), true
-                            )
-                        )
+                                LocalDate.of(referenceDate.year, referenceDate.monthValue, i), true))
                     } else {
                         dayList.add(
                             SelectDateData(
-                                LocalDate.of(
-                                    referenceDate.year,
-                                    referenceDate.monthValue,
-                                    i
-                                )
-                            )
-                        )
+                                LocalDate.of(referenceDate.year, referenceDate.monthValue, i)))
                     }
                 }
             }
