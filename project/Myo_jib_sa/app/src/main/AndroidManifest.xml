@@ -44,7 +44,7 @@
             android:name=".community.WritePostingActivity"
             android:exported="false" />
         <activity
-            android:name=".Schedule.currentMissionActivity.DeleteCurrentMissionActivity"
+            android:name=".schedule.currentMissionActivity.DeleteCurrentMissionActivity"
             android:exported="false" />
         <activity
             android:name=".mission.MissionCreateActivity"
@@ -55,18 +55,18 @@
             android:value="${AD_APP_ID}" />
 
         <activity
-            android:name=".Schedule.currentMissionActivity.CurrentMissionActivity"
+            android:name=".schedule.currentMissionActivity.CurrentMissionActivity"
             android:exported="false" />
         <activity
-            android:name=".Schedule.CreateScheduleActivity.CreateScheduleActivity"
+            android:name=".schedule.createScheduleActivity.CreateScheduleActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".Schedule.historyActivity.FailedMissionActivity"
+            android:name=".schedule.historyActivity.FailedMissionActivity"
             android:exported="false" />
         <activity
-            android:name=".Schedule.historyActivity.SuccessMissionActivity"
+            android:name=".schedule.historyActivity.SuccessMissionActivity"
             android:exported="false" />
         <activity
             android:name=".community.PostActivity"
@@ -99,16 +99,16 @@
             android:exported="false" />
         <activity
             android:name=".login.MyoSignUpActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="true" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity
             android:name=".login.KakaoLoginActivity"
             android:exported="true"></activity>

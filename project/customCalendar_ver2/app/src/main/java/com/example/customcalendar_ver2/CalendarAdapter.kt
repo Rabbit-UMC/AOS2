@@ -1,5 +1,7 @@
 package com.example.customcalendar_ver2
 
+import android.graphics.Color
+import android.graphics.Rect
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +25,7 @@ class CalendarAdapter(private val dayList:ArrayList<SelectDateData>):
 
     class ItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val dayText: TextView = itemView.findViewById(R.id.day_tv)
-        val selectedDateImg: ImageView = itemView.findViewById(R.id.selectedDate_iv)
+        val selectedDateImg: ImageView = itemView.findViewById(R.id.selected_date_circle)
     }
 
     //화면 설정
@@ -46,11 +48,14 @@ class CalendarAdapter(private val dayList:ArrayList<SelectDateData>):
         else{
             holder.dayText.text = day.dayOfMonth.toString()
         }
-        if(dayList[position].isSelected == true){
+
+        if(dayList[position].isSelected){
             holder.selectedDateImg.visibility = View.VISIBLE
+            holder.dayText.setTextColor(Color.parseColor("#FFFFFF"));
         }
         else{
             holder.selectedDateImg.visibility = View.INVISIBLE
+            holder.dayText.setTextColor(Color.parseColor("#000000"));
         }
 
 
@@ -91,5 +96,26 @@ class CalendarAdapter(private val dayList:ArrayList<SelectDateData>):
 
     override fun getItemCount(): Int {
         return dayList.size
+    }
+
+    class GridSpaceDecoration(private val deviceWidth: Int) : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+
+            val position = parent.getChildAdapterPosition(view) //각 아이템뷰의 순서 (index)
+            //val totalItemCount = state.itemCount                //총 아이템 수
+            //val scrollPosition = state.targetScrollPosition     //스크롤 됬을때 아이템 position
+
+            val column = position % 7      // 0~6
+
+            val leftSpace = (deviceWidth * 0.03).toInt()
+            val topSpace = (deviceWidth * 0.04).toInt()
+
+            outRect.top = topSpace
+
+
+            outRect.left = (deviceWidth * 0.03).toInt()
+            outRect.right = (deviceWidth * 0.03).toInt()
+
+        }
     }
 }
