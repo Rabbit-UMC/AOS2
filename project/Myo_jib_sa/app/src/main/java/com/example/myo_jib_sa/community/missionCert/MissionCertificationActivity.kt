@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myo_jib_sa.community.ManagerPageActivity
 import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionCertRetrofitManager
+import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.community.adapter.MissionCertViewpagerAdapter
 import com.example.myo_jib_sa.databinding.ActivityMissionCertificationBinding
 
@@ -43,7 +43,7 @@ class MissionCertificationActivity: AppCompatActivity() {
         Constance.jwt?.let { setMissionCert(it, 1, missionId) }
 
         //게시판 이름
-        when (boardId) {
+        when (boardId.toLong()) {
             Constance.ART_ID -> {
                 binding.missionCertBoardNameTxt.text = "예술 게시판"
             }

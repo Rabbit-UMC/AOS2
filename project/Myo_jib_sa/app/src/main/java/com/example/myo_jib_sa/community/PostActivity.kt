@@ -17,10 +17,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.Retrofit.post.ArticleImage
-import com.example.myo_jib_sa.community.Retrofit.post.CommentList
-import com.example.myo_jib_sa.community.Retrofit.post.PostRetrofitManager
-import com.example.myo_jib_sa.community.Retrofit.post.PostViewResponse
+import com.example.myo_jib_sa.community.api.post.ArticleImage
+import com.example.myo_jib_sa.community.api.post.CommentList
+import com.example.myo_jib_sa.community.api.post.PostRetrofitManager
+import com.example.myo_jib_sa.community.api.post.PostViewResponse
 import com.example.myo_jib_sa.community.adapter.PostCommentAdapter
 import com.example.myo_jib_sa.community.adapter.PostImgAdapter
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
@@ -286,7 +286,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         linkCommentRecyclr(contents.result.commentList,isWriter, contents.result.articleId)
 
         //게시판 이름
-        when(boardId){
+        when(boardId.toLong()){
             Constance.ART_ID-> {
                 binding.postNameTxt.text="예술 게시판"
             }

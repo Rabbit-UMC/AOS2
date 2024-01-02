@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community.Retrofit.BoardPost
+package com.example.myo_jib_sa.community.api.BoardPost
 
 import com.example.myo_jib_sa.community.Constance
 import retrofit2.Call

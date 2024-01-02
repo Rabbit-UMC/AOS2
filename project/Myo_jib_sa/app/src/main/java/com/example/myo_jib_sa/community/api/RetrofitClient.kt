@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community.Retrofit
+package com.example.myo_jib_sa.community.api
 
 import android.util.Log
 import retrofit2.Retrofit
@@ -10,7 +10,7 @@ object RetrofitClient {
 
     //레트로핏 클라이언트 가져오기
     fun getClient(baseUrl: String): Retrofit?{
-        Log.d("홈 api", "RetrofitClient - getClient() call")
+        Log.d("api", "RetrofitClient - getClient() call")
 
         //없으면 할당
         if(retrofitClient ==null){

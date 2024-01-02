@@ -1,8 +1,8 @@
-package com.example.myo_jib_sa.community.Retrofit.communityHome
+package com.example.myo_jib_sa.community.api.communityHome
 
 import android.content.Context
 import android.util.Log
-import com.example.myo_jib_sa.community.Retrofit.RetrofitClient
+import com.example.myo_jib_sa.community.api.RetrofitClient
 import com.example.myo_jib_sa.community.Constance
 import retrofit2.Call
 import retrofit2.Response
@@ -36,14 +36,14 @@ class CommunityHomeManager(context: Context) {
                 Log.d("홈 api", "RetrofitManager profile onResponse \t :${response.message()} ")
                 val response: HomeResponse? = response?.body() //response 형식의 응답 받음
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("홈 api",
-                            "RetrofitManager 커뮤니티 홈 is Success\t :${response.code} ")
+                            "RetrofitManager 커뮤니티 홈 is Success\t :${response.errorCode}, ${response.errorMessage} ")
 
                         completion(response)
                     } else {
                         Log.d("홈 api",
-                            "RetrofitManager 커뮤니티 홈 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 커뮤니티 홈 is NOT Success\t :${response.errorCode}, ${response.errorMessage}")
                     }
                 } else {
                     Log.d("홈 api", "RetrofitManager 커뮤니티 홈 null")
