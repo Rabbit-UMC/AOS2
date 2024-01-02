@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.community.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Outline
 import android.graphics.Rect
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.communityHome.MainMission
+import com.example.myo_jib_sa.community.missionCert.MissionCertificationActivity
 import com.example.myo_jib_sa.databinding.ItemCommunityMissionBinding
 
 class HomeMissionAdapter(
@@ -47,6 +49,7 @@ class HomeMissionAdapter(
                 binding.homeMissionItemNameTxt.text=item.mainMissionTitle
                 //binding.homeMissionItemBoardNameTxt.text=item.categoryName
                 binding.homeMissionItemDdayTxt.text=item.dday
+                binding.homeMissionItemHostNameTxt.text=item.hostUserName
 
 
 
@@ -54,6 +57,7 @@ class HomeMissionAdapter(
                 binding.MissionItemConstraintLayout.setOnClickListener{
                     //클릭 이벤트 처리
                     //미션 터치시 해당 미션 이동
+                    Log.d("미션 터치", "미션 터치 함")
                     missionMove(item.mainMissionId, binding.MissionItemConstraintLayout)
                }
                 //클릭이벤트
@@ -107,6 +111,9 @@ class HomeMissionAdapter(
 
     //게시판 이름에 따라 각 미션으로 이동 todo:게시판 카테고리 알아야함
     private fun missionMove(id:Long, layout: ConstraintLayout ){
+        val intent = Intent(layout.context, MissionCertificationActivity::class.java )
+        intent.putExtra("missionId", id)
+        layout.context.startActivity(intent)
         /*when(name){
             "예술 게시판"-> {
                 val intent = Intent(layout.context, BoardExerciseActivity::class.java )
