@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -13,6 +15,20 @@ import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.community.adapter.MissionCertViewpagerAdapter
 import com.example.myo_jib_sa.databinding.ActivityMissionCertificationBinding
+import com.example.myo_jib_sa.databinding.FragmentBottomsheetRankingBinding
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+
+class ModalBottomSheet : BottomSheetDialogFragment() {
+    private lateinit var binding: FragmentBottomsheetRankingBinding
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding= FragmentBottomsheetRankingBinding.inflate(layoutInflater)
+        return binding.root
+    }
+}
 
 class MissionCertificationActivity: AppCompatActivity() {
 
@@ -39,6 +55,12 @@ class MissionCertificationActivity: AppCompatActivity() {
         boardId = intent.getIntExtra("boardId", 0)
         missionImg = intent.getStringExtra("missionImg").toString()
         hostId = intent.getLongExtra("hostId", 0)
+
+        //랭킹 확인
+        val modalBottomSheet = ModalBottomSheet()
+        binding.rankingImg.setOnClickListener {
+            modalBottomSheet.show(supportFragmentManager, "Open Bottom Sheet")
+        }
 
         Constance.jwt?.let { setMissionCert(it, 1, missionId) }
 
