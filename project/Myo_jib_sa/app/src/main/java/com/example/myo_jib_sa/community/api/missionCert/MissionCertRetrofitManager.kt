@@ -1,11 +1,11 @@
-package com.example.myo_jib_sa.community.retrofit.missionCert
+package com.example.myo_jib_sa.community.api.missionCert
 
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.retrofit.RetrofitClient
-import com.example.myo_jib_sa.community.retrofit.post.SimpleResponse
+import com.example.myo_jib_sa.community.api.RetrofitClient
+import com.example.myo_jib_sa.community.api.post.SimpleResponse
 import retrofit2.Call
 import retrofit2.Response
 

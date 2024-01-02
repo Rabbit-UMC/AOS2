@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myo_jib_sa.community.retrofit.missionCert.MCrecyclrImg
-import com.example.myo_jib_sa.community.retrofit.missionCert.MissionProofImages
+import com.example.myo_jib_sa.community.api.missionCert.MCrecyclrImg
+import com.example.myo_jib_sa.community.api.missionCert.MissionProofImages
 import com.example.myo_jib_sa.community.adapter.MissionCertAdapter
 import com.example.myo_jib_sa.databinding.FragmentMissionCertificationPostBinding
 

@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community.retrofit.BoardPost
+package com.example.myo_jib_sa.community.api.BoardPost
 
 data class PostBoardResponse(
     val isSuccess:String,

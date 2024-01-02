@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.community.PostActivity
-import com.example.myo_jib_sa.community.retrofit.communityHome.PopularArticle
+import com.example.myo_jib_sa.community.api.communityHome.PopularArticle
 import com.example.myo_jib_sa.databinding.ItemPostBinding
 
 class HomePostAdapter (
@@ -24,7 +24,6 @@ class HomePostAdapter (
             fun bind(item: PopularArticle){
                 binding.postItemNameTxt.text=item.articleTitle
                 binding.postItmeCommentCntTxt.text=item.commentCount.toString()
-                binding.postItemUploadTimeTxt.text=item.uploadTime
                 binding.postItmeHeartNumTxt.text=item.likeCount.toString()
 
                 //클릭 이벤트

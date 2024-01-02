@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.myo_jib_sa.community.retrofit.manager.ManagerMissionJoinRequest
+import com.example.myo_jib_sa.community.api.manager.ManagerMissionJoinRequest
 import com.example.myo_jib_sa.community.adapter.ManagerPageViewpagerAdapter
 import com.example.myo_jib_sa.databinding.ActivityManagerPageBinding
 
@@ -32,7 +32,7 @@ class ManagerPageActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //관리자 페이지 이름 설정
-        val boardId= intent.getIntExtra("boardId",0)
+        val boardId= intent.getIntExtra("boardId",0).toLong()
 
         //뷰페이저 프레그먼트 연결
         binding.managerMissionVp2.adapter=mAdapter

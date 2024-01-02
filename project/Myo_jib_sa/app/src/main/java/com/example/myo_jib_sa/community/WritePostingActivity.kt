@@ -11,11 +11,11 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.community.retrofit.imgUploadRetrofitManager
-import com.example.myo_jib_sa.community.retrofit.post.ImageList
-import com.example.myo_jib_sa.community.retrofit.post.PostCreateRequest
-import com.example.myo_jib_sa.community.retrofit.post.PostEditRequest
-import com.example.myo_jib_sa.community.retrofit.post.PostRetrofitManager
+import com.example.myo_jib_sa.community.api.imgUploadRetrofitManager
+import com.example.myo_jib_sa.community.api.post.ImageList
+import com.example.myo_jib_sa.community.api.post.PostCreateRequest
+import com.example.myo_jib_sa.community.api.post.PostEditRequest
+import com.example.myo_jib_sa.community.api.post.PostRetrofitManager
 import com.example.myo_jib_sa.databinding.ActivityWritePostingBinding
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -56,7 +56,7 @@ class WritePostingActivity : AppCompatActivity() {
 
         boardId=intent.getIntExtra("boardId", 0)
         //게시판 이름
-        when(boardId){
+        when(boardId.toLong()){
             Constance.ART_ID-> {
                 binding.postWriteNameTxt.text="예술 게시판"
             }
