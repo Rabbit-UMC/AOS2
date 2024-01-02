@@ -13,8 +13,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.ImgPath
-import com.example.myo_jib_sa.community.Retrofit.imgUploadRetrofitManager
-import com.example.myo_jib_sa.community.Retrofit.missionCert.MissionCertRetrofitManager
+import com.example.myo_jib_sa.community.api.imgUploadRetrofitManager
+import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.databinding.ActivityMissionCertificationWriteBinding
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -40,7 +40,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
         //binding.missionCertImg.clipToOutline=true //둥근 모서리 todo
 
-        when(boardId){
+        when(boardId.toLong()){
             Constance.ART_ID-> {
                 binding.missionCertBoardNameTxt.text="예술 게시판"
             }
