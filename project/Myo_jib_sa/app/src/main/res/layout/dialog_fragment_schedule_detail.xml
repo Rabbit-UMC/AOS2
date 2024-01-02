@@ -10,7 +10,7 @@
     android:backgroundTint="#FFFFFF"
     android:minWidth="354dp"
     android:minHeight="400dp"
-    tools:context=".Schedule.dialog.ScheduleDetailDialogFragment">
+    tools:context=".schedule.dialog.ScheduleDetailDialogFragment">
 
 
         <ImageButton

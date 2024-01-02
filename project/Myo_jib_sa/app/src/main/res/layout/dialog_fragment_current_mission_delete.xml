@@ -10,7 +10,7 @@
     android:minWidth="320dp"
     android:minHeight="248dp"
     android:orientation="vertical"
-    tools:context=".Schedule.dialog.ScheduleDeleteDialogFragment">
+    tools:context=".schedule.dialog.ScheduleDeleteDialogFragment">
 
     <TextView
         android:id="@+id/textView8"
