@@ -10,9 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myo_jib_sa.community.retrofit.communityHome.CommunityHomeManager
-import com.example.myo_jib_sa.community.retrofit.communityHome.MainMission
-import com.example.myo_jib_sa.community.retrofit.communityHome.PopularArticle
+import com.example.myo_jib_sa.community.api.communityHome.CommunityHomeManager
+import com.example.myo_jib_sa.community.api.communityHome.MainMission
+import com.example.myo_jib_sa.community.api.communityHome.PopularArticle
 import com.example.myo_jib_sa.community.adapter.HomeMissionAdapter
 import com.example.myo_jib_sa.community.adapter.HomePostAdapter
 import com.example.myo_jib_sa.databinding.FragmentCommunityBinding
@@ -45,7 +45,7 @@ class CommunityFragment : Fragment() {
         }
 
         //api 연결, 뷰 띄우기
-        Constance.jwt?.let { getMissionData(it, requireContext()) }
+        Constance.jwt?.let { getHomeData(it, requireContext()) }
 
         //setFABClickEvent()
         binding.myoZip3Btn.setOnClickListener {
@@ -68,15 +68,15 @@ class CommunityFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //setFABClickEvent() //플로팅 버튼 동작 이벤트
-    }
-
     //다시 돌아올 때 뷰 업데이트
     override fun onResume() {
         super.onResume()
         retrofitManager = CommunityHomeManager.getInstance(requireContext())
-        Constance.jwt?.let { getMissionData(it, requireContext()) }
+        Constance.jwt?.let { getHomeData(it, requireContext()) }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        //setFABClickEvent() //플로팅 버튼 동작 이벤트
     }
 
     //플로팅 버튼
@@ -146,25 +146,25 @@ class CommunityFragment : Fragment() {
 
 
     //API 연결, 리사이클러뷰 띄우기
-    private fun getMissionData(author: String, context: Context) {
+    private fun getHomeData(author: String, context: Context) {
         retrofitManager.home(author) { homeResponse ->
-            if (homeResponse.isSuccess == "true") {
+            if (homeResponse.isSuccess) {
                 val missionList: List<MainMission> = homeResponse.result.mainMission
                 val postList: List<PopularArticle> = homeResponse.result.popularArticle
                 if (missionList.isNotEmpty()) {
                     linkMrecyclr(context, missionList)
                 } else {
-                    Log.d("리사이클러뷰 어댑터로 리스트 전달", "MissionList가 비었다네요")
+                    Log.d("미션 리사이클러뷰 어댑터로 리스트 전달", "MissionList가 비었다네요")
                 }
                 if (postList.isNotEmpty()) {
                     linkePrecyclr(context, postList)
                 } else {
-                    Log.d("리사이클러뷰 어댑터로 리스트 전달", "PostList가 비었다네요")
+                    Log.d("미션 리사이클러뷰 어댑터로 리스트 전달", "PostList가 비었다네요")
                 }
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                val returnCode = homeResponse.code
-                val returnMsg = homeResponse.message
+                val returnCode = homeResponse.errorCode
+                val returnMsg = homeResponse.errorMessage
 
                 Log.d("홈 API isSuccess가 false", "${returnCode}  ${returnMsg}")
             }

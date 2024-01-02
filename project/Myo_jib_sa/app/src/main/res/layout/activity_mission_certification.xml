@@ -121,7 +121,7 @@
             app:layout_constraintTop_toTopOf="@+id/missionCert_missionName_txt" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/homeMissionItem_host_name_txt"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginStart="30dp"

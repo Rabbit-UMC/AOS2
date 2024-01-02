@@ -84,7 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="13dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="30dp"
                         android:fontFamily="@font/font_inter"
                         android:text="메인 미션"
                         android:textColor="@color/black"
@@ -155,7 +155,7 @@
                             app:layout_constraintTop_toTopOf="@+id/textView9" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout9"
+                            android:id="@+id/community_board_art_constraint"
                             android:layout_width="100dp"
                             android:layout_height="50dp"
                             android:layout_marginTop="8dp"
@@ -188,6 +188,7 @@
                                     android:id="@+id/textView36"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:fontFamily="@font/font_caption_text_2"
                                     android:text="예술"
                                     android:textColor="@color/black"
@@ -196,15 +197,15 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout10"
+                            android:id="@+id/community_board_free_constraint"
                             android:layout_width="100dp"
                             android:layout_height="50dp"
                             android:layout_marginEnd="13dp"
                             android:layout_weight="1"
                             android:background="@drawable/background_board_btn"
-                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout9"
+                            app:layout_constraintBottom_toBottomOf="@+id/community_board_art_constraint"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/constraintLayout9">
+                            app:layout_constraintTop_toTopOf="@+id/community_board_art_constraint">
 
                             <LinearLayout
                                 android:id="@+id/community_board_free_linear"
@@ -228,6 +229,7 @@
                                     android:id="@+id/textView38"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:fontFamily="@font/font_caption_text_2"
                                     android:text="자유"
                                     android:textColor="@color/black"
@@ -236,14 +238,15 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/community_board_exercise_constraint"
                             android:layout_width="100dp"
                             android:layout_height="50dp"
                             android:layout_marginStart="13dp"
                             android:layout_weight="1"
                             android:background="@drawable/background_board_btn"
-                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout9"
+                            app:layout_constraintBottom_toBottomOf="@+id/community_board_art_constraint"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/constraintLayout9">
+                            app:layout_constraintTop_toTopOf="@+id/community_board_art_constraint">
 
                             <LinearLayout
                                 android:id="@+id/community_board_exercise_linear"
@@ -267,6 +270,7 @@
                                     android:id="@+id/textView34"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:fontFamily="@font/font_caption_text_2"
                                     android:text="운동"
                                     android:textColor="@color/black"

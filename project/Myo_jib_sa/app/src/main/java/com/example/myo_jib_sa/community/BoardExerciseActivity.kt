@@ -7,8 +7,8 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.community.retrofit.BoardPost.Articles
-import com.example.myo_jib_sa.community.retrofit.BoardPost.PostBoardRetrofitManager
+import com.example.myo_jib_sa.community.api.BoardPost.Articles
+import com.example.myo_jib_sa.community.api.BoardPost.PostBoardRetrofitManager
 import com.example.myo_jib_sa.community.adapter.BoardAdapter
 import com.example.myo_jib_sa.databinding.ActivityBoardExerciseBinding
 
@@ -125,7 +125,7 @@ class BoardExerciseActivity : AppCompatActivity() {
     private fun getBoardData(author:String ,id:Long){
 
         //게시판 이름
-            when(id.toInt()){
+            when(id){
                 Constance.ART_ID-> {
                     binding.boardExcsNameTxt.text="예술 게시판"
                 }

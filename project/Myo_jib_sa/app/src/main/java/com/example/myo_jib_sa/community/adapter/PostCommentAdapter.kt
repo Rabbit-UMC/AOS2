@@ -11,9 +11,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.retrofit.post.ArticleImage
-import com.example.myo_jib_sa.community.retrofit.post.CommentList
-import com.example.myo_jib_sa.community.retrofit.post.PostRetrofitManager
+import com.example.myo_jib_sa.community.api.post.ArticleImage
+import com.example.myo_jib_sa.community.api.post.CommentList
+import com.example.myo_jib_sa.community.api.post.PostRetrofitManager
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.databinding.ItemCommentBinding
 

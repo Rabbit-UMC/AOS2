@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community.retrofit.post
+package com.example.myo_jib_sa.community.api.post
 
 //30번 api (게시물 조회 data class)
 data class PostViewResponse(

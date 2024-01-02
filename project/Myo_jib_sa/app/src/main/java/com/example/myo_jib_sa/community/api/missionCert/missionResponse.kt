@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community.retrofit.missionCert
+package com.example.myo_jib_sa.community.api.missionCert
 
 data class MissionResponse(
     val isSuccess:String,

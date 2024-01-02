@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community.retrofit
+package com.example.myo_jib_sa.community.api
 
 import okhttp3.MultipartBody
 import retrofit2.Call

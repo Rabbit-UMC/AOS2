@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.community.PostActivity
-import com.example.myo_jib_sa.community.retrofit.BoardPost.Articles
+import com.example.myo_jib_sa.community.api.BoardPost.Articles
 import com.example.myo_jib_sa.databinding.ItemPostBinding
 
 class BoardAdapter(
@@ -25,7 +25,6 @@ class BoardAdapter(
         fun bind(item: Articles){
             binding.postItemNameTxt.text=item.articleTitle
             binding.postItmeCommentCntTxt.text=item.commentCount.toString()
-            binding.postItemUploadTimeTxt.text=item.uploadTime.toString()
             binding.postItmeHeartNumTxt.text=item.likeCount.toString()
 
 
