@@ -228,7 +228,7 @@
                                     android:src="@drawable/ic_community_home_free" />
 
                                 <TextView
-                                    android:id="@+id/textView38"
+                                    android:id="@+id/rank2_txt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -269,7 +269,7 @@
                                     android:src="@drawable/ic_community_home_exercise" />
 
                                 <TextView
-                                    android:id="@+id/textView34"
+                                    android:id="@+id/rank1_txt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
