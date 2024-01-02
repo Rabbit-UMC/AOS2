@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa.community.missionCert
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -9,26 +10,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager2.widget.ViewPager2
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.ManagerPageActivity
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.community.adapter.MissionCertViewpagerAdapter
 import com.example.myo_jib_sa.databinding.ActivityMissionCertificationBinding
 import com.example.myo_jib_sa.databinding.FragmentBottomsheetRankingBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-
-class ModalBottomSheet : BottomSheetDialogFragment() {
-    private lateinit var binding: FragmentBottomsheetRankingBinding
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding= FragmentBottomsheetRankingBinding.inflate(layoutInflater)
-        return binding.root
-    }
-}
 
 class MissionCertificationActivity: AppCompatActivity() {
 
@@ -41,6 +34,13 @@ class MissionCertificationActivity: AppCompatActivity() {
 
     //오늘 날짜
     private var date: Int = 0 //미션 몇일차 인지
+
+    // BottomSheet layout 변수
+    private val bottomSheetLayout by lazy { findViewById<ConstraintLayout>(R.id.bottomsheet_constraint) }
+
+    // bottomSheetBehavior
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,10 +56,13 @@ class MissionCertificationActivity: AppCompatActivity() {
         missionImg = intent.getStringExtra("missionImg").toString()
         hostId = intent.getLongExtra("hostId", 0)
 
-        //랭킹 확인
-        val modalBottomSheet = ModalBottomSheet()
+        //랭킹 확인 (바텀 시트)
+        initializePersistentBottomSheet()
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN //처음은 숨김 상태
+        //persistentBottomSheetEvent() 내부에서 어떤 이벤트가 필요할 떄 정의해서 사용하기
+
         binding.rankingImg.setOnClickListener {
-            modalBottomSheet.show(supportFragmentManager, "Open Bottom Sheet")
+            toggleBottomSheetVisibility()
         }
 
         Constance.jwt?.let { setMissionCert(it, 1, missionId) }
@@ -130,6 +133,39 @@ class MissionCertificationActivity: AppCompatActivity() {
     override fun onResume() {
         Constance.jwt?.let { setMissionCert(it, 1, missionId) }
         super.onResume()
+    }
+
+    //바텀 시트
+    // Persistent BottomSheet 초기화
+    private fun initializePersistentBottomSheet() {
+
+        // BottomSheetBehavior에 layout 설정
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                // BottomSheetBehavior state 변경 이벤트 처리
+                // 필요하다면 상태별 처리를 여기에 추가할 수 있습니다.
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // BottomSheetBehavior slide 이벤트 처리
+            }
+        })
+    }
+
+    // PersistentBottomSheet 토글 이벤트
+    private fun toggleBottomSheetVisibility() {
+        when (bottomSheetBehavior.state) {
+            BottomSheetBehavior.STATE_EXPANDED, BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                // BottomSheet가 펼쳐진 상태일 때는 숨김
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            }
+            else -> {
+                // BottomSheet가 숨겨진 상태일 때는 펼침
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
     }
 
     //미션 인증 사진 화면 프레그먼트 설정 + 미션 인증 화면 설정
