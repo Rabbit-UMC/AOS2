@@ -391,6 +391,16 @@
                 app:layout_constraintBottom_toTopOf="@+id/constraintLayout10"
                 app:layout_constraintEnd_toEndOf="@+id/constraintLayout10"
                 app:layout_constraintStart_toStartOf="@+id/constraintLayout10" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_line_104" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
