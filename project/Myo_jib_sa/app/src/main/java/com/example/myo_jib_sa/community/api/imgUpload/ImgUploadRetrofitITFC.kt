@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community.api
+package com.example.myo_jib_sa.community.api.imgUpload
 
 import okhttp3.MultipartBody
 import retrofit2.Call
