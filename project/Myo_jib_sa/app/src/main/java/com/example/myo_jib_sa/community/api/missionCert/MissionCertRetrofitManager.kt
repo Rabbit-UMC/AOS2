@@ -41,15 +41,17 @@ class MissionCertRetrofitManager(context: Context) : ViewModel() {
                     Log.d("미션 화면 조회", "RetrofitManager 미션 화면 조회 onResponse \t :${response.message()} ")
                     val response: MissionResponse? = response?.body()
                     if (response != null) {
-                        if (response.isSuccess=="true") {
+                        if (response.isSuccess) {
                             Log.d("미션 화면 조회",
-                                "RetrofitManager 미션 화면 조회 is Success\t :${response.code} ")
+                                "RetrofitManager 미션 화면 조회 is Success\t :${response.errorCode} ")
                             Log.d("미션 화면 조회",
-                                "RetrofitManager 미션 화면 조회 is Success\t :${response.message} ")
+                                "RetrofitManager 미션 화면 조회 is Success\t :${response.errorMessage} ")
                             completion(response)
                         } else {
                             Log.d("미션 화면 조회",
-                                "RetrofitManager 미션 화면 조회 is NOT Success\t :${response.code} ")
+                                "RetrofitManager 미션 화면 조회 is NOT Success\t :${response.errorCode} ")
+                            Log.d("미션 화면 조회",
+                                "RetrofitManager 미션 화면 조회 is Success\t :${response.errorMessage} ")
                             completion(response)
                         }
                     } else {

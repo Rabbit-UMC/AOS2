@@ -31,7 +31,7 @@ class MissionCertViewpagerAdapter (fragmentActivity: FragmentActivity) : Fragmen
         val retrofitManager = MissionCertRetrofitManager.getInstance(context)
         retrofitManager.mission(jwt, position+1, id){response ->
             Log.d("createFragment 미션 인증 날짜 확인", day.toString())
-            if(response.isSuccess=="true"){
+            if(response.isSuccess){
 
                 if(response.result != null){
                     if(response.result.missionProofImages.isNotEmpty()){
@@ -44,10 +44,8 @@ class MissionCertViewpagerAdapter (fragmentActivity: FragmentActivity) : Fragmen
                 }
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                val returnCode = response.code
-                val returnMsg = response.message
 
-                Log.d("미션 인증 API isSuccess가 false", "${returnCode}  ${returnMsg}")
+                Log.d("미션 인증 API isSuccess가 false", "${response.errorCode}  ${response.errorMessage}")
             }
         }
 
