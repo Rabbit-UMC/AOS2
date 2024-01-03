@@ -27,8 +27,7 @@ interface MissionAPI {
 
     //미션 상세보기
     @GET("app/mission/{missionId}")
-    fun MissionDetail(
-        @Header("X-ACCESS-TOKEN") accessToken: String,
+    fun getMissionDetail(
         @Path("missionId") missionId: Long
     ): Call<MissionDetailResponse>
 
@@ -40,8 +39,7 @@ interface MissionAPI {
 
     //미션 같이하기
     @POST("app/mission/{missionId}")
-    fun MissionWith(
-        @Header("X-ACCESS-TOKEN") accessToken: String,
+    fun postMissionWith(
         @Path ("missionId") missionId:Long
     ): Call<MissionWithResponse>
 }

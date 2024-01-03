@@ -38,7 +38,7 @@ class MissionRVAdapter(
                     val itemPosition = dataList[adapterPosition]
                     onReportClickListener.onReportClick(itemPosition)
                     Log.d("home","report ID: {$itemPosition.id.toString()}")
-                    true // 이벤트가 소비되었음을 반환
+                    true
                 }
 
                 // 클릭 이벤트 처리(미션 상세보기)
@@ -52,7 +52,6 @@ class MissionRVAdapter(
 
     }
 
-    // 뷰홀더를 생성하여 반환
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MissionViewHolder {
         val binding = ItemMissionMissionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MissionViewHolder(binding)

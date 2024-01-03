@@ -12,7 +12,7 @@
     app:umanoPanelHeight="50dp"
     app:umanoScrollableView="@id/scheduleList_rv"
     app:umanoShadowHeight="0dp"
-    tools:context=".Schedule.currentMissionActivity.CurrentMissionActivity">
+    tools:context=".schedule.currentMissionActivity.CurrentMissionActivity">
 
     <ImageButton
         android:id="@+id/go_back_btn"
@@ -61,6 +61,8 @@
         android:id="@+id/missionList_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -13,7 +13,7 @@ app:umanoScrollableView="@id/scheduleList_rv"
 app:umanoDragView="@id/slidingUp_panel_layout"
 app:umanoPanelHeight = "50dp"
 app:umanoFadeColor = "@android:color/transparent"
-tools:context=".Schedule.currentMissionActivity.DeleteCurrentMissionActivity">
+tools:context=".schedule.currentMissionActivity.DeleteCurrentMissionActivity">
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout

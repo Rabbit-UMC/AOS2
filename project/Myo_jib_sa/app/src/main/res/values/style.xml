@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- tabLayout 텍스트 커스텀 -->
+    <style name="mission_tab_text_style">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/gray7</item>
+        <item name="android:fontFamily">@font/font_caption_text_3</item>
+    </style>
+    <!-- tabLayout 선택 텍스트 커스텀 -->
+    <style name="mission_tab_selected_text_style">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/main2</item>
+        <item name="android:fontFamily">@font/font_caption_text_1</item>
+    </style>
+
+    <!-- tabLayout 커스텀-->
+    <style name="mission_tab_style">
+        <item name="tabTextAppearance">@style/mission_tab_text_style</item>
+        <item name="tabSelectedTextAppearance">@style/mission_tab_selected_text_style</item>
+        <item name="tabIndicatorHeight">24dp</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabIndicator">@drawable/background_mission_tab_indicator</item>
+        <item name="tabRippleColor">@null</item>
+    </style>
+</resources>
