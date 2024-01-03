@@ -8,9 +8,9 @@
     android:layout_marginEnd="8dp"
     android:background="@drawable/view_round_r8_blue"
     android:backgroundTint="#FFFFFF"
-    android:minWidth="354dp"
-    android:minHeight="400dp"
-    tools:context=".Schedule.dialog.ScheduleDetailDialogFragment">
+    android:minWidth="320dp"
+    android:minHeight="290dp"
+    tools:context=".schedule.dialog.ScheduleDetailDialogFragment">
 
 
         <ImageButton

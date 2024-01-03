@@ -22,4 +22,15 @@
         <item name="tabIndicator">@drawable/background_mission_tab_indicator</item>
         <item name="tabRippleColor">@null</item>
     </style>
+
+    <!-- TabLayout 텍스트 테마 -->
+    <style name="schedule_tablayout_style" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/gray6</item>
+        <item name="android:fontFamily">@font/font_caption_text_1</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
 </resources>

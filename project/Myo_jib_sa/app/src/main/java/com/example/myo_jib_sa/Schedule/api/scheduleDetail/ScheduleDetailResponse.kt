@@ -1,13 +1,11 @@
-package com.example.myo_jib_sa.Schedule.API.scheduleDetail
+package com.example.myo_jib_sa.schedule.api.scheduleDetail
+import com.example.myo_jib_sa.base.BaseResponse
 import com.google.gson.annotations.SerializedName
 
 
 data class ScheduleDetailResponse(
-    val isSuccess: Boolean,
-    val code: Int,
-    val message: String,
     val result: ScheduleDetailResult
-)
+):BaseResponse()
 
 data class ScheduleDetailResult(
     @SerializedName("id")

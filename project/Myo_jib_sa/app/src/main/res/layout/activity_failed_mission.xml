@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Schedule.historyActivity.FailedMissionActivity">
+    tools:context=".schedule.historyActivity.FailedMissionActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintlayout"

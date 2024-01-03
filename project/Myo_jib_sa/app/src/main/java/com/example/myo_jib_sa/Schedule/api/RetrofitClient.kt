@@ -1,11 +1,11 @@
-package com.example.myo_jib_sa.Schedule.API
+package com.example.myo_jib_sa.schedule.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
 object RetrofitClient{
-    private const val BASE_URL = "https://www.myo-zip-sa.store/"//"https://umc.ljhhosting.com/api/"//교체하기!!!!!!!!!1
+    private const val BASE_URL = "https://www.myo-zip-sa.store/"
 
     private var instance: Retrofit? = null
 

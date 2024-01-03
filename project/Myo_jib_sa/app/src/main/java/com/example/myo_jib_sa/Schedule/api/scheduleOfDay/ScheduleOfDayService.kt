@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.Schedule.API.scheduleOfDay
+package com.example.myo_jib_sa.schedule.api.scheduleOfDay
 
 import retrofit2.Call
 import retrofit2.http.*
