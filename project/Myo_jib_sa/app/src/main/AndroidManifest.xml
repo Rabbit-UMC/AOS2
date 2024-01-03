@@ -27,7 +27,7 @@
             android:name=".mypage.history.MypageHistoryActivity"
             android:exported="false" />
         <activity
-            android:name=".MissionCertificationWriteCheckActivity"
+            android:name=".community.MissionCertificationWriteCheckActivity"
             android:exported="false" />
         <activity
             android:name=".community.ImageActivity"
