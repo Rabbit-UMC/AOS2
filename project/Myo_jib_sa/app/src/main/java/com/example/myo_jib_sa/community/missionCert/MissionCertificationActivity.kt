@@ -1,28 +1,22 @@
 package com.example.myo_jib_sa.community.missionCert
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.Manager.ManagerPageActivity
+import com.example.myo_jib_sa.community.manager.ManagerPageActivity
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.community.adapter.MissionCertViewpagerAdapter
 import com.example.myo_jib_sa.community.api.missionCert.MissionResponse
 import com.example.myo_jib_sa.databinding.ActivityMissionCertificationBinding
-import com.example.myo_jib_sa.databinding.FragmentBottomsheetRankingBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
