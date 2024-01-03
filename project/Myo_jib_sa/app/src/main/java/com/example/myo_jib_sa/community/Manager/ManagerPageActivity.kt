@@ -1,10 +1,11 @@
-package com.example.myo_jib_sa.community
+package com.example.myo_jib_sa.community.Manager
 
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.manager.ManagerMissionJoinRequest
 import com.example.myo_jib_sa.community.adapter.ManagerPageViewpagerAdapter
 import com.example.myo_jib_sa.databinding.ActivityManagerPageBinding
@@ -56,13 +57,13 @@ class ManagerPageActivity : AppCompatActivity() {
 
         //게시판 이름
         when(boardId){
-            Constance.ART_ID-> {
+            Constance.ART_ID -> {
                 binding.managerPageNameTxt.text="예술 묘집사"
             }
-            Constance.FREE_ID-> {
+            Constance.FREE_ID -> {
                 binding.managerPageNameTxt.text="자유 묘집사"
             }
-            Constance.EXERCISE_ID-> {
+            Constance.EXERCISE_ID -> {
                 binding.managerPageNameTxt.text="운동 묘집사"
             }
 

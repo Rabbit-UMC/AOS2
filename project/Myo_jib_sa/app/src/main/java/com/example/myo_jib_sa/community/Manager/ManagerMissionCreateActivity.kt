@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community
+package com.example.myo_jib_sa.community.Manager
 
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.manager.ManagerRetrofitManager
 import com.example.myo_jib_sa.community.api.manager.MissionCreateRequest
 import com.example.myo_jib_sa.community.adapter.CreateScheduleCalendarAdapter

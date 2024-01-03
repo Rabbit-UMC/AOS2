@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.ManagerPageActivity
+import com.example.myo_jib_sa.community.Manager.ManagerPageActivity
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.community.adapter.MissionCertViewpagerAdapter
