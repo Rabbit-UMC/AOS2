@@ -3,7 +3,7 @@ package com.example.myo_jib_sa
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.example.myo_jib_sa.Schedule.ScheduleFragment
+import com.example.myo_jib_sa.schedule.ScheduleFragment
 import com.example.myo_jib_sa.community.CommunityFragment
 import com.example.myo_jib_sa.databinding.ActivityMainBinding
 import com.example.myo_jib_sa.mission.MissionFragment
