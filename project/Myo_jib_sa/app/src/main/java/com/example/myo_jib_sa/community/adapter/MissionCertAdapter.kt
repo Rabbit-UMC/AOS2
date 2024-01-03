@@ -15,6 +15,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.ImageActivity
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.missionCert.MCrecyclrImg
@@ -90,27 +91,28 @@ class MissionCertAdapter(
 
     //처음 좋아요 상태 설정
     private fun setLike(item: MCrecyclrImg, binding: ItemMissionCertificationImgBinding){
+
         if(item.data1.isLike){
-            binding.missionHeart1.visibility=View.VISIBLE
+            binding.missionHeart1.setImageResource(R.drawable.ic_like)
             sharedPreferences.edit().putBoolean("isLiked_${item.data1.imageId}", true).apply()
         }else{
-            binding.missionHeart1.visibility=View.GONE
+            binding.missionHeart1.setImageResource(R.drawable.ic_unlike)
             sharedPreferences.edit().putBoolean("isLiked_${item.data1.imageId}", false).apply()
         }
 
         if(item.data2.isLike){
-            binding.missionHeart2.visibility=View.VISIBLE
+            binding.missionHeart2.setImageResource(R.drawable.ic_like)
             sharedPreferences.edit().putBoolean("isLiked_${item.data2.imageId}", true).apply()
         }else{
-            binding.missionHeart2.visibility=View.GONE
+            binding.missionHeart2.setImageResource(R.drawable.ic_unlike)
             sharedPreferences.edit().putBoolean("isLiked_${item.data2.imageId}", false).apply()
         }
 
         if(item.data3.isLike){
-            binding.missionHeart3.visibility=View.VISIBLE
+            binding.missionHeart3.setImageResource(R.drawable.ic_like)
             sharedPreferences.edit().putBoolean("isLiked_${item.data3.imageId}", true).apply()
         }else{
-            binding.missionHeart3.visibility=View.GONE
+            binding.missionHeart3.setImageResource(R.drawable.ic_unlike)
             sharedPreferences.edit().putBoolean("isLiked_${item.data3.imageId}", false).apply()
         }
     }

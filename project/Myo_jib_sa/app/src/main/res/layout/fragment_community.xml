@@ -131,7 +131,7 @@
 
 
                         <TextView
-                            android:id="@+id/textView9"
+                            android:id="@+id/like1_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
@@ -152,9 +152,9 @@
                             android:textColor="#A5A5A5"
                             android:textSize="12dp"
                             android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView9"
-                            app:layout_constraintStart_toEndOf="@+id/textView9"
-                            app:layout_constraintTop_toTopOf="@+id/textView9" />
+                            app:layout_constraintBottom_toBottomOf="@+id/like1_txt"
+                            app:layout_constraintStart_toEndOf="@+id/like1_txt"
+                            app:layout_constraintTop_toTopOf="@+id/like1_txt" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/community_board_art_constraint"
@@ -166,7 +166,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView9">
+                            app:layout_constraintTop_toBottomOf="@+id/like1_txt">
 
                             <LinearLayout
                                 android:id="@+id/community_board_art_linear"
