@@ -2,10 +2,12 @@ package com.example.myo_jib_sa.base
 
 import android.app.Application
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.myo_jib_sa.BuildConfig
 import com.example.myo_jib_sa.utils.SharedPreferencesUtil
 import com.example.myo_jib_sa.utils.Utils.BASE_URL
 import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.util.Utility
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -38,8 +40,8 @@ class MyojibsaApplication : Application() {
 
         spfManager = SharedPreferencesUtil(applicationContext)
 
-        //val keyHash = Utility.getKeyHash(this)
-        //Log.d("Hash", keyHash)
+//        val keyHash = Utility.getKeyHash(this)
+//        Log.d("Hash", keyHash)
         val nativeKey = BuildConfig.NATIVE_APP_KEY
         KakaoSdk.init(this, nativeKey)
     }

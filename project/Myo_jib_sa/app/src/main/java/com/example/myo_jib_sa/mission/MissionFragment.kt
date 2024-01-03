@@ -166,17 +166,15 @@ class MissionFragment : Fragment() {
 
     private fun showReportDialog(reportItem: Mission) {
         val reportDialog = MissionReportDialogFragment(reportItem)
-        Log.d("home","Mreport ID: {$reportItem.id.toString()}")
+        Log.d("showReportDialog","report ID: {$reportItem.id.toString()}")
         reportDialog.show(requireActivity().supportFragmentManager, "mission_report_dialog")
 
     }
 
     private fun showDetailDialog(detailItem: Mission) {
-        val detailDialog = MissionDetailDialogFragment(detailItem)
-        Log.d("home","Mdetail ID: {$detailItem.id.toString()}")
+        val detailDialog = MissionDetailDialogFragment(detailItem, requireContext())
+        Log.d("showDetailDialog","detail ID: {$detailItem.id.toString()}")
         detailDialog.show(requireActivity().supportFragmentManager, "mission_detail_dialog")
     }
-
-
 
 }

@@ -53,5 +53,10 @@ data class Detail(
     val categoryTitle:String,
     val content:String,
     val startAt:String,
-    val endAt : String
+    val endAt : String,
+    val alreadyIn: Boolean
 )
+
+data class MissionWithResponse(
+    val result: String
+): BaseResponse()
