@@ -251,7 +251,7 @@
             app:layout_constraintTop_toBottomOf="@+id/middle_line4_v" />
 
         <ImageView
-            android:id="@+id/imageView9"
+            android:id="@+id/mission_cert_img"
             android:layout_width="16dp"
             android:layout_height="18dp"
             android:layout_marginTop="12dp"

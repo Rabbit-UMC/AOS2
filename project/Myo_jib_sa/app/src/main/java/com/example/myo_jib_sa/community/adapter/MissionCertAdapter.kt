@@ -21,6 +21,7 @@ import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.missionCert.MCrecyclrImg
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.community.api.missionCert.MissionProofImages
+import com.example.myo_jib_sa.community.missionCert.MissionPictureActivity
 import com.example.myo_jib_sa.databinding.ItemMissionCertificationImgBinding
 
 class MissionCertAdapter(
@@ -131,7 +132,7 @@ class MissionCertAdapter(
 
                             handler.postDelayed({
                                 if (!doubleTap) {
-                                    val intent=Intent(context,ImageActivity::class.java)
+                                    val intent=Intent(context,MissionPictureActivity::class.java)
                                     intent.putExtra("filePath", data.filePath)
                                     intent.putExtra("imgId", data.imageId)
                                     intent.putExtra("isReportable", true)

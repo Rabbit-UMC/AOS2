@@ -45,7 +45,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/mission_cert_img"
         android:layout_width="match_parent"
         android:layout_height="490dp"
         android:scaleType="centerCrop"

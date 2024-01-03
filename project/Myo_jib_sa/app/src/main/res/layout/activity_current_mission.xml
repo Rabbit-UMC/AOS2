@@ -45,7 +45,7 @@
         app:layout_constraintTop_toBottomOf="@+id/horizontalguideline" />
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/report_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/font_pretendard_bold"
@@ -66,7 +66,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+        app:layout_constraintTop_toBottomOf="@+id/report_txt" />
 
     <ImageView
         android:id="@+id/imageView1"
@@ -75,7 +75,7 @@
         android:layout_marginLeft="10dp"
         app:layout_constraintBottom_toTopOf="@+id/horizontalguideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView19"
+        app:layout_constraintStart_toEndOf="@+id/mission_cert_memo_txt"
         app:layout_constraintTop_toTopOf="@+id/horizontalguideline"
         app:srcCompat="@drawable/ic_curmission_myo_icon" />
 
@@ -88,7 +88,7 @@
         android:textColor="#234BD9"
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@id/cur_mission_count_tv"
-        app:layout_constraintStart_toStartOf="@id/textView19"
+        app:layout_constraintStart_toStartOf="@id/mission_cert_memo_txt"
         app:layout_constraintTop_toTopOf="@+id/horizontalguideline"
         app:layout_constraintVertical_chainStyle="packed" />
 
@@ -113,8 +113,8 @@
         android:text="5"
         android:textColor="#234BD9"
         android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView19"
-        app:layout_constraintStart_toStartOf="@id/textView19"
+        app:layout_constraintBottom_toTopOf="@+id/mission_cert_memo_txt"
+        app:layout_constraintStart_toStartOf="@id/mission_cert_memo_txt"
         app:layout_constraintTop_toBottomOf="@+id/nickname_tv" />
 
     <TextView
@@ -131,7 +131,7 @@
         tools:layout_editor_absoluteY="90dp" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/mission_cert_title_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/font_pretendard_bold"
@@ -144,7 +144,7 @@
         tools:layout_editor_absoluteY="90dp" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/mission_cert_memo_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
