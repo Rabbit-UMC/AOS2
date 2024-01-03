@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.BuildConfig
-import com.example.myo_jib_sa.community.Manager.ManagerPageActivity
+import com.example.myo_jib_sa.community.manager.ManagerPageActivity
 import com.example.myo_jib_sa.community.api.communityHome.CommunityHomeManager
 import com.example.myo_jib_sa.community.api.communityHome.MainMission
 import com.example.myo_jib_sa.community.api.communityHome.PopularArticle

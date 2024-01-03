@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community.Manager
+package com.example.myo_jib_sa.community.manager
 
 import android.os.Build
 import android.os.Bundle
