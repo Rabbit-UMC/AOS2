@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community
+package com.example.myo_jib_sa.community.Manager
 
 import android.app.Activity
 import android.content.Intent
