@@ -1,18 +1,24 @@
 package com.example.myo_jib_sa.mission
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.marginStart
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.login.api.RetrofitInstance
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.spfManager
 import com.example.myo_jib_sa.databinding.FragmentMissionBinding
+import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
 import com.example.myo_jib_sa.mission.api.Mission
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResponse
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResult
@@ -20,6 +26,8 @@ import com.example.myo_jib_sa.mission.api.MissionListResponse
 import com.example.myo_jib_sa.mission.api.MissionAPI
 import com.example.myo_jib_sa.mission.dialog.MissionDetailDialogFragment
 import com.example.myo_jib_sa.mission.dialog.MissionReportDialogFragment
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,7 +46,7 @@ class MissionFragment : Fragment() {
     ): View? {
         binding = FragmentMissionBinding.inflate(inflater, container, false)
 
-        spfManager.setUserToken("eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDI2NjM2MTgsImV4cCI6MTcwNDEzNDg0N30.va4im_CNjnmyRRZxtPxxHc7v4b2SstL3XLebcJ1EXm0")
+        spfManager.setUserToken("eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDQxNzgzODQsImV4cCI6MTcwNTY0OTYxM30.9ALZ4r1x29gf0FcWejrTFTNk2RcPEbmw8EIKvjB1Log")
 
         return binding.root
     }
@@ -166,9 +174,33 @@ class MissionFragment : Fragment() {
 
     private fun showReportDialog(reportItem: Mission) {
         val reportDialog = MissionReportDialogFragment(reportItem)
-        Log.d("showReportDialog","report ID: {$reportItem.id.toString()}")
-        reportDialog.show(requireActivity().supportFragmentManager, "mission_report_dialog")
 
+        reportDialog.setReportDialogListener(object : MissionReportDialogFragment.ReportDialogListener {
+            override fun onReportSubmitted(message: String) {
+                Log.d("onReportSubmitted", "$message")
+                // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
+                val snackbarBinding = ToastMissionReportBinding.inflate(layoutInflater)
+                snackbarBinding.toastMissionReportTxt.text = message
+
+                // 스낵바 생성 및 설정
+                val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+                    animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+                    (view as Snackbar.SnackbarLayout).apply {
+                        setBackgroundColor(Color.TRANSPARENT)
+                        addView(snackbarBinding.root)
+                        translationY = -70.dpToPx().toFloat()
+                        elevation = 0f
+                    }
+                }
+
+                // 스낵바 표시
+                snackbar.show()
+                reportDialog.dismiss()
+            }
+        })
+
+        Log.d("showReportDialog","report ID: ${reportItem.missionId}")
+        reportDialog.show(requireActivity().supportFragmentManager, "mission_report_dialog")
     }
 
     private fun showDetailDialog(detailItem: Mission) {
@@ -177,4 +209,5 @@ class MissionFragment : Fragment() {
         detailDialog.show(requireActivity().supportFragmentManager, "mission_detail_dialog")
     }
 
+    private fun Int.dpToPx(): Int = (this * requireContext().resources.displayMetrics.density).toInt()
 }

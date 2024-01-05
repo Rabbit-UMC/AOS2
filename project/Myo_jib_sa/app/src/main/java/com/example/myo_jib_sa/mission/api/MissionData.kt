@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.mission.api
 
 import com.example.myo_jib_sa.base.BaseResponse
+import java.util.Objects
 
 data class MissionListResponse(
     val result: List<Mission>,
@@ -58,5 +59,9 @@ data class Detail(
 )
 
 data class MissionWithResponse(
+    val result: String
+): BaseResponse()
+
+data class MissionReportResponse(
     val result: String
 ): BaseResponse()
