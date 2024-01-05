@@ -22,4 +22,6 @@
         <item name="tabIndicator">@drawable/background_mission_tab_indicator</item>
         <item name="tabRippleColor">@null</item>
     </style>
+
+    <!--toastMissionReport-->
 </resources>
