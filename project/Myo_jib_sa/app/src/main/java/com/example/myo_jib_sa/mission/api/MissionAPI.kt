@@ -33,7 +33,7 @@ interface MissionAPI {
 
     //신고하기
     @POST("app/mission/report/{missionId}")
-    fun MissionReport(
+    fun postMissionReport(
         @Path ("missionId") missionId:Long
     ): Call<MissionReportResponse>
 
