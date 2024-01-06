@@ -2,17 +2,10 @@ package com.example.myo_jib_sa.community
 
 import android.app.Activity
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.Retrofit.manager.ManagerMissionJoinRequest
+import com.example.myo_jib_sa.community.api.manager.ManagerMissionJoinRequest
 import com.example.myo_jib_sa.community.adapter.ManagerPageViewpagerAdapter
 import com.example.myo_jib_sa.databinding.ActivityManagerPageBinding
 
@@ -39,7 +32,7 @@ class ManagerPageActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //관리자 페이지 이름 설정
-        val boardId= intent.getIntExtra("boardId",0)
+        val boardId= intent.getIntExtra("boardId",0).toLong()
 
         //뷰페이저 프레그먼트 연결
         binding.managerMissionVp2.adapter=mAdapter

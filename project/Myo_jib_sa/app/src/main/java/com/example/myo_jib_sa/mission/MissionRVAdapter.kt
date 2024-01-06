@@ -2,6 +2,7 @@ package com.example.myo_jib_sa.mission
 
 import android.util.Log
 import android.view.*
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.databinding.ItemMissionMissionBinding
@@ -38,11 +39,11 @@ class MissionRVAdapter(
                     val itemPosition = dataList[adapterPosition]
                     onReportClickListener.onReportClick(itemPosition)
                     Log.d("home","report ID: {$itemPosition.id.toString()}")
-                    true // 이벤트가 소비되었음을 반환
+                    true
                 }
 
                 // 클릭 이벤트 처리(미션 상세보기)
-                root.setOnClickListener {
+                missionItemCl.setOnClickListener {
                     val itemPosition = dataList[adapterPosition]
                     onItemClickListener.onItemClick(itemPosition)
                     Log.d("home","detail ID: {$itemPosition.id.toString()}")
@@ -50,9 +51,11 @@ class MissionRVAdapter(
             }
         }
 
+        fun getReportTextView(): TextView {
+            return binding.missionReportTxt
+        }
     }
 
-    // 뷰홀더를 생성하여 반환
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MissionViewHolder {
         val binding = ItemMissionMissionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MissionViewHolder(binding)

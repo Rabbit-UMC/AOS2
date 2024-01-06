@@ -494,7 +494,7 @@ class ScheduleFragment() : Fragment() {
     //calendarRvItemClickEvent()안에서만 실행
     @RequiresApi(Build.VERSION_CODES.O)
     fun scheduleOfDayApi(date: LocalDate) {
-        // JWT 값 가져오기
+        /*// JWT 값 가져오기
         val sharedPreferences =
             requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", null)
@@ -540,7 +540,7 @@ class ScheduleFragment() : Fragment() {
             override fun onFailure(call: Call<ScheduleOfDayResponse>, t: Throwable) {
                 Log.e("retrofit", "scheduleOfDayApi_onFailure: ${t.message}")
             }
-        })
+        })*/
     }
 
 

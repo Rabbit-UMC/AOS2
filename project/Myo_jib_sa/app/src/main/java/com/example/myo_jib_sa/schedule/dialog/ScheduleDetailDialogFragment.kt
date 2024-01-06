@@ -30,7 +30,7 @@ import java.time.format.DateTimeFormatter
 
 class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
     private lateinit var binding: DialogFragmentScheduleDetailBinding
-    private var result:ScheduleDetailResult = ScheduleDetailResult(
+    private var result: ScheduleDetailResult = ScheduleDetailResult(
         scheduleId = 0,
         missionId = 0,
         missionTitle = "",
@@ -122,7 +122,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
 
     private fun scheduleEditDialogItemClickEvent(dialog: ScheduleEditDialogFragment){
         dialog.setButtonClickListener(object: ScheduleEditDialogFragment.OnButtonClickListener{
-            override fun onClickEditBtn(scheduleData:ScheduleDetailResult) {
+            override fun onClickEditBtn(scheduleData: ScheduleDetailResult) {
                 Log.d("debug", "일정 상세로 데이터 넘김"+scheduleData.toString())
                 result.scheduleTitle = scheduleData.scheduleTitle
                 result.scheduleWhen = scheduleData.scheduleWhen

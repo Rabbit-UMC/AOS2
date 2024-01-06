@@ -58,6 +58,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
             android:id="@+id/textview8"
             android:layout_width="wrap_content"
@@ -69,6 +70,7 @@
             android:textSize="10sp"
             app:layout_constraintBaseline_toBaselineOf="@id/schedule_start_time_tv"
             app:layout_constraintEnd_toStartOf="@+id/barrier2" />
+
 
         <TextView
             android:id="@+id/schedule_start_time_tv"

@@ -87,6 +87,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
         }.attach()
 
         setMemoCount()
+
        return binding.root
     }
 
@@ -229,6 +230,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
             }
         })
     }
+
 
     //ScheduleDetailDialog에서 보낸 데이터 바인딩하기
     private fun setCurrentDialog() {

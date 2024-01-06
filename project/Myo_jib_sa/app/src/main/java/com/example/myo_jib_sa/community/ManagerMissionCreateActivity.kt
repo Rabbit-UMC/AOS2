@@ -12,8 +12,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.Retrofit.manager.ManagerRetrofitManager
-import com.example.myo_jib_sa.community.Retrofit.manager.MissionCreateRequest
+import com.example.myo_jib_sa.community.api.manager.ManagerRetrofitManager
+import com.example.myo_jib_sa.community.api.manager.MissionCreateRequest
 import com.example.myo_jib_sa.community.adapter.CreateScheduleCalendarAdapter
 import com.example.myo_jib_sa.community.adapter.SelectDateData
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
