@@ -12,6 +12,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
+import com.example.myo_jib_sa.mission.MissionRVAdapter
+import com.example.myo_jib_sa.mission.api.Mission
+import com.example.myo_jib_sa.mission.dialog.MissionDetailDialogFragment
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
@@ -52,7 +55,6 @@ class CurrentMissionActivity : AppCompatActivity() {
 
         setCurrentMissionAdapter()//CurrentMission rv 연결
         currentMissionScheduleApi(missionList[0].missionId)//하위 스케쥴 데이터 추가+schedule rv연결+clickevent
-        currentMissionRvItemClickEvent()
 
 
         scheduleAdapterList.add(ScheduleAdapterData(CurrentMissionScheduleResult(1,"일정1", "2023-12-23"), false))
@@ -66,7 +68,6 @@ class CurrentMissionActivity : AppCompatActivity() {
 
         setCurrentMissionScheduleAdapter()//CurrentMissionSchedule rv 연결
         currentMissionScheduleRvItemClickEvent() //CurrentMissionSchedule 클릭이벤트 연결
-        currentMissionRvItemClickEvent()
         //todo:여기까지
 
 
@@ -89,67 +90,32 @@ class CurrentMissionActivity : AppCompatActivity() {
     //CurrentMissionAdapter 연결
     private fun setCurrentMissionAdapter(){
 
-        currentMissionAdapter = CurrentMissionAdapter(missionList)
+        currentMissionAdapter = CurrentMissionAdapter(missionList,
+            onItemClickListener = object : CurrentMissionAdapter.OnItemClickListener{
+                override fun onMissionClick(missionId: Long) {
+                    showDetailDialog(missionId)
+                }
+                //작성한 일지보기 클릭
+                override fun onScheduleClick(currentMissionData: CurrentMissionResult) {
+                    binding.missionScheduleListLayout.visibility = View.VISIBLE
+                    currentMissionScheduleApi(currentMissionData.missionId)
+                    binding.scheduleDeleteBtn.visibility = View.VISIBLE
+                }
+            })
         binding.missionListRv.layoutManager = LinearLayoutManager(this)
         binding.missionListRv.adapter = currentMissionAdapter
     }
 
+    private fun showDetailDialog(missionId: Long) {
+        val detailDialog = CurrentMissionDetailDialog(missionId)
+        detailDialog.show(supportFragmentManager, "mission_detail_dialog")
+    }
+
     //CurrentMissionScheduleAdapter 연결
     private fun setCurrentMissionScheduleAdapter() {//missionTitle:String
-
         scheduleAdapter = CurrentMissionScheduleAdapter(scheduleAdapterList, getDisplayHeightSize())
         binding.scheduleListRv.layoutManager = LinearLayoutManager(this)
         binding.scheduleListRv.adapter = scheduleAdapter
-    }
-
-
-
-    //currentMissionCurrentMissionRv item클릭 이벤트
-    private fun currentMissionRvItemClickEvent() {
-        var doubleClickFlag = 0
-        val CLICK_DELAY: Long = 250
-        currentMissionAdapter.setItemClickListener(object : CurrentMissionAdapter.OnItemClickListener {
-            ////double click ver 1
-            //var delay:Long = 0//클릭 간격
-
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onClick(currentMissionData: CurrentMissionResult) {
-                doubleClickFlag++;
-                var handler = Handler(Looper.getMainLooper());
-                val clickRunnable = Runnable {
-                    doubleClickFlag = 0
-                    // 클릭 이벤트 처리
-                    currentMissionScheduleApi(currentMissionData.missionId)
-                }
-                if (doubleClickFlag == 1) {
-                    handler.postDelayed(clickRunnable, CLICK_DELAY)
-                } else if (doubleClickFlag == 2) {
-                    doubleClickFlag = 0
-                    // 더블클릭 이벤트 처리
-                    var bundle = Bundle()
-                    bundle.putLong("missionId", currentMissionData.missionId)
-                    Log.d("debug", "\"missionId\", ${currentMissionData.missionId}")
-                    val currentMissionDetailDialogFragment = CurrentMissionDetailDialogFragment()
-                    currentMissionDetailDialogFragment.arguments = bundle
-
-                    //scheduleDetailDialogItemClickEvent(scheduleDetailDialog)//scheduleDetailDialog Item클릭 이벤트 setting
-                    currentMissionDetailDialogFragment.show(supportFragmentManager, "currentMissionDetailDialogFragment")
-                }
-            }
-
-            override fun onLongClick(position:Int){
-                var deleteIntent = Intent(this@CurrentMissionActivity, DeleteCurrentMissionActivity::class.java)
-                deleteIntent.putExtra("position",position);
-                startActivity(deleteIntent)
-
-            }
-            //작성한 일지 보기 text view 클릭 - [하위 스케줄 보기]
-            override fun onScheduleClick(currentMissionData: CurrentMissionResult) {
-                binding.missionScheduleListLayout.visibility = View.VISIBLE
-                currentMissionScheduleApi(currentMissionData.missionId)
-                binding.scheduleDeleteBtn.visibility = View.VISIBLE
-            }
-        })
     }
 
     private fun currentMissionScheduleRvItemClickEvent() {
@@ -186,14 +152,13 @@ class CurrentMissionActivity : AppCompatActivity() {
                     Log.d("retrofit", response.body().toString());
                     val result = response.body()!!.result
 
-                    for(i in 0 until result.size) {
-                        missionList.add(result[i])
-                    }
-                    if(result.isNotEmpty()) {
+                    if(result.isNotEmpty()){
+                        missionList= result as ArrayList<CurrentMissionResult>
                         setCurrentMissionAdapter()//CurrentMission rv 연결
-                        currentMissionScheduleApi(missionList[0].missionId)//하위 스케쥴 데이터 추가+schedule rv연결+clickevent
-                        currentMissionRvItemClickEvent()
+                        binding.curMissionCountTv.text = result.size.toString()
                     }
+                    else
+                        binding.curMissionCountTv.text = "0"
 
                 } else {
                     Log.e("retrofit", "onResponse: Error ${response.code()}")
@@ -236,7 +201,6 @@ class CurrentMissionActivity : AppCompatActivity() {
                         scheduleAdapterList.add(ScheduleAdapterData(scheduleList[i], false))
                     }
                     setCurrentMissionScheduleAdapter()//CurrentMissionSchedule rv 연결
-                    currentMissionRvItemClickEvent()
 
                 } else {
                     Log.e("retrofit", "onResponse: Error ${response.code()}")
