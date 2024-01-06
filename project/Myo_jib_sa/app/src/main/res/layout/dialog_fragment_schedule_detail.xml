@@ -63,7 +63,7 @@
             android:layout_marginTop="21dp"
             android:fontFamily="@font/font_pretendard_regular"
             android:inputType="textPersonName"
-            android:text="헬스"
+            android:text="일정"
             android:textColor="#6F6F6F"
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/imageView2"

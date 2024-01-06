@@ -8,6 +8,7 @@
     android:minHeight="347dp"
     android:background="@drawable/view_round_r8_blue"
     android:backgroundTint="#FFFFFF"
+    style="@style/adjustResizeStyle"
     tools:context=".schedule.dialog.ScheduleEditDialogFragment">
 
     <ImageButton
@@ -436,22 +437,22 @@
         android:fontFamily="@font/font_pretendard_regular"
         android:gravity="left"
         android:hint="메모"
-        android:inputType="textMultiLine"
-        android:lines="3"
         android:maxLength="30"
         android:maxLines="3"
+        android:inputType="textMultiLine"
         android:scrollHorizontally="false"
         android:textColor="#6F6F6F"
         android:textSize="10sp"
+        app:layout_constraintVertical_chainStyle="spread_inside"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/countMemo_tv"
         app:layout_constraintTop_toBottomOf="@+id/middle_line4_v" />
 
     <TextView
         android:id="@+id/countMemo_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
         android:layout_marginBottom="30dp"
         android:fontFamily="@font/font_pretendard_regular"
         android:inputType="textPersonName"
