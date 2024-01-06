@@ -183,6 +183,7 @@
         app:layout_constraintHeight_percent="0.66"
         android:background="@drawable/view_round_r16_top"
         android:visibility="gone"
+        android:elevation="7dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
 
@@ -251,22 +252,27 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/scheduleList_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="11dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="48dp"
+            tools:listitem="@layout/item_schedule_schedule"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/missionTitle_in_schedule_list_tv" />
 
-        <TextView
-            android:id="@+id/delete_tv"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/delete_btn"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:visibility="gone"
-            android:background="@drawable/view_round_r8_blue"
-            android:backgroundTint="#DFDFDF"
+            android:background="@drawable/view_round_r8_gray3"
             android:fontFamily="@font/font_pretendard_semibold"
             android:gravity="center"
             android:layout_marginBottom="15dp"
+            android:clickable="false"
             android:text="삭제"
             android:textColor="#FFFFFF"
             android:textSize="14sp"

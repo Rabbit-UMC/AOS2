@@ -7,7 +7,7 @@ import android.graphics.Paint
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
 
-//리사이클러뷰 사이 divider 커스텀
+//스케줄 리사이클러뷰 사이 divider 커스텀
 class CustomItemDecoration(val requireContext: Context): RecyclerView.ItemDecoration() {
     @SuppressLint("ResourceAsColor")
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
