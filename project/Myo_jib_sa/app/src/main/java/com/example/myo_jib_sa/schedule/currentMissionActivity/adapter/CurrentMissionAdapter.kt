@@ -6,27 +6,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
+import com.example.myo_jib_sa.mission.MissionRVAdapter
 import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResult
 
 
 
-class CurrentMissionAdapter (private val missionList:ArrayList<CurrentMissionResult>):
+class CurrentMissionAdapter (
+    private val missionList:ArrayList<CurrentMissionResult>,
+    private val onItemClickListener: OnItemClickListener,):
     RecyclerView.Adapter<CurrentMissionAdapter.ViewHolder>() {
 
-    //클릭 이벤트 처리 ==============================================
-//리스너 인터페이스
+
     interface OnItemClickListener{
-        fun onClick(currentMissionData: CurrentMissionResult)
-        fun onLongClick(position: Int)
+        fun onMissionClick(missionId: Long)
         fun onScheduleClick(currentMissionData: CurrentMissionResult)
     }
-     //(3) 외부에서 클릭 시 이벤트 설정
-     fun setItemClickListener(onItemClickListener: OnItemClickListener) {
-         this.itemClickListener = onItemClickListener
-     }
-    // (4) setItemClickListener로 설정한 함수 실행
-    lateinit private var itemClickListener : OnItemClickListener
-    //==============================================================
 
     //화면 설정
     override fun onCreateViewHolder(
@@ -41,21 +35,6 @@ class CurrentMissionAdapter (private val missionList:ArrayList<CurrentMissionRes
     //데이터 설정
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(missionList[position])
-
-
-        //미션 클릭 이벤트
-        holder.itemView.setOnClickListener {
-            itemClickListener.onClick(missionList[position])
-        }
-
-        //미션 롱클릭 이벤트
-        holder.itemView.setOnLongClickListener {
-            // 사용자 정의 동작 구현
-            itemClickListener.onLongClick(position)
-            true // 반드시 true를 반환해야 합니다.
-        }
-
-        //작성한 일지 클릭 이벤트
     }
 
     inner class ViewHolder(private val binding: ItemCurrentMissionBinding) :
@@ -78,9 +57,17 @@ class CurrentMissionAdapter (private val missionList:ArrayList<CurrentMissionRes
             binding.missionDdayTv.text = data.dday
             binding.missionChallengerTv.text = "${data.challengerCnt}"
 
-            binding.missionScheduleTv.setOnClickListener {
-                itemClickListener.onScheduleClick(data)
+            //mission클릭 이벤트
+            binding.missionTitleTv.setOnClickListener {
+                onItemClickListener.onMissionClick(data.missionId)
             }
+
+            //작성한 일지 클릭 이벤트
+            binding.missionScheduleTv.setOnClickListener {
+                onItemClickListener.onScheduleClick(data)
+            }
+
+
                 //todo
 //            Glide.with(itemView)
 //                .load(data.image)
@@ -89,8 +76,6 @@ class CurrentMissionAdapter (private val missionList:ArrayList<CurrentMissionRes
 //                .into(binding.missionImg)//이미지 설정
         }
     }
-
-
 
     override fun getItemCount(): Int {
         return missionList.size
