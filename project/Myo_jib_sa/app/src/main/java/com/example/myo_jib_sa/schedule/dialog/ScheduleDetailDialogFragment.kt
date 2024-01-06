@@ -2,18 +2,21 @@ package com.example.myo_jib_sa.schedule.dialog
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDetailBinding
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResponse
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
-import com.example.myo_jib_sa.schedule.API.scheduleDetail.ScheduleDetailService
+import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -22,6 +25,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.DecimalFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
     private lateinit var binding: DialogFragmentScheduleDetailBinding
@@ -43,7 +48,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
     ): View? {
         binding = DialogFragmentScheduleDetailBinding.inflate(inflater, container, false)
 
-        //shceduleFragment의 스케쥴클릭이벤트함수에서 scheduleId값 받아오기
+        //shceduleFragment의 스케줄클릭이벤트함수에서 scheduleId값 받아오기
         val bundle = arguments
         var scheduleId = bundle?.getLong("scheduleId")?: -1
         Log.d("debug", "\"scheduleId\" : $scheduleId")
@@ -56,19 +61,11 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
 
-
-
-
-
-
-
         //x누르면 dialog종료
 //        binding.exitTv.setOnClickListener {
 //            buttonClickListener.onClickEditBtn()
 //            dismiss()
 //        }
-
-
 
         CoroutineScope(Dispatchers.Main).launch {
             delay(100)
@@ -84,7 +81,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
                     requireContext().getSharedPreferences("scheduleData", MODE_PRIVATE)
                 val editor = sharedPreference.edit()
                 editor.putString("scheduleTitle", binding.scheduleTitleTv.text.toString())
-                editor.putString("scheduleDate", binding.scheduleDateTv.text.toString())
+                editor.putString("scheduleDate", result.scheduleWhen)
                 editor.putString("missionTitle", binding.missionTitleTv.text.toString())
                 editor.putString("scheduleStartTime", result?.startAt)
                 editor.putString("scheduleEndTime", result?.endAt)
@@ -115,48 +112,12 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
         resizeDialog()
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        buttonClickListener.whenDismiss()
+        Log.d("debug","dismiss")
 
-    //dialog크기 조절
-    fun resizeDialog() {
-        val windowManager = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val deviceWidth = size.x
-        val deviceHeight = size.y
-
-        var height = (deviceWidth * 0.95 * 1.13).toInt()
-        var minHeight = ConvertDPtoPX(requireContext(), 380)
-        if(minHeight > height){
-            params?.height = minHeight
-        } else{
-            params?.height = height
-
-        }
-        params?.width = (deviceWidth * 0.95).toInt()
-//        params?.height = (deviceWidth * 0.9 * 1.13).toInt()
-
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
-
-    //dp -> px
-    fun ConvertDPtoPX(context: Context, dp: Int): Int {
-        val density = context.resources.displayMetrics.density
-        return Math.round(dp.toFloat() * density)
-    }
-
-    // 인터페이스
-    interface OnButtonClickListener {
-        fun onClickEditBtn()
-    }
-    // 클릭 이벤트 설정
-    fun setButtonClickListener(buttonClickListener: OnButtonClickListener) {
-        this.buttonClickListener = buttonClickListener
-    }
-    // 클릭 이벤트 실행
-    private lateinit var buttonClickListener: OnButtonClickListener
-
 
 
     private fun scheduleEditDialogItemClickEvent(dialog: ScheduleEditDialogFragment){
@@ -176,7 +137,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
 
                 //화면에 반영
                 binding.scheduleTitleTv.text = scheduleData.scheduleTitle
-                binding.scheduleDateTv.text = scheduleData.scheduleWhen
+                binding.scheduleDateTv.text = scheduleWhenFormatter(scheduleData.scheduleWhen)
                 if(scheduleData.missionTitle == null)
                     binding.missionTitleTv.text = "없음"
                 else {
@@ -193,15 +154,9 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
 
     //scheduleDetail api연결
     private fun scheduleDetailApi(scheduleId: Long) {
-        // SharedPreferences 객체 가져오기
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", null)
-
-     /*   val token ="eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE2OTI3MjE1OTMsImV4cCI6MTY5MjcyNTE5M30.QQBX4y9UIAnMMS_8sbU7tbXti2TU8TsosXRVEWBs_FM"
-*/
-        //val token: String = BuildConfig.API_TOKEN
-        Log.d("token", "token D= "+token);
 
         val service = RetrofitClient.getInstance().create(ScheduleDetailService::class.java)
         val listCall = service.scheduleDetail(token, scheduleId)
@@ -216,7 +171,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
                     result = response.body()!!.result
 
                     binding.scheduleTitleTv.text = result!!.scheduleTitle
-                    binding.scheduleDateTv.text = result!!.scheduleWhen
+                    binding.scheduleDateTv.text = scheduleWhenFormatter(result!!.scheduleWhen)
                     if(result!!.missionTitle == null)
                         binding.missionTitleTv.text = "없음"
                     else {
@@ -225,7 +180,6 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
                     binding.scheduleStartAtTv.text = scheduleTimeFormatter(result!!.startAt)
                     binding.scheduleEndAtTv.text = scheduleTimeFormatter(result!!.endAt)
                     binding.scheduleMemoTv.text = result!!.content
-
 
                 } else {
                     Log.e("retrofit", "onResponse: Error ${response.code()}")
@@ -241,7 +195,49 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
     }
 
 
+    //dialog크기 조절
+    fun resizeDialog() {
+        val windowManager = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+        val deviceWidth = size.x
+        val deviceHeight = size.y
 
+        params?.width = (deviceWidth * 0.89).toInt()
+        params?.height = (deviceWidth * 0.89 * 0.9).toInt()
+
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
+    }
+
+    //dp -> px
+    fun ConvertDPtoPX(context: Context, dp: Int): Int {
+        val density = context.resources.displayMetrics.density
+        return Math.round(dp.toFloat() * density)
+    }
+
+    // 인터페이스
+    interface OnButtonClickListener {
+        //fun onClickEditBtn()
+        fun whenDismiss()
+    }
+    // 클릭 이벤트 설정
+    fun setButtonClickListener(buttonClickListener: OnButtonClickListener) {
+        this.buttonClickListener = buttonClickListener
+    }
+    // 클릭 이벤트 실행
+    private lateinit var buttonClickListener: OnButtonClickListener
+
+
+    private fun scheduleWhenFormatter(scheduleWhen: String?): String {
+        val date = scheduleWhen!!.split("-")
+        val year = date[0]
+        val month = date[1]
+        val day = date[2]
+
+        return year+"년 "+month+"월 "+day+"일"
+    }
     //startTime, endTime 포맷
     fun scheduleTimeFormatter(startAt: String?): String {
         val formatter = DecimalFormat("00")
@@ -258,4 +254,5 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
                 return "오후 ${formatter.format(hour - 12)}:${formatter.format(minute)}"
         }
     }
+
 }
