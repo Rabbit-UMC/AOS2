@@ -1,6 +1,6 @@
-package com.example.myo_jib_sa.schedule.API.scheduleDelete
+package com.example.myo_jib_sa.schedule.api.scheduleDelete
 
-import com.example.myo_jib_sa.schedule.API.scheduleMonth.ScheduleMonthResponse
+import com.example.myo_jib_sa.schedule.api.scheduleMonth.ScheduleMonthResponse
 import retrofit2.Call
 import retrofit2.http.*
 

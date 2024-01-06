@@ -8,8 +8,8 @@
     android:layout_marginEnd="8dp"
     android:background="@drawable/view_round_r8_blue"
     android:backgroundTint="#FFFFFF"
-    android:minWidth="354dp"
-    android:minHeight="400dp"
+    android:minWidth="320dp"
+    android:minHeight="290dp"
     tools:context=".schedule.dialog.ScheduleDetailDialogFragment">
 
 
@@ -63,7 +63,7 @@
             android:layout_marginTop="21dp"
             android:fontFamily="@font/font_pretendard_regular"
             android:inputType="textPersonName"
-            android:text="헬스"
+            android:text="일정"
             android:textColor="#6F6F6F"
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
