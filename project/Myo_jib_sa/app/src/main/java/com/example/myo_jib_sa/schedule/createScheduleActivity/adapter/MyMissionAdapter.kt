@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.databinding.ItemScheduleMissionBinding
 import com.example.myo_jib_sa.schedule.createScheduleActivity.api.getMissionList.GetMyMissionResult
+import com.example.myo_jib_sa.databinding.ItemScheduleMissionBinding
 
 
 class MyMissionAdapter(private val dayList:ArrayList<GetMyMissionResult>):

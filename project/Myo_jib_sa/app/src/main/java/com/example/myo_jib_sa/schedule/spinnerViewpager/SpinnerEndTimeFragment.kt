@@ -63,7 +63,6 @@ class SpinnerEndTimeFragment : Fragment() {
 
         binding.endTimePicker.descendantFocusability =
             NumberPicker.FOCUS_BLOCK_DESCENDANTS // editText가 눌리는 것을 막는다
-
         binding.endTimePicker.setOnTimeChangedListener(object : TimePicker.OnTimeChangedListener {
             override fun onTimeChanged(view: TimePicker?, hourOfDay: Int, minute: Int) {
                 val formatter = DecimalFormat("00")

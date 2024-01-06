@@ -71,8 +71,6 @@ class CalendarAdapter(private val dayList:ArrayList<CalendarData>):
                 binding.dayTv.text = data.date.dayOfMonth.toString()
             }
             //스케줄 가지고 있으면 표시
-            Log.d("debug", ""+data.scheduleCnt)
-
             binding.hasScheduleIv.visibility = View.GONE
             binding.twoScheduleLayout.visibility = View.GONE
             binding.threeScheduleLayout.visibility = View.GONE

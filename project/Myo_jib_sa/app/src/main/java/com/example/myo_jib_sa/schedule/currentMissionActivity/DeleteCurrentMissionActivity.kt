@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.ActivityDeleteCurrentMissionBinding
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
-import com.example.myo_jib_sa.schedule.API.scheduleDelete.ScheduleDeleteService
+import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse

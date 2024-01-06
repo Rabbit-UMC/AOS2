@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object RetrofitClient{
-    private const val BASE_URL = "https://www.myo-zip-sa.store/"//"https://umc.ljhhosting.com/api/"//교체하기!!!!!!!!!1
+    private const val BASE_URL = "https://www.myo-zip-sa.store/"
 
     private var instance: Retrofit? = null
 
