@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.schedule.API.scheduleOfDay.ScheduleOfDayResult
 import com.example.myo_jib_sa.databinding.ItemScheduleScheduleBinding
+import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
 
 class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):
     RecyclerView.Adapter<ScheduleAdaptar.ViewHolder>() {

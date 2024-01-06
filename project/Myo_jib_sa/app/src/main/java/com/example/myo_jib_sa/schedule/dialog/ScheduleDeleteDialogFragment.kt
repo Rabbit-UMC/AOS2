@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDeleteBinding
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
-import com.example.myo_jib_sa.schedule.API.scheduleDelete.ScheduleDeleteService
+import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteService
 import com.example.myo_jib_sa.schedule.adapter.ScheduleAdaptar
 import retrofit2.Call
 import retrofit2.Callback
