@@ -1,20 +1,17 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.os.*
 import android.util.Log
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
-import com.example.myo_jib_sa.mission.MissionRVAdapter
-import com.example.myo_jib_sa.mission.api.Mission
-import com.example.myo_jib_sa.mission.dialog.MissionDetailDialogFragment
+import com.example.myo_jib_sa.databinding.ItemSubScheduleBinding
+import com.example.myo_jib_sa.schedule.CustomItemDecoration
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
@@ -32,10 +29,12 @@ class CurrentMissionActivity : AppCompatActivity() {
     private lateinit var currentMissionAdapter : CurrentMissionAdapter
     private lateinit var scheduleAdapter: CurrentMissionScheduleAdapter
     private var missionList = ArrayList<CurrentMissionResult>()
-    private var scheduleList = ArrayList<CurrentMissionScheduleResult>()
-    private var scheduleAdapterList = ArrayList<ScheduleAdapterData>()
+    private var scheduleList = ArrayList<ScheduleDeleteAdapterData>()
     private var seeScheduleDeleteBtn = true;
-    private var deleteScheduleIdList : MutableSet<Long> = mutableSetOf()//삭제할 스케줄 아이디
+    private var deleteScheduleIdList : MutableList<Long> = mutableListOf()//삭제할 스케줄 아이디
+    private var missionId:Long = 0 //작성한 일지 보기&지우기에서 사용
+    private var isAllSeleted = false //전체선택
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,18 +55,17 @@ class CurrentMissionActivity : AppCompatActivity() {
         setCurrentMissionAdapter()//CurrentMission rv 연결
         currentMissionScheduleApi(missionList[0].missionId)//하위 스케쥴 데이터 추가+schedule rv연결+clickevent
 
+//
+//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(1,"일정1", "2023-12-23"), false))
+//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(2,"일정2", "2023-12-23"), false))
+//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(3,"일정3", "2023-12-23"), false))
+//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(4,"일정4", "2023-12-23"), false))
+//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(5,"일정5", "2023-12-23"), false))
+//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(6,"일정6", "2023-12-23"), false))
+//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(7,"일정7", "2023-12-23"), false))
+//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(8,"일정8", "2023-12-23"), false))
 
-        scheduleAdapterList.add(ScheduleAdapterData(CurrentMissionScheduleResult(1,"일정1", "2023-12-23"), false))
-        scheduleAdapterList.add(ScheduleAdapterData(CurrentMissionScheduleResult(2,"일정2", "2023-12-23"), false))
-        scheduleAdapterList.add(ScheduleAdapterData(CurrentMissionScheduleResult(3,"일정3", "2023-12-23"), false))
-        scheduleAdapterList.add(ScheduleAdapterData(CurrentMissionScheduleResult(4,"일정4", "2023-12-23"), false))
-        scheduleAdapterList.add(ScheduleAdapterData(CurrentMissionScheduleResult(5,"일정5", "2023-12-23"), false))
-        scheduleAdapterList.add(ScheduleAdapterData(CurrentMissionScheduleResult(6,"일정6", "2023-12-23"), false))
-        scheduleAdapterList.add(ScheduleAdapterData(CurrentMissionScheduleResult(7,"일정7", "2023-12-23"), false))
-        scheduleAdapterList.add(ScheduleAdapterData(CurrentMissionScheduleResult(8,"일정8", "2023-12-23"), false))
-
-        setCurrentMissionScheduleAdapter()//CurrentMissionSchedule rv 연결
-        currentMissionScheduleRvItemClickEvent() //CurrentMissionSchedule 클릭이벤트 연결
+//        setCurrentMissionScheduleAdapter()//CurrentMissionSchedule rv 연결
         //todo:여기까지
 
 
@@ -89,7 +87,6 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     //CurrentMissionAdapter 연결
     private fun setCurrentMissionAdapter(){
-
         currentMissionAdapter = CurrentMissionAdapter(missionList,
             onItemClickListener = object : CurrentMissionAdapter.OnItemClickListener{
                 override fun onMissionClick(missionId: Long) {
@@ -98,7 +95,8 @@ class CurrentMissionActivity : AppCompatActivity() {
                 //작성한 일지보기 클릭
                 override fun onScheduleClick(currentMissionData: CurrentMissionResult) {
                     binding.missionScheduleListLayout.visibility = View.VISIBLE
-                    currentMissionScheduleApi(currentMissionData.missionId)
+                    missionId=currentMissionData.missionId
+                    currentMissionScheduleApi(missionId)
                     binding.scheduleDeleteBtn.visibility = View.VISIBLE
                 }
             })
@@ -113,23 +111,35 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     //CurrentMissionScheduleAdapter 연결
     private fun setCurrentMissionScheduleAdapter() {//missionTitle:String
-        scheduleAdapter = CurrentMissionScheduleAdapter(scheduleAdapterList, getDisplayHeightSize())
-        binding.scheduleListRv.layoutManager = LinearLayoutManager(this)
-        binding.scheduleListRv.adapter = scheduleAdapter
-    }
+        scheduleAdapter = CurrentMissionScheduleAdapter(scheduleList,
+            onItemClickListener = object : CurrentMissionScheduleAdapter.OnItemClickListener {
+                override fun onClick(itemBinding: ItemSubScheduleBinding, selected: Boolean) {
+                    if(!seeScheduleDeleteBtn) {
+                        //삭제 버튼 설정
+                        Log.d("debug", "selected schedule count : "+scheduleAdapter.getSelectedItemScheduleId().size)
+                        if(scheduleAdapter.getSelectedItemScheduleId().size >0) {
+                            binding.deleteBtn.setBackgroundResource(R.drawable.view_round_r8_alert)
+                            binding.deleteBtn.isClickable = true
+                        }else{
+                            binding.deleteBtn.setBackgroundResource(R.drawable.view_round_r8_gray3)
+                            binding.deleteBtn.isClickable = false
+                        }
 
-    private fun currentMissionScheduleRvItemClickEvent() {
-        scheduleAdapter.setItemClickListener(object : CurrentMissionScheduleAdapter.OnItemClickListener {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onClick(scheduleItem: ConstraintLayout, isClicked: Boolean) {
-                if(!seeScheduleDeleteBtn) {
-                    if(!isClicked)
-                        scheduleItem.setBackgroundColor(Color.parseColor("#1A234BD9"))
-                    else
-                        scheduleItem.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                        if(selected) {
+                            itemBinding.root.setBackgroundColor(Color.parseColor("#1A234BD9"))
+                        }
+                        else {
+                            itemBinding.root.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                        }
+                    }
                 }
-            }
-        })
+            },
+            getDisplayHeightSize())
+        binding.scheduleListRv.apply {
+            layoutManager = LinearLayoutManager(this@CurrentMissionActivity)
+            adapter = scheduleAdapter
+            addItemDecoration(CustomItemDecoration(this@CurrentMissionActivity))
+        }
     }
 
 
@@ -174,15 +184,11 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     //currentMissionSchedule api연결
     private fun currentMissionScheduleApi(missionId:Long) {
-        // SharedPreferences 객체 가져오기
-        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
+        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", null)
 
-        //val token: String = BuildConfig.API_TOKEN
-        Log.d("debug", "token = "+token+"l");
-
-        scheduleList = ArrayList<CurrentMissionScheduleResult>()
+        scheduleList = ArrayList<ScheduleDeleteAdapterData>()
 
         val service = RetrofitClient.getInstance().create(CurrentMissionScheduleService::class.java)
         val listCall = service.currentMissionSchedule(token, missionId)
@@ -196,20 +202,21 @@ class CurrentMissionActivity : AppCompatActivity() {
                     Log.d("retrofit", response.body().toString());
                     val result = response.body()!!.result
 
-                    for(i in 0 until result.size) {
-                        scheduleList.add(result[i])
-                        scheduleAdapterList.add(ScheduleAdapterData(scheduleList[i], false))
+                    if(result != null) {
+                        for (element in result) {
+                            scheduleList.add(ScheduleDeleteAdapterData(element, false))
+                        }
+                        setCurrentMissionScheduleAdapter()//CurrentMissionSchedule rv 연결
                     }
-                    setCurrentMissionScheduleAdapter()//CurrentMissionSchedule rv 연결
 
                 } else {
-                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    Log.e("retrofit", "currentMissionScheduleApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                    Log.e("retrofit", "currentMissionScheduleApi_onResponse: Error Body $errorBody")
                 }
             }
             override fun onFailure(call: Call<CurrentMissionScheduleResponse>, t: Throwable) {
-                Log.e("retrofit", "onFailure: ${t.message}")
+                Log.e("retrofit", "currentMissionScheduleApi_onFailure: ${t.message}")
             }
         })
     }
@@ -252,7 +259,6 @@ class CurrentMissionActivity : AppCompatActivity() {
 
     private fun setBtn(){
 
-
         //뒤로가기 버튼 클릭
         binding.goBackBtn.setOnClickListener {
             finish()
@@ -263,22 +269,47 @@ class CurrentMissionActivity : AppCompatActivity() {
             if(seeScheduleDeleteBtn){
                 seeScheduleDeleteBtn = false;
                 binding.selectAllLayout.visibility = View.VISIBLE
-                binding.deleteTv.visibility = View.VISIBLE
+                binding.deleteBtn.visibility = View.VISIBLE
                 binding.scheduleDeleteBtn.visibility = View.GONE
             }
             else{
                 seeScheduleDeleteBtn = true;
                 binding.selectAllLayout.visibility = View.GONE
-                binding.deleteTv.visibility = View.GONE
+                binding.deleteBtn.visibility = View.GONE
                 binding.scheduleDeleteBtn.visibility = View.VISIBLE
             }
         }
 
-        binding.deleteTv.isClickable = false
-        binding.deleteTv.setOnClickListener {
-            var deleteDialog = DeleteDialogFragment()
+        binding.selectAllLayout.setOnClickListener {
+            if(isAllSeleted){//전체 선택 해제
+                for(i in 0 until scheduleList.size) {
+                    scheduleList[i].selected = false
+                }
+                scheduleAdapter.notifyDataSetChanged();//rv update
+                isAllSeleted = false
+            }else{//전체 선택
+                for(i in 0 until scheduleList.size) {
+                    scheduleList[i].selected = true
+                }
+                scheduleAdapter.notifyDataSetChanged();//rv update
+                isAllSeleted = true
+            }
+        }
+
+        binding.deleteBtn.isClickable = false
+        binding.deleteBtn.setOnClickListener {
+            Log.d("debug_delete", "delete schedule: $deleteScheduleIdList")
+            deleteScheduleIdList.addAll(scheduleAdapter.getSelectedItemScheduleId())//삭제할 스케줄 아이디 저장
+
+            var mId : Long?
+            mId = if(isAllSeleted){
+                missionId
+            }else{
+                null
+            }
+            var deleteDialog = DeleteDialogFragment(mId, deleteScheduleIdList)
             deleteDialogItemClickEvent(deleteDialog)
-            deleteDialog.show(this.supportFragmentManager, "ScheduleDetailDialog")
+            deleteDialog.show(this.supportFragmentManager, "DeleteDialogFragment")
         }
 
     }
@@ -290,7 +321,7 @@ class CurrentMissionActivity : AppCompatActivity() {
             override fun onClickYesBtn() {
                 seeScheduleDeleteBtn = true;
                 binding.selectAllLayout.visibility = View.GONE
-                binding.deleteTv.visibility = View.GONE
+                binding.deleteBtn.visibility = View.GONE
                 binding.scheduleDeleteBtn.visibility = View.VISIBLE
 
                 binding.missionScheduleListLayout.visibility = View.GONE

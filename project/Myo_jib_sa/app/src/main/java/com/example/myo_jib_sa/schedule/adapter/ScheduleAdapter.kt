@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemScheduleScheduleBinding
 import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
+import java.text.DecimalFormat
 
 class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):
     RecyclerView.Adapter<ScheduleAdaptar.ViewHolder>() {
@@ -30,8 +31,8 @@ class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(data: ScheduleOfDayResult) {
             binding.scheduleTitleTv.text = data.scheduleTitle
-            binding.scheduleStartTimeTv.text = data.scheduleStart
-            binding.scheduleEndTimeTv.text = data.scheduleEnd
+            binding.scheduleStartTimeTv.text = scheduleTimeFormatter(data.scheduleStart)
+            binding.scheduleEndTimeTv.text = scheduleTimeFormatter(data.scheduleEnd)
 
             binding.scheduleLayout.setOnClickListener {
                 itemClickListener.onClick(data)
@@ -74,4 +75,22 @@ class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):
     override fun getItemCount(): Int {
         return scheduleList.size
     }
+
+    //startTime, endTime 포맷
+    fun scheduleTimeFormatter(startAt: String?): String {
+        val formatter = DecimalFormat("00")
+
+        val time = startAt!!.split(":")
+        val hour = time[0].toInt()
+        val minute = time[1].toInt()
+        if (hour < 12) {
+            return "오전 ${hour}:${formatter.format(minute)}"
+        } else {
+            if (hour == 12)
+                return "오후 ${hour}:${formatter.format(minute)}"
+            else
+                return "오후 ${hour - 12}:${formatter.format(minute)}"
+        }
+    }
+
 }
