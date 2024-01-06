@@ -11,7 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import com.example.myo_jib_sa.community.Retrofit.manager.ManagerMissionJoinRequest
+import com.example.myo_jib_sa.community.api.manager.ManagerMissionJoinRequest
 import com.example.myo_jib_sa.databinding.FragmentManagerMissionBinding
 
 

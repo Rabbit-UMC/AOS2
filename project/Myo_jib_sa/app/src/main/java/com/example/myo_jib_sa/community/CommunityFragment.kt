@@ -10,18 +10,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myo_jib_sa.community.Retrofit.communityHome.CommunityHomeManager
-import com.example.myo_jib_sa.community.Retrofit.communityHome.MainMission
-import com.example.myo_jib_sa.community.Retrofit.communityHome.PopularArticle
+import com.example.myo_jib_sa.BuildConfig
+import com.example.myo_jib_sa.community.api.communityHome.CommunityHomeManager
+import com.example.myo_jib_sa.community.api.communityHome.MainMission
+import com.example.myo_jib_sa.community.api.communityHome.PopularArticle
 import com.example.myo_jib_sa.community.adapter.HomeMissionAdapter
 import com.example.myo_jib_sa.community.adapter.HomePostAdapter
 import com.example.myo_jib_sa.databinding.FragmentCommunityBinding
+import com.google.android.ads.nativetemplates.TemplateView
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdOptions
 
 class CommunityFragment : Fragment() {
 
     private lateinit var binding: FragmentCommunityBinding
     private lateinit var retrofitManager: CommunityHomeManager
     private var isFabOpen = false
+
+    private var adLoader: AdLoader? = null //광고를 불러올 adLoader 객체
+    //val AD_UNIT_ID = BuildConfig.AD_UNIT_ID
 
 
     override fun onCreateView(
@@ -34,6 +46,10 @@ class CommunityFragment : Fragment() {
 //
         retrofitManager = CommunityHomeManager.getInstance(requireContext())
 
+        //애드몹 광고 표시
+        createAd()
+        adLoader?.loadAd(AdRequest.Builder().build())
+
         //터치시 게시판 이동
         moveBoard()
 
@@ -45,42 +61,28 @@ class CommunityFragment : Fragment() {
         }
 
         //api 연결, 뷰 띄우기
-        Constance.jwt?.let { getMissionData(it, requireContext()) }
+        Constance.jwt?.let { getHomeData(it, requireContext()) }
 
-        //setFABClickEvent()
-        binding.myoZip3Btn.setOnClickListener {
-            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
-            startActivity(intent)
-        }
-        binding.myoZip2Btn.setOnClickListener {
-            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
-            startActivity(intent)
-        }
-        binding.myoZip1Btn.setOnClickListener {
-            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
-            startActivity(intent)
-        }
-        binding.myoZipMainBtn.setOnClickListener {
-            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
-            startActivity(intent)
-        }
+        //플로팅 버튼 액션
+        setFABClickEvent()
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //setFABClickEvent() //플로팅 버튼 동작 이벤트
     }
 
     //다시 돌아올 때 뷰 업데이트
     override fun onResume() {
         super.onResume()
         retrofitManager = CommunityHomeManager.getInstance(requireContext())
-        Constance.jwt?.let { getMissionData(it, requireContext()) }
+        Constance.jwt?.let { getHomeData(it, requireContext()) }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setFABClickEvent() //플로팅 버튼 동작 이벤트
     }
 
     //플로팅 버튼
     private fun setFABClickEvent() {
+
         // 플로팅 버튼 클릭시 애니메이션 동작 기능
         binding.myoZipMainBtn.setOnClickListener {
             toggleFab()
@@ -88,17 +90,20 @@ class CommunityFragment : Fragment() {
 
         // 플로팅 버튼 클릭 이벤트
         binding.myoZip1Btn.setOnClickListener {
-
+            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
+            startActivity(intent)
         }
 
         // 플로팅 버튼 클릭 이벤트
         binding.myoZip2Btn.setOnClickListener {
-
+            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
+            startActivity(intent)
         }
 
         // 플로팅 버튼 클릭 이벤트
         binding.myoZip3Btn.setOnClickListener {
-
+            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -126,17 +131,17 @@ class CommunityFragment : Fragment() {
 
     //게시판 이동
     private fun moveBoard() {
-        binding.communityBoardArt.setOnClickListener {
+        binding.communityBoardArtLinear.setOnClickListener {
             val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
             intent.putExtra("boardId", Constance.ART_ID)
             startActivity(intent)
         }
-        binding.communityBoardExcs.setOnClickListener {
+        binding.communityBoardExerciseLinear.setOnClickListener {
             val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
             intent.putExtra("boardId", Constance.EXERCISE_ID)
             startActivity(intent)
         }
-        binding.communityBoardFree.setOnClickListener {
+        binding.communityBoardFreeLinear.setOnClickListener {
             val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
             intent.putExtra("boardId", Constance.FREE_ID)
             startActivity(intent)
@@ -145,26 +150,27 @@ class CommunityFragment : Fragment() {
     }
 
 
-    //API 연결, 리사이클러뷰 띄우기
-    private fun getMissionData(author: String, context: Context) {
+    //API 연결, 리사이클러뷰 띄우기, 플로팅 버튼 설정 (Gone)
+    private fun getHomeData(author: String, context: Context) {
         retrofitManager.home(author) { homeResponse ->
-            if (homeResponse.isSuccess == "true") {
+            if (homeResponse.isSuccess) {
                 val missionList: List<MainMission> = homeResponse.result.mainMission
                 val postList: List<PopularArticle> = homeResponse.result.popularArticle
+                //todo : 플로팅 버튼 설정 (Gone)
                 if (missionList.isNotEmpty()) {
                     linkMrecyclr(context, missionList)
                 } else {
-                    Log.d("리사이클러뷰 어댑터로 리스트 전달", "MissionList가 비었다네요")
+                    Log.d("미션 리사이클러뷰 어댑터로 리스트 전달", "MissionList가 비었다네요")
                 }
                 if (postList.isNotEmpty()) {
                     linkePrecyclr(context, postList)
                 } else {
-                    Log.d("리사이클러뷰 어댑터로 리스트 전달", "PostList가 비었다네요")
+                    Log.d("미션 리사이클러뷰 어댑터로 리스트 전달", "PostList가 비었다네요")
                 }
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                val returnCode = homeResponse.code
-                val returnMsg = homeResponse.message
+                val returnCode = homeResponse.errorCode
+                val returnMsg = homeResponse.errorMessage
 
                 Log.d("홈 API isSuccess가 false", "${returnCode}  ${returnMsg}")
             }
@@ -186,7 +192,7 @@ class CommunityFragment : Fragment() {
         binding.homeMissionRecyclr.adapter = Madapter
         Log.d("리사이클러뷰", "binding.homeMissionRecyclr.adapter 시작")
 
-        Madapter.setItemSpacing(binding.homeMissionRecyclr, 15)
+        //Madapter.setItemSpacing(binding.homeMissionRecyclr, 10)
     }
 
     //베스트 게시글 리사이클러뷰, 어댑터 연결
@@ -199,5 +205,26 @@ class CommunityFragment : Fragment() {
         binding.homeBestPostRecyclr.adapter = Padapter
 
         //Padapter.setItemSpacing(binding.homeBestPostRecyclr, 15)
+    }
+
+    //광고 생성 메소드
+    private fun createAd() {
+        MobileAds.initialize(requireActivity())
+        adLoader = AdLoader.Builder(requireActivity(), BuildConfig.AD_UNIT_ID)//sample아이디
+            .forNativeAd { ad : NativeAd ->
+                val template: TemplateView = binding.myTemplate
+                template.setNativeAd(ad)
+            }
+            .withAdListener(object : AdListener() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    // Handle the failure by logging, altering the UI, and so on.
+                }
+            })
+            .withNativeAdOptions(
+                NativeAdOptions.Builder()
+                // Methods in the NativeAdOptions.Builder class can be
+                // used here to specify individual options settings.
+                .build())
+            .build()
     }
 }

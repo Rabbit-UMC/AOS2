@@ -58,7 +58,7 @@ class MissionDetailDialogFragment(private val item: Mission, private val context
         dialog?.let { dialog ->
             val metrics = resources.displayMetrics
             val density = metrics.density
-            val marginPx = (DIALOG_MARGIN_DP * density).toInt() * 2
+            val marginPx = (DIALOG_MARGIN_DP * density * 2).toInt()
             val width = metrics.widthPixels - marginPx
             val height = (DIALOG_HEIGHT_DP * density).toInt()
 
