@@ -6,7 +6,9 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputFilter
+import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.Toast
@@ -84,6 +86,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
             tab.text=tabLayoutText[pos]
         }.attach()
 
+        setMemoCount()
        return binding.root
     }
 
@@ -199,34 +202,32 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
                 Toast.makeText(requireContext(), ""+selectedDate, Toast.LENGTH_SHORT)
                     .show()
-
             }
         })
     }
 
-    private fun getDisplayWidthSize(): Int {
+    private fun setMemoCount(){
+        var userInput = binding.scheduleMemoEtv.text.toString()
+        binding.countMemoTv.text = userInput.length.toString()
+        binding.scheduleMemoEtv.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
 
-        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        val deviceWidth = size.x
-        //val deviceHeight = size.y
-        return deviceWidth
-    }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                var userInput = binding.scheduleMemoEtv.text.toString()
+                binding.countMemoTv.text = userInput.length.toString()
+                Log.d("debug", "memo"+userInput.length.toString())
+            }
 
-    //M월 형식으로 포맷
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun monthFromDate(date : LocalDate):String{
-        var formatter = DateTimeFormatter.ofPattern("M월")
-        return date.format(formatter)
-    }
-
-    //YYYY년 형식으로 포맷
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun yearFromDate(date : LocalDate):String{
-        var formatter = DateTimeFormatter.ofPattern("YYYY년")
-        return date.format(formatter)
+            override fun afterTextChanged(s: Editable?) {
+                //3줄로 입력제한
+                val lines = binding.scheduleMemoEtv.lineCount
+                if (lines > 3) {
+                    //3줄 넘으면 마지막에 쓴 글자 제거
+                    s?.delete(s.length - 1, s.length)
+                }
+            }
+        })
     }
 
     //ScheduleDetailDialog에서 보낸 데이터 바인딩하기
@@ -271,7 +272,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
         //화면에 반영
         binding.scheduleTitleEtv.setText(scheduleData?.scheduleTitle)
-        binding.scheduleDateTv.text = scheduleData?.scheduleWhen
+        binding.scheduleDateTv.text = scheduleWhenFormatter(scheduleData?.scheduleWhen)
         binding.missionTitleTv.text = scheduleData?.missionTitle
         binding.scheduleStartAtTv.text = scheduleTimeFormatter(scheduleData?.startAt)
         binding.scheduleEndAtTv.text = scheduleTimeFormatter(scheduleData?.endAt)
@@ -280,6 +281,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setButton(){
         //수정완료 버튼
         binding.modifyBtn.setOnClickListener{
@@ -304,23 +306,47 @@ class ScheduleEditDialogFragment : DialogFragment() {
                 binding.scheduleMemoEtv.visibility = View.GONE
             }
         }
+        //날짜 완료 클릭
         binding.calendarCompleteTv.setOnClickListener {
             binding.calendarLayout.visibility = View.GONE
             binding.scheduleMemoEtv.visibility = View.VISIBLE
+            binding.scheduleDateTv.text = yearMonthDate(selectedDate)
+            scheduleData.scheduleWhen = selectedDate.toString()
         }
         //시간 클릭시
         binding.scheduleStartAtTv.setOnClickListener {
+            binding.timeViewPager.setCurrentItem(1, true)
+
             if(binding.timeLayout.visibility == View.GONE)
                 binding.timeLayout.visibility = View.VISIBLE
-            binding.timeViewPager.currentItem = 0
+            binding.scheduleMemoEtv.visibility = View.GONE
         }
         binding.scheduleEndAtTv.setOnClickListener {
+            binding.timeViewPager.setCurrentItem(1, false)
+
             if(binding.timeLayout.visibility == View.GONE)
                 binding.timeLayout.visibility = View.VISIBLE
-            binding.timeViewPager.currentItem = 1
+            binding.scheduleMemoEtv.visibility = View.GONE
         }
+        //시간 적용 버튼
         binding.timeApplyBtn.setOnClickListener {
-            binding.timeLayout.visibility = View.GONE
+            val sharedPreferenceModified = requireContext().getSharedPreferences("scheduleModifiedData",
+                Context.MODE_PRIVATE
+            )
+            val startAt = sharedPreferenceModified.getString("scheduleStartTime", "").toString()
+            val endAt = sharedPreferenceModified.getString("scheduleEndTime", "").toString()
+            if(startAt >= endAt){
+                Toast.makeText(requireContext(), "종료 시간이 시작 시간 이후여야 합니다.",Toast.LENGTH_LONG).show();
+            }
+            else{
+                binding.timeLayout.visibility = View.GONE
+                scheduleData?.startAt = sharedPreferenceModified.getString("scheduleStartTime", "").toString()
+                scheduleData?.endAt = sharedPreferenceModified.getString("scheduleEndTime", "").toString()
+                //화면에 반영
+                binding.scheduleStartAtTv.text = scheduleTimeFormatter(scheduleData?.startAt)
+                binding.scheduleEndAtTv.text = scheduleTimeFormatter(scheduleData?.endAt)
+                binding.scheduleMemoEtv.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -442,14 +468,10 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
     //scheduleModify api연결
     private fun scheduleModifyApi() {
-        // SharedPreferences 객체 가져오기
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
+        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", null)
 
-        //val token : String = BuildConfig.API_TOKEN
-//        Log.d("retrofit", "token = "+token+"l");
-//
         if(scheduleData.missionId == -1L){
             scheduleData.missionId = null
         }
@@ -460,7 +482,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
             startAt = scheduleData.startAt,
             endAt = scheduleData.endAt,
             missionId = scheduleData.missionId,
-            scheduleWhen = binding.scheduleDateTv.text.toString()
+            scheduleWhen = scheduleData.scheduleWhen
         )
 
         Log.d("debug", requestBody.toString())
@@ -473,14 +495,14 @@ class ScheduleEditDialogFragment : DialogFragment() {
                 response: Response<ScheduleModifyResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.d("retrofit", response.body().toString());
+                    Log.d("retrofit", "scheduleModifyApi"+response.body().toString());
                 }else {
-                    Log.e("retrofit", "onResponse: Error ${response.code()}")
+                    Log.e("retrofit", "scheduleModifyApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                    Log.e("retrofit", "scheduleModifyApi_onResponse: Error Body $errorBody")
                 }}
             override fun onFailure(call: Call<ScheduleModifyResponse>, t: Throwable) {
-                Log.e("retrofit", "onFailure: ${t.message}")
+                Log.e("retrofit", "scheduleModifyApi_onFailure: ${t.message}")
             }
         })
     }
@@ -549,6 +571,47 @@ class ScheduleEditDialogFragment : DialogFragment() {
         } else {
             ""
         }
+    }
+
+
+    //M월 형식으로 포맷
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun monthFromDate(date : LocalDate):String{
+        var formatter = DateTimeFormatter.ofPattern("M월")
+        return date.format(formatter)
+    }
+
+    //YYYY년 형식으로 포맷
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun yearFromDate(date : LocalDate):String{
+        var formatter = DateTimeFormatter.ofPattern("yyyy년")
+        return date.format(formatter)
+    }
+
+    //YYYY년 MM월 D일
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun yearMonthDate(date : LocalDate):String{
+        var formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 DD일")
+        return date.format(formatter)
+    }
+    private fun scheduleWhenFormatter(scheduleWhen: String?): String {
+        val date = scheduleWhen!!.split("-")
+        val year = date[0]
+        val month = date[1]
+        val day = date[2]
+
+        return year+"년 "+month+"월 "+day+"일"
+    }
+
+    private fun getDisplayWidthSize(): Int {
+
+        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val deviceWidth = size.x
+        //val deviceHeight = size.y
+        return deviceWidth
     }
 
     //startTime, endTime 포맷

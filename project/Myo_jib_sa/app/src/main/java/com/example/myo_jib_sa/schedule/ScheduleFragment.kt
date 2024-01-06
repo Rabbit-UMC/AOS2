@@ -118,6 +118,7 @@ class ScheduleFragment() : Fragment() {
 
 
     //month화면에 보여주기
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setCalendarHeader(date: LocalDate) {
 
         //m월 d일 일정 표시 (예: 6월 1일 일정 표시)
@@ -349,7 +350,7 @@ class ScheduleFragment() : Fragment() {
     fun scheduleDetailDialogItemClickEvent(dialog: ScheduleDetailDialogFragment) {
         dialog.setButtonClickListener(object : ScheduleDetailDialogFragment.OnButtonClickListener {
             @RequiresApi(Build.VERSION_CODES.O)
-            override fun onClickEditBtn() {
+            override fun whenDismiss() {
                 //화면reload===============================================
 
                 currentMissionApi()//scheduleHome api연결

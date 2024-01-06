@@ -2,12 +2,15 @@ package com.example.myo_jib_sa.schedule.dialog
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDetailBinding
@@ -22,6 +25,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.DecimalFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
     private lateinit var binding: DialogFragmentScheduleDetailBinding
@@ -76,7 +81,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
                     requireContext().getSharedPreferences("scheduleData", MODE_PRIVATE)
                 val editor = sharedPreference.edit()
                 editor.putString("scheduleTitle", binding.scheduleTitleTv.text.toString())
-                editor.putString("scheduleDate", binding.scheduleDateTv.text.toString())
+                editor.putString("scheduleDate", result.scheduleWhen)
                 editor.putString("missionTitle", binding.missionTitleTv.text.toString())
                 editor.putString("scheduleStartTime", result?.startAt)
                 editor.putString("scheduleEndTime", result?.endAt)
@@ -107,6 +112,12 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
         resizeDialog()
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        buttonClickListener.whenDismiss()
+        Log.d("debug","dismiss")
+
+    }
 
 
     private fun scheduleEditDialogItemClickEvent(dialog: ScheduleEditDialogFragment){
@@ -126,7 +137,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
 
                 //화면에 반영
                 binding.scheduleTitleTv.text = scheduleData.scheduleTitle
-                binding.scheduleDateTv.text = scheduleData.scheduleWhen
+                binding.scheduleDateTv.text = scheduleWhenFormatter(scheduleData.scheduleWhen)
                 if(scheduleData.missionTitle == null)
                     binding.missionTitleTv.text = "없음"
                 else {
@@ -160,7 +171,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
                     result = response.body()!!.result
 
                     binding.scheduleTitleTv.text = result!!.scheduleTitle
-                    binding.scheduleDateTv.text = result!!.scheduleWhen
+                    binding.scheduleDateTv.text = scheduleWhenFormatter(result!!.scheduleWhen)
                     if(result!!.missionTitle == null)
                         binding.missionTitleTv.text = "없음"
                     else {
@@ -208,7 +219,8 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
 
     // 인터페이스
     interface OnButtonClickListener {
-        fun onClickEditBtn()
+        //fun onClickEditBtn()
+        fun whenDismiss()
     }
     // 클릭 이벤트 설정
     fun setButtonClickListener(buttonClickListener: OnButtonClickListener) {
@@ -218,6 +230,14 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
     private lateinit var buttonClickListener: OnButtonClickListener
 
 
+    private fun scheduleWhenFormatter(scheduleWhen: String?): String {
+        val date = scheduleWhen!!.split("-")
+        val year = date[0]
+        val month = date[1]
+        val day = date[2]
+
+        return year+"년 "+month+"월 "+day+"일"
+    }
     //startTime, endTime 포맷
     fun scheduleTimeFormatter(startAt: String?): String {
         val formatter = DecimalFormat("00")
@@ -234,4 +254,5 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
                 return "오후 ${formatter.format(hour - 12)}:${formatter.format(minute)}"
         }
     }
+
 }
