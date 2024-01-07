@@ -4,15 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
-import com.example.myo_jib_sa.community.dialog.CommunityDialog
-import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
-import com.example.myo_jib_sa.databinding.ActivityImageBinding
+import com.example.myo_jib_sa.community.dialog.CommunityDialogRedBlack
 import com.example.myo_jib_sa.databinding.ActivityMissionPictureBinding
 import okhttp3.Call
 import okhttp3.Callback
@@ -56,14 +52,14 @@ class MissionPictureActivity : AppCompatActivity() {
         clikeReport()
 
         //화면 닫기
-        binding.imgCheckCancleTxt.setOnClickListener {
+        binding.missionCertPictureBackBtn.setOnClickListener {
             finish()
         }
 
         //이미지 다운로드
-        binding.imgCheckDownloadBtn.setOnClickListener {
-            download()
-        }
+        //binding.imgCheckDownloadBtn.setOnClickListener {
+        //    download()
+        //}
 
 
     }
@@ -72,13 +68,11 @@ class MissionPictureActivity : AppCompatActivity() {
     private fun clikeReport(){
         //신고하기
         binding.reportTxt.setOnClickListener {
-            val DelDialog = CommunityDialog(this, "해당 게시글을 신고하시겠어요?"
+            val DelDialog = CommunityDialogRedBlack(this, "해당 게시글을 신고하시겠어요?"
                 , "다른 사용자에게 불쾌감을 조성하는 게시글인지 다시 확인해주세요."
                 ,"게시글을 신고할게요"
-                ,"아니요, 취소할게요"
-                ,"#C1C1C196"
-                ,"#F22222")
-            DelDialog.setCustomDialogListener(object : CommunityDialog.CustomDialogListener {
+                ,"아니요, 취소할게요")
+            DelDialog.setCustomDialogListener(object : CommunityDialogRedBlack.CustomDialogListener {
                 override fun onPositiveButtonClicked(value: Boolean) {
                     if (value){
                         //신고 재확인 팝업창 띄우고 확인 누르면 api 연결

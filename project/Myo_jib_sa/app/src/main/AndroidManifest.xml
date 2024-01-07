@@ -27,9 +27,6 @@
             android:name=".mypage.history.MypageHistoryActivity"
             android:exported="false" />
         <activity
-            android:name=".community.missionCert.MissionCertificationWriteCheckActivity"
-            android:exported="false" />
-        <activity
             android:name=".community.ImageActivity"
             android:exported="false" />
         <activity
@@ -91,6 +88,12 @@
         <activity
             android:name=".community.missionCert.MissionCertificationWriteActivity"
             android:label="MissionCertificationWriteActivity" />
+        <activity
+            android:name=".community.missionCert.MissionCertificationWriteCheckActivity"
+            android:exported="false" />
+        <activity
+            android:name=".community.missionCert.MissionPictureActivity"
+            android:exported="false" />
         <activity
             android:name=".login.AddEmailDialogActivity"
             android:exported="false"
