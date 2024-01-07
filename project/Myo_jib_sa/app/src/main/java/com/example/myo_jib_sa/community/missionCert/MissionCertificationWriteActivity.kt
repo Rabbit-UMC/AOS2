@@ -59,12 +59,12 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         }
 
 
-        binding.missionCertImgBtn.setOnClickListener {
+        binding.missionCertGalleryConstraint.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
         }
 
-        binding.missionCertCompleteTxt.setOnClickListener {
+       /* binding.missionCertCompleteTxt.setOnClickListener {
             Constance.jwt?.let { it1 ->
                 postImg(it1, boardId.toLong()){ isSuccess->
                     if(isSuccess){
@@ -73,7 +73,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                 }
             }
 
-        }
+        }*/
 
     }
 
@@ -83,9 +83,12 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
             val selectedImageUri: Uri? = data.data
             // 선택한 이미지를 해당 이미지뷰에 표시
             selectedImageUri?.let { uri ->
+                val intent=Intent(this, MissionCertificationWriteCheckActivity::class.java)
+                intent.putExtra("imgUri",uri)
+                startActivity(intent)
+                finish()
                 // todo :val imageView: ImageView = binding.missionCertImg
                 //imageView.setImageURI(uri)
-                imgUri=uri
 
                 //todo : binding.missionWriteImgLayout.backgroundTintList=
                     //ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))

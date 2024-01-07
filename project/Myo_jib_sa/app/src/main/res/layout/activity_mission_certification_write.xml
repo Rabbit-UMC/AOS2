@@ -39,20 +39,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_back" />
 
-        <TextView
-            android:id="@+id/missionCert_complete_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:padding="5dp"
-            android:fontFamily="@font/font_inter"
-            android:text="완료"
-            android:textColor="#234BD9"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -69,35 +55,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/missionCert_cntLayout" />
 
-    <Button
-        android:id="@+id/missionCert_img_btn"
-        android:layout_width="155dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:padding="30dp"
-        android:background="@drawable/background_community_btn"
-        android:backgroundTint="#234BD9"
-        android:drawableBottom="@drawable/ic_schedule_ogo"
-        android:text="사진"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/missionCert_text" />
 
-    <Button
-        android:id="@+id/missionCert_img_btn2"
-        android:layout_width="155dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/background_community_btn"
-        android:backgroundTint="#234BD9"
-        android:drawableBottom="@drawable/ic_schedule_ogo"
-        android:padding="30dp"
-        android:text="사진"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/missionCert_text" />
 
     <TextView
         android:id="@+id/textView13"
@@ -109,7 +67,7 @@
         android:textColor="#6F6F6F"
         android:textSize="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/missionCert_img_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/missionCert_camera_constraint" />
 
     <TextView
         android:id="@+id/mission_cert_title_txt"
@@ -152,5 +110,69 @@
         android:textSize="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/missionCert_camera_constraint"
+        android:layout_width="155dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/background_community_btn"
+        android:backgroundTint="#234BD9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/missionCert_text">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_caption_text_1"
+                android:text="카메라 촬영"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/missionCert_gallery_constraint"
+        android:layout_width="155dp"
+        android:layout_height="120dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/background_community_btn"
+        android:backgroundTint="#234BD9"
+        app:layout_constraintBottom_toBottomOf="@+id/missionCert_camera_constraint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/missionCert_camera_constraint">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_caption_text_1"
+                android:text="갤러리 선택"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
