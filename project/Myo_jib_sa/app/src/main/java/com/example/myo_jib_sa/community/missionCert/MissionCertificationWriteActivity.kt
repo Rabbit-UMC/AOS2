@@ -1,6 +1,8 @@
 package com.example.myo_jib_sa.community.missionCert
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,6 +13,7 @@ import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.ImgPath
 import com.example.myo_jib_sa.community.api.imgUpload.imgUploadRetrofitManager
@@ -18,6 +21,10 @@ import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManag
 import com.example.myo_jib_sa.databinding.ActivityMissionCertificationWriteBinding
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 
 class MissionCertificationWriteActivity: AppCompatActivity() {
     private lateinit var binding:ActivityMissionCertificationWriteBinding
@@ -29,6 +36,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
     companion object {
         const val GALLERY_REQUEST_CODE = 1001
+        const val CAMERA_REQUEST_CODE = 1002
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +72,16 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
             startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
         }
 
+        //todo: 카메라로 사진 찍어서 올리기
+        binding.missionCertCameraConstraint.setOnClickListener {
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (takePictureIntent.resolveActivity(packageManager) != null) {
+                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
+            } else {
+                Toast.makeText(this, "카메라 앱을 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
        /* binding.missionCertCompleteTxt.setOnClickListener {
             Constance.jwt?.let { it1 ->
                 postImg(it1, boardId.toLong()){ isSuccess->
@@ -79,6 +97,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        //갤러리에서 사진 선택
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             val selectedImageUri: Uri? = data.data
             // 선택한 이미지를 해당 이미지뷰에 표시
@@ -87,13 +106,53 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                 intent.putExtra("imgUri",uri)
                 startActivity(intent)
                 finish()
-                // todo :val imageView: ImageView = binding.missionCertImg
-                //imageView.setImageURI(uri)
+            }
 
-                //todo : binding.missionWriteImgLayout.backgroundTintList=
-                    //ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+            //카메라로 사진 찍었을 때
+        }else if(requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null){
+            val imageBitmap: Bitmap? = getBitmapFromIntentData(data)
+            imageBitmap?.let { bitmap ->
+                val intent=Intent(this, MissionCertificationWriteCheckActivity::class.java)
+                intent.putExtra("imgUri",bitmapToUri(bitmap, this))
+                startActivity(intent)
+                finish()
             }
         }
+    }
+
+    //Intent를 통해 전달된 데이터에서 이미지를 가져옴
+    private fun getBitmapFromIntentData(data: Intent): Bitmap? {
+        val selectedImageUri: Uri? = data.data
+        return if (selectedImageUri != null) {
+            val inputStream: InputStream? = contentResolver.openInputStream(selectedImageUri)
+            BitmapFactory.decodeStream(inputStream)
+        } else {
+            data.extras?.get("data") as? Bitmap
+        }
+    }
+
+    //bitmap -> uri convert
+    //임시 저장소에 저장
+    fun bitmapToUri(bitmap: Bitmap, context: Context): Uri? {
+        val wrapper = ContextWrapper(context.applicationContext)
+        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
+        file = File(file, "${System.currentTimeMillis()}.jpg")
+
+        try {
+            val stream: OutputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.flush()
+            stream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return null
+        }
+
+        return FileProvider.getUriForFile(
+            context.applicationContext,
+            "${context.applicationContext.packageName}.fileprovider",
+            file
+        )
     }
 
     //이미지 첨부 api
