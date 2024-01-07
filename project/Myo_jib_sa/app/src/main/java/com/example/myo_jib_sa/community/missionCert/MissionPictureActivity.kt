@@ -30,6 +30,7 @@ class MissionPictureActivity : AppCompatActivity() {
     private var filePath:String=""
     private var isReportable:Boolean=false //신고가능인지
     private var imgId:Long=0 //이미지 아이디
+    private var isLike:Boolean=false //좋아요 여부
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +42,8 @@ class MissionPictureActivity : AppCompatActivity() {
         filePath=intent.getStringExtra("filePath").toString()
         isReportable=intent.getBooleanExtra("isReportable", false)
         imgId=intent.getLongExtra("imgId", 0)
+        isLike=intent.getBooleanExtra("isLike", false)
+
 
         //이미지 설정
         Glide.with(this)
@@ -52,8 +55,17 @@ class MissionPictureActivity : AppCompatActivity() {
             binding.imgCheckReportTxt.visibility= View.GONE
         }*/
 
+        //todo : 뷰 설정하기 (사진 조회 api 개발 후)
+
+        //좋아요 아이콘 설정
+        setLike()
+
         //신고하기
         clikeReport()
+
+        //좋아요 누르기
+        clickLike()
+
 
         //화면 닫기
         binding.missionCertPictureBackBtn.setOnClickListener {
@@ -67,7 +79,78 @@ class MissionPictureActivity : AppCompatActivity() {
 
 
     }
+    private fun setView(){
+        //todo :
+    }
+
+    private fun setLike() {
+        if(isLike){
+            binding.likeImg.setImageResource(R.drawable.ic_like)
+        }else{
+            binding.likeImg.setImageResource(R.drawable.ic_unlike)
+        }
+    }
+
+    //좋아요 누르기
+    private fun clickLike(){
+        binding.likeImg.setOnClickListener{
+            if(isLike){
+                Constance.jwt?.let { it1 ->
+                    unlike(it1,imgId){ isSuccess->
+                        if(isSuccess){
+                            binding.likeImg.setImageResource(R.drawable.ic_unlike)
+                            setView() //좋아요 수 갱신
+                        }
+                    }
+                }
+            }else{
+                Constance.jwt?.let { it1 -> like(it1,imgId) { isSuccess->
+                    if(isSuccess){
+                        binding.likeImg.setImageResource(R.drawable.ic_like)
+                        setView() //좋아요 수 갱신
+                    }
+                }
+                }
+            }
+        }
+    }
+
     //좋아요
+    private fun like(author:String ,imgId:Long, callback: (Boolean) -> Unit){
+        val retrofitManager = MissionCertRetrofitManager.getInstance(this)
+        retrofitManager.missionImgLike(author, imgId){response ->
+            if(response){
+                Log.d("missionImgLike", "missionImgLike 성공")
+                callback(true)
+            } else {
+                // API 호출은 성공했으나 isSuccess가 false인 경우 처리
+                Log.d("missionImgLike", "missionImgLike 실패")
+                showToast("좋아요 실패")
+                callback(false)
+            }
+
+
+        }
+    }
+
+
+    //좋아요 삭제
+    private fun unlike(author:String ,imgId:Long, callback: (Boolean) -> Unit){
+        val retrofitManager = MissionCertRetrofitManager.getInstance(this)
+        retrofitManager.missionImgUnlike(author, imgId){response ->
+            if(response){
+                Log.d("missionImgUnlike", "missionImgUnlike 성공")
+                callback(true)
+            } else {
+                // API 호출은 성공했으나 isSuccess가 false인 경우 처리
+                Log.d("missionImgUnlike", "missionImgUnlike 실패")
+                showToast("좋아요 취소 실패")
+                callback(false)
+            }
+
+
+        }
+    }
 
     //신고 누르기
     private fun clikeReport(){

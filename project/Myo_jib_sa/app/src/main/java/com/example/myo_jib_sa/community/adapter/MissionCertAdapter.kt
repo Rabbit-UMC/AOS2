@@ -124,6 +124,7 @@ class MissionCertAdapter(
             val intent=Intent(context, MissionPictureActivity::class.java)
             intent.putExtra("filePath", data.filePath)
             intent.putExtra("imgId", data.imageId)
+            intent.putExtra("isLike", data.isLike)
             intent.putExtra("isReportable", true)
             context.startActivity(intent)
         }
@@ -205,7 +206,7 @@ class MissionCertAdapter(
     private fun like(author:String ,imgId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = MissionCertRetrofitManager.getInstance(context)
         retrofitManager.missionImgLike(author, imgId){response ->
-            if(response==200){
+            if(response){
                     Log.d("missionImgLike", "missionImgLike 성공")
                     callback(true)
             } else {
