@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.community.dialog.CommunityDialogRedBlack
@@ -56,13 +60,14 @@ class MissionPictureActivity : AppCompatActivity() {
             finish()
         }
 
-        //이미지 다운로드
+        //이미지 다운로드 todo : 삭제하기
         //binding.imgCheckDownloadBtn.setOnClickListener {
         //    download()
         //}
 
 
     }
+    //좋아요
 
     //신고 누르기
     private fun clikeReport(){
@@ -92,7 +97,7 @@ class MissionPictureActivity : AppCompatActivity() {
         retrofitManager.report(author, imgId){response ->
             if(response){
                 Log.d("mission report", "mission report 성공")
-                showToast("신고 완료")
+
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
 
@@ -104,7 +109,7 @@ class MissionPictureActivity : AppCompatActivity() {
         }
     }
 
-    //사진 다운로드
+    //사진 다운로드 todo : 삭제하기.
     private fun download(){
         val request = Request.Builder()
             .url(filePath)
@@ -154,4 +159,19 @@ class MissionPictureActivity : AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
+    //todo : 신고 토스트 메시지
+    private fun reportToast(){
+        // Inflate the custom layout
+        val inflater: LayoutInflater = layoutInflater
+        val layout: View = inflater.inflate(R.layout.toast_red_black, findViewById(R.id.toast_red_black_constraint))
+
+        val toast = Toast(applicationContext)
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0)
+        toast.duration = Toast.LENGTH_LONG
+        toast.view
+
+        toast.show()
+    }
+
 }
