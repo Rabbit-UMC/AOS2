@@ -20,6 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+
 class MissionCertificationActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityMissionCertificationBinding
@@ -179,6 +180,9 @@ class MissionCertificationActivity: AppCompatActivity() {
                     //미션 인증 엑티비티 뷰 설정
                     binding.missionCertMissionNameTxt.text = response.result.mainMissionName
                     binding.missionCertDdayTxt.text = response.result.dday
+
+                    missioncertInfo.title=response.result.mainMissionName
+                    missioncertInfo.memo=response.result.mainMissionContent
 
                     //랭킹 설정
                     setRankText(response)
