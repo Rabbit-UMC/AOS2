@@ -567,7 +567,7 @@ class ScheduleFragment() : Fragment() {
 
         // JWT 값 가져오기
         val sharedPreferences =
-            requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+            requireActivity().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", "")
 
         val service = RetrofitClient.getInstance().create(ScheduleMonthService::class.java)
