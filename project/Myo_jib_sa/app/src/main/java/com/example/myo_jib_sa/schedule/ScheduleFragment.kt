@@ -252,7 +252,7 @@ class ScheduleFragment() : Fragment() {
 
         Log.d("retrofit", "$date : $sDataList")
         scheduleAdaptar = ScheduleAdaptar(sDataList)
-        val itemDecoration = CustomItemDecoration(requireContext())
+        val item = CustomItemDecoration(requireContext())
 
         // 리사이클러뷰에 스와이프, 드래그 기능 달기
         val swipeHelperCallback = SwipeHelperCallback().apply {
@@ -265,7 +265,8 @@ class ScheduleFragment() : Fragment() {
         binding.scheduleRv.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = scheduleAdaptar
-            addItemDecoration(itemDecoration)
+//            addItemDecoration(itemDecoration)
+            addItemDecoration(CustomItemDecoration(requireActivity()))
 
             setOnTouchListener { _, _ ->
                 swipeHelperCallback.removePreviousClamp(this)

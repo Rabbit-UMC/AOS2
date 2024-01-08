@@ -22,7 +22,7 @@ interface ScheduleDeleteService {
         @Header("X-ACCESS-TOKEN")
         accessToken: String?,
 //        @Url url: MutableList<Long>
-        @Path("scheduleIds") scheduleId: MutableList<Long>
+        @Path("scheduleIds") scheduleId: String
 
     ) : Call<ScheduleDeleteResponse>
 }
