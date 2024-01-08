@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
+    android:background="#FFFFFF"
     app:umanoDragView="@id/slidingUp_panel_layout"
     app:umanoFadeColor="@android:color/transparent"
     app:umanoOverlay="true"
@@ -61,8 +62,7 @@
         android:id="@+id/missionList_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -183,6 +183,7 @@
         app:layout_constraintHeight_percent="0.66"
         android:background="@drawable/view_round_r16_top"
         android:visibility="gone"
+        android:elevation="7dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
 
@@ -213,7 +214,7 @@
             app:srcCompat="@drawable/ic_current_mission_schedule_delete" />
 
         <LinearLayout
-            android:id="@+id/select_all_layout"
+            android:id="@+id/mission_delete_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -238,7 +239,8 @@
                 tools:layout_editor_absoluteY="90dp" />
 
             <ImageButton
-                android:id="@+id/checkAll_btn"
+                android:id="@+id/mission_delete_btn"
+                android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
@@ -251,22 +253,29 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/scheduleList_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="11dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/delete_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/missionTitle_in_schedule_list_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/missionTitle_in_schedule_list_tv"
+            tools:listitem="@layout/item_schedule_schedule" />
 
-        <TextView
-            android:id="@+id/delete_tv"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/delete_btn"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="gone"
-            android:background="@drawable/view_round_r8_blue"
-            android:backgroundTint="#DFDFDF"
+            android:visibility="invisible"
+            android:elevation="0dp"
+            android:background="@drawable/view_round_r8_alert"
             android:fontFamily="@font/font_pretendard_semibold"
             android:gravity="center"
             android:layout_marginBottom="15dp"
+            android:clickable="false"
             android:text="삭제"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
@@ -276,6 +285,45 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent="0.86"  />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/close_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            android:elevation="0dp"
+            android:background="@drawable/view_round_r8_gray3"
+            android:backgroundTint="#000000"
+            android:fontFamily="@font/font_pretendard_semibold"
+            android:gravity="center"
+            android:layout_marginBottom="15dp"
+            android:text="닫힘"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="100:14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.86"  />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancel_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            android:elevation="0dp"
+            android:background="@drawable/view_round_r8_gray3"
+            android:backgroundTint="#000000"
+            android:fontFamily="@font/font_pretendard_semibold"
+            android:gravity="center"
+            android:layout_marginBottom="15dp"
+            android:text="취소"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="100:14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.86"  />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
