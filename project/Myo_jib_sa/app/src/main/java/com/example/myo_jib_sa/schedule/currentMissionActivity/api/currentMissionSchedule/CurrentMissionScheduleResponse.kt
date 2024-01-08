@@ -1,14 +1,12 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule
 
+import com.example.myo_jib_sa.base.BaseResponse
 import com.google.gson.annotations.SerializedName
 
 
 data class CurrentMissionScheduleResponse(
-    val isSuccess: Boolean,
-    val code: Int,
-    val message: String,
     val result: List<CurrentMissionScheduleResult>
-)
+):BaseResponse()
 
 data class CurrentMissionScheduleResult(
     @SerializedName("id")

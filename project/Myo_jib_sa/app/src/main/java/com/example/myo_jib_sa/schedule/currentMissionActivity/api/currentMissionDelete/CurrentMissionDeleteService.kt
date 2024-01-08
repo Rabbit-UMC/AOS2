@@ -8,11 +8,11 @@ interface CurrentMissionDeleteService {
         private const val authKey = "" //Authorization쓰기!!
     }
 
-    @DELETE//("app/mission/my-missions/{missionId}")//?Authorization=$authKey
+    @DELETE("app/mission/my-missions/{missionId}")//?Authorization=$authKey
     fun currentMissionDelete(
         @Header("X-ACCESS-TOKEN")
         accessToken: String?,
-        @Url url: String
-        //@Path("missionId") missionId:MutableList<Long>
+//        @Url url: String
+        @Path("missionId") missionId:Long
     ) : Call<CurrentMissionDeleteResponse>
 }
