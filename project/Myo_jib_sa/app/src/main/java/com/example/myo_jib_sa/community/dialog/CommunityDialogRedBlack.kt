@@ -36,6 +36,10 @@ class CommunityDialogRedBlack(context: Context
         binding= DialogCommunityRedBlackBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 다이얼로그가 포커스를 가지도록 설정
+        window?.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
+
         binding.communityDialogConstraint.clipToOutline = true
         binding.communityDialogConstraint.outlineProvider = object : ViewOutlineProvider() {
             override fun getOutline(view: View?, outline: Outline?) {
@@ -53,12 +57,7 @@ class CommunityDialogRedBlack(context: Context
 
             }
         }
-        binding.root.setBackgroundColor(Color.parseColor("#000000"))
-
-
-        // 다이얼로그가 포커스를 가지도록 설정
-        window?.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
-        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
+        binding.root.setBackgroundResource(R.drawable.background_post) // setBackgroundResource 사용
 
 
         //text 설정

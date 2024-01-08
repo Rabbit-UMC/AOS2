@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewOutlineProvider
 import android.view.WindowManager
+import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.databinding.DialogBlueBlackBinding
 import com.example.myo_jib_sa.databinding.DialogCommunityRedBlackBinding
 
 class CommunityDialogBlueBlack (context: Context
@@ -15,8 +17,7 @@ class CommunityDialogBlueBlack (context: Context
                                 , private val detail:String
                                 , private val okTxt:String
                                 , private val cancleTxt:String) : Dialog(context) {
-    private lateinit var binding: DialogCommunityRedBlackBinding
-
+    private lateinit var binding: DialogBlueBlackBinding
 
     interface CustomDialogListener {
         fun onPositiveButtonClicked(value: Boolean)
@@ -31,10 +32,8 @@ class CommunityDialogBlueBlack (context: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= DialogCommunityRedBlackBinding.inflate(layoutInflater)
+        binding= DialogBlueBlackBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.communityPopupOkBtn.setBackgroundColor(Color.parseColor("#234BD9"))
 
 
         // 다이얼로그가 포커스를 가지도록 설정
@@ -48,6 +47,24 @@ class CommunityDialogBlueBlack (context: Context
         binding.communityPopupOkBtn.text=okTxt
         binding.communityPopupNoBtn.text=cancleTxt
 
+        binding.communityDialogConstraint.clipToOutline = true
+        binding.communityDialogConstraint.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View?, outline: Outline?) {
+                // radius: 8dp
+                outline?.setRoundRect(0, 0, view?.width ?: 0, view?.height ?: 0, convertDpToPixel(8f, view?.context ?: return))
+
+            }
+        }
+
+        binding.root.clipToOutline = true
+        binding.root.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View?, outline: Outline?) {
+                // radius: 8dp
+                outline?.setRoundRect(0, 0, view?.width ?: 0, view?.height ?: 0, convertDpToPixel(10f, view?.context ?: return))
+
+            }
+        }
+        binding.root.setBackgroundResource(R.drawable.background_post) // setBackgroundResource 사용
 
         // 취소 버튼 클릭 리스너 설정
         binding.communityPopupNoBtn.setOnClickListener {
