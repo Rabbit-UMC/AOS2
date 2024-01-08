@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewOutlineProvider
 import android.view.WindowManager
 import android.widget.Button
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogCommunityRedBlackBinding
 
 class CommunityDialogRedBlack(context: Context
@@ -43,6 +44,16 @@ class CommunityDialogRedBlack(context: Context
 
             }
         }
+
+        binding.root.clipToOutline = true
+        binding.root.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View?, outline: Outline?) {
+                // radius: 8dp
+                outline?.setRoundRect(0, 0, view?.width ?: 0, view?.height ?: 0, convertDpToPixel(10f, view?.context ?: return))
+
+            }
+        }
+        binding.root.setBackgroundColor(Color.parseColor("#000000"))
 
 
         // 다이얼로그가 포커스를 가지도록 설정

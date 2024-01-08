@@ -28,7 +28,7 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //이미지 설정
-        val imgUri= intent.getStringExtra("imgUri")?.toUri()
+        val imgUri: Uri? = intent.getParcelableExtra("imgUri")
         binding.missionCertImg.setImageURI(imgUri)
 
         //뒤로 가기

@@ -44,6 +44,8 @@ class MissionPictureActivity : AppCompatActivity() {
         imgId=intent.getLongExtra("imgId", 0)
         isLike=intent.getBooleanExtra("isLike", false)
 
+        binding.missionCertTitleTxt.text=missioncertInfo.title
+        binding.missionCertMemoTxt.text=missioncertInfo.memo
 
         //이미지 설정
         Glide.with(this)
@@ -100,6 +102,7 @@ class MissionPictureActivity : AppCompatActivity() {
                         if(isSuccess){
                             binding.likeImg.setImageResource(R.drawable.ic_unlike)
                             setView() //좋아요 수 갱신
+                            isLike=!isLike
                         }
                     }
                 }
@@ -108,6 +111,7 @@ class MissionPictureActivity : AppCompatActivity() {
                     if(isSuccess){
                         binding.likeImg.setImageResource(R.drawable.ic_like)
                         setView() //좋아요 수 갱신
+                        isLike=!isLike
                     }
                 }
                 }

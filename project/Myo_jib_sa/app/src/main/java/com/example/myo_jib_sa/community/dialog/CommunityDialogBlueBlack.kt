@@ -36,15 +36,6 @@ class CommunityDialogBlueBlack (context: Context
 
         binding.communityPopupOkBtn.setBackgroundColor(Color.parseColor("#234BD9"))
 
-        binding.communityDialogConstraint.clipToOutline = true
-        binding.communityDialogConstraint.outlineProvider = object : ViewOutlineProvider() {
-            override fun getOutline(view: View?, outline: Outline?) {
-                // radius: 8dp
-                outline?.setRoundRect(0, 0, view?.width ?: 0, view?.height ?: 0, convertDpToPixel(8f, view?.context ?: return))
-
-            }
-        }
-
 
         // 다이얼로그가 포커스를 가지도록 설정
         window?.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)

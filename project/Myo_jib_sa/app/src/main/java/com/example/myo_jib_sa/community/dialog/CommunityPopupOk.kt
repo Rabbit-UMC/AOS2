@@ -33,12 +33,11 @@ class CommunityPopupOk(context: Context, private val txt:String) : Dialog(contex
         window?.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
         window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
 
-        val cancelButton: Button = binding.communityPopupCancelBtn
         val okButton: Button = binding.communityPopupOkBtn
         binding.communityPopupTxt
 
         // 취소 버튼 클릭 리스너 설정
-        cancelButton.setOnClickListener {
+        binding.communityPopupNoBtn.setOnClickListener {
             // 다이얼로그 닫기
             dismiss()
         }

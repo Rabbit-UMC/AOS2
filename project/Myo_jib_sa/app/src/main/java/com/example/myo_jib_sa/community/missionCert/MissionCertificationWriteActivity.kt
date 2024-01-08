@@ -97,37 +97,41 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        //갤러리에서 사진 선택
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            val selectedImageUri: Uri? = data.data
-            // 선택한 이미지를 해당 이미지뷰에 표시
-            selectedImageUri?.let { uri ->
-                val intent=Intent(this, MissionCertificationWriteCheckActivity::class.java)
-                intent.putExtra("imgUri",uri)
-                startActivity(intent)
-                finish()
-            }
-
-            //카메라로 사진 찍었을 때
-        }else if(requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null){
-            val imageBitmap: Bitmap? = getBitmapFromIntentData(data)
-            imageBitmap?.let { bitmap ->
-                val intent=Intent(this, MissionCertificationWriteCheckActivity::class.java)
-                intent.putExtra("imgUri",bitmapToUri(bitmap, this))
-                startActivity(intent)
-                finish()
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {//갤러리
+                GALLERY_REQUEST_CODE -> {
+                    if (data != null && data.data != null) {
+                        val selectedImageUri: Uri = data.data!!
+                        val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
+                        intent.putExtra("imgUri", selectedImageUri)
+                        startActivity(intent)
+                        finish()
+                    }
+                } //카메라
+                CAMERA_REQUEST_CODE -> {
+                    val imageBitmap: Bitmap? = data?.let { getBitmapFromIntentData(it) }
+                    imageBitmap?.let { bitmap ->
+                        val uri: Uri? = bitmapToUri(bitmap, this)
+                        uri?.let {
+                            val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
+                            intent.putExtra("imgUri", it)
+                            startActivity(intent)
+                            finish()
+                        }
+                    }
+                }
             }
         }
     }
 
     //Intent를 통해 전달된 데이터에서 이미지를 가져옴
     private fun getBitmapFromIntentData(data: Intent): Bitmap? {
-        val selectedImageUri: Uri? = data.data
-        return if (selectedImageUri != null) {
+        return if (data?.data != null) {
+            val selectedImageUri: Uri = data.data!!
             val inputStream: InputStream? = contentResolver.openInputStream(selectedImageUri)
             BitmapFactory.decodeStream(inputStream)
         } else {
-            data.extras?.get("data") as? Bitmap
+            null
         }
     }
 
