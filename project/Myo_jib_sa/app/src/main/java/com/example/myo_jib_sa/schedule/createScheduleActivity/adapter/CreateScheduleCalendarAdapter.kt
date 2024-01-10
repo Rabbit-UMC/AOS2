@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.schedule.createScheduleActivity.adapter
 
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -105,5 +106,26 @@ class CreateScheduleCalendarAdapter(private val dayList:ArrayList<SelectDateData
 
     override fun getItemCount(): Int {
         return dayList.size
+    }
+
+    class GridSpaceDecoration(private val deviceWidth: Int) : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+
+            val position = parent.getChildAdapterPosition(view) //각 아이템뷰의 순서 (index)
+            //val totalItemCount = state.itemCount                //총 아이템 수
+            //val scrollPosition = state.targetScrollPosition     //스크롤 됬을때 아이템 position
+
+            val column = position % 7      // 0~6
+
+            val leftSpace = (deviceWidth * 0.03).toInt()
+            val topSpace = (deviceWidth * 0.03).toInt()
+
+            outRect.top = topSpace
+
+
+            outRect.left = (deviceWidth * 0.03).toInt()
+            outRect.right = (deviceWidth * 0.03).toInt()
+
+        }
     }
 }

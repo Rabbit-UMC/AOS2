@@ -15,6 +15,7 @@ data class CurrentMissionResult(
     var missionTitle: String,
     var challengerCnt: Int,
     var categoryId: Long,
+    var during:Int,
     var image: String,
     var dday: String
 )

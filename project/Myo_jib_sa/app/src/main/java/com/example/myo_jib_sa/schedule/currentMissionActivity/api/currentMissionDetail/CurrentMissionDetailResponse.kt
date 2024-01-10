@@ -18,5 +18,6 @@ data class CurrentMissionDetailResult(
     var endAt: String,
     var content: String,
     var categoryTitle: String,
+    var categoryId:Long,
     val alreadyIn : Boolean
 )

@@ -54,9 +54,8 @@ class CurrentMissionAdapter (
             //todo
             //binding.missionImg.clipToOutline = true //이미지 모서리 둥글게
             binding.missionTitleTv.text = data.missionTitle
-            binding.missionDdayTv.text = data.dday
             binding.missionChallengerTv.text = "${data.challengerCnt}"
-
+            binding.missionDuringTv.text = data.during.toString()
             //mission클릭 이벤트
             binding.missionTitleTv.setOnClickListener {
                 onItemClickListener.onMissionClick(data.missionId)

@@ -21,12 +21,12 @@ interface ScheduleAddService {
 
 
 data class ScheduleAddRequest(
-    val title: String,
-    val content: String,
-    val startAt: String,
-    val endAt: String,
+    @SerializedName("title")
+    var scheduleTitle: String,
+    var content: String,
+    var startAt: String,
+    var endAt: String,
     @SerializedName("when")
-    val scheduleWhen: String,
-    val missionId: Long?
-
+    var scheduleWhen: String,
+    var missionId: Long?
 )
