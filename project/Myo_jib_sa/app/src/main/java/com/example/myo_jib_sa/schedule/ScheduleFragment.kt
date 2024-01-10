@@ -3,13 +3,17 @@ package com.example.myo_jib_sa.schedule
 
 import SwipeHelperCallback
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -32,10 +36,13 @@ import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActi
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDeleteDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
+import com.example.myo_jib_sa.databinding.ToastCreateScheduleBinding
 import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -55,6 +62,7 @@ class ScheduleFragment() : Fragment() {
     lateinit var selectedDate: LocalDate //오늘 날짜
     lateinit var standardDate: LocalDate //캘린더의 기준 날짜, selectedDate업데이트 하면 얘도 같이 업데이트 해주기
     var firstSelectedDatePosition: Int = -1
+    private lateinit var createScheduleResultLauncher: ActivityResultLauncher<Intent>
 
 
     var mDataList = ArrayList<CurrentMissionResult>() //미션 리스트 데이터
@@ -380,12 +388,46 @@ class ScheduleFragment() : Fragment() {
             var missionIntent = Intent(requireActivity(), CurrentMissionActivity::class.java)
             startActivity(missionIntent)
         }
+
+
+
         //floating button누르면 CreateScheduleActivity로 화면 전환
         binding.newScheduleFloatingBtn.setOnClickListener {
             var createSIntent = Intent(requireActivity(), CreateScheduleActivity::class.java)
-            startActivity(createSIntent)
+            createScheduleResultLauncher.launch(createSIntent)
         }
+        createScheduleResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val message = result.data?.getStringExtra("message") ?: ""
+
+                    Log.d("debug", "message"+message)
+                    if(message.isNotEmpty()){
+                        // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
+                        val snackbarBinding = ToastCreateScheduleBinding.inflate(layoutInflater)
+                        snackbarBinding.toastMessageTv.text = message
+
+                        // 스낵바 생성 및 설정
+                        val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+                            animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+                            (view as Snackbar.SnackbarLayout).apply {
+                                setBackgroundColor(Color.TRANSPARENT)
+                                addView(snackbarBinding.root)
+                                translationY = -30.dpToPx().toFloat()
+                                elevation = 0f
+                            }
+                        }
+                        // 스낵바 표시
+                        snackbar.show()
+                    }
+
+                }
+            }
+
     }
+    private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
+
+
 
     //캘린더 관련 버튼
     @RequiresApi(Build.VERSION_CODES.O)
@@ -471,6 +513,7 @@ class ScheduleFragment() : Fragment() {
                                     missionList[i].missionTitle,
                                     missionList[i].challengerCnt,
                                     missionList[i].categoryId,
+                                    missionList[i].during,
                                     missionList[i].image,
                                     missionList[i].dday
                                 )
