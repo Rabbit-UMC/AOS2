@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionScheduleDeleteBinding
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
 
-data class ScheduleDeleteAdapterData(
-    var currentMissionScheduleResult: CurrentMissionScheduleResult,
-    var selected:Boolean = false
-)
+//data class ScheduleDeleteAdapterData(
+//    var currentMissionScheduleResult: CurrentMissionScheduleResult,
+//    var selected:Boolean = false
+//)
 
 class CurrentMissionScheduleDeleteAdapter(private val scheduleList:ArrayList<ScheduleDeleteAdapterData>,
                                           private val height:Int):

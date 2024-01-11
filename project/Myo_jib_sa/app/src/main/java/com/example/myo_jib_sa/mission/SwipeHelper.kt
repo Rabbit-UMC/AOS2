@@ -2,6 +2,7 @@ package com.example.myo_jib_sa.mission
 
 import android.content.res.Resources
 import android.graphics.Canvas
+import android.util.Log
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -13,6 +14,8 @@ class SwipeHelper: ItemTouchHelper.Callback() {  // ItemTouchHelper.Callback 을
     private var previousPosition: Int? = null
     private var currentDx = 0f
     private var clamp = 0f
+
+    private var currentSwipeView: View? = null
 
     override fun getMovementFlags(
         recyclerView: RecyclerView,
@@ -32,6 +35,8 @@ class SwipeHelper: ItemTouchHelper.Callback() {  // ItemTouchHelper.Callback 을
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         currentDx = 0f
         previousPosition = viewHolder.adapterPosition
+        val reportTextView = (viewHolder as? MissionRVAdapter.MissionViewHolder)?.getReportTextView()
+        reportTextView?.elevation = 0f
         getDefaultUIUtil().clearView(getView(viewHolder))
     }
 
@@ -56,6 +61,7 @@ class SwipeHelper: ItemTouchHelper.Callback() {  // ItemTouchHelper.Callback 을
             val view = getView(viewHolder)
             val isClamped = getTag(viewHolder)
             val x =  clampViewPositionHorizontal(view, dX, isClamped, isCurrentlyActive)
+            val reportTextView = (viewHolder as? MissionRVAdapter.MissionViewHolder)?.getReportTextView()
 
             currentDx = x
             getDefaultUIUtil().onDraw(
@@ -69,10 +75,16 @@ class SwipeHelper: ItemTouchHelper.Callback() {  // ItemTouchHelper.Callback 을
             )
             ViewCompat.setElevation(view, 6.dpToPx())
 
-            if(isClamped) {
-                view.setBackgroundResource(R.drawable.background_item_clamped_mission_layout)
-            } else {
+            view.setBackgroundResource(R.drawable.background_item_clamped_mission_layout)
+            reportTextView?.elevation = 6.dpToPx()
+            reportTextView?.isClickable = true
+            Log.d("isNotClamped", "reportTextView?.isClickable : ${reportTextView?.isClickable}")
+
+            if(!isClamped) {
                 view.setBackgroundResource(R.drawable.background_item_mission_layout)
+                reportTextView?.elevation = 0f
+                reportTextView?.isClickable = false
+                Log.d("isClamped", "reportTextView?.isClickable : ${reportTextView?.isClickable}")
             }
 
         }

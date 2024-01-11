@@ -21,15 +21,17 @@ import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResponse
 import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResult
 import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionService
+import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleMonthService
+import com.example.myo_jib_sa.schedule.api.scheduleMonth.ScheduleMonthResponse
+import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResponse
+import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
+import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayService
 import com.example.myo_jib_sa.schedule.adapter.*
 import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActivity
 import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActivity
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDeleteDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
-import com.example.myo_jib_sa.schedule.API.scheduleDelete.ScheduleMonthService
-import com.example.myo_jib_sa.schedule.API.scheduleMonth.ScheduleMonthResponse
-import com.example.myo_jib_sa.schedule.API.scheduleOfDay.ScheduleOfDayResult
 import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
@@ -38,6 +40,7 @@ import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -116,7 +119,6 @@ class ScheduleFragment() : Fragment() {
 
 
     //month화면에 보여주기
-    @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setCalendarHeader(date: LocalDate) {
 
@@ -250,7 +252,7 @@ class ScheduleFragment() : Fragment() {
 
         Log.d("retrofit", "$date : $sDataList")
         scheduleAdaptar = ScheduleAdaptar(sDataList)
-        val itemDecoration = CustomItemDecoration(requireContext())
+        val item = CustomItemDecoration(requireContext())
 
         // 리사이클러뷰에 스와이프, 드래그 기능 달기
         val swipeHelperCallback = SwipeHelperCallback().apply {
@@ -263,7 +265,8 @@ class ScheduleFragment() : Fragment() {
         binding.scheduleRv.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = scheduleAdaptar
-            addItemDecoration(itemDecoration)
+//            addItemDecoration(itemDecoration)
+            addItemDecoration(CustomItemDecoration(requireActivity()))
 
             setOnTouchListener { _, _ ->
                 swipeHelperCallback.removePreviousClamp(this)
@@ -349,7 +352,7 @@ class ScheduleFragment() : Fragment() {
     fun scheduleDetailDialogItemClickEvent(dialog: ScheduleDetailDialogFragment) {
         dialog.setButtonClickListener(object : ScheduleDetailDialogFragment.OnButtonClickListener {
             @RequiresApi(Build.VERSION_CODES.O)
-            override fun onClickEditBtn() {
+            override fun whenDismiss() {
                 //화면reload===============================================
 
                 currentMissionApi()//scheduleHome api연결
@@ -443,10 +446,13 @@ class ScheduleFragment() : Fragment() {
             requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", null)
 
+
+
         mDataList.clear()//mDataList초기화
 
         val service = RetrofitClient.getInstance().create(CurrentMissionService::class.java)
         val listCall = service.currentMission(token)
+        Log.d("retrofit", "token="+token )
         listCall.enqueue(object : Callback<CurrentMissionResponse> {
             override fun onResponse(
                 call: Call<CurrentMissionResponse>, response: Response<CurrentMissionResponse>
@@ -490,7 +496,7 @@ class ScheduleFragment() : Fragment() {
     //calendarRvItemClickEvent()안에서만 실행
     @RequiresApi(Build.VERSION_CODES.O)
     fun scheduleOfDayApi(date: LocalDate) {
-        /*// JWT 값 가져오기
+        // JWT 값 가져오기
         val sharedPreferences =
             requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", null)
@@ -510,17 +516,19 @@ class ScheduleFragment() : Fragment() {
                     Log.d("retrofit", "scheduleOfDayApi_" + response.body().toString());
                     val scheduleList = response.body()?.result
 
-                    //일정 데이터 리스트 sDataList에 추가
-                    for (i in 0 until scheduleList!!.size) {
-                        sDataList.add(
-                            ScheduleOfDayResult(
-                                scheduleList[i].scheduleId,
-                                scheduleList[i].scheduleTitle,
-                                scheduleList[i].scheduleStart,
-                                scheduleList[i].scheduleEnd,
-                                scheduleList[i].scheduleWhen
+                    if(scheduleList!=null) {
+                        //일정 데이터 리스트 sDataList에 추가
+                        for (i in 0 until scheduleList!!.size) {
+                            sDataList.add(
+                                ScheduleOfDayResult(
+                                    scheduleList[i].scheduleId,
+                                    scheduleList[i].scheduleTitle,
+                                    scheduleList[i].scheduleStart,
+                                    scheduleList[i].scheduleEnd,
+                                    scheduleList[i].scheduleWhen
+                                )
                             )
-                        )
+                        }
                     }
                     //if(binding.F.visibility == View.VISIBLE)
                     setScheduleAdapter(date)
@@ -534,7 +542,7 @@ class ScheduleFragment() : Fragment() {
             override fun onFailure(call: Call<ScheduleOfDayResponse>, t: Throwable) {
                 Log.e("retrofit", "scheduleOfDayApi_onFailure: ${t.message}")
             }
-        })*/
+        })
     }
 
 
@@ -561,7 +569,7 @@ class ScheduleFragment() : Fragment() {
 
         // JWT 값 가져오기
         val sharedPreferences =
-            requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+            requireActivity().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", "")
 
         val service = RetrofitClient.getInstance().create(ScheduleMonthService::class.java)
@@ -577,10 +585,7 @@ class ScheduleFragment() : Fragment() {
                     val scheduleList = response.body()?.result?.schedulesOfDay
 
                     if(scheduleList != null) {//스케줄이 있는 달일때만 map에 값 넣어주기
-                        Log.d("debug", "" + scheduleList)
                         scheduleCntMap = scheduleList!!
-                        Log.d("debug", "" + scheduleCntMap)
-
 
                         for (i in 0 until scheduleList!!.size) {
 //                        hasScheduleMap["$yyyyMM-${formatter.format(scheduleList[i])}"] = true

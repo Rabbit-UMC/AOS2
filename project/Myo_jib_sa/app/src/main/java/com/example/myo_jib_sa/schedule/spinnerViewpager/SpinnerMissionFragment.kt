@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.FragmentSpinnerMissionBinding
 import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
-import com.example.myo_jib_sa.schedule.API.scheduleHome.Mission
-import com.example.myo_jib_sa.schedule.API.scheduleHome.ScheduleHomeResponse
-import com.example.myo_jib_sa.schedule.API.scheduleHome.ScheduleHomeService
+import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
+import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
+import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.API.scheduleOfDay
+package com.example.myo_jib_sa.schedule.api.scheduleOfDay
 
 import com.example.myo_jib_sa.base.BaseResponse
 
