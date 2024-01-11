@@ -45,7 +45,7 @@
             android:padding="5dp"
             android:text="X"
             android:textSize="20dp"
-            android:fontFamily="@font/font_inter"
+            android:fontFamily="@font/font_paragraph_4"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

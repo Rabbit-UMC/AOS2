@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".ActivityMissionPicture">
+    tools:context=".community.missionCert.MissionPictureActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout6"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/mission_cert_picture_back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -41,7 +41,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/mission_cert_img"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:scaleType="centerCrop"
@@ -51,7 +51,7 @@
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/mission_cert_title_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -61,10 +61,10 @@
         android:textSize="18dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView9" />
+        app:layout_constraintTop_toBottomOf="@+id/mission_cert_img" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/mission_cert_memo_txt"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginStart="30dp"
@@ -75,39 +75,39 @@
         android:textSize="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/mission_cert_title_txt" />
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/report_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:text="신고하기"
-        android:textSize="10dp"
         android:textColor="#A5A5A5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView10"
+        android:id="@+id/like_img"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/textView22"
-        app:layout_constraintTop_toBottomOf="@+id/imageView9"
+        app:layout_constraintEnd_toStartOf="@+id/like_cnt_txt"
+        app:layout_constraintTop_toBottomOf="@+id/mission_cert_img"
         app:srcCompat="@drawable/ic_like" />
 
     <TextView
-        android:id="@+id/textView22"
+        android:id="@+id/like_cnt_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
         android:text="123"
         android:textColor="@color/white"
         android:textSize="14dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+        app:layout_constraintBottom_toBottomOf="@+id/like_img"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView10" />
+        app:layout_constraintTop_toTopOf="@+id/like_img" />
 </androidx.constraintlayout.widget.ConstraintLayout>

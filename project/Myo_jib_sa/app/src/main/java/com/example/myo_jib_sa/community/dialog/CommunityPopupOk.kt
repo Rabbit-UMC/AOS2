@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Button
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.databinding.DialogCommunityOkBinding
+import com.example.myo_jib_sa.databinding.DialogCommunityBlueWhiteBinding
 
 class CommunityPopupOk(context: Context, private val txt:String) : Dialog(context) {
 
-    private lateinit var binding:DialogCommunityOkBinding
+    private lateinit var binding:DialogCommunityBlueWhiteBinding
 
     interface CustomDialogListener {
         fun onPositiveButtonClicked(value: Boolean)
@@ -25,7 +25,7 @@ class CommunityPopupOk(context: Context, private val txt:String) : Dialog(contex
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= DialogCommunityOkBinding.inflate(layoutInflater)
+        binding= DialogCommunityBlueWhiteBinding .inflate(layoutInflater)
         setContentView(binding.root)
 
 
@@ -33,12 +33,11 @@ class CommunityPopupOk(context: Context, private val txt:String) : Dialog(contex
         window?.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
         window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE)
 
-        val cancelButton: Button = binding.communityPopupCancelBtn
         val okButton: Button = binding.communityPopupOkBtn
-        binding.communityPopupTxt.text= txt
+        binding.communityPopupTxt
 
         // 취소 버튼 클릭 리스너 설정
-        cancelButton.setOnClickListener {
+        binding.communityPopupNoBtn.setOnClickListener {
             // 다이얼로그 닫기
             dismiss()
         }

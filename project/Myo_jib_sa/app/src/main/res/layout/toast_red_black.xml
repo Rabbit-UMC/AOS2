@@ -6,39 +6,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toast_red_black_constraint"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="100:15"
         android:background="@drawable/view_round_r8_blue"
         android:backgroundTint="#CC000000"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintDimensionRatio="100:15"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.89">
 
 
         <ImageView
             android:id="@+id/imageView11"
-            app:layout_constraintHeight_percent="0.5"
-            app:layout_constraintDimensionRatio="1:1"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginLeft="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintHeight_percent="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_schedule_create_check" />
+            app:srcCompat="@drawable/ic_check_circle_red" />
 
         <TextView
             android:id="@+id/toast_red_black_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
             android:fontFamily="@font/font_caption_text_1"
-            android:text="작성하신 일정이 저장되었어요!"
+            android:text="신고가 접수되었습니다."
             android:textColor="#FFFFFF"
             android:textSize="12sp"
-            android:layout_marginLeft="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView11"
             app:layout_constraintTop_toTopOf="parent" />

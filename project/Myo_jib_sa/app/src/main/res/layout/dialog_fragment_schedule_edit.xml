@@ -284,7 +284,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/mission_cert_img"
         android:layout_width="16dp"
         android:layout_height="18dp"
         android:layout_marginTop="12dp"
@@ -369,7 +369,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView9">
+        app:layout_constraintTop_toBottomOf="@+id/mission_cert_img">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/time_tablayout"
