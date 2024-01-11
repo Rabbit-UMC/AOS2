@@ -1,8 +1,10 @@
 package com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd
 
+import com.example.myo_jib_sa.base.BaseResponse
+
 data class ScheduleAddResponse (
-    val result: String,
     val isSuccess: Boolean,
-    val code: Int,
-    val message: String
+    val code: String,
+    val message: String,
+    val result: Long
 )

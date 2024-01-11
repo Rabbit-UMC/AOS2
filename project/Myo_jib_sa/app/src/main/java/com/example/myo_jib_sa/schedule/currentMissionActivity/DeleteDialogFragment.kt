@@ -124,8 +124,6 @@ class DeleteDialogFragment(
                 if (response.isSuccessful) {
                     Log.d("retrofit", response.body().toString());
 
-
-
                         deleteDialogListener.onDeleteListener("선택하신 항목이 삭제되었어요.", false)
 
 

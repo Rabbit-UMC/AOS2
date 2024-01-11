@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:fontFamily="@font/font_pretendard_semibold"
+                android:fontFamily="@font/font_caption_text_1"
                 android:text="현재 "
                 android:textColor="#000000"
                 android:textSize="12sp"
@@ -99,11 +99,11 @@
                 tools:layout_editor_absoluteY="12dp" />
 
             <TextView
-                android:id="@+id/missionDday_tv"
+                android:id="@+id/missionDuring_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/font_pretendard_semibold"
-                android:text="D+5"
+                android:text="60"
                 android:textColor="#234BD9"
                 android:textSize="12sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView1"
@@ -118,7 +118,7 @@
                 android:textColor="#000000"
                 android:textSize="12sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView1"
-                app:layout_constraintStart_toEndOf="@+id/missionDday_tv"
+                app:layout_constraintStart_toEndOf="@+id/missionDuring_tv"
                 tools:layout_editor_absoluteY="29dp" />
 
             <TextView

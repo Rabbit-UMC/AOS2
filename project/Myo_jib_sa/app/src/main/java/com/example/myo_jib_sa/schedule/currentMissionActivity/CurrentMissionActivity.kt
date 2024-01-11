@@ -48,31 +48,6 @@ class CurrentMissionActivity : AppCompatActivity() {
 
 
         setCurrentMissionScheduleAdapter()    //CurrentMissionScheduleAdapter 초기화
-//
-
-        //todo:삭제
-        missionList.add(CurrentMissionResult(1, "미션1", 10, 1,"img", "60"))
-        missionList.add(CurrentMissionResult(2, "미션2", 10, 1,"img", "60"))
-        missionList.add(CurrentMissionResult(3, "미션3", 10, 1,"img", "60"))
-        missionList.add(CurrentMissionResult(4, "미션4", 10, 1,"img", "60"))
-        missionList.add(CurrentMissionResult(5, "미션5", 10, 1,"img", "60"))
-
-        setCurrentMissionAdapter()//CurrentMission rv 연결
-        currentMissionScheduleApi(missionList[0].missionId, missionList[0].missionTitle)//하위 스케쥴 데이터 추가+schedule rv연결+clickevent
-
-//
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(1,"일정1", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(2,"일정2", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(3,"일정3", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(4,"일정4", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(5,"일정5", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(6,"일정6", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(7,"일정7", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(8,"일정8", "2023-12-23"), false))
-
-//        setCurrentMissionScheduleAdapter()//CurrentMissionSchedule rv 연결
-        //todo:여기까지
-
 
         //뒤로가기 버튼 클릭
         binding.goBackBtn.setOnClickListener {

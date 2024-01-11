@@ -110,6 +110,13 @@ class CurrentMissionDetailDialog(private val missionId : Long) : DialogFragment(
                     binding.missionEndDateTv.text = formatDate(result.endAt)
                     binding.missionMemoTv.text = result.content
 
+                    when(result.categoryId){
+                        1L->binding.missionCategoryTv.setBackgroundResource(R.drawable.view_round_r12_gray4)
+                        2L->binding.missionCategoryTv.setBackgroundResource(R.drawable.view_round_r12_main2)
+                        3L->binding.missionCategoryTv.setBackgroundResource(R.drawable.view_round_r12_main4)
+                        else -> binding.missionCategoryTv.setBackgroundResource(R.drawable.view_round_r12_gray4)
+                    }
+
                     Glide.with(this@CurrentMissionDetailDialog)
                         .load(result.image)
                         .error(R.drawable.ic_currentmission_free) //에러시 보여줄 이미지
