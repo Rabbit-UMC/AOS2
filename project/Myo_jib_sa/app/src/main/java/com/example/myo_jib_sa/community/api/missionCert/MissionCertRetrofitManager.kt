@@ -3,6 +3,7 @@ package com.example.myo_jib_sa.community.api.missionCert
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.myo_jib_sa.base.BaseResponse
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.RetrofitClient
 import com.example.myo_jib_sa.community.api.post.SimpleResponse
@@ -67,33 +68,33 @@ class MissionCertRetrofitManager(context: Context) : ViewModel() {
     }
 
     //미션 인증 사진 좋아요
-    fun missionImgLike(author: String,imgId:Long, completion: (code:Int) -> Unit){
-        val call: Call<SimpleResponse> = retrofit?.missionLike(author, imgId) ?: return
+    fun missionImgLike(author: String,imgId:Long, completion: (isSuccess:Boolean) -> Unit){
+        val call: Call<BaseResponse> = retrofit?.missionLike(author, imgId) ?: return
 
-        call.enqueue(object : retrofit2.Callback<SimpleResponse> {
+        call.enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onResponse(
-                call: Call<SimpleResponse>,
-                response: Response<SimpleResponse>
+                call: Call<BaseResponse>,
+                response: Response<BaseResponse>
             ) {
                 Log.d("미션 인증 사진 좋아요", "RetrofitManager 미션 인증 사진 좋아요 onResponse \t :${response.message()} ")
-                val response: SimpleResponse? = response?.body()
+                val response: BaseResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("미션 인증 사진 좋아요",
-                            "RetrofitManager 미션 인증 사진 좋아요 is Success\t :${response.code} ")
+                            "RetrofitManager 미션 인증 사진 좋아요 is Success\t :${response.errorCode} ${response.errorMessage} ")
                         Log.d("미션 인증 사진 좋아요",
-                            "RetrofitManager 미션 인증 사진 좋아요 is Success\t :${response.result} ")
-                        completion(response.code)
+                            "RetrofitManager 미션 인증 사진 좋아요 is Success\t :${response.errorCode} ${response.errorMessage}")
+                        completion(true)
                     } else {
                         Log.d("미션 인증 사진 좋아요",
-                            "RetrofitManager 미션 인증 사진 좋아요 is NOT Success\t :${response.code} ")
-                        completion(0)
+                            "RetrofitManager 미션 인증 사진 좋아요 is NOT Success\t :${response.errorCode} ${response.errorMessage}")
+                        completion(false)
                     }
                 } else {
                     Log.d("미션 인증 사진 좋아요", "RetrofitManager 미션 인증 사진 좋아요 null")
                 }
             }
-            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Log.d("미션 인증 사진 좋아요", "RetrofitManager 미션 인증 사진 좋아요 onFailure \t :$t ")
             }
         })
@@ -101,32 +102,32 @@ class MissionCertRetrofitManager(context: Context) : ViewModel() {
 
     //미션 인증 사진 좋아요 취소
     fun missionImgUnlike(author: String,imgId:Long, completion: (isSuccess:Boolean) -> Unit){
-        val call: Call<SimpleResponse> = retrofit?.missionUnlike(author, imgId) ?: return
+        val call: Call<BaseResponse> = retrofit?.missionUnlike(author, imgId) ?: return
 
-        call.enqueue(object : retrofit2.Callback<SimpleResponse> {
+        call.enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onResponse(
-                call: Call<SimpleResponse>,
-                response: Response<SimpleResponse>
+                call: Call<BaseResponse>,
+                response: Response<BaseResponse>
             ) {
                 Log.d("미션 인증 사진 좋아요 취소", "RetrofitManager 미션 인증 사진 좋아요 취소 onResponse \t :${response.message()} ")
-                val response: SimpleResponse? = response?.body()
+                val response: BaseResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("미션 인증 사진 좋아요 취소",
-                            "RetrofitManager 미션 인증 사진 좋아요 취소 is Success\t :${response.code} ")
+                            "RetrofitManager 미션 인증 사진 좋아요 취소 is Success\t :${response.errorCode} ${response.errorMessage} ")
                         Log.d("미션 인증 사진 좋아요 취소",
-                            "RetrofitManager 미션 인증 사진 좋아요 취소 is Success\t :${response.result} ")
+                            "RetrofitManager 미션 인증 사진 좋아요 취소 is Success\t :${response.errorCode} ${response.errorMessage}")
                         completion(true)
                     } else {
                         Log.d("미션 인증 사진 좋아요 취소",
-                            "RetrofitManager 미션 인증 사진 좋아요 취소 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 미션 인증 사진 좋아요 취소 is NOT Success\t :${response.errorCode} ${response.errorMessage}")
                         completion(false)
                     }
                 } else {
                     Log.d("미션 인증 사진 좋아요 취소", "RetrofitManager 미션 인증 사진 좋아요 취소 null")
                 }
             }
-            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Log.d("미션 인증 사진 좋아요 취소", "RetrofitManager 미션 인증 사진 좋아요 취소 onFailure \t :$t ")
             }
         })
@@ -134,32 +135,32 @@ class MissionCertRetrofitManager(context: Context) : ViewModel() {
 
     //미션 인증 사진 신고
     fun report(author: String,imgId:Long, completion: (isSuccess:Boolean) -> Unit){
-        val call: Call<SimpleResponse> = retrofit?.missionReport(author, imgId) ?: return
+        val call: Call<BaseResponse> = retrofit?.missionReport(author, imgId) ?: return
 
-        call.enqueue(object : retrofit2.Callback<SimpleResponse> {
+        call.enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onResponse(
-                call: Call<SimpleResponse>,
-                response: Response<SimpleResponse>
+                call: Call<BaseResponse>,
+                response: Response<BaseResponse>
             ) {
                 Log.d("미션 인증 사진 신고", "RetrofitManager 미션 인증 사진 신고 onResponse \t :${response.message()} ")
-                val response: SimpleResponse? = response?.body()
+                val response: BaseResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("미션 인증 사진 신고",
-                            "RetrofitManager 미션 인증 사진 신고 is Success\t :${response.code} ")
+                            "RetrofitManager 미션 인증 사진 신고 is Success\t :${response.errorCode} ${response.errorMessage} ")
                         Log.d("미션 인증 사진 신고",
-                            "RetrofitManager 미션 인증 사진 신고 is Success\t :${response.result} ")
+                            "RetrofitManager 미션 인증 사진 신고 is Success\t :${response.errorCode} ${response.errorMessage} ")
                         completion(true)
                     } else {
                         Log.d("미션 인증 사진 신고",
-                            "RetrofitManager 미션 인증 사진 신고 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 미션 인증 사진 신고 is NOT Success\t :${response.errorCode} ${response.errorMessage}")
                         completion(false)
                     }
                 } else {
                     Log.d("미션 인증 사진 신고", "RetrofitManager 미션 인증 사진 신고 null")
                 }
             }
-            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Log.d("미션 인증 사진 신고", "RetrofitManager 미션 인증 사진 신고 onFailure \t :$t ")
             }
         })
@@ -167,32 +168,32 @@ class MissionCertRetrofitManager(context: Context) : ViewModel() {
 
     //미션 인증 사진 올리기
     fun postImg(author: String,boardId:Long, filePath:String,completion: (isSuccess:Boolean) -> Unit){
-        val call: Call<SimpleResponse> = retrofit?.postImg(author, boardId, filePath) ?: return
+        val call: Call<BaseResponse> = retrofit?.postImg(author, boardId, filePath) ?: return
 
-        call.enqueue(object : retrofit2.Callback<SimpleResponse> {
+        call.enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onResponse(
-                call: Call<SimpleResponse>,
-                response: Response<SimpleResponse>
+                call: Call<BaseResponse>,
+                response: Response<BaseResponse>
             ) {
                 Log.d("미션 인증 사진 첨부", "RetrofitManager 미션 인증 사진 첨부 onResponse \t :${response.message()} ")
-                val response: SimpleResponse? = response?.body()
+                val response: BaseResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("미션 인증 사진 첨부",
-                            "RetrofitManager 미션 인증 사진 첨부 is Success\t :${response.code} ")
+                            "RetrofitManager 미션 인증 사진 첨부 is Success\t :${response.errorCode} ${response.errorMessage} ")
                         Log.d("미션 인증 사진 첨부",
-                            "RetrofitManager 미션 인증 사진 첨부 is Success\t :${response.result} ")
+                            "RetrofitManager 미션 인증 사진 첨부 is Success\t :${response.errorCode} ${response.errorMessage}")
                         completion(true)
                     } else {
                         Log.d("미션 인증 사진 첨부",
-                            "RetrofitManager 미션 인증 사진 첨부 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 미션 인증 사진 첨부 is NOT Success\t :${response.errorCode} ${response.errorMessage} ")
                         completion(false)
                     }
                 } else {
                     Log.d("미션 인증 사진 첨부", "RetrofitManager 미션 인증 사진 첨부 null")
                 }
             }
-            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Log.d("미션 인증 사진 첨부", "RetrofitManager 미션 인증 사진 첨부 onFailure \t :$t ")
             }
         })
