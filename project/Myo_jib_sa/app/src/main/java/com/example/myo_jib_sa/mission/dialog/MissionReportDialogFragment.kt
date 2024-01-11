@@ -1,11 +1,14 @@
 package com.example.myo_jib_sa.mission.dialog
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.login.api.RetrofitInstance
 import com.example.myo_jib_sa.databinding.DialogMissionReportFragmentBinding
 import com.example.myo_jib_sa.mission.api.MissionAPI
@@ -18,6 +21,21 @@ import retrofit2.Response
 
 class MissionReportDialogFragment(private val item: Mission) : DialogFragment() {
     private lateinit var binding: DialogMissionReportFragmentBinding
+    private val retrofit = sRetrofit.create(MissionAPI::class.java)
+    private var listener: ReportDialogListener? = null
+    companion object {
+        const val DIALOG_MARGIN_DP = 20
+        const val DIALOG_HEIGHT_DP = 248
+    }
+
+
+    interface ReportDialogListener {
+        fun onReportSubmitted(message: String)
+    }
+
+    fun setReportDialogListener(listener: ReportDialogListener) {
+        this.listener = listener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,51 +43,7 @@ class MissionReportDialogFragment(private val item: Mission) : DialogFragment() 
     ): View? {
         binding = DialogMissionReportFragmentBinding.inflate(inflater, container, false)
 
-        //미션 report api 호출
-        val retrofit = RetrofitInstance.getInstance().create(MissionAPI::class.java)
-
-        binding.missionReportNoBtn.setOnClickListener {
-            dismiss()
-        }
-
-
-        binding.missionReportYesBtn.setOnClickListener {
-            // 신고 api 연결
-            retrofit.MissionReport(item.missionId).enqueue(object : Callback<MissionReportResponse> {
-                override fun onResponse(call: Call<MissionReportResponse>, response: Response<MissionReportResponse>) {
-                    if (response.isSuccessful) {
-                        val reportResponse = response.body()
-                        if (reportResponse != null) {
-                            if (reportResponse.isSuccess) {
-                                // 성공적으로 신고가 접수된 경우 처리
-                                val message = reportResponse.message
-                                // message를 사용하여 필요한 작업 수행
-                                Toast.makeText(requireContext(), "신고완료", Toast.LENGTH_SHORT).show()
-                                Log.d("report","신고 완료")
-                            } else {
-                                // 신고 접수에 실패한 경우 처리
-                                val message = reportResponse.message
-                                // message를 사용하여 실패 메시지 출력 등 필요한 작업 수행
-                                Log.d("report",message)
-
-                                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    } else {
-                        // API 호출 실패 처리
-                        Log.d("report","API 호출 실패")
-                        Toast.makeText(requireContext(), "API 호출 실패", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<MissionReportResponse>, t: Throwable) {
-                    // 네트워크 등의 문제로 API 호출이 실패한 경우 처리
-                    Log.d("report","API 호출 실패, on fail")
-                    Toast.makeText(requireContext(), "API 호출 실패/on fail", Toast.LENGTH_SHORT).show()
-                }
-            })
-
-        }
+        initListener()
 
         return binding.root
     }
@@ -84,19 +58,66 @@ class MissionReportDialogFragment(private val item: Mission) : DialogFragment() 
     override fun onResume() {
         super.onResume()
         // 다이얼로그의 크기 설정
-        dialog?.let { setDialogSize(it, 0.8, WindowManager.LayoutParams.WRAP_CONTENT) }
+        setDialogSize()
     }
 
-    private fun setDialogSize(dialog: Dialog, widthPercentage: Double, height: Int) {
-        val layoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(dialog.window?.attributes)
+    private fun setDialogSize() {
+        dialog?.let { dialog ->
+            val metrics = resources.displayMetrics
+            val density = metrics.density
+            val marginPx = (DIALOG_MARGIN_DP * density * 2).toInt()
+            val width = metrics.widthPixels - marginPx
+            val height = (DIALOG_HEIGHT_DP * density).toInt()
 
-        val displayMetrics = resources.displayMetrics
-        val dialogWidth = (displayMetrics.widthPixels * widthPercentage).toInt()
-        layoutParams.width = dialogWidth
-        layoutParams.height = height
+            val layoutParams = WindowManager.LayoutParams().apply {
+                copyFrom(dialog.window?.attributes)
+                this.width = width
+                this.height = height
+            }
 
-        dialog.window?.attributes = layoutParams
+            dialog.window?.apply {
+                attributes = layoutParams
+                setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
+        }
+    }
+
+    private fun initListener() {
+        //미션 report api 호출
+        binding.missionReportNoBtn.setOnClickListener {
+            dismiss()
+        }
+
+        binding.missionReportYesBtn.setOnClickListener {
+            // 신고 api 연결
+            retrofit.postMissionReport(item.missionId).enqueue(object : Callback<MissionReportResponse> {
+                override fun onResponse(call: Call<MissionReportResponse>, response: Response<MissionReportResponse>) {
+                    if (response.isSuccessful) {
+                        val reportResponse = response.body()
+                        if (reportResponse != null) {
+                            if (reportResponse.isSuccess) {
+                                listener?.onReportSubmitted("신고가 접수되었어요.")
+                                Log.d("report","신고가 접수되었어요.")
+                            } else {
+                                Log.d("report",reportResponse.errorMessage)
+                                listener?.onReportSubmitted(reportResponse.errorMessage)
+                            }
+                        }
+                    } else {
+                        // API 호출 실패 처리
+                        Log.d("report","API 호출 실패")
+                        listener?.onReportSubmitted("api 호출 실패 response.isSuccessful : ${response.isSuccessful}")
+                    }
+                }
+
+                override fun onFailure(call: Call<MissionReportResponse>, t: Throwable) {
+                    // 네트워크 등의 문제로 API 호출이 실패한 경우 처리
+                    Log.d("report","onFailure : $t")
+                    listener?.onReportSubmitted("api 호출 실패 : $t")
+                }
+            })
+
+        }
     }
 }
 
