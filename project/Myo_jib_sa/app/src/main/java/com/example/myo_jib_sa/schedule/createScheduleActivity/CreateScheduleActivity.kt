@@ -140,13 +140,9 @@ class CreateScheduleActivity : AppCompatActivity() {
 
         //날짜 클릭
         binding.scheduleDateTv.setOnClickListener {
-            binding.createBtn.visibility = View.INVISIBLE //버튼이 맨앞에 띄어져서 invisible처리
-
             var calendarDialogFragment = CalendarDialogFragment(
                 setOnClickListener = object : CalendarDialogFragment.SetOnClickListener {
                     override fun onCompleteClick(selectedDate: LocalDate) {
-                        binding.createBtn.visibility = View.VISIBLE
-
                         //데이터 넣기
                         scheduleData.scheduleWhen = selectedDate.toString()
                         //화면에 표시
@@ -165,13 +161,9 @@ class CreateScheduleActivity : AppCompatActivity() {
         var endHour: Int? = null
         var endMinute: Int? = null
         binding.scheduleStartAtEtv.setOnClickListener {
-            binding.createBtn.visibility = View.INVISIBLE //버튼이 맨앞에 띄어져서 invisible처리
-
             var startTimeDialogFragment = StartTimeDialogFragment(
                 setOnClickListener = object : StartTimeDialogFragment.SetOnClickListener {
                     override fun onClick(resultStartHour: Int, resultStartMinute: Int) {
-                        binding.createBtn.visibility = View.VISIBLE
-
                         scheduleData.startAt = "${formatter.format(resultStartHour)}:${
                             formatter.format(resultStartMinute)
                         }"
@@ -194,13 +186,9 @@ class CreateScheduleActivity : AppCompatActivity() {
         }
 
         binding.scheduleEndAtEtv.setOnClickListener {
-            binding.createBtn.visibility = View.INVISIBLE //버튼이 맨앞에 띄어져서 invisible처리
-
             var endTimeDialogFragment = EndTimeDialogFragment(
                 setOnClickListener = object : EndTimeDialogFragment.SetOnClickListener {
                     override fun onClick(resultEndHour: Int, resultEndMinute: Int) {
-                        binding.createBtn.visibility = View.VISIBLE
-
                         scheduleData.endAt =
                             "${formatter.format(resultEndHour)}:${formatter.format(resultEndMinute)}"
                         binding.scheduleEndAtEtv.setText("${formatter.format(resultEndHour)}시 ${formatter.format(resultEndMinute)}분")
@@ -319,7 +307,7 @@ class CreateScheduleActivity : AppCompatActivity() {
                 call: Call<ScheduleAddResponse>,
                 response: Response<ScheduleAddResponse>
             ) {
-                if (response.isSuccessful) {
+                if (response.isSuccessful && response.body()!!.isSuccess) {
                     Log.d("retrofit", response.body().toString());
                     Log.d("retrofit", response.toString())
 
@@ -331,7 +319,7 @@ class CreateScheduleActivity : AppCompatActivity() {
                     finish()
 
                 } else {
-                    createToast("일정 저장 실패")
+                    createToast("일정 저장 실패 : ${response.body()?.message}")
                     Log.e("retrofit", "scheduleAddApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
                     Log.e("retrofit", "scheduleAddApi_onResponse: Error Body $errorBody")
