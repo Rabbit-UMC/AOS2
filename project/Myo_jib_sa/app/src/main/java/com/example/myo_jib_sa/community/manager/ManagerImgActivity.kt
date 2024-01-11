@@ -1,9 +1,8 @@
-package com.example.myo_jib_sa.community
+package com.example.myo_jib_sa.community.manager
 
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ActivityManagerImgBinding
 
 class ManagerImgActivity : AppCompatActivity() {

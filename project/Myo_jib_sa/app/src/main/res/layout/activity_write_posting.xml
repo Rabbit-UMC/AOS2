@@ -64,7 +64,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView24" />
+        app:layout_constraintTop_toBottomOf="@+id/toast_red_black_txt" />
 
     <EditText
         android:id="@+id/postWrite_postText_Etxt"
@@ -151,7 +151,7 @@
         app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
 
     <TextView
-        android:id="@+id/textView24"
+        android:id="@+id/toast_red_black_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
