@@ -22,11 +22,11 @@ interface ScheduleAddService {
 
 data class ScheduleAddRequest(
     @SerializedName("title")
-    var scheduleTitle: String,
-    var content: String,
-    var startAt: String,
-    var endAt: String,
+    var scheduleTitle: String?,
+    var content: String?,
+    var startAt: String?,
+    var endAt: String?,
     @SerializedName("when")
-    var scheduleWhen: String,
+    var scheduleWhen: String?,
     var missionId: Long?
 )
