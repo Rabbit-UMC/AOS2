@@ -31,7 +31,7 @@
             app:srcCompat="@drawable/ic_schedule_create_check" />
 
         <TextView
-            android:id="@+id/toast_red_black_txt"
+            android:id="@+id/toastMessage_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/font_caption_text_1"
