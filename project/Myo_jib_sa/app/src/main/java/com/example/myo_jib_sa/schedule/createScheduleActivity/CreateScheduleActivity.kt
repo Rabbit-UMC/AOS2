@@ -13,23 +13,17 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.NumberPicker
-import android.widget.TimePicker
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
 import com.example.myo_jib_sa.databinding.ToastCreateScheduleBinding
-import com.example.myo_jib_sa.databinding.ToastCurrentMissionDeleteBinding
 import com.example.myo_jib_sa.schedule.ScheduleFragment
 import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResponse
 import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResult
 import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionService
-import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.CreateScheduleCalendarAdapter
-import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDateData
 
 import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddRequest
 import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddResponse
@@ -43,7 +37,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.DecimalFormat
 import java.time.LocalDate
-import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 
@@ -51,24 +44,14 @@ class CreateScheduleActivity : AppCompatActivity() {
     private lateinit var binding : ActivityCreateScheduleBinding
     private lateinit var referenceDate : LocalDate //오늘 날짜
     private lateinit var selectedDate : LocalDate //선택한 날짜
-    private lateinit var calendarAdapter : CreateScheduleCalendarAdapter //calendarRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
-    private var dayList = ArrayList<SelectDateData>() //calendarAdapter item list
-
-    private var selectedDateIndex : Int = 0//referenceDate의 dayList에서 index값 //달력이미지버튼 클릭에서 사용
-
-    //일정 생성 조건
-    private var isMissionSelect = false
-    private var isDateSelect = false
-    private var isStartSelect = false
-    private var isEndSelect = false
 
     private var scheduleData : ScheduleAddRequest = ScheduleAddRequest(
-        missionId = 0,
-        scheduleTitle= "",
-        startAt= "08:00",
-        endAt= "09:00",
-        content= "",
-        scheduleWhen= ""
+        missionId = null,
+        scheduleTitle = null,
+        startAt = null,
+        endAt = null,
+        content = null,
+        scheduleWhen = null
     )
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,43 +66,14 @@ class CreateScheduleActivity : AppCompatActivity() {
         referenceDate = LocalDate.now()
         selectedDate = referenceDate
 
-        //화면 초기화
-        setMonthView()
-//        //오늘날짜 편집 화면에 표시
-//        binding.scheduleYearTv.text = referenceDate?.year.toString()
-//        binding.scheduleMonthTv.text = referenceDate?.monthValue.toString()
-//        binding.scheduleDayTv.text = referenceDate?.dayOfMonth.toString()
+//        setMonthView()
 
         setBtn()//버튼 setting
         setMemoCount()//메모 입력 카운트
 
-        binding.calendarRv.addItemDecoration(CreateScheduleCalendarAdapter.GridSpaceDecoration(getDisplayWidthSize()))
-        calendarRvItemClickEvent()//캘린더 아이템 클릭이벤트
         currentMissionApi()
     }
 
-
-
-
-    //month화면에 보여주기
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setMonthView(){
-        //month를 month text view에 보여주기 (결과: 1월)
-        binding.monthTv.text = monthFromDate(referenceDate)
-        //year를 year text view에 보여주기 (결과: 2023년)
-        binding.yearTv.text = yearFromDate(referenceDate)
-
-        //이번달 날짜 가져오기
-        dayInMonthArray(referenceDate)
-
-        //리사이클러뷰 연결
-        calendarAdapter = CreateScheduleCalendarAdapter(dayList)
-
-        binding.calendarRv.apply{
-            layoutManager= GridLayoutManager(this@CreateScheduleActivity, 7)
-            adapter = calendarAdapter
-        }
-    }
     private fun setDialogMissionAdapter(missionList: List<CurrentMissionResult>){
         var dialogMissionAdapter = DialogMissionAdapter(missionList)
         binding.missionListRv.adapter = dialogMissionAdapter
@@ -129,92 +83,14 @@ class CreateScheduleActivity : AppCompatActivity() {
             override fun onClick(data: CurrentMissionResult) {
                 binding.missionTitleTv.text = data.missionTitle
                 scheduleData.missionId = data.missionId
-                isMissionSelect = true
                 createScheduleBtn()
-            }
-        })
-    }
-
-    //날짜 생성
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun dayInMonthArray(date: LocalDate){
-        dayList = ArrayList<SelectDateData>()
-        var yearMonth = YearMonth.from(date)
-
-        //해당 월의 마지막 날짜 가져오기(결과: 1월이면 31)
-        var lastDay = yearMonth.lengthOfMonth()
-        //해당 월의 첫번째 날 가져오기(결과: 2023-01-01)
-        var firstDay = referenceDate.withDayOfMonth(1)
-        //첫 번째날 요일 가져오기(결과: 월 ~일이 1~7에 대응되어 나타남)
-        var dayOfWeek = firstDay.dayOfWeek.value
-
-        for(i in 1..42){
-
-            if (dayOfWeek == 7) {//그 달의 첫날이 일요일일때 작동: 한칸 아래줄부터 날짜 표시되는 현상 막기위해
-                if (i > lastDay) {
-                    //break
-                    dayList.add(SelectDateData(null))
-                } else {
-                    if (i == referenceDate.dayOfMonth) {//referenceDate의 dayList에서 index값
-                        selectedDateIndex = i - 1
-                    }
-                    if (selectedDate == LocalDate.of(
-                            referenceDate.year, referenceDate.monthValue, i
-                        )
-                    ) { //현재 선택한 date
-                        dayList.add(
-                            SelectDateData(
-                                LocalDate.of(referenceDate.year, referenceDate.monthValue, i), true))
-                    } else {
-                        dayList.add(
-                            SelectDateData(
-                                LocalDate.of(referenceDate.year, referenceDate.monthValue, i)))
-                    }
-                }
-            }
-            else if(i<=dayOfWeek || i>(lastDay + dayOfWeek)){//그 외 경우
-                dayList.add(SelectDateData(null))
-            }
-            else{
-                if(i-dayOfWeek == referenceDate.dayOfMonth) {//referenceDate의 dayList에서 index값
-                    selectedDateIndex = i - 1
-                }
-                if( selectedDate == LocalDate.of(referenceDate.year, referenceDate.monthValue, i-dayOfWeek) ){ //현재 선택한 date
-                    dayList.add(SelectDateData(LocalDate.of(referenceDate.year, referenceDate.monthValue, i-dayOfWeek), true))
-                } else{
-                    dayList.add(SelectDateData(LocalDate.of(referenceDate.year, referenceDate.monthValue, i-dayOfWeek)))
-                }
-            }
-        }
-
-
-    }
-
-    //Calendar rv item클릭 이벤트
-    private fun calendarRvItemClickEvent() {
-        calendarAdapter.setItemClickListener(object : CreateScheduleCalendarAdapter.OnItemClickListener {
-
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onClick(selectDateData: SelectDateData, position: Int) {
-                //오늘날짜 파란 동그라미 없애기
-                val temp = dayList[selectedDateIndex]
-                if(temp.isSelected){//temp.isSelected == true일때만 false로 변경
-                    dayList[selectedDateIndex] = SelectDateData(temp.date, false)
-                    calendarAdapter.notifyItemChanged(selectedDateIndex)
-                }
-
-                selectedDate = selectDateData.date!!
-
-                var iYear = selectDateData.date?.year
-                var iMonth = selectDateData.date?.monthValue
-                var iDay = selectDateData.date?.dayOfMonth
             }
         })
     }
 
     fun createScheduleBtn(){
         //생성 조건 만족시
-        if(binding.scheduleTitleEtv.text.isNotEmpty() && isMissionSelect && isDateSelect && isStartSelect && isEndSelect && scheduleData.startAt < scheduleData.endAt && binding.scheduleMemoEtv.text.isNotEmpty()){
+        if(binding.scheduleTitleEtv.text.isNotEmpty() && scheduleData.missionId != null &&  scheduleData.startAt != null &&  scheduleData.endAt != null &&  scheduleData.scheduleWhen != null && (scheduleData.endAt!! > scheduleData.startAt!!)){
             binding.createBtn.isEnabled = true
             binding.createBtn.setBackgroundResource(R.drawable.view_round_r8_blue)
         }else{ //만족 못했을 시
@@ -235,7 +111,7 @@ class CreateScheduleActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.scheduleTitleEtv.addTextChangedListener(object: TextWatcher {
+        binding.scheduleTitleEtv.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -248,7 +124,7 @@ class CreateScheduleActivity : AppCompatActivity() {
         })
         //완료 버튼
         binding.createBtn.setOnClickListener {
-            if (binding.scheduleTitleEtv.text.isNotEmpty() && isMissionSelect && isDateSelect && isStartSelect && isEndSelect && scheduleData.startAt < scheduleData.endAt && binding.scheduleMemoEtv.text.isNotEmpty()) {//제목이 공백이거나 시간이 잘못되면
+            if(binding.scheduleTitleEtv.text.isNotEmpty() && scheduleData.missionId != null &&  scheduleData.startAt != null &&  scheduleData.endAt != null &&  scheduleData.scheduleWhen != null && (scheduleData.endAt!! > scheduleData.startAt!!)){
                 binding.createBtn.isEnabled = true
                 binding.createBtn.setBackgroundResource(R.drawable.view_round_r8_blue)
                 Log.d("exitDebug", "yes!!")
@@ -262,119 +138,81 @@ class CreateScheduleActivity : AppCompatActivity() {
             }
         }
 
-        //캘린더: 이전달로 이동
-        binding.preMonthBtn.setOnClickListener {
-                referenceDate = referenceDate.minusMonths(1)
-                setMonthView()
-                calendarRvItemClickEvent()
-        }
-        //캘린더: 다음달로 이동
-        binding.nextMonthBtn.setOnClickListener {
-                referenceDate = referenceDate.plusMonths(1)
-                setMonthView()
-                calendarRvItemClickEvent()
-        }
-
         //날짜 클릭
         binding.scheduleDateTv.setOnClickListener {
-            isDateSelect = true
-            createScheduleBtn()
             binding.createBtn.visibility = View.INVISIBLE //버튼이 맨앞에 띄어져서 invisible처리
 
-            binding.calendarLayout.visibility = View.VISIBLE
-            binding.toneDownView.visibility = View.VISIBLE
+            var calendarDialogFragment = CalendarDialogFragment(
+                setOnClickListener = object : CalendarDialogFragment.SetOnClickListener {
+                    override fun onCompleteClick(selectedDate: LocalDate) {
+                        binding.createBtn.visibility = View.VISIBLE
+
+                        //데이터 넣기
+                        scheduleData.scheduleWhen = selectedDate.toString()
+                        //화면에 표시
+                        binding.scheduleDateTv.text = selectedDate.toString()
+                        createScheduleBtn()
+                    }
+                }
+            )
+            calendarDialogFragment.show(supportFragmentManager, "calendarDialogFragment")
         }
-        binding.calendarCompleteTv.setOnClickListener {
-            binding.createBtn.visibility = View.VISIBLE
 
-            //데이터 넣기
-            scheduleData.scheduleWhen = selectedDate.toString()
-            //화면에 표시
-            binding.scheduleDateTv.text = selectedDate.toString()
-            //캘린더 안보이게
-            binding.calendarLayout.visibility = View.GONE
-            binding.toneDownView.visibility = View.GONE
-        }
-
-
+        //시간 클릭
         val formatter = DecimalFormat("00")
         var startHour: Int? = null
         var startMinute: Int? = null
         var endHour: Int? = null
         var endMinute: Int? = null
-        binding.scheduleStartAtEtv.setOnClickListener{
-            isStartSelect = true
-            createScheduleBtn()
+        binding.scheduleStartAtEtv.setOnClickListener {
             binding.createBtn.visibility = View.INVISIBLE //버튼이 맨앞에 띄어져서 invisible처리
 
-            //setSpinnerDialog(1)
-            binding.startTimeLayout.visibility = View.VISIBLE
-            binding.toneDownView.visibility = View.VISIBLE
+            var startTimeDialogFragment = StartTimeDialogFragment(
+                setOnClickListener = object : StartTimeDialogFragment.SetOnClickListener {
+                    override fun onClick(resultStartHour: Int, resultStartMinute: Int) {
+                        binding.createBtn.visibility = View.VISIBLE
 
-            //timepicker 초기값 설정
-            if(startHour == null) {
-                binding.startTimePicker.hour = 9
-                binding.startTimePicker.minute = 0
-                startHour = 9
-                startMinute = 0
-            }else{
-                binding.startTimePicker.hour = startHour as Int
-                binding.startTimePicker.minute = startMinute!!
-            }
-            binding.startTimePicker.descendantFocusability =
-                NumberPicker.FOCUS_BLOCK_DESCENDANTS //editText가 눌리는 것을 막는다
-            binding.startTimePicker.setOnTimeChangedListener(object: TimePicker.OnTimeChangedListener {
-                override fun onTimeChanged(view: TimePicker?, hourOfDay: Int, minute: Int) {
-                    Log.d("debug", "startTime : 시:분 | ${formatter.format(hourOfDay)} : ${formatter.format(minute)}")
-                    startHour = hourOfDay
-                    startMinute = minute
-                }
-            })
+                        scheduleData.startAt = "${formatter.format(resultStartHour)}:${
+                            formatter.format(resultStartMinute)
+                        }"
+                        binding.scheduleStartAtEtv.setText(
+                            "${formatter.format(resultStartHour)}시 ${
+                                formatter.format(
+                                    resultStartMinute
+                                )
+                            }분"
+                        )
+                        startHour = resultStartHour
+                        startMinute = resultStartMinute
+                        createScheduleBtn()
+                    }
+                },
+                startHour,
+                startMinute
+            )
+            startTimeDialogFragment.show(supportFragmentManager, "StartTimeDialogFragment")
         }
-        binding.startTimeCompleteTv.setOnClickListener {
-            binding.createBtn.visibility = View.VISIBLE
 
-            binding.startTimeLayout.visibility = View.GONE
-            binding.toneDownView.visibility = View.GONE
-            scheduleData.startAt =  "${formatter.format(startHour)}:${formatter.format(startMinute)}"
-            binding.scheduleStartAtEtv.setText("${formatter.format(startHour)}시 ${formatter.format(startMinute)}분")
-        }
-        binding.scheduleEndAtEtv.setOnClickListener{
-            isEndSelect = true
-            createScheduleBtn()
+        binding.scheduleEndAtEtv.setOnClickListener {
             binding.createBtn.visibility = View.INVISIBLE //버튼이 맨앞에 띄어져서 invisible처리
 
-            //setSpinnerDialog(2)
-            binding.endTimeLayout.visibility = View.VISIBLE
-            binding.toneDownView.visibility = View.VISIBLE
+            var endTimeDialogFragment = EndTimeDialogFragment(
+                setOnClickListener = object : EndTimeDialogFragment.SetOnClickListener {
+                    override fun onClick(resultEndHour: Int, resultEndMinute: Int) {
+                        binding.createBtn.visibility = View.VISIBLE
 
-            //timepicker 초기값 설정
-            if(endHour == null) {
-                binding.endTimePicker.hour = 10
-                binding.endTimePicker.minute = 0
-                endHour = 10
-                endMinute = 0
-            }else{
-                binding.endTimePicker.hour = endHour as Int
-                binding.endTimePicker.minute = endMinute!!
-            }
-            binding.endTimePicker.descendantFocusability =
-                NumberPicker.FOCUS_BLOCK_DESCENDANTS //editText가 눌리는 것을 막는다
-            binding.endTimePicker.setOnTimeChangedListener(object: TimePicker.OnTimeChangedListener {
-                override fun onTimeChanged(view: TimePicker?, hourOfDay: Int, minute: Int) {
-                    Log.d("debug", "endTime : 시:분 | ${formatter.format(hourOfDay)} : ${formatter.format(minute)}")
-                    endHour = hourOfDay
-                    endMinute = minute
-                }
-            })
-        }
-        binding.endTimeCompleteTv.setOnClickListener {
-            binding.createBtn.visibility = View.VISIBLE
-
-            binding.endTimeLayout.visibility = View.GONE
-            binding.toneDownView.visibility = View.GONE
-            scheduleData.endAt = "${formatter.format(endHour)}:${formatter.format(endMinute)}"
-            binding.scheduleEndAtEtv.setText("${formatter.format(endHour)}시 ${formatter.format(endMinute)}분")
+                        scheduleData.endAt =
+                            "${formatter.format(resultEndHour)}:${formatter.format(resultEndMinute)}"
+                        binding.scheduleEndAtEtv.setText("${formatter.format(resultEndHour)}시 ${formatter.format(resultEndMinute)}분")
+                        endHour = resultEndHour
+                        endMinute = resultEndMinute
+                        createScheduleBtn()
+                    }
+                },
+                endHour,
+                endMinute
+            )
+            endTimeDialogFragment.show(supportFragmentManager, "EndTimeDialogFragment")
         }
     }
 
@@ -389,7 +227,6 @@ class CreateScheduleActivity : AppCompatActivity() {
                 var userInput = binding.scheduleMemoEtv.text.toString()
                 binding.countMemoTv.text = userInput.length.toString()
                 Log.d("debug", "memo"+userInput.length.toString())
-                createScheduleBtn()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -458,7 +295,7 @@ class CreateScheduleActivity : AppCompatActivity() {
     private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
 
 
-    private fun scheduleAddApi(){
+    private fun scheduleAddApi() {
         // SharedPreferences 객체 가져오기
         val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         // JWT 값 가져오기
@@ -466,7 +303,7 @@ class CreateScheduleActivity : AppCompatActivity() {
 
         val requestBody = ScheduleAddRequest(
             scheduleTitle = binding.scheduleTitleEtv.text.toString(),
-            content = binding.scheduleMemoEtv.text.toString() ,//메모
+            content = binding.scheduleMemoEtv.text.toString(),//메모
             startAt = scheduleData.startAt,
             endAt = scheduleData.endAt,
             missionId = scheduleData.missionId,
@@ -484,19 +321,23 @@ class CreateScheduleActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     Log.d("retrofit", response.body().toString());
+                    Log.d("retrofit", response.toString())
 
-                        val createScheduleIntent = Intent(this@CreateScheduleActivity, ScheduleFragment::class.java)
-                        createScheduleIntent.putExtra("isCreate", true)
-                        createScheduleIntent.putExtra("message", "작성하신 일정이 저장되었어요!")
-                        setResult(RESULT_OK, createScheduleIntent)
-                        finish()
+                    val createScheduleIntent =
+                        Intent(this@CreateScheduleActivity, ScheduleFragment::class.java)
+                    createScheduleIntent.putExtra("isCreate", true)
+                    createScheduleIntent.putExtra("message", "작성하신 일정이 저장되었어요!")
+                    setResult(RESULT_OK, createScheduleIntent)
+                    finish()
 
-                }else {
+                } else {
                     createToast("일정 저장 실패")
                     Log.e("retrofit", "scheduleAddApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
                     Log.e("retrofit", "scheduleAddApi_onResponse: Error Body $errorBody")
-                }}
+                }
+            }
+
             override fun onFailure(call: Call<ScheduleAddResponse>, t: Throwable) {
                 createToast("일정 저장 실패")
                 Log.e("retrofit", "scheduleAddApi_onFailure: ${t.message}")
