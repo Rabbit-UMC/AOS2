@@ -41,15 +41,15 @@ class ManagerRetrofitManager (context: Context){
                 Log.d("RetrofitManager 미션 대표 사진 바꾸기", "RetrofitManager 미션 대표 사진 바꾸기 onResponse \t :${response.code()} ")
                 val response: SimpleResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("RetrofitManager 미션 대표 사진 바꾸기",
-                            "RetrofitManager 미션 대표 사진 바꾸기 is Success\t :${response.code} ")
+                            "RetrofitManager 미션 대표 사진 바꾸기 is Success\t :${response.errorMessage}   ${response.errorCode}")
                         Log.d("RetrofitManager 미션 대표 사진 바꾸기",
                             "RetrofitManager 미션 대표 사진 바꾸기 is Success\t :${response.result} ")
                         completion(true)
                     } else {
                         Log.d("RetrofitManager 미션 대표 사진 바꾸기",
-                            "RetrofitManager 미션 대표 사진 바꾸기 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 미션 대표 사진 바꾸기 is NOT Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(false)
                     }
                 } else {
@@ -75,15 +75,15 @@ class ManagerRetrofitManager (context: Context){
                 Log.d("미션 생성", "RetrofitManager 미션 생성 onResponse \t :${response.message()} ")
                 val response: SimpleResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("미션 생성",
-                            "RetrofitManager 미션 생성 is Success\t :${response.code} ")
+                            "RetrofitManager 미션 생성 is Success\t :${response.errorMessage}   ${response.errorCode}")
                         Log.d("미션 생성",
-                            "RetrofitManager 미션 생성 is Success\t :${response.result} ")
+                            "RetrofitManager 미션 생성 is Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(true)
                     } else {
                         Log.d("미션 생성",
-                            "RetrofitManager 미션 생성 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 미션 생성 is NOT Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(false)
                     }
                 } else {

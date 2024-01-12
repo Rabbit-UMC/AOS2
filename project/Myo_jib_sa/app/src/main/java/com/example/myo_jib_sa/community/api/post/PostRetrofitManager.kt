@@ -37,13 +37,13 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 조회", "RetrofitManager 게시물 조회 onResponse \t :${response.message()} ")
                 val response: PostViewResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("게시물 조회",
-                            "RetrofitManager 게시물 조회 is Success\t :${response.code} ")
+                            "RetrofitManager 게시물 조회 is Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(response)
                     } else {
                         Log.d("게시물 조회",
-                            "RetrofitManager 게시물 조회 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 게시물 조회 is NOT Success\t :${response.errorMessage}   ${response.errorCode} ")
                     }
                 } else {
                     Log.d("게시물 조회", "RetrofitManager 게시물 조회 null")
@@ -70,13 +70,13 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 삭제", "RetrofitManager 게시물 삭제 onResponse \t :${response.message()} ")
                 val response: SimpleResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("게시물 삭제",
-                            "RetrofitManager 게시물 삭제 is Success\t :${response.code} ")
+                            "RetrofitManager 게시물 삭제 is Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(true)
                     } else {
                         Log.d("게시물 삭제",
-                            "RetrofitManager 게시물 삭제 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 게시물 삭제 is NOT Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(false)
                     }
                 } else {
@@ -102,13 +102,13 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 생성", "RetrofitManager 게시물 생성 onResponse \t :${response.message()} ")
                 val response: SimpleResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("게시물 생성",
-                            "RetrofitManager 게시물 생성 is Success\t :${response.code} ")
+                            "RetrofitManager 게시물 생성 is Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(true)
                     } else {
                         Log.d("게시물 생성",
-                            "RetrofitManager 게시물 생성 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 게시물 생성 is NOT Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(false)
                     }
                 } else {
@@ -135,13 +135,13 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 수정", "RetrofitManager 게시물 수정 onResponse \t :${response.message()} ")
                 val response: SimpleResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("게시물 수정",
-                            "RetrofitManager 게시물 수정 is Success\t :${response.code} ")
+                            "RetrofitManager 게시물 수정 is Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(true)
                     } else {
                         Log.d("게시물 수정",
-                            "RetrofitManager 게시물 수정 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 게시물 수정 is NOT Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(false)
                     }
                 } else {
@@ -168,13 +168,13 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 신고", "RetrofitManager 게시물 신고 onResponse \t :${response.message()} ")
                 val response: SimpleResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("게시물 신고",
-                            "RetrofitManager 게시물 신고 is Success\t :${response.code} ")
+                            "RetrofitManager 게시물 신고 is Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(true)
                     } else {
                         Log.d("게시물 신고",
-                            "RetrofitManager 게시물 신고 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 게시물 신고 is NOT Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(false)
                     }
                 } else {
@@ -201,13 +201,13 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 좋아요", "RetrofitManager 게시물 좋아요 onResponse \t :${response.message()} ")
                 val response: SimpleResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("게시물 좋아요",
-                            "RetrofitManager 게시물 종아요 is Success\t :${response.code} ")
+                            "RetrofitManager 게시물 종아요 is Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(true)
                     } else {
                         Log.d("게시물 좋아요",
-                            "RetrofitManager 게시물 좋아요 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 게시물 좋아요 is NOT Success\t :${response.errorMessage}   ${response.errorCode}")
                         Log.d("게시물 좋아요",
                             "RetrofitManager 게시물 좋아요 is NOT Success\t :${response.result} ")
                         completion(false)
@@ -235,13 +235,13 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 좋아요 취소", "RetrofitManager 게시물 좋아요 취소 onResponse \t :${response.message()} ")
                 val response: SimpleResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("게시물 좋아요 취소",
-                            "RetrofitManager 게시물 종아요 취소 is Success\t :${response.code} ")
+                            "RetrofitManager 게시물 종아요 취소 is Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(true)
                     } else {
                         Log.d("게시물 좋아요 취소",
-                            "RetrofitManager 게시물 좋아요 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 게시물 좋아요 is NOT Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(false)
                     }
                 } else {
@@ -267,13 +267,13 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 댓글 달기", "RetrofitManager 게시물 댓글 달기 onResponse \t :${response.message()} ")
                 val response: SimpleResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("게시물 댓글 달기",
-                            "RetrofitManager 게시물 댓글 달기 is Success\t :${response.code} ")
+                            "RetrofitManager 게시물 댓글 달기 is Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(true)
                     } else {
                         Log.d("게시물 댓글 달기",
-                            "RetrofitManager 게시물 댓글 달기 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 게시물 댓글 달기 is NOT Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(false)
                     }
                 } else {
@@ -299,15 +299,15 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 댓글 삭제", "RetrofitManager 게시물 댓글 삭제 onResponse \t :${response.message()} ")
                 val response: SimpleResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("게시물 댓글 삭제",
-                            "RetrofitManager 게시물 댓글 삭제 is Success\t :${response.code} ")
+                            "RetrofitManager 게시물 댓글 삭제 is Success\t :${response.errorMessage}   ${response.errorCode}")
                         Log.d("게시물 댓글 삭제",
                             "RetrofitManager 게시물 댓글 삭제 is Success\t :${response.result} ")
                         completion(true)
                     } else {
                         Log.d("게시물 댓글 삭제",
-                            "RetrofitManager 게시물 댓글 삭제 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 게시물 댓글 삭제 is NOT Success\t :${response.errorMessage}   ${response.errorCode}")
                         completion(false)
                     }
                 } else {
@@ -331,15 +331,15 @@ class PostRetrofitManager (context: Context){
                 Log.d("게시물 댓글 락", "RetrofitManager 게시물 댓글 락 onResponse \t :${response.message()} ")
                 val response: SimpleResponse? = response?.body()
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("게시물 댓글 락",
-                            "RetrofitManager 게시물 댓글 락 is Success\t :${response.code} ")
+                            "RetrofitManager 게시물 댓글 락 is Success\t :${response.errorMessage}   ${response.errorCode}")
                         Log.d("게시물 댓글 락",
                             "RetrofitManager 게시물 댓글 락 is Success\t :${response.result} ")
                         completion(true)
                     } else {
                         Log.d("게시물 댓글 락",
-                            "RetrofitManager 게시물 댓글 락 is NOT Success\t :${response.code} ")
+                            "RetrofitManager 게시물 댓글 락 is NOT Success\t :${response.errorMessage}   ${response.errorCode}")
                         Log.d("게시물 댓글 락",
                             "RetrofitManager 게시물 댓글 락 is NOT success\t :${response.result} ")
                         completion(false)

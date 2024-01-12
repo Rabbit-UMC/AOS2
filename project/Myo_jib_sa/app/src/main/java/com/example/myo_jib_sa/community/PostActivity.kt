@@ -30,8 +30,6 @@ import com.example.myo_jib_sa.databinding.ActivityPostBinding
 class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
     private lateinit var binding: ActivityPostBinding
-    private lateinit var sharedPreferences: SharedPreferences //좋아요 상태 저장
-    private lateinit var heartButton: AppCompatImageButton
     private var isHearted: Boolean = false
     private var postId:Long=0
     private var boardId:Long=0
@@ -72,7 +70,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         }
 
         //댓글 달기
-        /*binding.postEnterBtn.setOnClickListener {
+        binding.boardWriteCommentBtn.setOnClickListener {
             Constance.jwt?.let { it1 ->
                 commenting(
                     it1,
@@ -85,14 +83,13 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     binding.postCommentInputEtxt.text.clear()
                 }
             }
-        }*/
+        }
 
 
         //좋아요 버튼 상태 불러오기
-        /*heartButton = findViewById(R.id.post_heart_btn)
         setHeartButtonIcon()
         //좋아요 누르기 기능
-        binding.postHeartBtn.setOnClickListener {
+        binding.postItemHeartImg.setOnClickListener {
             Constance.jwt?.let { it1 ->
                 setHeartApi(it1, postId){ isSuccess->
                     if(isSuccess){
@@ -101,7 +98,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     }
                 }
             }
-        }*/
+        }
 
         //작성자, 일반 유저 별로 보이는 메뉴 다르게
         //메뉴 클릭
@@ -214,7 +211,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                             boardId:Int, postId:Long){
         val retrofitManager = PostRetrofitManager.getInstance(this)
         retrofitManager.postView(author, postId){response ->
-            if(response.isSuccess=="true"){
+            if(response.isSuccess){
                 val imgList:List<ArticleImage> = response.result.articleImage
 
                 //로그
@@ -242,12 +239,12 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 isHearted=response.result.likeArticle
                 setHeartButtonIcon()
 
-
+                //todo : 하트 수, 댓글 수 설정
 
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                val returnCode = response.code
-                val returnMsg = response.message
+                val returnCode = response.errorCode
+                val returnMsg = response.errorMessage
                 showToast("게시물을 불러오지 못했습니다")
                 Log.d("게시글 API isSuccess가 false", "${returnCode}  ${returnMsg}")
             }
@@ -273,9 +270,6 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         //이미지 리사이클러뷰 todo:다시 바꾸기
         if(contents.result.articleImage.isNotEmpty()){
             Log.d("게시글 이미지",contents.result.articleImage.toString() )
-
-            //이미지가 있으면 아래 구분선 없애기
-            binding.postLineLinear.visibility=View.INVISIBLE
 
             linkImgRecyclr(contents.result.articleImage)
         }
@@ -374,20 +368,16 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
         binding.postCommentRecyclr.layoutManager = layoutManager
         binding.postCommentRecyclr.adapter = adapter
-
-        if (adapter != null) {
-            adapter.setItemSpacing(binding.postCommentRecyclr, 15)
-        }
     }
 
     //하트 버튼 아이콘 설정
     private fun setHeartButtonIcon() {
         val icon: Drawable? = if (isHearted) {
-            ContextCompat.getDrawable(this, R.drawable.ic_heart_blue)
+            ContextCompat.getDrawable(this, R.drawable.ic_like)
         } else {
-            ContextCompat.getDrawable(this, R.drawable.ic_heart_blueline)
+            ContextCompat.getDrawable(this, R.drawable.ic_unlike)
         }
-        heartButton.setImageDrawable(icon)
+        binding.postItemHeartImg.setImageDrawable(icon)
     }
 
     //하트 api 연결
