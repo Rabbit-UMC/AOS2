@@ -1,12 +1,11 @@
 package com.example.myo_jib_sa.community.api.post
 
+import com.example.myo_jib_sa.base.BaseResponse
+
 //30번 api (게시물 조회 data class)
 data class PostViewResponse(
-    val isSuccess:String,
-    val code:Int,
-    val message:String,
     val result:PostResult
-)
+):BaseResponse()
 data class PostResult(
     val categoryName:String,
     val articleId:Long,
@@ -35,11 +34,8 @@ data class CommentList(
 
 
 data class SimpleResponse(
-    val isSuccess:String,
-    val code:Int,
-    val message: String,
     val result: String
-)
+):BaseResponse()
 
 
 //32번 api 게시글 생성 data class

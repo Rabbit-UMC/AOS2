@@ -188,7 +188,7 @@ class PostCommentAdapter(
 
         val retrofitManager = PostRetrofitManager.getInstance(context)
         retrofitManager.postView(author, postId){response ->
-            if(response.isSuccess=="true"){
+            if(response.isSuccess){
                 val imgList:List<ArticleImage> = response.result.articleImage
 
                 //로그
@@ -204,8 +204,8 @@ class PostCommentAdapter(
 
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                val returnCode = response.code
-                val returnMsg = response.message
+                val returnCode = response.errorCode
+                val returnMsg = response.errorMessage
                 showToast("댓글 부분을 불러오지 못했습니다.")
                 Log.d("게시글 API isSuccess가 false", "${returnCode}  ${returnMsg}")
             }
