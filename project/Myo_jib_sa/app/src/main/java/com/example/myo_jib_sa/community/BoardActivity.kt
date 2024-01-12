@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa.community
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,18 +12,19 @@ import com.example.myo_jib_sa.community.manager.ManagerPageActivity
 import com.example.myo_jib_sa.community.api.BoardPost.Articles
 import com.example.myo_jib_sa.community.api.BoardPost.PostBoardRetrofitManager
 import com.example.myo_jib_sa.community.adapter.BoardAdapter
-import com.example.myo_jib_sa.databinding.ActivityBoardExerciseBinding
+import com.example.myo_jib_sa.community.missionCert.MissionCertificationActivity
+import com.example.myo_jib_sa.databinding.ActivityBoardBinding
 
-class BoardExerciseActivity : AppCompatActivity() {
+class BoardActivity : AppCompatActivity() {
 
-    private lateinit var binding:ActivityBoardExerciseBinding
+    private lateinit var binding: ActivityBoardBinding
     private var hostId:Long=0
 
     //아래 두개 관리자 페이지로 넘겨줌
     private var missionId:Long=0
     private var missionImg:String=""
 
-    private var boardId:Int=0
+    private var boardId:Long=0
     private var page:Int=0
 
     private var isLoading = false
@@ -38,14 +40,17 @@ class BoardExerciseActivity : AppCompatActivity() {
     //다시 화면 조회
     private var isResume:Boolean=false
 
+    //플로팅 토글
+    private var isFabOpen = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityBoardExerciseBinding.inflate(layoutInflater)
+        binding= ActivityBoardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         isResume=false
 
-        boardId=intent.getIntExtra("boardId", 0)
+        boardId=intent.getLongExtra("boardId", 0)
         isBest=intent.getBooleanExtra("isBest", false)
 
         if(isBest){
@@ -84,15 +89,7 @@ class BoardExerciseActivity : AppCompatActivity() {
 
         //미션 인증 페이지 넘어가기
         //todo: 플로팅 버튼 터치 시 넘어가기로 바꾸기
-        /*binding.boardExcsMissiomTxt.setOnClickListener {
-                val intent=Intent(this, MissionCertificationActivity::class.java)
-                intent.putExtra("missionId", missionId)
-                intent.putExtra("missionImg", missionImg)
-                intent.putExtra("boardId", boardId)
-                intent.putExtra("hostId", hostId)
-                startActivity(intent)
-
-        }*/
+        setFABClickEvent()
 
     }
 
@@ -147,7 +144,7 @@ class BoardExerciseActivity : AppCompatActivity() {
 
         val retrofitManager = PostBoardRetrofitManager.getInstance(this)
         retrofitManager.board(author,page ,id){response ->
-            if(response.isSuccess=="true"){
+            if(response.isSuccess){
                 val list:List<Articles> = response.result.articleLists
                 boardList=list.toMutableList()
                 hostId=response.result.categoryHostId
@@ -187,8 +184,8 @@ class BoardExerciseActivity : AppCompatActivity() {
                 isLoading = false
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                val returnCode = response.code
-                val returnMsg = response.message
+                val returnCode = response.errorCode
+                val returnMsg = response.errorMessage
 
                 Log.d("게시판 API isSuccess가 false", "${returnCode}  ${returnMsg}")
             }
@@ -282,5 +279,40 @@ class BoardExerciseActivity : AppCompatActivity() {
     private fun setBestBoard(){
         //binding.boardExcsMissiomTxt.visibility=View.INVISIBLE todo
         binding.boardPostingBtn.hide()
+    }
+
+    //플로팅 버튼
+    private fun setFABClickEvent() {
+
+        // 플로팅 버튼 클릭시 애니메이션 동작 기능
+        binding.boardPostingBtn.setOnClickListener {
+            toggleFab()
+        }
+
+        // 플로팅 버튼 클릭 이벤트
+        binding.boardMissionBtn.setOnClickListener {
+            val intent=Intent(this, MissionCertificationActivity::class.java)
+            intent.putExtra("missionId", missionId)
+            startActivity(intent)
+        }
+
+    }
+
+    //플로팅 버튼 꺼내기
+    private fun toggleFab() {
+
+        //todo: 관리자 권한에 따라 플로팅 버튼 숨기기 나타내기
+
+        // 플로팅 액션 버튼 닫기 - 열려있는 플로팅 버튼 집어넣는 애니메이션
+        if (isFabOpen) {
+            ObjectAnimator.ofFloat(binding.boardMissionBtn, "translationY", 0f).apply { start() }
+            ObjectAnimator.ofFloat(binding.boardPostingBtn, View.ROTATION, 45f, 0f).apply { start() }
+        } else { // 플로팅 액션 버튼 열기 - 닫혀있는 플로팅 버튼 꺼내는 애니메이션
+            ObjectAnimator.ofFloat(binding.boardMissionBtn, "translationY", -180f).apply { start() }
+            ObjectAnimator.ofFloat(binding.boardPostingBtn, View.ROTATION, 0f, 45f).apply { start() }
+        }
+
+        isFabOpen = !isFabOpen
+
     }
 }
