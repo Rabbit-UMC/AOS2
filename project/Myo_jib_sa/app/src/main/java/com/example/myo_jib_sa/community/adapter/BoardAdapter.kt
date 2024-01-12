@@ -14,7 +14,7 @@ import com.example.myo_jib_sa.databinding.ItemPostBinding
 class BoardAdapter(
     private val context: Context,
     private val dataList:MutableList<Articles>,
-    private val boardId:Int)
+    private val boardId:Long)
     : RecyclerView.Adapter<BoardAdapter.ViewHolder>(){
 
     //뷰홀더
@@ -26,6 +26,8 @@ class BoardAdapter(
             binding.postItemNameTxt.text=item.articleTitle
             binding.postItmeCommentCntTxt.text=item.commentCount.toString()
             binding.postItmeHeartNumTxt.text=item.likeCount.toString()
+            binding.postItemUploadTimeTxt.text=item.uploadTime
+
 
 
             //클릭 이벤트, 해당 게시물로 이동

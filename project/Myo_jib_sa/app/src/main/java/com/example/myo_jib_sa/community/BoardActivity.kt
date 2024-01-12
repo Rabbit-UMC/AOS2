@@ -22,7 +22,7 @@ class BoardActivity : AppCompatActivity() {
     private var missionId:Long=0
     private var missionImg:String=""
 
-    private var boardId:Int=0
+    private var boardId:Long=0
     private var page:Int=0
 
     private var isLoading = false
@@ -45,7 +45,7 @@ class BoardActivity : AppCompatActivity() {
 
         isResume=false
 
-        boardId=intent.getIntExtra("boardId", 0)
+        boardId=intent.getLongExtra("boardId", 0)
         isBest=intent.getBooleanExtra("isBest", false)
 
         if(isBest){
@@ -147,7 +147,7 @@ class BoardActivity : AppCompatActivity() {
 
         val retrofitManager = PostBoardRetrofitManager.getInstance(this)
         retrofitManager.board(author,page ,id){response ->
-            if(response.isSuccess=="true"){
+            if(response.isSuccess){
                 val list:List<Articles> = response.result.articleLists
                 boardList=list.toMutableList()
                 hostId=response.result.categoryHostId
@@ -187,8 +187,8 @@ class BoardActivity : AppCompatActivity() {
                 isLoading = false
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                val returnCode = response.code
-                val returnMsg = response.message
+                val returnCode = response.errorCode
+                val returnMsg = response.errorMessage
 
                 Log.d("게시판 API isSuccess가 false", "${returnCode}  ${returnMsg}")
             }
