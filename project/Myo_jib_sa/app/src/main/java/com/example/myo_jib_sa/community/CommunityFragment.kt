@@ -56,7 +56,7 @@ class CommunityFragment : Fragment() {
 
         //더보기 터치 시 이동
         binding.homePulsTxt.setOnClickListener {
-            val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
+            val intent = Intent(requireActivity(), BoardActivity::class.java)
             intent.putExtra("isBest", true)
             startActivity(intent)
         }
@@ -133,17 +133,17 @@ class CommunityFragment : Fragment() {
     //게시판 이동
     private fun moveBoard() {
         binding.communityBoardArtLinear.setOnClickListener {
-            val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
+            val intent = Intent(requireActivity(), BoardActivity::class.java)
             intent.putExtra("boardId", Constance.ART_ID)
             startActivity(intent)
         }
         binding.communityBoardExerciseLinear.setOnClickListener {
-            val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
+            val intent = Intent(requireActivity(), BoardActivity::class.java)
             intent.putExtra("boardId", Constance.EXERCISE_ID)
             startActivity(intent)
         }
         binding.communityBoardFreeLinear.setOnClickListener {
-            val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
+            val intent = Intent(requireActivity(), BoardActivity::class.java)
             intent.putExtra("boardId", Constance.FREE_ID)
             startActivity(intent)
         }

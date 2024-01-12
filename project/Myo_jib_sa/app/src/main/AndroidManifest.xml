@@ -85,7 +85,7 @@
             android:exported="false" />
         -->
         <activity
-            android:name=".community.BoardExerciseActivity"
+            android:name=".community.BoardActivity"
             android:exported="false" />
         <activity
             android:name=".community.missionCert.MissionCertificationActivity"
