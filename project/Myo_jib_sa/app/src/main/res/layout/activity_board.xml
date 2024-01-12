@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".community.BoardExerciseActivity">
+    tools:context=".community.BoardActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/board_cntLayout"
         android:padding="5dp"
