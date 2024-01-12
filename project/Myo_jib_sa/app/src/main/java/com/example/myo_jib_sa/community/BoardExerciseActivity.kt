@@ -11,11 +11,11 @@ import com.example.myo_jib_sa.community.manager.ManagerPageActivity
 import com.example.myo_jib_sa.community.api.BoardPost.Articles
 import com.example.myo_jib_sa.community.api.BoardPost.PostBoardRetrofitManager
 import com.example.myo_jib_sa.community.adapter.BoardAdapter
-import com.example.myo_jib_sa.databinding.ActivityBoardExerciseBinding
+import com.example.myo_jib_sa.databinding.ActivityBoardBinding
 
 class BoardExerciseActivity : AppCompatActivity() {
 
-    private lateinit var binding:ActivityBoardExerciseBinding
+    private lateinit var binding: ActivityBoardBinding
     private var hostId:Long=0
 
     //아래 두개 관리자 페이지로 넘겨줌
@@ -40,7 +40,7 @@ class BoardExerciseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityBoardExerciseBinding.inflate(layoutInflater)
+        binding= ActivityBoardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         isResume=false
