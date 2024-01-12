@@ -13,7 +13,7 @@ import com.example.myo_jib_sa.community.api.BoardPost.PostBoardRetrofitManager
 import com.example.myo_jib_sa.community.adapter.BoardAdapter
 import com.example.myo_jib_sa.databinding.ActivityBoardBinding
 
-class BoardExerciseActivity : AppCompatActivity() {
+class BoardActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBoardBinding
     private var hostId:Long=0
