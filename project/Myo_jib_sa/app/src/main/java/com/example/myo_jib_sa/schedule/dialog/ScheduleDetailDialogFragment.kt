@@ -8,6 +8,7 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.*
 import androidx.annotation.RequiresApi
@@ -60,6 +61,9 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
+        //메모 tv scrollable
+        binding.scheduleMemoTv.movementMethod = ScrollingMovementMethod()
+
 
         //x누르면 dialog종료
 //        binding.exitTv.setOnClickListener {
@@ -103,6 +107,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
                 scheduleEditDialog.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
             }
         }
+
 
         return binding.root
     }

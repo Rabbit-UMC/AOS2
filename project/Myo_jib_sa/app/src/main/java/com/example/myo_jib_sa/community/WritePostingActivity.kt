@@ -11,7 +11,7 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.community.api.imgUploadRetrofitManager
+import com.example.myo_jib_sa.community.api.imgUpload.imgUploadRetrofitManager
 import com.example.myo_jib_sa.community.api.post.ImageList
 import com.example.myo_jib_sa.community.api.post.PostCreateRequest
 import com.example.myo_jib_sa.community.api.post.PostEditRequest

@@ -71,6 +71,8 @@ android {
 }
 
 dependencies {
+    // 데이터 바인딩 의존성 추가
+    implementation "androidx.databinding:databinding-runtime:7.0.3"
 
     //API 연결 에러 확인
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'

@@ -1,7 +1,11 @@
 package com.example.myo_jib_sa.community.missionCert
 
+import android.Manifest
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -11,13 +15,20 @@ import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.ImgPath
-import com.example.myo_jib_sa.community.api.imgUploadRetrofitManager
+import com.example.myo_jib_sa.community.api.imgUpload.imgUploadRetrofitManager
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.databinding.ActivityMissionCertificationWriteBinding
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 
 class MissionCertificationWriteActivity: AppCompatActivity() {
     private lateinit var binding:ActivityMissionCertificationWriteBinding
@@ -29,6 +40,9 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
     companion object {
         const val GALLERY_REQUEST_CODE = 1001
+        const val CAMERA_REQUEST_CODE = 1002
+
+        const val CAMERA_PERMISSION_CODE = 100
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,12 +73,17 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         }
 
 
-        binding.missionCertImgBtn.setOnClickListener {
+        binding.missionCertGalleryConstraint.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
         }
 
-        binding.missionCertCompleteTxt.setOnClickListener {
+        //todo: 카메라로 사진 찍어서 올리기
+        binding.missionCertCameraConstraint.setOnClickListener {
+            startCamera()
+        }
+
+       /* binding.missionCertCompleteTxt.setOnClickListener {
             Constance.jwt?.let { it1 ->
                 postImg(it1, boardId.toLong()){ isSuccess->
                     if(isSuccess){
@@ -73,22 +92,123 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                 }
             }
 
-        }
+        }*/
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            val selectedImageUri: Uri? = data.data
-            // 선택한 이미지를 해당 이미지뷰에 표시
-            selectedImageUri?.let { uri ->
-                // todo :val imageView: ImageView = binding.missionCertImg
-                //imageView.setImageURI(uri)
-                imgUri=uri
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {//갤러리
+                GALLERY_REQUEST_CODE -> {
+                    if (data != null && data.data != null) {
+                        val selectedImageUri: Uri = data.data!!
+                        val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
+                        intent.putExtra("imgUri", selectedImageUri)
+                        startActivity(intent)
+                    }
+                } //카메라
+                CAMERA_REQUEST_CODE -> {
+                    //val imageBitmap = data.extras.get("data") as Bitmap
+                    Log.d("이미지 data", data.toString())
+                    val imageBitmap: Bitmap? = data?.let { getBitmapFromIntentData(it) }
+                    Log.d("이미지 bitmap", imageBitmap.toString())
+                    imageBitmap?.let { bitmap ->
+                        Log.d("이미지 bitmap", bitmap.toString())
+                        val uri: Uri? = bitmapToUri(bitmap, this)
+                        uri?.let {
+                            Log.d("이미지 uri", it.toString())
+                            val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
+                            intent.putExtra("imgUri", it)
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-                //todo : binding.missionWriteImgLayout.backgroundTintList=
-                    //ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+    //Intent를 통해 전달된 데이터에서 이미지를 가져옴
+    private fun getBitmapFromIntentData(data: Intent): Bitmap? {
+        val extras: Bundle? = data.extras
+        val byteArray: ByteArray? = extras?.getByteArray("data")
+
+        // byteArray로부터 Bitmap 객체 생성
+        return byteArray?.let {
+            BitmapFactory.decodeByteArray(it, 0, it.size)
+        }
+    }
+
+    //bitmap -> uri convert
+    //임시 저장소에 저장
+    fun bitmapToUri(bitmap: Bitmap, context: Context): Uri? {
+        val wrapper = ContextWrapper(context.applicationContext)
+        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
+        file = File(file, "${System.currentTimeMillis()}.jpg")
+
+        try {
+            val stream: OutputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.flush()
+            stream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return null
+        }
+
+        return FileProvider.getUriForFile(
+            context.applicationContext,
+            "${context.applicationContext.packageName}.fileprovider",
+            file
+        )
+    }
+
+    // 권한이 있는지 확인하는 함수
+    private fun checkCameraPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    // 권한 요청하는 함수
+    private fun requestCameraPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.CAMERA),
+            CAMERA_PERMISSION_CODE
+        )
+    }
+
+    // 카메라 권한 확인 후 실행되는 코드
+    private fun startCamera() {
+        if (checkCameraPermission()) {
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (takePictureIntent.resolveActivity(packageManager) != null) {
+                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
+            }
+        } else {
+            // 권한이 없는 경우 권한 요청
+            requestCameraPermission()
+        }
+    }
+
+    // onRequestPermissionsResult를 통해 사용자의 권한 요청 응답 처리
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            CAMERA_PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 사용자가 권한을 허용한 경우 카메라 시작
+                    startCamera()
+                } else {
+                    // 사용자가 권한을 거부한 경우 처리
+                    // 권한이 필요한 이유를 사용자에게 설명하고 필요한 조치를 안내할 수 있음
+                }
             }
         }
     }

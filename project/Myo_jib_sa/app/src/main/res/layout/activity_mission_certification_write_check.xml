@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".MissionCertificationWriteCheckActivity">
+    tools:context=".community.missionCert.MissionCertificationWriteCheckActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/missionCert_cntLayout"
@@ -34,18 +34,17 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:padding="5dp"
-            android:fontFamily="@font/font_inter"
+            android:fontFamily="@font/font_paragraph_4"
             android:text="게시"
             android:textColor="@color/white"
-            android:textSize="16dp"
-            android:textStyle="bold"
+            android:textSize="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/mission_cert_img"
         android:layout_width="match_parent"
         android:layout_height="490dp"
         android:scaleType="centerCrop"

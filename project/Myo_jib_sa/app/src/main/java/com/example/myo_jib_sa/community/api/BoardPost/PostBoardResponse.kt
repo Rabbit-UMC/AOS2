@@ -1,11 +1,10 @@
 package com.example.myo_jib_sa.community.api.BoardPost
 
+import com.example.myo_jib_sa.base.BaseResponse
+
 data class PostBoardResponse(
-    val isSuccess:String,
-    val code:Int,
-    val message:String,
     val result: BoardResult
-)
+): BaseResponse()
 data class BoardResult(
     val categoryHostId:Long,
     val categoryImage:String,

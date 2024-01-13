@@ -237,11 +237,9 @@
             android:layout_marginRight="35dp"
             android:layout_marginTop="20dp"
             android:background="@null"
-            android:enabled="false"
             android:fontFamily="@font/font_pretendard_regular"
-            android:inputType="textMultiLine"
-            android:lines="4"
-            android:maxLines="3"
+            android:maxLines="8"
+            android:scrollbars="vertical"
             android:text="Name"
             android:textColor="#6F6F6F"
             android:textSize="10sp"
@@ -251,7 +249,7 @@
             app:layout_constraintTop_toBottomOf="@+id/middle_line4_v" />
 
         <ImageView
-            android:id="@+id/imageView9"
+            android:id="@+id/mission_cert_img"
             android:layout_width="16dp"
             android:layout_height="18dp"
             android:layout_marginTop="12dp"
