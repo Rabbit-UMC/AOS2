@@ -114,6 +114,7 @@ class DeleteDialogFragment(
 //        val url ="app/schedule/${deleteScheduleIdList.joinToString(", ")}"
 //        Log.d("debug", "$url");
 //        val listCall = service.scheduleDeleteModifyVer(token, url)
+        Log.d("retrofit", "deleteScheduleIdList : "+deleteScheduleIdList.joinToString(", "))
         val listCall = service.scheduleDeleteModifyVer(token, deleteScheduleIdList.joinToString(", "))
 
         listCall.enqueue(object : Callback<ScheduleDeleteResponse> {
@@ -122,11 +123,13 @@ class DeleteDialogFragment(
                 response: Response<ScheduleDeleteResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.d("retrofit", response.body().toString());
-
-
-
+                    if(response.body() != null && response.body()!!.isSuccess) {
+                        Log.d("retrofit", response.body().toString());
                         deleteDialogListener.onDeleteListener("선택하신 항목이 삭제되었어요.", false)
+
+                    }else{
+                        Log.e("retrofit", "scheduleDeleteApi_onResponse: Error ${response.body()?.errorMessage}")
+                    }
 
 
                     //scheduleAdaptar.removeTask(position)
