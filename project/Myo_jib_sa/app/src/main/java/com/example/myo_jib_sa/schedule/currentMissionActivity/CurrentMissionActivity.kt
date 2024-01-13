@@ -5,16 +5,21 @@ import android.graphics.Color
 import android.os.*
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.R.*
+import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
 import com.example.myo_jib_sa.databinding.ItemSubScheduleBinding
 import com.example.myo_jib_sa.databinding.ToastCurrentMissionDeleteBinding
+import com.example.myo_jib_sa.mypage.api.GetUserProfileResponse
+import com.example.myo_jib_sa.mypage.api.MypageAPI
 import com.example.myo_jib_sa.schedule.CustomItemDecoration
 import com.example.myo_jib_sa.schedule.currentMissionActivity.adapter.*
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResponse
@@ -31,6 +36,7 @@ import retrofit2.Response
 
 class CurrentMissionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCurrentMissionBinding
+    val myPageAPI: MypageAPI = MyojibsaApplication.sRetrofit.create(MypageAPI::class.java)
     private lateinit var currentMissionAdapter : CurrentMissionAdapter
     private lateinit var scheduleAdapter: CurrentMissionScheduleAdapter
     private var missionList = ArrayList<CurrentMissionResult>()
@@ -46,45 +52,14 @@ class CurrentMissionActivity : AppCompatActivity() {
         binding = ActivityCurrentMissionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        getProfileInfo()
         setCurrentMissionScheduleAdapter()    //CurrentMissionScheduleAdapter 초기화
-//
-
-        //todo:삭제
-        missionList.add(CurrentMissionResult(1, "미션1", 10, 1,"img", "60"))
-        missionList.add(CurrentMissionResult(2, "미션2", 10, 1,"img", "60"))
-        missionList.add(CurrentMissionResult(3, "미션3", 10, 1,"img", "60"))
-        missionList.add(CurrentMissionResult(4, "미션4", 10, 1,"img", "60"))
-        missionList.add(CurrentMissionResult(5, "미션5", 10, 1,"img", "60"))
-
-        setCurrentMissionAdapter()//CurrentMission rv 연결
-        currentMissionScheduleApi(missionList[0].missionId, missionList[0].missionTitle)//하위 스케쥴 데이터 추가+schedule rv연결+clickevent
-
-//
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(1,"일정1", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(2,"일정2", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(3,"일정3", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(4,"일정4", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(5,"일정5", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(6,"일정6", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(7,"일정7", "2023-12-23"), false))
-//        scheduleList.add(ScheduleDeleteAdapterData(CurrentMissionScheduleResult(8,"일정8", "2023-12-23"), false))
-
-//        setCurrentMissionScheduleAdapter()//CurrentMissionSchedule rv 연결
-        //todo:여기까지
-
-
-        //뒤로가기 버튼 클릭
-        binding.goBackBtn.setOnClickListener {
-            finish()
-        }
 
         setBtn()
 
     }
     override fun onResume() {
         super.onResume()
-
 
         currentMissionApi()//currentMission api연결
     }
@@ -99,10 +74,11 @@ class CurrentMissionActivity : AppCompatActivity() {
                 }
                 //작성한 일지보기 클릭
                 override fun onScheduleClick(currentMissionData: CurrentMissionResult) {
-                    binding.missionScheduleListLayout.visibility = View.VISIBLE
                     missionId=currentMissionData.missionId
                     currentMissionScheduleApi(missionId, currentMissionData.missionTitle)
                     binding.scheduleDeleteBtn.visibility = View.VISIBLE
+                    binding.missionScheduleListLayout.visibility = View.VISIBLE
+                    binding.closeBtn.visibility = View.VISIBLE
                 }
             })
         binding.missionListRv.layoutManager = LinearLayoutManager(this)
@@ -228,6 +204,33 @@ class CurrentMissionActivity : AppCompatActivity() {
         })
     }
 
+    private fun getProfileInfo() {
+        myPageAPI.getUserProfile().enqueue(object : Callback<GetUserProfileResponse> {
+            override fun onResponse(
+                call: Call<GetUserProfileResponse>,
+                response: Response<GetUserProfileResponse>
+            ) {
+                if (response.isSuccessful) {
+                    if(response.body() != null && response.body()!!.isSuccess) {
+                        val profileData = response.body()?.result
+                        if (profileData != null) {
+                            binding.nicknameTv.text = profileData.userName
+                        }
+                    }else{
+                        Log.e("retrofit", "currentMissionScheduleApi_onResponse: Error ${response.body()?.errorMessage}")
+                    }
+                } else {
+                    Log.e("retrofit", "currentMissionScheduleApi_onResponse: Error ${response.code()}")
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("retrofit", "currentMissionScheduleApi_onResponse: Error Body $errorBody")
+                }
+            }
+            override fun onFailure(call: Call<GetUserProfileResponse>, t: Throwable) {
+                // 네트워크 등의 문제로 API 요청이 실패한 경우 처리
+                Log.e("retrofit", "currentMissionScheduleApi_onFailure: ${t.message}")
+            }
+        })
+    }
 
 
 
@@ -320,6 +323,7 @@ class CurrentMissionActivity : AppCompatActivity() {
         //삭제 버튼
         binding.deleteBtn.setOnClickListener {
             Log.d("debug_delete", "delete schedule: $deleteScheduleIdList")
+            deleteScheduleIdList= mutableListOf()
             deleteScheduleIdList.addAll(scheduleAdapter.getSelectedItemScheduleId())//삭제할 스케줄 아이디 저장
 
             var mId : Long?
