@@ -37,13 +37,13 @@ class PostBoardRetrofitManager(context: Context) {
                 Log.d("Post 게시판 api", "RetrofitManager profile onResponse \t :${response.message()} ")
                 val response: PostBoardResponse? = response?.body() //LoginResponse 형식의 응답 받음
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("Post 게시판 api",
-                            "RetrofitManager Post 게시판 is Success\t :${response.code} ")
+                            "RetrofitManager Post 게시판 is Success\t :${response.errorMessage}   ${response.errorCode} ")
                         completion(response)
                     } else {
                         Log.d("Post 게시판 api",
-                            "RetrofitManager Post 게시판 is NOT Success\t :${response.code} ")
+                            "RetrofitManager Post 게시판 is NOT Success\t :${response.errorMessage}  ${response.errorCode} ")
                     }
                 } else {
                     Log.d("Post 게시판 api", "RetrofitManager Post 게시판 null")

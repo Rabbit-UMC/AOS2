@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toBottomOf="parent"
@@ -91,7 +92,7 @@
                 android:inputType="textPersonName"
                 android:maxLines="1"
                 android:textColor="#000000"
-                android:textColorHint="#707070"
+                android:textColorHint="@color/gray5"
                 android:textSize="12sp"
                 android:includeFontPadding="false"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -374,285 +375,52 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <TextView
+                android:id="@+id/countMemo_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/font_pretendard_regular"
+                android:inputType="textPersonName"
+                android:text="0"
+                android:textColor="@color/gray4"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/scheduleMemo_etv"
+                app:layout_constraintEnd_toStartOf="@+id/textView8" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:fontFamily="@font/font_pretendard_regular"
+                android:inputType="textPersonName"
+                android:text="/300"
+                android:textColor="@color/gray4"
+                android:textSize="10sp"
+                app:layout_constraintBaseline_toBaselineOf="@id/countMemo_tv"
+                app:layout_constraintEnd_toEndOf="@+id/scheduleMemo_etv" />
+
+            <Button
                 android:id="@+id/create_btn"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center"
+                android:enabled="false"
                 android:fontFamily="@font/font_paragraph_4"
                 android:padding="10dp"
                 android:text="생성"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
-                android:backgroundTint="#DFDFDF"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/view_round_r8_blue"
+                android:background="@drawable/view_round_r8_gray3"
                 app:layout_constraintTop_toBottomOf="@id/scheduleMemo_etv"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="100:14"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintWidth_percent="0.86"  />
-
-
-
-            <View
-                android:id="@+id/toneDownView"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="#33000000"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:id="@+id/calendar_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/view_round_r20_indigo"
-                android:backgroundTint="@color/white"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:weightSum="20"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/calendar_year_month_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/my_template">
-
-                    <TextView
-                        android:id="@+id/year_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="35dp"
-                        android:fontFamily="@font/font_pretendard_semibold"
-                        android:text="2023"
-                        android:textColor="#234BD9"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/month_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/font_pretendard_bold"
-                        android:text="8월"
-                        android:textColor="#234BD9"
-                        android:textSize="18sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageButton
-                        android:id="@+id/preMonth_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="35dp"
-                        android:adjustViewBounds="true"
-                        android:background="@android:color/transparent"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_schedule_calendar_left_arrow"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/month_tv"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageButton
-                        android:id="@+id/nextMonth_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="35dp"
-                        android:layout_gravity="center_vertical"
-                        android:adjustViewBounds="true"
-                        android:background="@android:color/transparent"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_schedule_calendar_right_arrow"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/month_tv"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/calendar_rv"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintWidth_percent="0.9"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        />
-
-                    <TextView
-                        android:id="@+id/calendar_complete_tv"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:gravity="center"
-                        android:fontFamily="@font/font_paragraph_4"
-                        android:padding="10dp"
-                        android:text="확인"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp"
-                        android:backgroundTint="@color/main2"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginBottom="20dp"
-                        android:background="@drawable/view_round_r8_blue"
-                        app:layout_constraintTop_toBottomOf="@id/calendar_rv"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintDimensionRatio="100:14"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintWidth_percent="0.86"  />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/startTime_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/view_round_r20_indigo"
-                android:backgroundTint="@color/white"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:weightSum="20"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <TextView
-                    android:id="@+id/textView29"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="26dp"
-                    android:fontFamily="@font/font_paragraph_1"
-                    android:text="시작 시간 설정"
-                    android:textColor="#000000"
-                    android:textSize="16dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TimePicker
-                    android:id="@+id/startTimePicker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_gravity="center"
-                    android:theme="@style/NumberPickerStyle"
-                    android:timePickerMode="spinner"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView29" />
-
-                <TextView
-                    android:id="@+id/startTime_complete_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:gravity="center"
-                    android:fontFamily="@font/font_paragraph_4"
-                    android:padding="10dp"
-                    android:text="확인"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    android:backgroundTint="@color/main2"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/view_round_r8_blue"
-                    app:layout_constraintTop_toBottomOf="@id/startTimePicker"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="100:14"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintWidth_percent="0.86"  />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/endTime_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/view_round_r20_indigo"
-                android:backgroundTint="@color/white"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:weightSum="20"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <TextView
-                    android:id="@+id/textView30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="26dp"
-                    android:fontFamily="@font/font_paragraph_1"
-                    android:text="종료 시간 설정"
-                    android:textColor="#000000"
-                    android:textSize="16dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TimePicker
-                    android:id="@+id/endTimePicker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_gravity="center"
-                    android:theme="@style/NumberPickerStyle"
-                    android:timePickerMode="spinner"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView30" />
-
-                <TextView
-                    android:id="@+id/endTime_complete_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:gravity="center"
-                    android:fontFamily="@font/font_paragraph_4"
-                    android:padding="10dp"
-                    android:text="확인"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    android:backgroundTint="@color/main2"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/view_round_r8_blue"
-                    app:layout_constraintTop_toBottomOf="@id/endTimePicker"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="100:14"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintWidth_percent="0.86"  />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

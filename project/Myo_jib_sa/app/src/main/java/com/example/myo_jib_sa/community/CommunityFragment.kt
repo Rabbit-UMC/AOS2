@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.BuildConfig
+import com.example.myo_jib_sa.community.manager.ManagerPageActivity
 import com.example.myo_jib_sa.community.api.communityHome.CommunityHomeManager
 import com.example.myo_jib_sa.community.api.communityHome.MainMission
 import com.example.myo_jib_sa.community.api.communityHome.PopularArticle
@@ -55,7 +56,7 @@ class CommunityFragment : Fragment() {
 
         //더보기 터치 시 이동
         binding.homePulsTxt.setOnClickListener {
-            val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
+            val intent = Intent(requireActivity(), BoardActivity::class.java)
             intent.putExtra("isBest", true)
             startActivity(intent)
         }
@@ -90,19 +91,19 @@ class CommunityFragment : Fragment() {
 
         // 플로팅 버튼 클릭 이벤트
         binding.myoZip1Btn.setOnClickListener {
-            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
+            val intent=Intent(requireContext(), ManagerPageActivity::class.java)
             startActivity(intent)
         }
 
         // 플로팅 버튼 클릭 이벤트
         binding.myoZip2Btn.setOnClickListener {
-            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
+            val intent=Intent(requireContext(), ManagerPageActivity::class.java)
             startActivity(intent)
         }
 
         // 플로팅 버튼 클릭 이벤트
         binding.myoZip3Btn.setOnClickListener {
-            val intent=Intent(requireContext(),ManagerPageActivity::class.java)
+            val intent=Intent(requireContext(), ManagerPageActivity::class.java)
             startActivity(intent)
         }
     }
@@ -132,17 +133,17 @@ class CommunityFragment : Fragment() {
     //게시판 이동
     private fun moveBoard() {
         binding.communityBoardArtLinear.setOnClickListener {
-            val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
+            val intent = Intent(requireActivity(), BoardActivity::class.java)
             intent.putExtra("boardId", Constance.ART_ID)
             startActivity(intent)
         }
         binding.communityBoardExerciseLinear.setOnClickListener {
-            val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
+            val intent = Intent(requireActivity(), BoardActivity::class.java)
             intent.putExtra("boardId", Constance.EXERCISE_ID)
             startActivity(intent)
         }
         binding.communityBoardFreeLinear.setOnClickListener {
-            val intent = Intent(requireActivity(), BoardExerciseActivity::class.java)
+            val intent = Intent(requireActivity(), BoardActivity::class.java)
             intent.putExtra("boardId", Constance.FREE_ID)
             startActivity(intent)
         }

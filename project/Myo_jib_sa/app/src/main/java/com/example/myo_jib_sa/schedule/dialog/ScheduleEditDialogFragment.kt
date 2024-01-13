@@ -221,12 +221,12 @@ class ScheduleEditDialogFragment : DialogFragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                //3줄로 입력제한
-                val lines = binding.scheduleMemoEtv.lineCount
-                if (lines > 3) {
-                    //3줄 넘으면 마지막에 쓴 글자 제거
-                    s?.delete(s.length - 1, s.length)
-                }
+//                //3줄로 입력제한
+//                val lines = binding.scheduleMemoEtv.lineCount
+//                if (lines > 3) {
+//                    //3줄 넘으면 마지막에 쓴 글자 제거
+//                    s?.delete(s.length - 1, s.length)
+//                }
             }
         })
     }

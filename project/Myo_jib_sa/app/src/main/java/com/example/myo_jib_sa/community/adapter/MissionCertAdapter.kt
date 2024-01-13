@@ -16,11 +16,11 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.ImageActivity
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.missionCert.MCrecyclrImg
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.community.api.missionCert.MissionProofImages
+import com.example.myo_jib_sa.community.missionCert.MissionPictureActivity
 import com.example.myo_jib_sa.databinding.ItemMissionCertificationImgBinding
 
 class MissionCertAdapter(
@@ -120,7 +120,15 @@ class MissionCertAdapter(
     //클릭 이벤트
     private fun imgTouch(img:ImageView, data:MissionProofImages, heart:ImageView){
         val imgId=data.imageId
-        img.setOnTouchListener(object : View.OnTouchListener {
+        img.setOnClickListener {
+            val intent=Intent(context, MissionPictureActivity::class.java)
+            intent.putExtra("filePath", data.filePath)
+            intent.putExtra("imgId", data.imageId)
+            intent.putExtra("isLike", data.isLike)
+            intent.putExtra("isReportable", true)
+            context.startActivity(intent)
+        }
+        /*img.setOnTouchListener(object : View.OnTouchListener {
             private var numTaps = 0
 
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
@@ -131,7 +139,7 @@ class MissionCertAdapter(
 
                             handler.postDelayed({
                                 if (!doubleTap) {
-                                    val intent=Intent(context,ImageActivity::class.java)
+                                    val intent=Intent(context, MissionPictureActivity::class.java)
                                     intent.putExtra("filePath", data.filePath)
                                     intent.putExtra("imgId", data.imageId)
                                     intent.putExtra("isReportable", true)
@@ -186,7 +194,7 @@ class MissionCertAdapter(
                 }
                 return true
             }
-        })
+        })*/
     }
 
     //토스트 메시지
@@ -198,7 +206,7 @@ class MissionCertAdapter(
     private fun like(author:String ,imgId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = MissionCertRetrofitManager.getInstance(context)
         retrofitManager.missionImgLike(author, imgId){response ->
-            if(response==200){
+            if(response){
                     Log.d("missionImgLike", "missionImgLike 성공")
                     callback(true)
             } else {

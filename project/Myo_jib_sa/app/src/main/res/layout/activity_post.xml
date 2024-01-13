@@ -25,8 +25,7 @@
             android:text="게시판 이름"
             android:textColor="@color/black"
             android:textSize="14dp"
-            android:fontFamily="@font/font_inter"
-            android:textStyle="bold"
+            android:fontFamily="@font/font_paragraph_4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -88,11 +87,10 @@
             android:id="@+id/post_writerName_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/font_inter"
+            android:fontFamily="@font/font_caption_text_3"
             android:text="닉네임"
             android:textColor="@color/black"
             android:textSize="12dp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />" />
 
@@ -100,10 +98,10 @@
             android:id="@+id/post_writinTime_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/font_inter"
+            android:fontFamily="@font/font_caption_text_4"
             android:padding="5dp"
             android:text="작성 날짜 시간"
-            android:textColor="#8B8B8B"
+            android:textColor="@color/gray6"
             android:textSize="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -131,11 +129,10 @@
         android:layout_marginStart="21dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="21dp"
-        android:fontFamily="@font/font_inter"
+        android:fontFamily="@font/font_title_3"
         android:text="글 제목"
         android:textColor="@color/black"
         android:textSize="18dp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/post_writerProfile_img" />
@@ -147,7 +144,7 @@
         android:layout_marginStart="23dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="23dp"
-        android:fontFamily="@font/font_inter"
+        android:fontFamily="@font/font_caption_text_3"
         android:inputType="textMultiLine"
         android:text="글 내용"
         android:textColor="@color/black"
@@ -164,17 +161,6 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_postText_txt" />
-
-    <LinearLayout
-        android:id="@+id/post_line_Linear"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="7dp"
-        android:background="#F1F1F1"
-        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/post_postText_txt" />
@@ -250,12 +236,12 @@
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/post_txt12" />
 
     <View
         android:id="@+id/top_line_v"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.7dp"
         android:background="#DFDFDF"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout6" />
 
@@ -284,9 +270,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="5dp"
-                android:background="@drawable/background_board_btn"
+                android:background="@android:color/transparent"
                 android:ems="20"
-                android:fontFamily="@font/font_inter"
+                android:fontFamily="@font/font_caption_text_4"
                 android:hint="댓글 입력"
                 android:inputType="textMultiLine"
                 android:maxLines="5"
@@ -294,14 +280,13 @@
                 android:scrollHorizontally="false"
                 android:textColor="@color/black"
                 android:textSize="11dp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton"
+                app:layout_constraintEnd_toStartOf="@+id/board_write_comment_btn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/board_write_comment_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
@@ -315,12 +300,15 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/post_txt12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="TextView"
+        android:text="댓글 목록"
+        android:fontFamily="@font/font_paragraph_4"
+        android:textSize="14dp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_template" />
 

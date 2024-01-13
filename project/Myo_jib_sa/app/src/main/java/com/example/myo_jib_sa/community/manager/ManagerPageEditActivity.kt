@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community
+package com.example.myo_jib_sa.community.manager
 
 import android.app.Activity
 import android.content.Intent
@@ -19,7 +19,9 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.api.imgUploadRetrofitManager
+import com.example.myo_jib_sa.community.Constance
+import com.example.myo_jib_sa.community.ImgPath
+import com.example.myo_jib_sa.community.api.imgUpload.imgUploadRetrofitManager
 import com.example.myo_jib_sa.community.api.manager.ManagerRetrofitManager
 import com.example.myo_jib_sa.databinding.ActivityManagerPageEditBinding
 import java.io.ByteArrayOutputStream
@@ -186,15 +188,15 @@ class ManagerPageEditActivity : AppCompatActivity() {
     //기본 이미지 설정
     private fun setMissionIcon(boardId:Long){
         when(boardId){
-            Constance.ART_ID-> {
+            Constance.ART_ID -> {
                 val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_art_p)
                 binding.managerPageIcImg.setImageDrawable(drawable)
             }
-            Constance.FREE_ID-> {
+            Constance.FREE_ID -> {
                 val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_free_p)
                 binding.managerPageIcImg.setImageDrawable(drawable)
             }
-            Constance.EXERCISE_ID-> {
+            Constance.EXERCISE_ID -> {
                 val drawable: Drawable? = ContextCompat.getDrawable(this, R.drawable.ic_mission_exercise_p)
                 binding.managerPageIcImg.setImageDrawable(drawable)
             }
