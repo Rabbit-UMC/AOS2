@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk tools:overrideLibrary="androidx.core.splashscreen" />
+
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false" />
-    <!-- 인터넷 접근 권한 -->
+        android:required="false" /> <!-- 인터넷 접근 권한 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 외부 저장소 접근 권한 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -15,20 +15,23 @@
     <application
         android:name=".base.MyojibsaApplication"
         android:allowBackup="true"
-        android:requestLegacyExternalStorage="true"
-        android:enableOnBackInvokedCallback="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/ic_app"
         android:label="묘집사"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/ic_app"
         android:supportsRtl="true"
         android:theme="@style/Theme.Myo_jib_sa"
         tools:targetApi="31">
         <activity
+            android:name=".community.PostPictureActivity"
+            android:exported="false" />
+        <activity
             android:name=".community.manager.ManagerImgActivity"
             android:exported="false" />
-       <activity           
+        <activity
             android:name=".mypage.history.MypageHistoryActivity"
             android:exported="false" />
         <activity
@@ -108,19 +111,19 @@
             android:exported="false" />
         <activity
             android:name=".login.MyoSignUpActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".login.KakaoLoginActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>
