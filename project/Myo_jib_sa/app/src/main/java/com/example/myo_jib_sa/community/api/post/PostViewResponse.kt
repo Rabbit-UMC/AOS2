@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.community.api.post
 
 import com.example.myo_jib_sa.base.BaseResponse
+import java.io.Serializable
 
 //30번 api (게시물 조회 data class)
 data class PostViewResponse(
@@ -22,7 +23,7 @@ data class PostResult(
 data class ArticleImage(
     val imageId:Long,
     val filePath:String
-)
+): Serializable
 data class CommentList(
     val commentUserId:Long,
     val commentId:Long,
