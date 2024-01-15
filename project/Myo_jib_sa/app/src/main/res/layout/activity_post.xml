@@ -99,7 +99,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/font_caption_text_4"
-            android:padding="5dp"
             android:text="작성 날짜 시간"
             android:textColor="@color/gray6"
             android:textSize="10dp"
@@ -249,6 +248,7 @@
         android:id="@+id/constraintLayout6"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
