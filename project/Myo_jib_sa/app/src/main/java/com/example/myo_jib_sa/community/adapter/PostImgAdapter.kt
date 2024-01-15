@@ -3,6 +3,7 @@ package com.example.myo_jib_sa.community.adapter
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.community.ImageActivity
+import com.example.myo_jib_sa.community.PostPictureActivity
 import com.example.myo_jib_sa.community.api.post.ArticleImage
 import com.example.myo_jib_sa.databinding.ItemPostImgBinding
+import com.google.gson.Gson
 
 class PostImgAdapter(
     private val context: Context,
@@ -23,12 +26,12 @@ class PostImgAdapter(
         private val binding: ItemPostImgBinding
     )
         : RecyclerView.ViewHolder(binding.root){
-        fun bind(item: ArticleImage){
+        fun bind(item: List<ArticleImage>, position: Int){
 
             //이미지 설정
-            if(item.filePath.isNotBlank()){
+            if(item[position].filePath.isNotBlank()){
                 Glide.with(context)
-                    .load(item.filePath)
+                    .load(item[position].filePath)
                     .into(binding.postImgImg)
             }else{
                 binding.postImgImg.visibility=View.GONE
@@ -37,10 +40,9 @@ class PostImgAdapter(
             //클릭 이벤트
             binding.postImgImg.setOnClickListener {
                 //누르면 사진 자세히 보기
-                val intent= Intent(context, ImageActivity::class.java)
-                intent.putExtra("filePath", item.filePath)
-                intent.putExtra("isReportable", false)
-                intent.putExtra("imgId", item.imageId)
+                val intent= Intent(context, PostPictureActivity::class.java)
+                intent.putExtra("itemListJson", Gson().toJson(item))
+                intent.putExtra("current", position)
                 context.startActivity(intent)
             }
 
@@ -57,8 +59,7 @@ class PostImgAdapter(
 
     //뷰홀더 데이터 설정
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = dataList[position]
-        holder.bind(item)
+        holder.bind(dataList, position)
     }
 
     //아이템 개수
