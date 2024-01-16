@@ -555,7 +555,9 @@ Rabbit-UMC 은(는) 정보주체의 이용정보를 저장하고 수시로 불�
     <string name="mission_create_memo_desc">추가 내용이 있다면 작성해주세요.</string>
     <string name="mission_create_memo_hint">당신의 한 마디를 입력해주세요.</string>
     <string name="mission_create_open">공개 설정</string>
-    <string name="mission_create_memo_cnt_max">/30</string>
+    <string name="mission_create_memo_cnt_max">/300</string>
+    <string name="mission_create_calendar_check">확인</string>
+    <string name="mission_create_calendar_date_default">기본: 오늘 날짜</string>
 
     <!--마이페이지-->
     <string name="my_page_hello">안녕하세요</string>

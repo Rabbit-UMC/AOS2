@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.mission
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,23 +16,28 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.ActivityMissionCreateBinding
+import com.example.myo_jib_sa.databinding.ToastMissionCreateBinding
+import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
 import com.example.myo_jib_sa.mission.api.MissionAPI
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResponse
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResult
 import com.example.myo_jib_sa.mission.api.MissionCreateRequests
 import com.example.myo_jib_sa.mission.api.MissionCreateResponse
+import com.example.myo_jib_sa.mission.dialog.MissionCreateCalendarDialogFragment
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 
-class MissionCreateActivity : AppCompatActivity() {
+class MissionCreateActivity : AppCompatActivity(), MissionCreateCalendarDialogFragment.OnDateSelectedListener {
     private lateinit var binding:ActivityMissionCreateBinding
 
     private lateinit var referenceDate : LocalDate //오늘 날짜
@@ -46,9 +52,6 @@ class MissionCreateActivity : AppCompatActivity() {
     private var isMissionTitleInputted = false
     private var isMissionMemoInputted = false
 
-    companion object {
-        lateinit var missionRequest: MissionCreateRequests
-    }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,13 +65,14 @@ class MissionCreateActivity : AppCompatActivity() {
         startSelectedDate = referenceDate
         endSelectedDate = referenceDate
 
-        setInputListener()
+        binding.missionCreateStartDateBtnTxt.text = fromDateYYYYMMDD(startSelectedDate)
+        binding.missionCreateEndDateBtnTxt.text = fromDateYYYYMMDD(endSelectedDate)
+
         // 카테고리 리스트 조회 api 호출
         getMissionCategoryListApi()
 
-        binding.missionCreateCreateBtn.setOnClickListener {
-            postMissionCreate()
-        }
+        initListener()
+
     }
     // 미션 카테고리 리스트 조회
     private fun getMissionCategoryListApi(){
@@ -89,6 +93,8 @@ class MissionCreateActivity : AppCompatActivity() {
             }
         })
     }
+
+    // 카테고리 라디오 그룹 간격 설정
     private fun setRadioGroup(categoryList: List<MissionCategoryListResult>) {
         val buttonMargin = resources.getDimensionPixelSize(R.dimen.mission_create_radio_button_margin)
         val buttonWidth = (binding.missionCreateCategoryRadioGroup.width - 2 * buttonMargin) / 3 // 4 * dp7은 간격의 합
@@ -105,6 +111,7 @@ class MissionCreateActivity : AppCompatActivity() {
         }
     }
 
+    // 카테고리 라디오 그룹 버튼 생성
     private fun createCategoryRadioButton(context: Context, category: MissionCategoryListResult): RadioButton {
         return RadioButton(context).apply {
             text = category.title
@@ -131,34 +138,43 @@ class MissionCreateActivity : AppCompatActivity() {
 
     //미션 생성 API 연결
     private fun postMissionCreate() {
+        var missionRequest : MissionCreateRequests
         // Retrofit을 사용한 API 호출
+        with(binding) {
+            missionRequest = MissionCreateRequests(
+                title = missionCreateTitleEt.text.toString(),
+                startAt = missionCreateStartDateBtnTxt.text.toString(),
+                endAt = missionCreateEndDateBtnTxt.text.toString(),
+                categoryId = missionCreateCategoryRadioGroup.checkedRadioButtonId.toLong(),
+                isOpen = if(missionCreateOpenSwitch.isChecked) 0 else 1,
+                content = missionCreateMemoEt.text.toString()
+            )
+            Log.d("postMissionCreate", "missionRequest : $missionRequest")
+        }
+
         sRetrofit.create(MissionAPI::class.java).postMissionCreate(missionRequest).enqueue(object : Callback<MissionCreateResponse> {
             override fun onResponse(call: Call<MissionCreateResponse>, response: Response<MissionCreateResponse>) {
                 val writeResponse = response.body()
-                if (response.isSuccessful) {
-                    if (writeResponse != null) {
-                        // 응답 데이터 처리
-                        Toast.makeText(this@MissionCreateActivity, writeResponse.errorMessage, Toast.LENGTH_SHORT).show()
+                if (writeResponse != null) {
+                    if(writeResponse.isSuccess){
+                        showSnackbar(writeResponse.errorMessage)
+                        finish()
+                    }
+                    else {
+                        showSnackbar(writeResponse.errorMessage)
+                    }
 
-                        Log.d("postMissionCreate","${writeResponse.errorMessage}\n${writeResponse.errorCode}")
-                    }
-                } else {
-                    // 에러 처리
-                    if (writeResponse != null) {
-                        Toast.makeText(this@MissionCreateActivity, writeResponse.errorMessage, Toast.LENGTH_SHORT).show()
-                    }
                 }
             }
-
             override fun onFailure(call: Call<MissionCreateResponse>, t: Throwable) {
-                Toast.makeText(this@MissionCreateActivity, "네트워크 요청 실패!", Toast.LENGTH_SHORT).show()
-
+                showSnackbar("네트워크 요청 실패")
             }
         })
+
     }
 
-    // 입력 받는 값들(EditText, Date 등) 리스너
-    private fun setInputListener(){
+    // 리스너 초기화
+    private fun initListener(){
         with(binding) {
             missionCreateTitleEt.addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -177,27 +193,72 @@ class MissionCreateActivity : AppCompatActivity() {
                     setCreateButtonIsEnabled()
                 }
             })
+
+            // 시작일
+            missionCreateStartDateBtnTxt.setOnClickListener {
+                showCalendarDialog(true)
+            }
+
+            // 종료일
+            missionCreateEndDateBtnTxt.setOnClickListener {
+                showCalendarDialog(false)
+            }
+
+            // 완료 버튼
+            missionCreateCompleteBtn.setOnClickListener {
+                postMissionCreate()
+            }
+
+            // 뒤로가기 버튼
+            missionBackBtn.setOnClickListener {
+                finish()
+            }
         }
     }
-    // 플래그들 값에 따라 Create 버튼 enabled 값 설정
+
+    // Flag 값에 따라 Create 버튼 enabled 값 설정
     private fun setCreateButtonIsEnabled() {
-        binding.missionCreateCreateBtn.isEnabled =
+        binding.missionCreateCompleteBtn.isEnabled =
             isCategorySelected && isMissionTitleInputted && isMissionMemoInputted
-                    //&& isStartDateSelected && isEndDateSelected
     }
 
+    private fun showCalendarDialog(isStartDate: Boolean) {
+        val calendarDialog = MissionCreateCalendarDialogFragment(isStartDate)
+        calendarDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.roundCornerBottomSheetDialogTheme)
+        calendarDialog.setDateSelectedListener(this)
+        calendarDialog.show(supportFragmentManager, "MissionCreateCalendarDialogFragment")
+    }
 
-    //M월 형식으로 포맷
+    private fun showSnackbar(message: String) {
+        val snackbarBinding = ToastMissionCreateBinding.inflate(layoutInflater)
+        snackbarBinding.toastMissionReportTxt.text = message
+
+        val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+            animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+            (view as Snackbar.SnackbarLayout).apply {
+                setBackgroundColor(Color.TRANSPARENT)
+                addView(snackbarBinding.root)
+                translationY = -70.dpToPx().toFloat()
+                elevation = 0f
+            }
+        }
+
+        snackbar.show()
+    }
+
+    override fun onStartDateSelected(date: String) {
+        binding.missionCreateStartDateBtnTxt.text = date
+    }
+
+    override fun onEndDateSelected(date: String) {
+        binding.missionCreateEndDateBtnTxt.text = date
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun monthFromDate(date : LocalDate):String{
-        var formatter = DateTimeFormatter.ofPattern("M월")
-        return date.format(formatter)
+    private fun fromDateYYYYMMDD(date: LocalDate?): String? {
+        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        return date?.format(formatter)
     }
 
-    //YYYY년 형식으로 포맷
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun yearFromDate(date : LocalDate):String{
-        var formatter = DateTimeFormatter.ofPattern("YYYY년")
-        return date.format(formatter)
-    }
+    private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
 }
