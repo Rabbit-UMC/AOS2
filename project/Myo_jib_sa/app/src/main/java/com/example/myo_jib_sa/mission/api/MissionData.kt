@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.mission.api
 
 import com.example.myo_jib_sa.base.BaseResponse
+import java.time.LocalDate
 import java.util.Objects
 
 data class MissionListResponse(
@@ -16,6 +17,8 @@ data class Mission(
     val content: String,
     val categoryId: Long,
     val image: String,
+    val successCnt: Int,
+    val dday: String
 )
 
 data class MissionCategoryListResponse(
@@ -65,3 +68,8 @@ data class MissionWithResponse(
 data class MissionReportResponse(
     val result: String
 ): BaseResponse()
+
+data class MissionCreateDate(
+    val date: LocalDate?,
+    var isSelected :Boolean = false//ture이면 일정 있음, false이면 일정 없음
+)

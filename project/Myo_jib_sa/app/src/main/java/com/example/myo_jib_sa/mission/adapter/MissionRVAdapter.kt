@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.mission
+package com.example.myo_jib_sa.mission.adapter
 
 import android.util.Log
 import android.view.*
@@ -10,14 +10,11 @@ import com.example.myo_jib_sa.mission.api.Mission
 
 class MissionRVAdapter(
     private var dataList: List<Mission>,
-    private val onItemClickListener: OnItemClickListener,
-    private val onReportClickListener: OnReportClickListener
+    private val onClickListener: OnClickListener
 ) : RecyclerView.Adapter<MissionRVAdapter.MissionViewHolder>() {
 
-    interface OnReportClickListener {
+    interface OnClickListener {
         fun onReportClick(item:Mission)
-    }
-    interface OnItemClickListener {
         fun onItemClick(item:Mission)
     }
 
@@ -29,15 +26,13 @@ class MissionRVAdapter(
                     .into(missionImgIv)
                 missionTitleTxt.text = item.title
                 missionCntTxt.text = item.challengerCnt.toString()
-                missionDateTxt.text = "D+60"
-
-                Log.d("home",item.missionId.toString())
+                missionDateTxt.text = item.dday
 
                 // 신고 클릭 이벤트 처리
                 missionReportTxt.setOnClickListener {
                     //클릭된 아이템의 위치 가져오기
                     val itemPosition = dataList[adapterPosition]
-                    onReportClickListener.onReportClick(itemPosition)
+                    onClickListener.onReportClick(itemPosition)
                     Log.d("home","report ID: {$itemPosition.id.toString()}")
                     true
                 }
@@ -45,7 +40,7 @@ class MissionRVAdapter(
                 // 클릭 이벤트 처리(미션 상세보기)
                 missionItemCl.setOnClickListener {
                     val itemPosition = dataList[adapterPosition]
-                    onItemClickListener.onItemClick(itemPosition)
+                    onClickListener.onItemClick(itemPosition)
                     Log.d("home","detail ID: {$itemPosition.id.toString()}")
                 }
             }

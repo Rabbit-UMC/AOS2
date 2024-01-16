@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/calendar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <TextView
+        android:id="@+id/mission_create_selected_year_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:fontFamily="@font/font_paragraph_1"
+        android:text="2023"
+        android:textColor="@color/main2"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/mission_create_selected_month_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mission_create_selected_month_tv" />
+
+    <TextView
+        android:id="@+id/mission_create_selected_month_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="31dp"
+        android:fontFamily="@font/font_title_5"
+        android:text="8월"
+        android:textColor="@color/main2"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/mission_create_preMonth_btn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="34dp"
+        android:background="@drawable/ic_schedule_calendar_left_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/mission_create_selected_month_tv"
+        app:layout_constraintEnd_toStartOf="@+id/mission_create_selected_month_tv"
+        app:layout_constraintTop_toTopOf="@id/mission_create_selected_month_tv" />
+
+    <Button
+        android:id="@+id/mission_create_nextMonth_btn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="34dp"
+        android:background="@drawable/ic_schedule_calendar_right_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/mission_create_selected_month_tv"
+        app:layout_constraintStart_toEndOf="@+id/mission_create_selected_month_tv"
+        app:layout_constraintTop_toTopOf="@id/mission_create_selected_month_tv" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mission_create_calendar_rv"
+        android:layout_width="match_parent"
+        android:layout_height="310dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/mission_create_selected_month_tv" />
+
+    <Button
+        android:id="@+id/mission_create_calendar_complete_btn"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_margin="23dp"
+        android:background="@drawable/selector_basic_btn"
+        android:elevation="0dp"
+        android:fontFamily="@font/font_paragraph_4"
+        android:text="@string/mission_create_calendar_check"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mission_create_calendar_rv"
+        tools:layout_editor_absoluteX="23dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

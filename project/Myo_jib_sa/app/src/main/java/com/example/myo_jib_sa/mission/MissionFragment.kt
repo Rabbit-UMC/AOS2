@@ -8,17 +8,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.view.marginStart
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.login.api.RetrofitInstance
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.spfManager
 import com.example.myo_jib_sa.databinding.FragmentMissionBinding
 import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
+import com.example.myo_jib_sa.mission.adapter.MissionRVAdapter
 import com.example.myo_jib_sa.mission.api.Mission
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResponse
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResult
@@ -100,12 +97,11 @@ class MissionFragment : Fragment() {
     private fun setMissionAdapter(dataList: List<Mission>) {
         missionRVAdapter = MissionRVAdapter(
             dataList,
-            onReportClickListener = object : MissionRVAdapter.OnReportClickListener {
+            onClickListener = object : MissionRVAdapter.OnClickListener {
                 override fun onReportClick(reportItem: Mission) {
                     showReportDialog(reportItem)
                 }
-            },
-            onItemClickListener = object : MissionRVAdapter.OnItemClickListener {
+
                 override fun onItemClick(detailItem: Mission) {
                     showDetailDialog(detailItem)
                 }
@@ -172,6 +168,7 @@ class MissionFragment : Fragment() {
         }
     }
 
+    // 신고 다이얼로그
     private fun showReportDialog(reportItem: Mission) {
         val reportDialog = MissionReportDialogFragment(reportItem)
 
@@ -203,6 +200,7 @@ class MissionFragment : Fragment() {
         reportDialog.show(requireActivity().supportFragmentManager, "mission_report_dialog")
     }
 
+    // 상세 다이얼로그
     private fun showDetailDialog(detailItem: Mission) {
         val detailDialog = MissionDetailDialogFragment(detailItem, requireContext())
         Log.d("showDetailDialog","detail ID: {$detailItem.id.toString()}")
