@@ -5,8 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
@@ -150,7 +148,7 @@
                     android:fontFamily="@font/font_caption_text_1"
                     android:textSize="12sp"
                     android:textColor="@color/gray7"
-                    android:text="2023-09-10"
+                    android:text="YYYY-MM-DD"
                     android:gravity="center"
                     android:background="@drawable/background_mission_create_date_txt"
                     app:layout_constraintTop_toBottomOf="@id/mission_create_start_date_desc_txt"
@@ -195,7 +193,7 @@
                     android:fontFamily="@font/font_caption_text_1"
                     android:textSize="12sp"
                     android:textColor="@color/gray7"
-                    android:text="2023-09-10"
+                    android:text="YYYY-MM-DD"
                     android:gravity="center"
                     android:background="@drawable/background_mission_create_date_txt"
                     app:layout_constraintTop_toBottomOf="@id/mission_create_end_date_desc_txt"
@@ -245,7 +243,7 @@
                     android:paddingTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="15dp"
-                    android:maxLength="30"
+                    android:maxLength="300"
                     android:background="@drawable/background_mission_create_memo_et"
                     app:layout_constraintTop_toBottomOf="@id/mission_create_memo_desc_txt"
                     app:layout_constraintBottom_toBottomOf="parent" />
@@ -293,6 +291,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Switch
+                    android:id="@+id/mission_create_open_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -301,7 +300,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
                 <Button
-                    android:id="@+id/mission_create_create_btn"
+                    android:id="@+id/mission_create_complete_btn"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:text="생성"

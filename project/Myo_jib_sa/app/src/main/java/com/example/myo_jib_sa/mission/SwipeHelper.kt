@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.mission.adapter.MissionRVAdapter
 
 class SwipeHelper: ItemTouchHelper.Callback() {  // ItemTouchHelper.Callback 을 구현해야 한다
     private var currentPosition: Int? = null
