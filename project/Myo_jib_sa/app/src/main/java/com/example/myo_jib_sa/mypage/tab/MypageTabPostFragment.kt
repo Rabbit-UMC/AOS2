@@ -10,21 +10,21 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
-import com.example.myo_jib_sa.databinding.FragmentMyPageTabCommentBinding
+import com.example.myo_jib_sa.databinding.FragmentMypageTabCommentBinding
 import com.example.myo_jib_sa.mypage.api.MypageAPI
 import com.example.myo_jib_sa.mypage.api.GetMyPostResponse
 import com.example.myo_jib_sa.mypage.api.GetMyPostResult
-import com.example.myo_jib_sa.mypage.adapter.MyPagePostRVAdapter
+import com.example.myo_jib_sa.mypage.adapter.MypagePostRVAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class MyPageTabPostFragment : Fragment() {
+class MypageTabPostFragment : Fragment() {
 
-    lateinit var binding: FragmentMyPageTabCommentBinding
+    lateinit var binding: FragmentMypageTabCommentBinding
     private lateinit var recyclerView: RecyclerView
-    private lateinit var myPostAdapter: MyPagePostRVAdapter
+    private lateinit var myPostAdapter: MypagePostRVAdapter
     private var decoration: RecyclerView.ItemDecoration? = null
 
     val retrofit: MypageAPI = sRetrofit.create(MypageAPI::class.java)
@@ -33,7 +33,7 @@ class MyPageTabPostFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=FragmentMyPageTabCommentBinding.inflate(layoutInflater)
+        binding=FragmentMypageTabCommentBinding.inflate(layoutInflater)
 
         return binding.root
     }
@@ -88,7 +88,7 @@ class MyPageTabPostFragment : Fragment() {
     fun setRecyclerview(dataList: List<GetMyPostResult>) {
         decoration?.let { recyclerView.removeItemDecoration(it) }
 
-        myPostAdapter = MyPagePostRVAdapter(
+        myPostAdapter = MypagePostRVAdapter(
             requireContext(),
             dataList
         )
@@ -97,8 +97,8 @@ class MyPageTabPostFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // 아이템 간격 설정 (옵션)
-        decoration = MyPagePostRVAdapter.CustomItemDecoration(15) // decoration 변수 초기화
-        recyclerView.addItemDecoration(decoration as MyPagePostRVAdapter.CustomItemDecoration)
+        decoration = MypagePostRVAdapter.CustomItemDecoration(15) // decoration 변수 초기화
+        recyclerView.addItemDecoration(decoration as MypagePostRVAdapter.CustomItemDecoration)
 
         // 어댑터 설정 후 데이터 변경을 알림
         myPostAdapter.notifyDataSetChanged()

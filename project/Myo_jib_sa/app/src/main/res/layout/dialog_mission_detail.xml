@@ -89,9 +89,7 @@
                 android:fontFamily="@font/pretendard_semibold"
                 android:text="8월 20일"
                 android:textColor="@color/main2"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@+id/mission_detail_category_txt"
-                app:layout_constraintTop_toBottomOf="@+id/mission_detail_title_txt" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/mission_detail_from_txt"
@@ -100,9 +98,7 @@
                 android:fontFamily="@font/pretendard_semibold"
                 android:text=" 부터 "
                 android:textColor="@color/gray7"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/mission_detail_category_txt"
-                app:layout_constraintTop_toBottomOf="@+id/mission_detail_title_txt" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/mission_detail_end_date_txt"
@@ -111,9 +107,7 @@
                 android:fontFamily="@font/pretendard_semibold"
                 android:text="8월 26일"
                 android:textColor="@color/main2"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@+id/mission_detail_category_txt"
-                app:layout_constraintTop_toBottomOf="@+id/mission_detail_title_txt" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/mission_detail_to_txt"
@@ -122,9 +116,7 @@
                 android:fontFamily="@font/pretendard_semibold"
                 android:text=" 까지"
                 android:textColor="@color/gray7"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/mission_detail_category_txt"
-                app:layout_constraintTop_toBottomOf="@+id/mission_detail_title_txt" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <TextView
