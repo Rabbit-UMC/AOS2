@@ -10,19 +10,19 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.base.MyojibsaApplication
-import com.example.myo_jib_sa.databinding.FragmentMyPageTabCommentBinding
+import com.example.myo_jib_sa.databinding.FragmentMypageTabCommentBinding
 import com.example.myo_jib_sa.mypage.api.GetMyCommentResponse
 import com.example.myo_jib_sa.mypage.api.GetMyCommentResult
 import com.example.myo_jib_sa.mypage.api.MypageAPI
-import com.example.myo_jib_sa.mypage.adapter.MyPageCommentRVAdapter
+import com.example.myo_jib_sa.mypage.adapter.MypageCommentRVAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MyPageTabCommentFragment : Fragment() {
+class MypageTabCommentFragment : Fragment() {
 
-    lateinit var binding: FragmentMyPageTabCommentBinding
-    private lateinit var myCommentAdapter: MyPageCommentRVAdapter
+    lateinit var binding: FragmentMypageTabCommentBinding
+    private lateinit var myCommentAdapter: MypageCommentRVAdapter
 
     private lateinit var recyclerView: RecyclerView
     private var decoration: RecyclerView.ItemDecoration? = null
@@ -34,7 +34,7 @@ class MyPageTabCommentFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=FragmentMyPageTabCommentBinding.inflate(layoutInflater)
+        binding=FragmentMypageTabCommentBinding.inflate(layoutInflater)
 
 
         return binding.root
@@ -91,7 +91,7 @@ class MyPageTabCommentFragment : Fragment() {
     fun setRecyclerview(dataList: List<GetMyCommentResult>) {
         decoration?.let { recyclerView.removeItemDecoration(it) }
 
-        myCommentAdapter = MyPageCommentRVAdapter(
+        myCommentAdapter = MypageCommentRVAdapter(
             requireContext(),
             dataList
         )
@@ -100,8 +100,8 @@ class MyPageTabCommentFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // 아이템 간격 설정 (옵션)
-        decoration = MyPageCommentRVAdapter.CustomItemDecoration(15) // decoration 변수 초기화
-        recyclerView.addItemDecoration(decoration as MyPageCommentRVAdapter.CustomItemDecoration)
+        decoration = MypageCommentRVAdapter.CustomItemDecoration(15) // decoration 변수 초기화
+        recyclerView.addItemDecoration(decoration as MypageCommentRVAdapter.CustomItemDecoration)
 
         // 어댑터 설정 후 데이터 변경을 알림
         myCommentAdapter.notifyDataSetChanged()

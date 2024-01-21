@@ -43,8 +43,6 @@ class MissionFragment : Fragment() {
     ): View? {
         binding = FragmentMissionBinding.inflate(inflater, container, false)
 
-        spfManager.setUserToken("eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDQxNzgzODQsImV4cCI6MTcwNTY0OTYxM30.9ALZ4r1x29gf0FcWejrTFTNk2RcPEbmw8EIKvjB1Log")
-
         return binding.root
     }
 
@@ -58,11 +56,11 @@ class MissionFragment : Fragment() {
         // 전체 리스트 탭
         binding.missionCategoryTl.addTab(binding.missionCategoryTl.newTab().setText("전체").setId(0))
 
-        // 미션 리스트 조회 api 호출
-        getMissionListAPI()
-
         // 카테고리 리스트 조회 api 호출
         getMissionCategoryListApi()
+
+        // 미션 리스트 조회 api 호출
+        getMissionListAPI()
 
         //floating 버튼 설정
         binding.newMissionFloatingBtn.setOnClickListener{
