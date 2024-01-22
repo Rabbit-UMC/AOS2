@@ -93,6 +93,9 @@ class MissionFragment : Fragment() {
 
     // 미션 리스트 리사이클러뷰 어댑터 구성
     private fun setMissionAdapter(dataList: List<Mission>) {
+        if (!isAdded) {
+            return
+        }
         missionRVAdapter = MissionRVAdapter(
             dataList,
             onClickListener = object : MissionRVAdapter.OnClickListener {
