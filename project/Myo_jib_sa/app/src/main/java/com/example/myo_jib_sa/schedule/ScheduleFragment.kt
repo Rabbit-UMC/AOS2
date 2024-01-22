@@ -484,6 +484,13 @@ class ScheduleFragment() : Fragment() {
     private fun currentMissionApi() {
         val sharedPreferences =
             requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
+        val getJwt = sharedPreferences.edit()
+// JWT 저장
+        val jwt = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDU4MTExMjEsImV4cCI6MTcwNzI4MjM1MH0.Lre_HeCZbsabDXcS0xUvUEWPVNjJZTxuYvVG2ekVT3Y"
+//if (jwt != null) {
+        getJwt.putString("jwt", jwt)
+//}
+        getJwt.apply()
         val token = sharedPreferences.getString("jwt", null)
 
 
