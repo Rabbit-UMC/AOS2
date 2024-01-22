@@ -77,7 +77,7 @@ class CurrentMissionActivity : AppCompatActivity() {
                     missionId=currentMissionData.missionId
                     currentMissionScheduleApi(missionId, currentMissionData.missionTitle)
                     binding.scheduleDeleteBtn.visibility = View.VISIBLE
-                    binding.missionScheduleListLayout.visibility = View.VISIBLE
+//                    binding.missionScheduleListLayout.visibility = View.VISIBLE //로딩 시간 고려해서 API안에 넣음
                     binding.closeBtn.visibility = View.VISIBLE
                 }
             })
@@ -190,6 +190,7 @@ class CurrentMissionActivity : AppCompatActivity() {
                             scheduleList.add(ScheduleDeleteAdapterData(element, false))
                         }
                         setCurrentMissionScheduleAdapter()//CurrentMissionSchedule rv 연결
+                        binding.missionScheduleListLayout.visibility = View.VISIBLE
                     }
 
                 } else {
@@ -217,17 +218,17 @@ class CurrentMissionActivity : AppCompatActivity() {
                             binding.nicknameTv.text = profileData.userName
                         }
                     }else{
-                        Log.e("retrofit", "currentMissionScheduleApi_onResponse: Error ${response.body()?.errorMessage}")
+                        Log.e("retrofit", "getProfileInfo_onResponse: Error ${response.body()?.errorMessage}")
                     }
                 } else {
-                    Log.e("retrofit", "currentMissionScheduleApi_onResponse: Error ${response.code()}")
+                    Log.e("retrofit", "getProfileInfo_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "currentMissionScheduleApi_onResponse: Error Body $errorBody")
+                    Log.e("retrofit", "getProfileInfo_onResponse: Error Body $errorBody")
                 }
             }
             override fun onFailure(call: Call<GetUserProfileResponse>, t: Throwable) {
                 // 네트워크 등의 문제로 API 요청이 실패한 경우 처리
-                Log.e("retrofit", "currentMissionScheduleApi_onFailure: ${t.message}")
+                Log.e("retrofit", "getProfileInfo_onFailure: ${t.message}")
             }
         })
     }
@@ -365,7 +366,7 @@ class CurrentMissionActivity : AppCompatActivity() {
                     (view as Snackbar.SnackbarLayout).apply {
                         setBackgroundColor(Color.TRANSPARENT)
                         addView(snackbarBinding.root)
-                        translationY = -30.dpToPx().toFloat()
+                        translationY = -15.dpToPx().toFloat()
                         elevation = 0f
                     }
                 }

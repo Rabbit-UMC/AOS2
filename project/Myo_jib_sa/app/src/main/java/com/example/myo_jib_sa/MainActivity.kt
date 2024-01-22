@@ -8,6 +8,7 @@ import com.example.myo_jib_sa.community.CommunityFragment
 import com.example.myo_jib_sa.databinding.ActivityMainBinding
 import com.example.myo_jib_sa.mission.MissionFragment
 import com.example.myo_jib_sa.mypage.MypageFragment
+import com.example.myo_jib_sa.schedule.ScheduleFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         //바텀 네비게이션 설정
         binding.mainBottomNavi.itemIconTintList = null //아이콘 태마색 변경 방지
         //초기 프레그먼트 설정
-        //supportFragmentManager.beginTransaction().replace(R.id.main_layout, ScheduleFragment()).commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().replace(R.id.main_layout, ScheduleFragment()).commitAllowingStateLoss()
         //supportFragmentManager.beginTransaction().replace(R.id.main_layout, MissionFragment()).commitAllowingStateLoss()
 
         setBottomNavi()
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
 
                 R.id.menu_schedule -> {
-                    //setFragment(ScheduleFragment())
+                    setFragment(ScheduleFragment())
                     true
                 }
                 R.id.menu_mission -> {
