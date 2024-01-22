@@ -36,10 +36,14 @@ data class GetUserProfileResult(
     val userProfileImage:String
 )
 
-data class PutUserImageResponse(
+data class PatchProfileResponse(
     val result:Long
 ): BaseResponse()
 
 data class GetCheckDuplicationResponse(
     val result: Boolean
 ): BaseResponse()
+
+data class GetHistoryResponse(
+    val string: String
+)

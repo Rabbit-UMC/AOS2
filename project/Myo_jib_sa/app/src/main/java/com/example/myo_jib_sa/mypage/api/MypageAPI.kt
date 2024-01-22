@@ -22,17 +22,17 @@ interface MypageAPI {
     @GET("app/users/profile")
     fun getUserProfile(): Call<GetUserProfileResponse>
 
-    //이미지 업로드
-    @PATCH("app/users/profileImage")
-    fun putUserImage(
-        @Query("userProfileImage") userProfileImage: String
-    ): Call<PutUserImageResponse>
-
     //닉네임 업로드
     @GET("app/users/checkDuplication")
     fun getCheckDuplication(
         @Query("userName") userName: String
     ): Call<GetCheckDuplicationResponse>
 
+    //이미지 업로드
+    @PATCH("app/users/profile")
+    fun patchProfile(
+        @Query("userProfileImage") userProfileImage: String,
+        @Query("userName") userName: String
+    ): Call<PatchProfileResponse>
 
 }

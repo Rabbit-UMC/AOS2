@@ -147,7 +147,8 @@ class MissionCreateActivity : AppCompatActivity(), MissionCreateCalendarDialogFr
                 endAt = missionCreateEndDateBtnTxt.text.toString(),
                 categoryId = missionCreateCategoryRadioGroup.checkedRadioButtonId.toLong(),
                 isOpen = if(missionCreateOpenSwitch.isChecked) 0 else 1,
-                content = missionCreateMemoEt.text.toString()
+                content = missionCreateMemoEt.text.toString(),
+                status = "ACTIVE"
             )
             Log.d("postMissionCreate", "missionRequest : $missionRequest")
         }
