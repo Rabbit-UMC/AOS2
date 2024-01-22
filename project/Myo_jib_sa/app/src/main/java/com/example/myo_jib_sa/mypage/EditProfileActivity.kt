@@ -1,37 +1,48 @@
 package com.example.myo_jib_sa.mypage
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.community.missionCert.MissionCertificationWriteActivity
 import com.example.myo_jib_sa.databinding.ActivityEditProfileBinding
+import com.example.myo_jib_sa.databinding.ToastCreateScheduleBinding
 import com.example.myo_jib_sa.mypage.api.GetCheckDuplicationResponse
+import com.example.myo_jib_sa.mypage.api.GetUserProfileResponse
 import com.example.myo_jib_sa.mypage.api.MypageAPI
-import com.example.myo_jib_sa.mypage.api.PutUserImageResponse
+import com.example.myo_jib_sa.mypage.api.PatchProfileResponse
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditProfileBinding
 
-    private var imgUri: Uri = Uri.EMPTY
-    private var imgPath: String = ""
+    private var imgUri: String = ""
 
-    private  var userName: String = ""
+    lateinit var previousUserName : String
+
+    private var userName: String = ""
 
     private var returnCode: Int? = null
 
@@ -50,12 +61,39 @@ class EditProfileActivity : AppCompatActivity() {
         initListener()
     }
 
+    // 유저 정보 가져오기
     private fun getUserProfileInfo() {
-        binding.editProfileNicknameEt.hint = intent.getStringExtra("nickname")
-        Glide.with(this@EditProfileActivity)
-            .load(intent.getStringExtra("uri"))
-            .error(R.drawable.ic_profile)
-            .into(binding.editProfileImgBtn)
+        retrofit.getUserProfile().enqueue(object : Callback<GetUserProfileResponse> {
+            override fun onResponse(
+                call: Call<GetUserProfileResponse>,
+                response: Response<GetUserProfileResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val profileData = response.body()?.result
+                    if (profileData != null) {
+                        Log.d("img", profileData.userProfileImage)
+                        binding.editProfileNicknameEt.setText(profileData.userName)
+                        previousUserName = profileData.userName
+                        Glide.with(this@EditProfileActivity)
+                            .load(profileData.userProfileImage)
+                            .error(R.drawable.ic_profile)
+                            .into(binding.editProfileImgBtn)
+
+                        userName = profileData.userName
+                        imgUri = profileData.userProfileImage
+                    }
+                } else {
+                    // API 요청 실패 처리
+                    Toast.makeText(this@EditProfileActivity, "API 요청 실패 처리", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<GetUserProfileResponse>, t: Throwable) {
+                // 네트워크 등의 문제로 API 요청이 실패한 경우 처리
+                Toast.makeText(this@EditProfileActivity, "서버 오류 발생", Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
     private fun initListener() {
         with(binding) {
@@ -63,7 +101,7 @@ class EditProfileActivity : AppCompatActivity() {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                 override fun afterTextChanged(p0: Editable?) {}
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    editProfileDuplicateBtn.isEnabled = editProfileNicknameEt.text.isNotEmpty()
+                    editProfileDuplicateBtn.isEnabled = isValidNickname(editProfileNicknameEt.text.toString())
                 }
             })
 
@@ -78,6 +116,11 @@ class EditProfileActivity : AppCompatActivity() {
             }
 
             editProfileCompleteBtn.setOnClickListener {
+                patchProfile()
+            }
+
+            editProfileBackBtn.setOnClickListener {
+                finish()
             }
         }
 
@@ -100,7 +143,6 @@ class EditProfileActivity : AppCompatActivity() {
         }
         return realPath
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == MissionCertificationWriteActivity.GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
@@ -109,11 +151,9 @@ class EditProfileActivity : AppCompatActivity() {
             selectedImageUri?.let { uri ->
                 val imageView: ImageView = binding.editProfileImgBtn
                 imageView.setImageURI(uri)
-                imgUri = uri
+                imgUri = getRealPathFromURI(uri).toString()
 
-                imgPath = getRealPathFromURI(imgUri).toString()
-                Log.d("img","img uri"+imgUri)
-                Log.d("img",imgPath)
+                Log.d("img","img uri $imgUri")
 
                 /*   binding.missionWriteImgLayout.backgroundTintList=
                     ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
@@ -128,16 +168,20 @@ class EditProfileActivity : AppCompatActivity() {
             override fun onResponse(call: Call<GetCheckDuplicationResponse>, response: Response<GetCheckDuplicationResponse>) {
                 if (response.body() != null) {
                     binding.editProfileDuplicateStateTxt.visibility = View.VISIBLE
-                    if(response.body()!!.result) {
+                    if(!response.body()!!.result) {
                         binding.editProfileDuplicateStateTxt.apply {
                             text = "사용 가능한 닉네임이에요."
                             setTextColor(getColor(R.color.complete))
+                            userName = binding.editProfileNicknameEt.text.toString()
+                            binding.editProfileCompleteBtn.isEnabled = true
                         }
                     }
                     else {
                         binding.editProfileDuplicateStateTxt.apply {
                             text = "사용 불가능한 닉네임이에요."
                             setTextColor(getColor(R.color.alert))
+                            userName = ""
+                            binding.editProfileCompleteBtn.isEnabled = false
                         }
                     }
                 }
@@ -150,80 +194,50 @@ class EditProfileActivity : AppCompatActivity() {
         })
     }
 
-    /*fun ProfileAPI(){
-        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val jwt = sharedPreferences.getString("jwt", null)
-        val userId = sharedPreferences.getLong("userId", 0L)
-
-        if (jwt != null) {
-            retrofit.getUserProfile(jwt).enqueue(object : Callback<getUserProfileResponse> {
-                override fun onResponse(call: Call<getUserProfileResponse>, response: Response<getUserProfileResponse>) {
-                    if (response.isSuccessful) {
-                        val profileResponse = response.body()
-                        val profileData = profileResponse?.result
-
-                        if (profileData != null) {
-                           // val userProfileImageUri = Uri.parse(profileData.userProfileImage)
-                            binding.myPageInputNinkName.hint = profileData.userName
-
-                            Log.d("img","edit"+profileData.userProfileImage)
-
-                            // Glide를 사용하여 이미지 설정
-                           *//* Glide.with(binding.root.context)
-                                .load(profileData.userProfileImage)
-                                .error(R.drawable.ic_mypage_profile)
-                                .into(binding.myPageProfileImgBtn)*//*
-
-                        }
-
-                    } else {
-                        // API 요청 실패 처리
-                        Toast.makeText(this@EditMypageActivity, "API 요청 실패 처리", Toast.LENGTH_SHORT).show()
-                    }
+    // 프로필 편집 api
+    private fun patchProfile(){
+        retrofit.patchProfile(imgUri, userName).enqueue(object : Callback<PatchProfileResponse> {
+            override fun onResponse(
+                call: Call<PatchProfileResponse>,
+                response: Response<PatchProfileResponse>
+            ) {
+                if(response.body()?.isSuccess == true){
+                    createToast("프로필 편집 사항이 저장되었어요!")
+                    finish()
+                } else {
                 }
+            }
 
-                override fun onFailure(call: Call<getUserProfileResponse>, t: Throwable) {
-                    // 네트워크 등의 문제로 API 요청이 실패한 경우 처리
-                    Toast.makeText(this@EditMypageActivity, "서버 오류 발생", Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
-    }*/
-
-
-
-    //이미지 올리기
-    fun ImageAPI(){
-        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val jwt = sharedPreferences.getString("jwt", null)
-        val userId = sharedPreferences.getLong("userId", 0L)
-
-        Log.d("img","edit"+imgPath)
-
-        if (jwt != null) {
-            retrofit.putUserImage(imgPath).enqueue(object : Callback<PutUserImageResponse> {
-                override fun onResponse(call: Call<PutUserImageResponse>, response: Response<PutUserImageResponse>) {
-                    if (response.isSuccessful) {
-                        val imageResponse = response.body()
-                        val dataList = imageResponse?.result
-
-                        if (imageResponse != null) {
-
-                        }
-
-                    } else {
-                        // API 요청 실패 처리
-                        Toast.makeText(this@EditProfileActivity, "API 요청 실패 처리", Toast.LENGTH_SHORT).show()
-
-                    }
-                }
-
-                override fun onFailure(call: Call<PutUserImageResponse>, t: Throwable) {
-                    // 네트워크 등의 문제로 API 요청이 실패한 경우 처리
-                    Toast.makeText(this@EditProfileActivity, "서버 오류 발생", Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
+            override fun onFailure(call: Call<PatchProfileResponse>, t: Throwable) {
+                // 네트워크 등의 문제로 API 요청이 실패한 경우 처리
+                createToast("네트워크 연결 실패")
+                Log.d("patchProfile onFailure", "onFailure : $t")
+            }
+        })
     }
 
+    private fun createToast(message : String){
+        // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
+        val snackbarBinding = ToastCreateScheduleBinding.inflate(layoutInflater)
+        snackbarBinding.toastMessageTv.text = message
+
+        // 스낵바 생성 및 설정
+        val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+            animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+            (view as Snackbar.SnackbarLayout).apply {
+                setBackgroundColor(Color.TRANSPARENT)
+                addView(snackbarBinding.root)
+                translationY = -30.dpToPx().toFloat()
+                elevation = 0f
+            }
+        }
+        // 스낵바 표시
+        snackbar.show()
+    }
+    private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
+
+    private fun isValidNickname(nickName: String): Boolean {
+        val regex = Regex("^[a-zA-Z0-9가-힣]{1,6}$")
+        return regex.matches(nickName)
+    }
 }

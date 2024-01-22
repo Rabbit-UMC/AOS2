@@ -34,7 +34,7 @@
                 android:id="@+id/mypage_history_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/my_page_history_toolbar_title"
+                android:text="@string/mypage_history_toolbar_title"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:fontFamily="@font/font_paragraph_4"

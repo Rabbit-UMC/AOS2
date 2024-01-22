@@ -2,12 +2,140 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="-56dp"
+        android:src="@color/main4"
+        android:layout_marginEnd="-56dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/mypage_history_success_nickname_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:text="닉네임"
+        android:textColor="@color/main2"
+        android:textSize="20sp"
+        android:fontFamily="@font/font_title_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/mypage_history_success_nickname_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font_title_3"
+        android:text="@string/mypage_history_nickname_title"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:minHeight="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/mypage_history_success_nickname_tv"
+        app:layout_constraintStart_toEndOf="@+id/mypage_history_success_nickname_tv"
+        app:layout_constraintTop_toTopOf="@+id/mypage_history_success_nickname_tv" />
+
+    <TextView
+        android:id="@+id/mypage_history_success_cnt_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font_title_3"
+        android:text="@string/mypage_history_success_cnt_title"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:minHeight="30sp"
+        app:layout_constraintStart_toStartOf="@+id/mypage_history_success_nickname_tv"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_history_success_nickname_tv" />
+
+    <TextView
+        android:id="@+id/mypage_history_success_cnt_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:text="닉네임"
+        android:textColor="@color/main2"
+        android:textSize="20sp"
+        android:minHeight="30sp"
+        android:fontFamily="@font/font_title_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/mypage_history_success_cnt_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/font_title_1"
+        android:text="10개"
+        android:textColor="@color/main2"
+        android:textSize="30sp"
+        android:minHeight="45sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_history_success_cnt_title_tv" />
+
+    <TextView
+        android:id="@+id/mypage_history_success_whole_mission_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/font_caption_text_3"
+        android:minHeight="18sp"
+        android:text="10개"
+        android:textColor="@color/main2"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_history_success_cnt_tv" />
+    <TextView
+        android:id="@+id/mypage_history_success_mission_of_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font_caption_text_3"
+        android:minHeight="18sp"
+        android:text="@string/mypage_history_mission_of"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_history_success_whole_mission_tv"
+        app:layout_constraintStart_toEndOf="@id/mypage_history_success_whole_mission_tv"
+        app:layout_constraintTop_toTopOf="@id/mypage_history_success_whole_mission_tv" />
+
+    <TextView
+        android:id="@+id/mypage_history_success_mission_success_cnt_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font_caption_text_3"
+        android:minHeight="18sp"
+        android:text="13개"
+        android:textColor="@color/main2"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_history_success_mission_of_tv"
+        app:layout_constraintStart_toEndOf="@+id/mypage_history_success_mission_of_tv"
+        app:layout_constraintTop_toTopOf="@id/mypage_history_success_mission_of_tv" />
+
+    <TextView
+        android:id="@+id/mypage_history_success_mission_success_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/font_caption_text_3"
+        android:minHeight="18sp"
+        android:text="@string/mypage_history_mission_success"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_history_success_mission_success_cnt_tv"
+        app:layout_constraintStart_toEndOf="@+id/mypage_history_success_mission_success_cnt_tv"
+        app:layout_constraintTop_toTopOf="@id/mypage_history_success_mission_success_cnt_tv" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/mypage_history_success_vp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_history_success_whole_mission_tv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

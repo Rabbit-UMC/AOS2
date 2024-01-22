@@ -14,7 +14,8 @@ import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.FragmentMypageBinding
 import com.example.myo_jib_sa.mypage.api.GetUserProfileResponse
 import com.example.myo_jib_sa.mypage.api.MypageAPI
-import com.example.myo_jib_sa.mypage.adapter.MypageViewPagerAdapter
+import com.example.myo_jib_sa.mypage.adapter.MypageTabVpAdapter
+import com.example.myo_jib_sa.mypage.history.MypageHistoryActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import retrofit2.Call
 import retrofit2.Callback
@@ -49,7 +50,7 @@ class MypageFragment : Fragment() {
 
     private fun initTabLayout() {
         // 어댑터 생성
-        val adapter = MypageViewPagerAdapter(childFragmentManager, lifecycle)
+        val adapter = MypageTabVpAdapter(childFragmentManager, lifecycle)
         binding.myPageViewpager.adapter = adapter
 
         TabLayoutMediator(binding.myPageTab, binding.myPageViewpager) { tab, position ->
@@ -62,13 +63,10 @@ class MypageFragment : Fragment() {
 
     private fun initListener() {
         binding.myPageHistoryBtn.setOnClickListener {
-
+            startActivity(Intent(requireActivity(), MypageHistoryActivity::class.java))
         }
         binding.myPageEditProfileBtn.setOnClickListener{
-            startActivity(Intent(requireActivity(), EditProfileActivity::class.java)
-                .putExtra("nickname", nickname)
-                .putExtra("uri", uri)
-            )
+            startActivity(Intent(requireActivity(), EditProfileActivity::class.java))
         }
     }
     private fun getProfileInfo() {
