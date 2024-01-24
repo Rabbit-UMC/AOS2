@@ -1,19 +1,23 @@
-package com.example.myo_jib_sa.login
+package com.example.myo_jib_sa.signup
 
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.MainActivity
-import com.example.myo_jib_sa.databinding.DialogLoginAddEmailFragmentBinding
 import com.example.myo_jib_sa.databinding.DialogSignupCompleteBinding
 
 class SignUpCompleteDialog() : DialogFragment() {
     private lateinit var binding:DialogSignupCompleteBinding
+    private var listener: CompleteListener? = null
+    interface CompleteListener {
+        fun completeListener()
+    }
+
+    fun initCompleteListener(listener: CompleteListener) {
+        this.listener = listener
+    }
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -28,8 +32,7 @@ class SignUpCompleteDialog() : DialogFragment() {
 
         //가입하기 버튼
         binding.signUpCompleteBtn.setOnClickListener{
-            startActivity(Intent(requireContext(), MainActivity::class.java))
-            dismiss()
+            listener?.completeListener()
         }
 
         return binding.root
