@@ -127,7 +127,7 @@
                 android:fontFamily="@font/pretendard_semibold"
                 android:text="@string/mypage_history_mission_challenger"
                 android:textColor="@color/gray7"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/history_mission_whole_cnt_tv"
@@ -145,7 +145,7 @@
                 android:fontFamily="@font/pretendard_semibold"
                 android:text="@string/mypage_history_mission_challenger_of"
                 android:textColor="@color/gray7"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/history_mission_achieve_cnt_tv"

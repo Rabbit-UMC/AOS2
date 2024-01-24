@@ -17,6 +17,7 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
+        android:usesCleartextTraffic="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/ic_app"
         android:label="묘집사"
