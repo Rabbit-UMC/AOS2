@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.login
+package com.example.myo_jib_sa.signup
 
 import android.app.Dialog
 import android.graphics.Color

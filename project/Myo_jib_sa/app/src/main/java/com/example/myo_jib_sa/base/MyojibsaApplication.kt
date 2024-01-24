@@ -42,7 +42,7 @@ class MyojibsaApplication : Application() {
 
 //        val keyHash = Utility.getKeyHash(this)
 //        Log.d("Hash", keyHash)
-        val nativeKey = BuildConfig.NATIVE_APP_KEY
+        val nativeKey = BuildConfig.KAKAO_NATIVE_KEY
         KakaoSdk.init(this, nativeKey)
     }
     // 레트로핏 인스턴스를 생성하고, 레트로핏에 각종 설정값들을 지정해줍니다.

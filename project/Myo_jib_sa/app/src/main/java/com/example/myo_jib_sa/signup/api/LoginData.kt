@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.login.api
+package com.example.myo_jib_sa.signup.api
 
 import com.example.myo_jib_sa.base.BaseResponse
 

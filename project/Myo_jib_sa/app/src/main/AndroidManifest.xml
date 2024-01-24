@@ -103,14 +103,14 @@
             android:name=".community.missionCert.MissionPictureActivity"
             android:exported="false" />
         <activity
-            android:name=".login.AddEmailDialogActivity"
+            android:name=".signup.AddEmailDialogActivity"
             android:exported="false"
             android:theme="@style/AppTheme.PopupActivity" />
         <activity
             android:name=".mypage.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".login.MyoSignUpActivity"
+            android:name=".signup.SignUpActivity"
             android:exported="false"></activity>
         <activity
             android:name=".MainActivity"
@@ -122,8 +122,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.KakaoLoginActivity"
-            android:exported="true" />
+            android:name=".signup.LoginActivity"
+            android:exported="true" >
+            
+        </activity>
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="oauth"
+                    android:scheme="kakao${KAKAO_NATIVE_KEY}" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
