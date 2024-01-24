@@ -1,19 +1,12 @@
-package com.example.myo_jib_sa.login
+package com.example.myo_jib_sa.signup
 
 import android.app.Dialog
-import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.example.myo_jib_sa.MainActivity
-import com.example.myo_jib_sa.databinding.DialogLoginAddEmailFragmentBinding
-import com.example.myo_jib_sa.databinding.DialogSignupCompleteBinding
 import com.example.myo_jib_sa.databinding.DialogSignupDetailBinding
 
-class SignUpDetailDialog(val desc: String) : DialogFragment() {
+class SignUpTermsOfUseDetailDialog(val desc: String) : DialogFragment() {
     private lateinit var binding:DialogSignupDetailBinding
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)

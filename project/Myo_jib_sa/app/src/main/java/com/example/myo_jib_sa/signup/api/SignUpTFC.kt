@@ -1,9 +1,12 @@
 package com.example.myo_jib_sa.login.api
 
+import com.example.myo_jib_sa.signup.api.LoginResponse
+import com.example.myo_jib_sa.signup.api.SignUpRequest
+import com.example.myo_jib_sa.signup.api.SignUpResponse
 import retrofit2.Call
 import retrofit2.http.*
 
-interface LoginITFC {
+interface SignUpTFC {
 
     @GET("app/users/kakao-login")
     fun getLogin(
