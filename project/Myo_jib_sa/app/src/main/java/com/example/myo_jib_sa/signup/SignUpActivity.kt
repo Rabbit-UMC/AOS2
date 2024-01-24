@@ -1,5 +1,6 @@
-package com.example.myo_jib_sa.login
+package com.example.myo_jib_sa.signup
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -7,34 +8,33 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.*
-import com.example.myo_jib_sa.login.api.LoginITFC
-import com.example.myo_jib_sa.login.api.SignUpRequest
-import com.example.myo_jib_sa.login.api.SignUpResponse
+import com.example.myo_jib_sa.login.api.SignUpTFC
+import com.example.myo_jib_sa.signup.api.SignUpRequest
+import com.example.myo_jib_sa.signup.api.SignUpResponse
 import com.example.myo_jib_sa.mypage.api.GetCheckDuplicationResponse
 import com.example.myo_jib_sa.mypage.api.MypageAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MyoSignUpActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMyoSignUpBinding
-    private var returnCode: Int? = null
-    private var kakaoEmail: String? = null
+class SignUpActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySignUpBinding
     private var nickname: String = ""
     private var isDuplicationChecked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMyoSignUpBinding.inflate(layoutInflater)
+        binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initListener()
+        setListeners()
     }
 
-    private fun initListener() {
+    private fun setListeners() {
         with(binding) {
             signUpBackBtn.setOnClickListener {
                 onBackPressed()
@@ -77,19 +77,19 @@ class MyoSignUpActivity : AppCompatActivity() {
 
             // 이용약관 디테일
             signUpOldDetailBtn.setOnClickListener {
-                showDetailDialog(getString(R.string.sine_up_use_old))
+                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
             }
             signUpTermsOfUseDetailBtn.setOnClickListener {
-                showDetailDialog(getString(R.string.sine_up_use_old))
+                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
             }
             signUpPrivacyDetailBtn.setOnClickListener {
-                showDetailDialog(getString(R.string.sine_up_use_old))
+                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
             }
             signUpMailDetailBtn.setOnClickListener {
-                showDetailDialog(getString(R.string.sine_up_use_old))
+                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
             }
             signUpIdentificationDetailBtn.setOnClickListener {
-                showDetailDialog(getString(R.string.sine_up_use_old))
+                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
             }
 
 
@@ -133,7 +133,7 @@ class MyoSignUpActivity : AppCompatActivity() {
                         binding.signUpDuplicateStateTxt.apply {
                             text = "사용 가능한 닉네임이에요."
                             setTextColor(getColor(R.color.complete))
-                            this@MyoSignUpActivity.nickname = binding.signUpNicknameEt.text.toString()
+                            this@SignUpActivity.nickname = binding.signUpNicknameEt.text.toString()
                             isDuplicationChecked = true
                             checkSignUpBtnEnable()
                         }
@@ -156,21 +156,19 @@ class MyoSignUpActivity : AppCompatActivity() {
         })
     }
 
-    private fun showDetailDialog(desc: String) {
-        SignUpDetailDialog(desc).show(supportFragmentManager, "SignUpDetailDialog")
+    private fun showTermsOfUseDetailDialog(desc: String) {
+        SignUpTermsOfUseDetailDialog(desc).show(supportFragmentManager, "SignUpDetailDialog")
     }
     private fun postSignUp() {
-        sRetrofit.create(LoginITFC::class.java)
+        sRetrofit.create(SignUpTFC::class.java)
             .postSignUp(SignUpRequest(nickname)).enqueue(object :Callback<SignUpResponse> {
-                override fun onResponse(
-                    call: Call<SignUpResponse>,
-                    response: Response<SignUpResponse>
-                ) {
-                    showCompleteDialog()
+                override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
+                    if(response.body()?.isSuccess == true) {
+                        showCompleteDialog()
+                    }
                 }
-
                 override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
-                    Toast.makeText(this@MyoSignUpActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignUpActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()
                 }
 
             })
@@ -178,6 +176,14 @@ class MyoSignUpActivity : AppCompatActivity() {
     private fun showCompleteDialog() {
         SignUpCompleteDialog().apply {
             isCancelable = false
+            initCompleteListener(object : SignUpCompleteDialog.CompleteListener {
+                override fun completeListener() {
+                    finishAffinity()
+                    startActivity(Intent(requireContext(), MainActivity::class.java))
+                    dismiss()
+                }
+
+            })
             show(supportFragmentManager, "SignUpCompleteDialog")
         }
     }
