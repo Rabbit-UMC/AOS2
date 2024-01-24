@@ -35,4 +35,11 @@ interface MypageAPI {
         @Query("userName") userName: String
     ): Call<PatchProfileResponse>
 
+    // 성공 히스토리 조회
+    @PATCH("app/users/success")
+    fun getSuccessHistory(): Call<GetHistoryResponse>
+
+    // 실패 히스토리 조회
+    @PATCH("app/users/failure")
+    fun getFailureHistory(): Call<GetHistoryResponse>
 }

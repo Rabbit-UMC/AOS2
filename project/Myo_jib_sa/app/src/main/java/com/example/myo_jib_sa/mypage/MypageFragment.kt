@@ -26,9 +26,7 @@ class MypageFragment : Fragment() {
     lateinit var binding: FragmentMypageBinding
 
     val retrofit: MypageAPI = sRetrofit.create(MypageAPI::class.java)
-    val isNotDuplication : Boolean = false
     var nickname: String = ""
-    var uri: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,7 +61,8 @@ class MypageFragment : Fragment() {
 
     private fun initListener() {
         binding.myPageHistoryBtn.setOnClickListener {
-            startActivity(Intent(requireActivity(), MypageHistoryActivity::class.java))
+            startActivity(Intent(requireActivity(), MypageHistoryActivity::class.java)
+                .putExtra("nickname", nickname))
         }
         binding.myPageEditProfileBtn.setOnClickListener{
             startActivity(Intent(requireActivity(), EditProfileActivity::class.java))
@@ -87,7 +86,6 @@ class MypageFragment : Fragment() {
                             .into(binding.myPageProfileImg)
 
                         nickname = profileData.userName
-                        uri = profileData.userProfileImage
                     }
                 } else {
                     // API 요청 실패 처리
