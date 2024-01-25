@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.FragmentMissionBinding
 import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
 import com.example.myo_jib_sa.mission.adapter.MissionRVAdapter
@@ -33,7 +34,7 @@ class MissionFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var missionRVAdapter: MissionRVAdapter
     private lateinit var missionList: List<Mission>
-    val retrofit = RetrofitInstance.getInstance().create(MissionAPI::class.java)
+    val retrofit: MissionAPI = sRetrofit.create(MissionAPI::class.java)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

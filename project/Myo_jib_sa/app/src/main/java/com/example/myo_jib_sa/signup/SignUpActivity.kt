@@ -10,9 +10,10 @@ import android.view.View
 import android.widget.Toast
 import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.*
-import com.example.myo_jib_sa.login.api.SignUpTFC
+import com.example.myo_jib_sa.signup.api.SignUpTFC
 import com.example.myo_jib_sa.signup.api.SignUpRequest
 import com.example.myo_jib_sa.signup.api.SignUpResponse
 import com.example.myo_jib_sa.mypage.api.GetCheckDuplicationResponse
@@ -25,12 +26,14 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
     private var nickname: String = ""
     private var isDuplicationChecked = false
+    private lateinit var kakaoToken : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        kakaoToken = intent.getStringExtra("kakaoToken").toString()
         setListeners()
     }
 
@@ -54,7 +57,17 @@ class SignUpActivity : AppCompatActivity() {
                 checkNicknameDuplicate(signUpNicknameEt.text.toString())
             }
 
-            // 체크박스 텍스트 클릭 이벤트
+            // 체크박스 클릭 이벤트
+            signUpOldCheckbox.setOnClickListener {
+                checkSignUpBtnEnable()
+            }
+            signUpTermsOfUseCheckbox.setOnClickListener {
+                checkSignUpBtnEnable()
+            }
+            signUpPrivacyCheckbox.setOnClickListener {
+                checkSignUpBtnEnable()
+            }
+            // 체크 박스 텍스트 클릭 이벤트
             signUpOldTxt.setOnClickListener {
                 signUpOldCheckbox.isChecked = !signUpOldCheckbox.isChecked
                 checkSignUpBtnEnable()
@@ -100,6 +113,8 @@ class SignUpActivity : AppCompatActivity() {
                 signUpPrivacyCheckbox.isChecked = isChecked
                 signUpMailCheckbox.isChecked = isChecked
                 signUpIdentificationCheckbox.isChecked = isChecked
+
+                checkSignUpBtnEnable()
             }
             signUpWholeTxt.setOnClickListener {
                 signUpWholeCheckbox.isChecked = !signUpWholeCheckbox.isChecked
@@ -116,8 +131,8 @@ class SignUpActivity : AppCompatActivity() {
     private fun checkSignUpBtnEnable() {
         with(binding) {
             signUpSignUpBtn.isEnabled =
-                signUpOldCheckbox.isChecked && signUpTermsOfUseCheckbox.isChecked && signUpPrivacyCheckbox.isChecked
-                        && isDuplicationChecked
+                signUpOldCheckbox.isChecked && signUpTermsOfUseCheckbox.isChecked
+                        && signUpPrivacyCheckbox.isChecked && isDuplicationChecked
         }
     }
     private fun checkNicknameValid(text: String): Boolean {
@@ -125,24 +140,27 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun checkNicknameDuplicate(nickName: String) {
-        sRetrofit.create(MypageAPI::class.java).getCheckDuplication(nickName).enqueue(object : Callback<GetCheckDuplicationResponse> {
+        sRetrofit.create(MypageAPI::class.java)
+            .getCheckDuplication(nickName, false)
+            .enqueue(object : Callback<GetCheckDuplicationResponse> {
             override fun onResponse(call: Call<GetCheckDuplicationResponse>, response: Response<GetCheckDuplicationResponse>) {
                 if (response.body() != null) {
                     binding.signUpDuplicateStateTxt.visibility = View.VISIBLE
                     if(response.body()!!.result) {
                         binding.signUpDuplicateStateTxt.apply {
-                            text = "사용 가능한 닉네임이에요."
-                            setTextColor(getColor(R.color.complete))
-                            this@SignUpActivity.nickname = binding.signUpNicknameEt.text.toString()
-                            isDuplicationChecked = true
+                            text = "사용 불가능한 닉네임이에요."
+                            setTextColor(getColor(R.color.alert))
+                            this@SignUpActivity.nickname = ""
+                            isDuplicationChecked = false
                             checkSignUpBtnEnable()
                         }
                     }
                     else {
                         binding.signUpDuplicateStateTxt.apply {
-                            text = "사용 불가능한 닉네임이에요."
-                            setTextColor(getColor(R.color.alert))
-                            isDuplicationChecked = false
+                            text = "사용 가능한 닉네임이에요."
+                            setTextColor(getColor(R.color.complete))
+                            this@SignUpActivity.nickname = binding.signUpNicknameEt.text.toString()
+                            isDuplicationChecked = true
                             checkSignUpBtnEnable()
                         }
                     }
@@ -161,10 +179,14 @@ class SignUpActivity : AppCompatActivity() {
     }
     private fun postSignUp() {
         sRetrofit.create(SignUpTFC::class.java)
-            .postSignUp(SignUpRequest(nickname)).enqueue(object :Callback<SignUpResponse> {
+            .postSignUp(kakaoToken, SignUpRequest(nickname)).enqueue(object :Callback<SignUpResponse> {
                 override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
                     if(response.body()?.isSuccess == true) {
                         showCompleteDialog()
+                        response.body()!!.result?.let {
+                            MyojibsaApplication.spfManager.setAccessToken(it.jwtAccessToken)
+                            MyojibsaApplication.spfManager.setRefreshToken(it.jwtRefreshToken)
+                        }
                     }
                 }
                 override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
@@ -174,7 +196,7 @@ class SignUpActivity : AppCompatActivity() {
             })
     }
     private fun showCompleteDialog() {
-        SignUpCompleteDialog().apply {
+        SignUpCompleteDialog(nickname).apply {
             isCancelable = false
             initCompleteListener(object : SignUpCompleteDialog.CompleteListener {
                 override fun completeListener() {
