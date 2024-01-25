@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        spfManager.setUserToken("eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDU4MTExMjEsImV4cCI6MTcwNzI4MjM1MH0.Lre_HeCZbsabDXcS0xUvUEWPVNjJZTxuYvVG2ekVT3Y")
-
         //바텀 네비게이션 설정
         binding.mainBottomNavi.itemIconTintList = null //아이콘 태마색 변경 방지
         //초기 프레그먼트 설정

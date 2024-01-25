@@ -1,16 +1,21 @@
 package com.example.myo_jib_sa.signup
 
 import android.app.Dialog
-import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
-import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.databinding.DialogSignupCompleteBinding
 
-class SignUpCompleteDialog() : DialogFragment() {
+class SignUpCompleteDialog(private val nickname: String) : DialogFragment() {
     private lateinit var binding:DialogSignupCompleteBinding
     private var listener: CompleteListener? = null
+    companion object {
+        const val DIALOG_MARGIN_DP = 20
+        const val DIALOG_HEIGHT_DP = 411
+    }
+
     interface CompleteListener {
         fun completeListener()
     }
@@ -30,6 +35,8 @@ class SignUpCompleteDialog() : DialogFragment() {
     ): View? {
         binding= DialogSignupCompleteBinding.inflate(inflater,container, false)
 
+        binding.signUpCompleteNickname.text = nickname
+
         //가입하기 버튼
         binding.signUpCompleteBtn.setOnClickListener{
             listener?.completeListener()
@@ -40,21 +47,28 @@ class SignUpCompleteDialog() : DialogFragment() {
     override fun onResume() {
         super.onResume()
         // 다이얼로그의 크기 설정
-        dialog?.let { setDialogSize(it) }
+        setDialogSize()
     }
 
-    private fun setDialogSize(dialog: Dialog) {
-        val layoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(dialog.window?.attributes)
+    private fun setDialogSize() {
+        dialog?.let { dialog ->
+            val metrics = resources.displayMetrics
+            val density = metrics.density
+            val marginPx = (DIALOG_MARGIN_DP * density * 2).toInt()
+            val width = metrics.widthPixels - marginPx
+            val height = (DIALOG_HEIGHT_DP * density).toInt()
 
-        val displayMetrics = resources.displayMetrics
-        val dpToPx = displayMetrics.density
-        val marginPx = (20 * dpToPx).toInt() * 2 // 양옆 마진 10dp를 픽셀로 변환 후 양쪽을 고려하여 곱하기 2
-        val dialogWidth = displayMetrics.widthPixels - marginPx
-        layoutParams.width = dialogWidth
-        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+            val layoutParams = WindowManager.LayoutParams().apply {
+                copyFrom(dialog.window?.attributes)
+                this.width = width
+                this.height = height
+            }
 
-        dialog.window?.attributes = layoutParams
+            dialog.window?.apply {
+                attributes = layoutParams
+                setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
+        }
     }
 
 }
