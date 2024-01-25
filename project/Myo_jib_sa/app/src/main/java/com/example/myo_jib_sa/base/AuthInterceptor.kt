@@ -10,7 +10,7 @@ class AuthInterceptor : Interceptor {
         val originalRequest: Request = chain.request()
 
         // Retrieve the access token from wherever it is stored (e.g., SharedPreferences)
-        val accessToken = spfManager.getUserToken()
+        val accessToken = spfManager.getAccessToken()
 
         // Add the "Bearer" token to the header
         val modifiedRequest: Request = originalRequest.newBuilder()
