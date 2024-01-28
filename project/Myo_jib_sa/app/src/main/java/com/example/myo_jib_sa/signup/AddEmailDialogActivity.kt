@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.login
+package com.example.myo_jib_sa.signup
 
 import android.content.Intent
 import android.graphics.Color
@@ -57,7 +57,7 @@ class AddEmailDialogActivity : AppCompatActivity() {
         binding.signUpAddEmailSignUpBtn.setOnClickListener{
             // 묘집사 페이지로 이동
             //이메일 함께 담아서 보내기
-            val intent = Intent(this, MyoSignUpActivity::class.java)
+            val intent = Intent(this, SignUpActivity::class.java)
             intent.putExtra("email", email)
             Log.d("email", "email: ${email}")
             startActivity(intent)

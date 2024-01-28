@@ -40,7 +40,8 @@ data class MissionCreateRequests(
     var endAt:String,
     var categoryId:Long,
     var isOpen:Int,
-    var content:String
+    var content:String,
+    var status: String
 )
 
 data class MissionCreateResponse(

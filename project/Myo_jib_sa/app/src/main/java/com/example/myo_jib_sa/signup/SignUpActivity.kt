@@ -1,5 +1,6 @@
-package com.example.myo_jib_sa.login
+package com.example.myo_jib_sa.signup
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -7,34 +8,36 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.*
-import com.example.myo_jib_sa.login.api.LoginITFC
-import com.example.myo_jib_sa.login.api.SignUpRequest
-import com.example.myo_jib_sa.login.api.SignUpResponse
+import com.example.myo_jib_sa.signup.api.SignUpTFC
+import com.example.myo_jib_sa.signup.api.SignUpRequest
+import com.example.myo_jib_sa.signup.api.SignUpResponse
 import com.example.myo_jib_sa.mypage.api.GetCheckDuplicationResponse
 import com.example.myo_jib_sa.mypage.api.MypageAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MyoSignUpActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMyoSignUpBinding
-    private var returnCode: Int? = null
-    private var kakaoEmail: String? = null
+class SignUpActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySignUpBinding
     private var nickname: String = ""
     private var isDuplicationChecked = false
+    private lateinit var kakaoToken : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMyoSignUpBinding.inflate(layoutInflater)
+        binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initListener()
+        kakaoToken = intent.getStringExtra("kakaoToken").toString()
+        setListeners()
     }
 
-    private fun initListener() {
+    private fun setListeners() {
         with(binding) {
             signUpBackBtn.setOnClickListener {
                 onBackPressed()
@@ -54,7 +57,17 @@ class MyoSignUpActivity : AppCompatActivity() {
                 checkNicknameDuplicate(signUpNicknameEt.text.toString())
             }
 
-            // 체크박스 텍스트 클릭 이벤트
+            // 체크박스 클릭 이벤트
+            signUpOldCheckbox.setOnClickListener {
+                checkSignUpBtnEnable()
+            }
+            signUpTermsOfUseCheckbox.setOnClickListener {
+                checkSignUpBtnEnable()
+            }
+            signUpPrivacyCheckbox.setOnClickListener {
+                checkSignUpBtnEnable()
+            }
+            // 체크 박스 텍스트 클릭 이벤트
             signUpOldTxt.setOnClickListener {
                 signUpOldCheckbox.isChecked = !signUpOldCheckbox.isChecked
                 checkSignUpBtnEnable()
@@ -77,19 +90,19 @@ class MyoSignUpActivity : AppCompatActivity() {
 
             // 이용약관 디테일
             signUpOldDetailBtn.setOnClickListener {
-                showDetailDialog(getString(R.string.sine_up_use_old))
+                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
             }
             signUpTermsOfUseDetailBtn.setOnClickListener {
-                showDetailDialog(getString(R.string.sine_up_use_old))
+                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
             }
             signUpPrivacyDetailBtn.setOnClickListener {
-                showDetailDialog(getString(R.string.sine_up_use_old))
+                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
             }
             signUpMailDetailBtn.setOnClickListener {
-                showDetailDialog(getString(R.string.sine_up_use_old))
+                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
             }
             signUpIdentificationDetailBtn.setOnClickListener {
-                showDetailDialog(getString(R.string.sine_up_use_old))
+                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
             }
 
 
@@ -100,6 +113,8 @@ class MyoSignUpActivity : AppCompatActivity() {
                 signUpPrivacyCheckbox.isChecked = isChecked
                 signUpMailCheckbox.isChecked = isChecked
                 signUpIdentificationCheckbox.isChecked = isChecked
+
+                checkSignUpBtnEnable()
             }
             signUpWholeTxt.setOnClickListener {
                 signUpWholeCheckbox.isChecked = !signUpWholeCheckbox.isChecked
@@ -116,8 +131,8 @@ class MyoSignUpActivity : AppCompatActivity() {
     private fun checkSignUpBtnEnable() {
         with(binding) {
             signUpSignUpBtn.isEnabled =
-                signUpOldCheckbox.isChecked && signUpTermsOfUseCheckbox.isChecked && signUpPrivacyCheckbox.isChecked
-                        && isDuplicationChecked
+                signUpOldCheckbox.isChecked && signUpTermsOfUseCheckbox.isChecked
+                        && signUpPrivacyCheckbox.isChecked && isDuplicationChecked
         }
     }
     private fun checkNicknameValid(text: String): Boolean {
@@ -125,24 +140,27 @@ class MyoSignUpActivity : AppCompatActivity() {
     }
 
     private fun checkNicknameDuplicate(nickName: String) {
-        sRetrofit.create(MypageAPI::class.java).getCheckDuplication(nickName).enqueue(object : Callback<GetCheckDuplicationResponse> {
+        sRetrofit.create(MypageAPI::class.java)
+            .getCheckDuplication(nickName, false)
+            .enqueue(object : Callback<GetCheckDuplicationResponse> {
             override fun onResponse(call: Call<GetCheckDuplicationResponse>, response: Response<GetCheckDuplicationResponse>) {
                 if (response.body() != null) {
                     binding.signUpDuplicateStateTxt.visibility = View.VISIBLE
                     if(response.body()!!.result) {
                         binding.signUpDuplicateStateTxt.apply {
-                            text = "사용 가능한 닉네임이에요."
-                            setTextColor(getColor(R.color.complete))
-                            this@MyoSignUpActivity.nickname = binding.signUpNicknameEt.text.toString()
-                            isDuplicationChecked = true
+                            text = "사용 불가능한 닉네임이에요."
+                            setTextColor(getColor(R.color.alert))
+                            this@SignUpActivity.nickname = ""
+                            isDuplicationChecked = false
                             checkSignUpBtnEnable()
                         }
                     }
                     else {
                         binding.signUpDuplicateStateTxt.apply {
-                            text = "사용 불가능한 닉네임이에요."
-                            setTextColor(getColor(R.color.alert))
-                            isDuplicationChecked = false
+                            text = "사용 가능한 닉네임이에요."
+                            setTextColor(getColor(R.color.complete))
+                            this@SignUpActivity.nickname = binding.signUpNicknameEt.text.toString()
+                            isDuplicationChecked = true
                             checkSignUpBtnEnable()
                         }
                     }
@@ -156,28 +174,38 @@ class MyoSignUpActivity : AppCompatActivity() {
         })
     }
 
-    private fun showDetailDialog(desc: String) {
-        SignUpDetailDialog(desc).show(supportFragmentManager, "SignUpDetailDialog")
+    private fun showTermsOfUseDetailDialog(desc: String) {
+        SignUpTermsOfUseDetailDialog(desc).show(supportFragmentManager, "SignUpDetailDialog")
     }
     private fun postSignUp() {
-        sRetrofit.create(LoginITFC::class.java)
-            .postSignUp(SignUpRequest(nickname)).enqueue(object :Callback<SignUpResponse> {
-                override fun onResponse(
-                    call: Call<SignUpResponse>,
-                    response: Response<SignUpResponse>
-                ) {
-                    showCompleteDialog()
+        sRetrofit.create(SignUpTFC::class.java)
+            .postSignUp(kakaoToken, SignUpRequest(nickname)).enqueue(object :Callback<SignUpResponse> {
+                override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
+                    if(response.body()?.isSuccess == true) {
+                        showCompleteDialog()
+                        response.body()!!.result?.let {
+                            MyojibsaApplication.spfManager.setAccessToken(it.jwtAccessToken)
+                            MyojibsaApplication.spfManager.setRefreshToken(it.jwtRefreshToken)
+                        }
+                    }
                 }
-
                 override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
-                    Toast.makeText(this@MyoSignUpActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignUpActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()
                 }
 
             })
     }
     private fun showCompleteDialog() {
-        SignUpCompleteDialog().apply {
+        SignUpCompleteDialog(nickname).apply {
             isCancelable = false
+            initCompleteListener(object : SignUpCompleteDialog.CompleteListener {
+                override fun completeListener() {
+                    finishAffinity()
+                    startActivity(Intent(requireContext(), MainActivity::class.java))
+                    dismiss()
+                }
+
+            })
             show(supportFragmentManager, "SignUpCompleteDialog")
         }
     }

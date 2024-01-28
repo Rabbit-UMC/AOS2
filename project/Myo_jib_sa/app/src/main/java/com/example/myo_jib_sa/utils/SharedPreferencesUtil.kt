@@ -12,12 +12,18 @@ class SharedPreferencesUtil(context: Context) {
         spfManager.edit().clear().apply()
     }
 
-    // userToken 메서드
-    fun checkUserToken(): Boolean = spfManager.contains("X_ACCESS_TOKEN")
-    fun getUserToken(): String = spfManager.getString("X_ACCESS_TOKEN", "").toString()
-    fun setUserToken(token: String) {
-        spfManager.edit().putString("X_ACCESS_TOKEN", "$token").apply()
-        Log.d("setUserToken", "${getUserToken()}")
+    // accessToken 메서드
+    fun checkUserToken(): Boolean = spfManager.contains("accessToken")
+    fun getAccessToken(): String = spfManager.getString("accessToken", "").toString()
+    fun setAccessToken(token: String) {
+        spfManager.edit().putString("accessToken", "$token").apply()
+        Log.d("setAccessToken", "${getAccessToken()}")
+    }
+
+    fun getRefreshToken(): String = spfManager.getString("refreshToken", "").toString()
+    fun setRefreshToken(token: String) {
+        spfManager.edit().putString("refreshToken", "$token").apply()
+        Log.d("setRefreshToken", "${getRefreshToken()}")
     }
 
 }

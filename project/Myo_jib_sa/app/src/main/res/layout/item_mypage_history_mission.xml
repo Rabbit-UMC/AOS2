@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/background_mission_detail_root"
+    android:layout_margin="20dp"
+    android:elevation="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/history_mission_title_iv"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/background_mission_detail_dialog_img"
+        android:clipToOutline="true"
+        app:layout_constraintHeight_percent="0.5221"
+        app:layout_constraintBottom_toTopOf="@id/history_mission_info_cl"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/history_mission_info_cl"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintTop_toBottomOf="@id/history_mission_title_iv"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+            android:id="@+id/history_mission_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_title_3"
+            android:text="개강이랑 싸우기"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:lineSpacingExtra="3dp"
+            android:layout_margin="20dp"
+            android:minHeight="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/history_mission_period_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_paragraph_4"
+            android:text="미션 기간"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="@+id/history_mission_title_tv"
+            app:layout_constraintTop_toBottomOf="@+id/history_mission_title_tv" />
+
+        <LinearLayout
+            android:id="@+id/history_mission_period_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/history_mission_period_tv"
+            app:layout_constraintTop_toBottomOf="@+id/history_mission_period_tv">
+
+            <TextView
+                android:id="@+id/history_mission_start_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_caption_text_1"
+                android:text="8월 20일"
+                android:textColor="@color/main3"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/history_mission_from_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_caption_text_1"
+                android:text=" 부터 "
+                android:textColor="@color/gray7"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/history_mission_end_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_caption_text_1"
+                android:text="8월 26일"
+                android:textColor="@color/main3"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/history_mission_to_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_caption_text_1"
+                android:text=" 까지"
+                android:textColor="@color/gray7"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/history_mission_achieve_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_paragraph_1"
+            android:text="미션 달성률"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toTopOf="@id/history_mission_rate_ll"
+            app:layout_constraintStart_toStartOf="@+id/history_mission_period_ll"
+            app:layout_constraintTop_toBottomOf="@+id/history_mission_period_ll" />
+
+        <LinearLayout
+            android:id="@+id/history_mission_rate_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="27dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/history_mission_achieve_title_tv"
+            app:layout_constraintStart_toStartOf="@+id/history_mission_period_tv">
+
+            <TextView
+                android:id="@+id/history_mission_challenger_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="@string/mypage_history_mission_challenger"
+                android:textColor="@color/gray7"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/history_mission_whole_cnt_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="38"
+                android:textColor="@color/main3"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/history_mission_challenger_of_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="@string/mypage_history_mission_challenger_of"
+                android:textColor="@color/gray7"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/history_mission_achieve_cnt_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="10"
+                android:textColor="@color/main3"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/history_mission_achieve_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_semibold"
+                android:text="@string/mypage_history_mission_achieve"
+                android:textColor="@color/gray7"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
