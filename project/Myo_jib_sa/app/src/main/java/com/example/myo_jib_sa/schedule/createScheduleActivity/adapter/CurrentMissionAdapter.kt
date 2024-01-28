@@ -49,7 +49,6 @@ class CurrentMissionAdapter(private val missionList: List<MyMissionResult>):
     //리스너 인터페이스
     interface  OnItemClickListener{
         fun onClick(data: MyMissionResult)
-
     }
     // (3) 외부에서 클릭 시 이벤트 설정
     fun setItemClickListener(onItemClickListener: OnItemClickListener) {
