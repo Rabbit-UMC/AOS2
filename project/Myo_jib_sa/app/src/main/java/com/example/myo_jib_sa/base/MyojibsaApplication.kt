@@ -21,10 +21,6 @@ class MyojibsaApplication : Application() {
 
         lateinit var spfManager: SharedPreferencesUtil
 
-        // JWT Token Header 키 값
-        const val X_ACCESS_TOKEN = "X-ACCESS-TOKEN"
-        const val X_REFRESH_TOKEN = "X-REFRESH-TOKEN"
-
         // Retrofit 인스턴스, 앱 실행시 한번만 생성하여 사용합니다.
         lateinit var sRetrofit: Retrofit
     }
@@ -42,7 +38,7 @@ class MyojibsaApplication : Application() {
 
 //        val keyHash = Utility.getKeyHash(this)
 //        Log.d("Hash", keyHash)
-        val nativeKey = BuildConfig.NATIVE_APP_KEY
+        val nativeKey = BuildConfig.KAKAO_NATIVE_KEY
         KakaoSdk.init(this, nativeKey)
     }
     // 레트로핏 인스턴스를 생성하고, 레트로핏에 각종 설정값들을 지정해줍니다.

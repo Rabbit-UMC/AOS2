@@ -1,45 +1,39 @@
-package com.example.myo_jib_sa.mission.dialog
+package com.example.myo_jib_sa.mypage
 
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
+import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.databinding.DialogMissionReportFragmentBinding
+import com.example.myo_jib_sa.databinding.DialogUnregisterFragmentBinding
+import com.example.myo_jib_sa.mission.api.Mission
 import com.example.myo_jib_sa.mission.api.MissionAPI
 import com.example.myo_jib_sa.mission.api.MissionReportResponse
-import com.example.myo_jib_sa.mission.api.Mission
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
-class MissionReportDialogFragment(private val item: Mission) : DialogFragment() {
-    private lateinit var binding: DialogMissionReportFragmentBinding
-    private val retrofit = sRetrofit.create(MissionAPI::class.java)
-    private var listener: ReportDialogListener? = null
+class UnregisterDialogFragment() : DialogFragment() {
+    private lateinit var binding: DialogUnregisterFragmentBinding
+    private val retrofit = MyojibsaApplication.sRetrofit.create(MissionAPI::class.java)
     companion object {
         const val DIALOG_MARGIN_DP = 20
         const val DIALOG_HEIGHT_DP = 248
-    }
-
-
-    interface ReportDialogListener {
-        fun onReportSubmitted(message: String)
-    }
-
-    fun setReportDialogListener(listener: ReportDialogListener) {
-        this.listener = listener
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogMissionReportFragmentBinding.inflate(inflater, container, false)
+        binding = DialogUnregisterFragmentBinding.inflate(inflater, container, false)
 
         initListener()
 
@@ -82,40 +76,35 @@ class MissionReportDialogFragment(private val item: Mission) : DialogFragment() 
 
     private fun initListener() {
         //미션 report api 호출
-        binding.missionReportNoBtn.setOnClickListener {
+        binding.unregisterNoBtn.setOnClickListener {
             dismiss()
         }
 
-        binding.missionReportYesBtn.setOnClickListener {
+        binding.unregisterYesBtn.setOnClickListener {
             // 신고 api 연결
-            retrofit.postMissionReport(item.missionId).enqueue(object : Callback<MissionReportResponse> {
+            /*retrofit.postMissionReport(item.missionId).enqueue(object :
+                Callback<MissionReportResponse> {
                 override fun onResponse(call: Call<MissionReportResponse>, response: Response<MissionReportResponse>) {
                     if (response.isSuccessful) {
                         val reportResponse = response.body()
                         if (reportResponse != null) {
                             if (reportResponse.isSuccess) {
-                                listener?.onReportSubmitted("신고가 접수되었어요.")
-                                Log.d("report","신고가 접수되었어요.")
                             } else {
                                 Log.d("report",reportResponse.errorMessage)
-                                listener?.onReportSubmitted(reportResponse.errorMessage)
                             }
                         }
                     } else {
                         // API 호출 실패 처리
                         Log.d("report","API 호출 실패")
-                        listener?.onReportSubmitted("api 호출 실패 response.isSuccessful : ${response.isSuccessful}")
                     }
                 }
 
                 override fun onFailure(call: Call<MissionReportResponse>, t: Throwable) {
                     // 네트워크 등의 문제로 API 호출이 실패한 경우 처리
                     Log.d("report","onFailure : $t")
-                    listener?.onReportSubmitted("api 호출 실패 : $t")
                 }
-            })
+            })*/
 
         }
     }
 }
-

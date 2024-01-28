@@ -560,30 +560,37 @@ Rabbit-UMC 은(는) 정보주체의 이용정보를 저장하고 수시로 불�
     <string name="mission_create_calendar_date_default">기본: 오늘 날짜</string>
 
     <!--마이페이지-->
-    <string name="my_page_hello">안녕하세요</string>
-    <string name="my_page_title">&#160;집사님 :)</string>
-    <string name="my_page_from">부터</string>
-    <string name="my_page_with_myo">묘집사와 함께하고 있어요.</string>
-    <string name="my_page_edit_profile">프로필 편집</string>
+    <string name="mypage_hello">안녕하세요</string>
+    <string name="mypage_title">&#160;집사님 :)</string>
+    <string name="mypage_from">부터</string>
+    <string name="mypage_with_myo">묘집사와 함께하고 있어요.</string>
+    <string name="mypage_edit_profile">프로필 편집</string>
     <!--마이페이지 히스토리-->
-    <string name="my_page_history">히스토리 보기</string>
-    <string name="my_page_history_toolbar_title">히스토리</string>
-    <string name="my_page_history_nickname_title">&#160;집사님의</string>
-    <string name="my_page_history_success_cnt">성공 히스토리는 총</string>
-    <string name="my_page_history_fail_cnt">실패 히스토리는 총</string>
-    <string name="my_page_history_mission_of">&#160;미션 중&#160;</string>
-    <string name="my_page_history_mission_success">의 미션을 달성했어요.</string>
-    <string name="my_page_history_mission_fail">의 미션을 달성하지 못했어요.</string>
-    <string name="my_page_history_mission_success_rate">미션 달성률</string>
-    <string name="my_page_history_mission_challenger">도전자&#160;</string>
-    <string name="my_page_history_mission_challenger_of">명 중에서&#160;</string>
-    <string name="my_page_history_mission_challenger_success">명이 달성했어요!</string>
+    <string name="mypage_history">히스토리 보기</string>
+    <string name="mypage_history_toolbar_title">히스토리</string>
+    <string name="mypage_history_nickname_title">&#160;집사님의</string>
+    <string name="mypage_history_success_cnt_title">성공 히스토리는 총</string>
+    <string name="mypage_history_fail_cnt_title">실패 히스토리는 총</string>
+    <string name="mypage_history_mission_of">&#160;미션 중&#160;</string>
+    <string name="mypage_history_mission_success">의 미션을 달성했어요.</string>
+    <string name="mypage_history_mission_fail">의 미션을 달성하지 못했어요.</string>
+    <string name="mypage_history_mission_success_rate">미션 달성률</string>
+    <string name="mypage_history_mission_challenger">도전자&#160;</string>
+    <string name="mypage_history_mission_challenger_of">명 중에서&#160;</string>
+    <string name="mypage_history_mission_achieve">명이 달성했어요!</string>
+
+    <!--회원탈퇴-->
+    <string name="unregister_title">집사님, 회원탈퇴 하시나요?</string>
+    <string name="unregister_desc">탈퇴시, 집사님의 활동 내용이 모두 삭제됩니다!\n원치 않으시다면, 카카오 앱에서\n연동해제를 해주시면 됩니다!</string>
+    <string name="unregister_yes">탈퇴 하겠습니다.</string>
+    <string name="unregister_no">아니요, 취소할게요.</string>
 
     <!--프로필 편집-->
     <string name="edit_profile">프로필 편집</string>
     <string name="edit_profile_title">프로필 설정</string>
     <string name="edit_profile_desc">프로필 사진과 닉네임을 변경할 수 있어요.</string>
     <string name="edit_profile_check_duplication">중복 확인</string>
+    <string name="edit_profile_nickname">닉네임</string>
     <string name="edit_profile_usable_nickname">사용 가능한 닉네임이에요.</string>
     <string name="edit_profile_unusable_nickname">사용 불가능한 닉네임이에요.</string>
     <string name="edit_profile_complete">편집 완료</string>

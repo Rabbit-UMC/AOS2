@@ -11,8 +11,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myo_jib_sa.login.api.RetrofitInstance
-import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.spfManager
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.FragmentMissionBinding
 import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
 import com.example.myo_jib_sa.mission.adapter.MissionRVAdapter
@@ -35,15 +34,13 @@ class MissionFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var missionRVAdapter: MissionRVAdapter
     private lateinit var missionList: List<Mission>
-    val retrofit = RetrofitInstance.getInstance().create(MissionAPI::class.java)
+    val retrofit: MissionAPI = sRetrofit.create(MissionAPI::class.java)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMissionBinding.inflate(inflater, container, false)
-
-        spfManager.setUserToken("eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDQxNzgzODQsImV4cCI6MTcwNTY0OTYxM30.9ALZ4r1x29gf0FcWejrTFTNk2RcPEbmw8EIKvjB1Log")
 
         return binding.root
     }
@@ -58,11 +55,11 @@ class MissionFragment : Fragment() {
         // 전체 리스트 탭
         binding.missionCategoryTl.addTab(binding.missionCategoryTl.newTab().setText("전체").setId(0))
 
-        // 미션 리스트 조회 api 호출
-        getMissionListAPI()
-
         // 카테고리 리스트 조회 api 호출
         getMissionCategoryListApi()
+
+        // 미션 리스트 조회 api 호출
+        getMissionListAPI()
 
         //floating 버튼 설정
         binding.newMissionFloatingBtn.setOnClickListener{
@@ -95,6 +92,9 @@ class MissionFragment : Fragment() {
 
     // 미션 리스트 리사이클러뷰 어댑터 구성
     private fun setMissionAdapter(dataList: List<Mission>) {
+        if (!isAdded) {
+            return
+        }
         missionRVAdapter = MissionRVAdapter(
             dataList,
             onClickListener = object : MissionRVAdapter.OnClickListener {

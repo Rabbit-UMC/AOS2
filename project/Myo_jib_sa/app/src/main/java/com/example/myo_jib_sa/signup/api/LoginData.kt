@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.login.api
+package com.example.myo_jib_sa.signup.api
 
 import com.example.myo_jib_sa.base.BaseResponse
 
@@ -20,5 +20,6 @@ data class SignUpResponse(
 ): BaseResponse()
 data class SignUpResult(
     val id:Long,
-    val userName: String
+    val jwtAccessToken:String,
+    val jwtRefreshToken:String
 )
