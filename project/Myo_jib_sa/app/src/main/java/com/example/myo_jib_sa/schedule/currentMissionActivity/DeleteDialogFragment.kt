@@ -11,15 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.DialogFragmentCurrentMissionDeleteBinding
+import com.example.myo_jib_sa.schedule.api.DeleteMyMissionNScheduleResponse
+import com.example.myo_jib_sa.schedule.api.MissionAPI
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
-import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteService
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteResponse
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteService
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionNScheduleDelete.CurrentMissionNScheduleDeleteResponse
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionNScheduleDelete.CurrentMissionNScheduleDeleteService
-import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -70,20 +66,16 @@ class DeleteDialogFragment(
     }
 
     private fun currentMissionNSchedulesDeleteApi(missionId:Long?, deleteScheduleIdList:List<Long>){
-        // JWT 값 가져오기
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("jwt", null)
-
-        val service = RetrofitClient.getInstance().create(CurrentMissionNScheduleDeleteService::class.java)
-
         Log.d("retrofit", "missionId : "+missionId)
         Log.d("retrofit", "deleteScheduleIdList : "+deleteScheduleIdList.joinToString(", "))
-        val listCall = service.currentMissionNScheduleDelete(token, missionId.toString(), deleteScheduleIdList.joinToString(", "))
 
-        listCall.enqueue(object : Callback<CurrentMissionNScheduleDeleteResponse> {
+        sRetrofit.create(MissionAPI::class.java).deleteMyMissionNSchedule(
+            missionId.toString(),
+            deleteScheduleIdList.joinToString(", "))
+            .enqueue(object : Callback<DeleteMyMissionNScheduleResponse> {
             override fun onResponse(
-                call: Call<CurrentMissionNScheduleDeleteResponse>,
-                response: Response<CurrentMissionNScheduleDeleteResponse>
+                call: Call<DeleteMyMissionNScheduleResponse>,
+                response: Response<DeleteMyMissionNScheduleResponse>
             ) {
                 if (response.isSuccessful) {
                     if(response.body() != null && response.body()!!.isSuccess) {
@@ -107,7 +99,7 @@ class DeleteDialogFragment(
 
                     deleteDialogListener.onDeleteListener("삭제 실패", false)
                 }}
-            override fun onFailure(call: Call<CurrentMissionNScheduleDeleteResponse>, t: Throwable) {
+            override fun onFailure(call: Call<DeleteMyMissionNScheduleResponse>, t: Throwable) {
                 Log.e("retrofit", "currentMissionNSchedulesDeleteApi_onFailure: ${t.message}")
                 deleteDialogListener.onDeleteListener("삭제 실패", false)
             }

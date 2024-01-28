@@ -18,20 +18,21 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResponse
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResult
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionService
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleEditBinding
-import com.example.myo_jib_sa.schedule.adapter.CalendarAdapter
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyRequest
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyResponse
-import com.example.myo_jib_sa.schedule.api.scheduleModify.ScheduleModifyService
+import com.example.myo_jib_sa.schedule.api.MissionAPI
+import com.example.myo_jib_sa.schedule.api.MyMissionResponse
+import com.example.myo_jib_sa.schedule.api.MyMissionResult
+import com.example.myo_jib_sa.schedule.api.ScheduleAPI
+import com.example.myo_jib_sa.schedule.api.ScheduleDetailResult
+import com.example.myo_jib_sa.schedule.api.UpdateScheduleRequest
+import com.example.myo_jib_sa.schedule.api.UpdateScheduleResponse
 import com.google.android.material.tabs.TabLayoutMediator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.create
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.YearMonth
@@ -39,6 +40,7 @@ import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 
 class ScheduleEditDialogFragment : DialogFragment() {
+    val retrofit:ScheduleAPI =sRetrofit.create(ScheduleAPI::class.java)
     private lateinit var binding: DialogFragmentScheduleEditBinding
     private var scheduleData : ScheduleDetailResult = ScheduleDetailResult(
         scheduleId = 0,
@@ -96,13 +98,13 @@ class ScheduleEditDialogFragment : DialogFragment() {
         resizeDialog()
     }
 
-    private fun setDialogMissionAdapter(missionList: List<CurrentMissionResult>){
+    private fun setDialogMissionAdapter(missionList: List<MyMissionResult>){
         var dialogMissionAdapter = DialogMissionAdapter(missionList)
         binding.missionRv.adapter = dialogMissionAdapter
         binding.missionRv.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
 
         dialogMissionAdapter.setItemClickListener(object : DialogMissionAdapter.OnItemClickListener{
-            override fun onClick(data: CurrentMissionResult) {
+            override fun onClick(data: MyMissionResult) {
                 binding.missionTitleTv.text = data.missionTitle
                 scheduleData.missionTitle = data.missionTitle
                 scheduleData.missionId = data.missionId
@@ -441,19 +443,13 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
     //currentMission api연결
     private fun currentMissionApi() {
-        val sharedPreferences =
-            requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("jwt", null)
-
-        val service = RetrofitClient.getInstance().create(CurrentMissionService::class.java)
-        val listCall = service.currentMission(token)
-        listCall.enqueue(object : Callback<CurrentMissionResponse> {
+        sRetrofit.create(MissionAPI::class.java).getMyMission().enqueue(object : Callback<MyMissionResponse> {
             override fun onResponse(
-                call: Call<CurrentMissionResponse>, response: Response<CurrentMissionResponse>
+                call: Call<MyMissionResponse>, response: Response<MyMissionResponse>
             ) {
                 if (response.isSuccessful) {
                     Log.d("retrofit", "currentMissionApi " + response.body().toString());
-                    val missionList:ArrayList<CurrentMissionResult> = (response.body()?.result as ArrayList<CurrentMissionResult>?)!!
+                    val missionList:ArrayList<MyMissionResult> = (response.body()?.result as ArrayList<MyMissionResult>?)!!
                     setDialogMissionAdapter(missionList)
                 } else {
                     Log.e("retrofit", "currentMissionApi_onResponse: Error ${response.code()}")
@@ -462,7 +458,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
                 }
             }
 
-            override fun onFailure(call: Call<CurrentMissionResponse>, t: Throwable) {
+            override fun onFailure(call: Call<MyMissionResponse>, t: Throwable) {
                 Log.e("retrofit", "currentMissionApi_onFailure: ${t.message}")
             }
         })
@@ -470,15 +466,11 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
     //scheduleModify api연결
     private fun scheduleModifyApi() {
-        // JWT 값 가져오기
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("jwt", null)
-
         if(scheduleData.missionId == -1L){
             scheduleData.missionId = null
         }
 
-        val requestBody = ScheduleModifyRequest(
+        val requestBody = UpdateScheduleRequest(
             title = binding.scheduleTitleEtv.text.toString(),
             content = binding.scheduleMemoEtv.text.toString() ,//메모
             startAt = scheduleData.startAt,
@@ -486,15 +478,12 @@ class ScheduleEditDialogFragment : DialogFragment() {
             missionId = scheduleData.missionId,
             scheduleWhen = scheduleData.scheduleWhen
         )
-
         Log.d("debug", requestBody.toString())
-        val service = RetrofitClient.getInstance().create(ScheduleModifyService::class.java)
-        val listCall = service.scheduleModify(token, scheduleData.scheduleId, requestBody)
 
-        listCall.enqueue(object : Callback<ScheduleModifyResponse> {
+        retrofit.updateSchedule(scheduleData.scheduleId, requestBody).enqueue(object : Callback<UpdateScheduleResponse> {
             override fun onResponse(
-                call: Call<ScheduleModifyResponse>,
-                response: Response<ScheduleModifyResponse>
+                call: Call<UpdateScheduleResponse>,
+                response: Response<UpdateScheduleResponse>
             ) {
                 if (response.isSuccessful) {
                     Log.d("retrofit", "scheduleModifyApi"+response.body().toString());
@@ -503,7 +492,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
                     val errorBody = response.errorBody()?.string()
                     Log.e("retrofit", "scheduleModifyApi_onResponse: Error Body $errorBody")
                 }}
-            override fun onFailure(call: Call<ScheduleModifyResponse>, t: Throwable) {
+            override fun onFailure(call: Call<UpdateScheduleResponse>, t: Throwable) {
                 Log.e("retrofit", "scheduleModifyApi_onFailure: ${t.message}")
             }
         })

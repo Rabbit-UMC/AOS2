@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResult
+import com.example.myo_jib_sa.schedule.api.MyMissionResult
 
-class CurrentMissionAdapter(private val missionList:ArrayList<CurrentMissionResult>):
+class CurrentMissionAdapter(private val missionList:ArrayList<MyMissionResult>):
     RecyclerView.Adapter<CurrentMissionAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){

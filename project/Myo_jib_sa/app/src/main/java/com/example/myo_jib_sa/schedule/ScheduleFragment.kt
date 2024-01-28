@@ -21,15 +21,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.BuildConfig
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResponse
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResult
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionService
-import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleMonthService
-import com.example.myo_jib_sa.schedule.api.scheduleMonth.ScheduleMonthResponse
-import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResponse
-import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
-import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayService
 import com.example.myo_jib_sa.schedule.adapter.*
 import com.example.myo_jib_sa.schedule.createScheduleActivity.CreateScheduleActivity
 import com.example.myo_jib_sa.schedule.currentMissionActivity.CurrentMissionActivity
@@ -37,6 +30,13 @@ import com.example.myo_jib_sa.schedule.dialog.ScheduleDeleteDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.example.myo_jib_sa.databinding.ToastCreateScheduleBinding
+import com.example.myo_jib_sa.schedule.api.MissionAPI
+import com.example.myo_jib_sa.schedule.api.MyMissionResponse
+import com.example.myo_jib_sa.schedule.api.MyMissionResult
+import com.example.myo_jib_sa.schedule.api.ScheduleAPI
+import com.example.myo_jib_sa.schedule.api.ScheduleMonthResponse
+import com.example.myo_jib_sa.schedule.api.ScheduleOfDayResponse
+import com.example.myo_jib_sa.schedule.api.ScheduleOfDayResult
 import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
@@ -54,6 +54,8 @@ import java.time.format.DateTimeFormatter
 
 
 class ScheduleFragment() : Fragment() {
+    val scheduleRetrofit:ScheduleAPI = sRetrofit.create(ScheduleAPI::class.java)
+    val missionRetrofit:MissionAPI = sRetrofit.create(MissionAPI::class.java)
 
     lateinit var binding: FragmentScheduleBinding
     lateinit var calendarAdapter: CalendarAdapter //calendarRvItemClickEvent() 함수에 사용하기 위해 전역으로 선언
@@ -65,7 +67,7 @@ class ScheduleFragment() : Fragment() {
     private lateinit var createScheduleResultLauncher: ActivityResultLauncher<Intent>
 
 
-    var mDataList = ArrayList<CurrentMissionResult>() //미션 리스트 데이터
+    var mDataList = ArrayList<MyMissionResult>() //미션 리스트 데이터
     var sDataList = ArrayList<ScheduleOfDayResult>() //일정 리스트 데이터
 
     private var adLoader: AdLoader? = null //광고를 불러올 adLoader 객체
@@ -482,21 +484,11 @@ class ScheduleFragment() : Fragment() {
 
     //currentMission api연결
     private fun currentMissionApi() {
-        val sharedPreferences =
-            requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-
-        val token = sharedPreferences.getString("jwt", null)
-
-
-
         mDataList.clear()//mDataList초기화
 
-        val service = RetrofitClient.getInstance().create(CurrentMissionService::class.java)
-        val listCall = service.currentMission(token)
-        Log.d("retrofit", "token="+token )
-        listCall.enqueue(object : Callback<CurrentMissionResponse> {
+        missionRetrofit.getMyMission().enqueue(object : Callback<MyMissionResponse> {
             override fun onResponse(
-                call: Call<CurrentMissionResponse>, response: Response<CurrentMissionResponse>
+                call: Call<MyMissionResponse>, response: Response<MyMissionResponse>
             ) {
                 if (response.isSuccessful) {
                     Log.d("retrofit", "currentMissionApi " + response.body().toString());
@@ -507,7 +499,7 @@ class ScheduleFragment() : Fragment() {
                     if (missionList != null) {
                         for (i in 0 until missionList!!.size) {
                             mDataList.add(
-                                CurrentMissionResult(
+                                MyMissionResult(
                                     missionList[i].missionId,
                                     missionList[i].missionTitle,
                                     missionList[i].challengerCnt,
@@ -527,8 +519,7 @@ class ScheduleFragment() : Fragment() {
                     Log.e("retrofit", "currentMissionApi_onResponse: Error Body $errorBody")
                 }
             }
-
-            override fun onFailure(call: Call<CurrentMissionResponse>, t: Throwable) {
+            override fun onFailure(call: Call<MyMissionResponse>, t: Throwable) {
                 Log.e("retrofit", "currentMissionApi_onFailure: ${t.message}")
             }
         })
@@ -538,18 +529,9 @@ class ScheduleFragment() : Fragment() {
     //calendarRvItemClickEvent()안에서만 실행
     @RequiresApi(Build.VERSION_CODES.O)
     fun scheduleOfDayApi(date: LocalDate) {
-        // JWT 값 가져오기
-        val sharedPreferences =
-            requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("jwt", null)
-
-
         sDataList.removeAll(sDataList.toSet())//초기화
 
-        val service = RetrofitClient.getInstance().create(ScheduleOfDayService::class.java)
-        val listCall = service.scheduleOfDay(token, YYYYMMDDFromDate(date))
-
-        listCall.enqueue(object : Callback<ScheduleOfDayResponse> {
+        scheduleRetrofit.getScheduleOfDay(YYYYMMDDFromDate(date)).enqueue(object : Callback<ScheduleOfDayResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(
                 call: Call<ScheduleOfDayResponse>, response: Response<ScheduleOfDayResponse>
@@ -598,26 +580,9 @@ class ScheduleFragment() : Fragment() {
         Log.d("retrofit", "date" + standardDate)
         Log.d("retrofit", "yyyyMM" + yyyyMM)
 
-        //해당 월의 마지막 날짜 가져오기(결과: 1월이면 31)
-        var yearMonth = YearMonth.from(standardDate)
-        var lastDay = yearMonth.lengthOfMonth()
+        scheduleCntMap = HashMap<String, Int>()//초기화
 
-        scheduleCntMap = HashMap<String, Int>()
-//        //hasScheduleMap초기화
-//        for (j in 1..lastDay) {
-//            val formatter = DecimalFormat("00")
-//            hasScheduleMap["$yyyyMM-${formatter.format(j)}"] = false
-//        }
-
-        // JWT 값 가져오기
-        val sharedPreferences =
-            requireActivity().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("jwt", "")
-
-        val service = RetrofitClient.getInstance().create(ScheduleMonthService::class.java)
-        val listCall = service.scheduleMonth(token, yyyyMM)
-
-        listCall.enqueue(object : Callback<ScheduleMonthResponse> {
+        scheduleRetrofit.scheduleMonth(yyyyMM).enqueue(object : Callback<ScheduleMonthResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(
                 call: Call<ScheduleMonthResponse>, response: Response<ScheduleMonthResponse>

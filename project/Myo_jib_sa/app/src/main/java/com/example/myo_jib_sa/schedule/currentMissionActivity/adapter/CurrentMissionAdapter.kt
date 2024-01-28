@@ -6,19 +6,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionBinding
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResult
-
+import com.example.myo_jib_sa.schedule.api.MyMissionResult
 
 
 class CurrentMissionAdapter (
-    private val missionList:ArrayList<CurrentMissionResult>,
+    private val missionList:ArrayList<MyMissionResult>,
     private val onItemClickListener: OnItemClickListener,):
     RecyclerView.Adapter<CurrentMissionAdapter.ViewHolder>() {
 
 
     interface OnItemClickListener{
         fun onMissionClick(missionId: Long)
-        fun onScheduleClick(currentMissionData: CurrentMissionResult)
+        fun onScheduleClick(currentMissionData: MyMissionResult)
     }
 
     //화면 설정
@@ -39,7 +38,7 @@ class CurrentMissionAdapter (
     inner class ViewHolder(private val binding: ItemCurrentMissionBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: CurrentMissionResult) {
+        fun bind(data: MyMissionResult) {
             Log.d("debug", "categoryId"+data.categoryId)
             //1번이 자유, 2번이 운동, 3번이 예술
             when(data.categoryId){

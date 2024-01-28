@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemScheduleScheduleBinding
-import com.example.myo_jib_sa.schedule.api.scheduleOfDay.ScheduleOfDayResult
+import com.example.myo_jib_sa.schedule.api.ScheduleOfDayResult
 import java.text.DecimalFormat
 
 class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):

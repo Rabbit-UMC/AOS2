@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResult
 import com.example.myo_jib_sa.databinding.ItemScheduleMissionBinding
+import com.example.myo_jib_sa.schedule.api.MyMissionResponse
+import com.example.myo_jib_sa.schedule.api.MyMissionResult
 
-class CurrentMissionAdapter(private val missionList: List<CurrentMissionResult>):
+class CurrentMissionAdapter(private val missionList: List<MyMissionResult>):
     RecyclerView.Adapter<CurrentMissionAdapter.ViewHolder>() {
     override fun onCreateViewHolder( //화면 설정
         parent: ViewGroup,
@@ -27,7 +28,7 @@ class CurrentMissionAdapter(private val missionList: List<CurrentMissionResult>)
 
     inner class ViewHolder(private val binding: ItemScheduleMissionBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: CurrentMissionResult) {
+        fun bind(data: MyMissionResult) {
             when(data.categoryId){
                 1L -> binding.root.setBackgroundResource(R.drawable.view_round_r16_gray4) //자유
                 2L -> binding.root.setBackgroundResource(R.drawable.view_round_r16_main2)//운동
@@ -47,7 +48,7 @@ class CurrentMissionAdapter(private val missionList: List<CurrentMissionResult>)
     //클릭 이벤트 처리 ==============================================
     //리스너 인터페이스
     interface  OnItemClickListener{
-        fun onClick(data: CurrentMissionResult)
+        fun onClick(data: MyMissionResult)
 
     }
     // (3) 외부에서 클릭 시 이벤트 설정

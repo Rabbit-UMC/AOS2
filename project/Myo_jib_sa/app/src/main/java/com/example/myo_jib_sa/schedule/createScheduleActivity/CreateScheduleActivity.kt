@@ -17,17 +17,17 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
 import com.example.myo_jib_sa.databinding.ToastCreateScheduleBinding
 import com.example.myo_jib_sa.schedule.ScheduleFragment
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResponse
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResult
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionService
-
-import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddRequest
-import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddResponse
-import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddService
+import com.example.myo_jib_sa.schedule.api.CreateScheduleRequest
+import com.example.myo_jib_sa.schedule.api.CreateScheduleResponse
+import com.example.myo_jib_sa.schedule.api.MissionAPI
+import com.example.myo_jib_sa.schedule.api.MyMissionResponse
+import com.example.myo_jib_sa.schedule.api.MyMissionResult
+import com.example.myo_jib_sa.schedule.api.ScheduleAPI
 import com.example.myo_jib_sa.schedule.createScheduleActivity.spinner.ScheduleCreateSpinnerDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.DialogMissionAdapter
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -35,17 +35,19 @@ import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.create
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 
 class CreateScheduleActivity : AppCompatActivity() {
+    val scheduleRetrofit : ScheduleAPI =sRetrofit.create(ScheduleAPI::class.java)
     private lateinit var binding : ActivityCreateScheduleBinding
     private lateinit var referenceDate : LocalDate //오늘 날짜
     private lateinit var selectedDate : LocalDate //선택한 날짜
 
-    private var scheduleData : ScheduleAddRequest = ScheduleAddRequest(
+    private var scheduleData : CreateScheduleRequest = CreateScheduleRequest(
         missionId = null,
         scheduleTitle = null,
         startAt = null,
@@ -74,13 +76,13 @@ class CreateScheduleActivity : AppCompatActivity() {
         currentMissionApi()
     }
 
-    private fun setDialogMissionAdapter(missionList: List<CurrentMissionResult>){
+    private fun setDialogMissionAdapter(missionList: List<MyMissionResult>){
         var dialogMissionAdapter = DialogMissionAdapter(missionList)
         binding.missionListRv.adapter = dialogMissionAdapter
         binding.missionListRv.layoutManager = LinearLayoutManager(this ,RecyclerView.HORIZONTAL, false)
 
         dialogMissionAdapter.setItemClickListener(object : DialogMissionAdapter.OnItemClickListener{
-            override fun onClick(data: CurrentMissionResult) {
+            override fun onClick(data: MyMissionResult) {
                 binding.missionTitleTv.text = data.missionTitle
                 scheduleData.missionId = data.missionId
                 createScheduleBtn()
@@ -282,14 +284,8 @@ class CreateScheduleActivity : AppCompatActivity() {
     }
     private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
 
-
     private fun scheduleAddApi() {
-        // SharedPreferences 객체 가져오기
-        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        // JWT 값 가져오기
-        val token = sharedPreferences.getString("jwt", null)
-
-        val requestBody = ScheduleAddRequest(
+        val requestBody = CreateScheduleRequest(
             scheduleTitle = binding.scheduleTitleEtv.text.toString(),
             content = binding.scheduleMemoEtv.text.toString(),//메모
             startAt = scheduleData.startAt,
@@ -297,15 +293,12 @@ class CreateScheduleActivity : AppCompatActivity() {
             missionId = scheduleData.missionId,
             scheduleWhen = scheduleDateFormatter()
         )
+
         Log.d("retrofit", "ScheduleAddRequest: $requestBody");
-
-        val service = RetrofitClient.getInstance().create(ScheduleAddService::class.java)
-        val listCall = service.scheduleAdd(token, requestBody)
-
-        listCall.enqueue(object : Callback<ScheduleAddResponse> {
+        scheduleRetrofit.createSchedule(requestBody).enqueue(object : Callback<CreateScheduleResponse> {
             override fun onResponse(
-                call: Call<ScheduleAddResponse>,
-                response: Response<ScheduleAddResponse>
+                call: Call<CreateScheduleResponse>,
+                response: Response<CreateScheduleResponse>
             ) {
                 if (response.isSuccessful && response.body()!!.isSuccess) {
                     Log.d("retrofit", response.body().toString());
@@ -319,14 +312,14 @@ class CreateScheduleActivity : AppCompatActivity() {
                     finish()
 
                 } else {
-                    createToast("일정 저장 실패 : ${response.body()?.message}")
+                    createToast("일정 저장 실패 : ${response.body()?.errorMessage}")
                     Log.e("retrofit", "scheduleAddApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
                     Log.e("retrofit", "scheduleAddApi_onResponse: Error Body $errorBody")
                 }
             }
 
-            override fun onFailure(call: Call<ScheduleAddResponse>, t: Throwable) {
+            override fun onFailure(call: Call<CreateScheduleResponse>, t: Throwable) {
                 createToast("일정 저장 실패")
                 Log.e("retrofit", "scheduleAddApi_onFailure: ${t.message}")
             }
@@ -335,28 +328,24 @@ class CreateScheduleActivity : AppCompatActivity() {
 
     //currentMission api연결
     private fun currentMissionApi() {
-        val sharedPreferences =
-            getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("jwt", null)
-
-        val service = RetrofitClient.getInstance().create(CurrentMissionService::class.java)
-        val listCall = service.currentMission(token)
-        listCall.enqueue(object : Callback<CurrentMissionResponse> {
+        sRetrofit.create(MissionAPI::class.java).getMyMission().enqueue(object : Callback<MyMissionResponse> {
             override fun onResponse(
-                call: Call<CurrentMissionResponse>, response: Response<CurrentMissionResponse>
+                call: Call<MyMissionResponse>, response: Response<MyMissionResponse>
             ) {
                 if (response.isSuccessful) {
                     Log.d("retrofit", "currentMissionApi " + response.body().toString());
-                    val missionList:ArrayList<CurrentMissionResult> = (response.body()?.result as ArrayList<CurrentMissionResult>?)!!
-                    setDialogMissionAdapter(missionList)
+                    if(response.body()!!.result!=null){
+                        val missionList:ArrayList<MyMissionResult> =
+                            (response.body()?.result as ArrayList<MyMissionResult>?)!!
+                        setDialogMissionAdapter(missionList)
+                    }
                 } else {
                     Log.e("retrofit", "currentMissionApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
                     Log.e("retrofit", "currentMissionApi_onResponse: Error Body $errorBody")
                 }
             }
-
-            override fun onFailure(call: Call<CurrentMissionResponse>, t: Throwable) {
+            override fun onFailure(call: Call<MyMissionResponse>, t: Throwable) {
                 Log.e("retrofit", "currentMissionApi_onFailure: ${t.message}")
             }
         })

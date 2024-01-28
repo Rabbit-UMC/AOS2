@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ItemCurrentMissionDeleteBinding
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResult
+import com.example.myo_jib_sa.schedule.api.MyMissionResult
 
 data class CurrentMissionDeleteData(
-    var currentMissionResult: CurrentMissionResult,
+    var currentMissionResult: MyMissionResult,
     var selected:Boolean = false
 )
 
