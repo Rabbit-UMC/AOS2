@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.createScheduleActivity
+package com.example.myo_jib_sa.schedule.createScheduleActivity.dialog
 
 import android.content.Context
 import android.graphics.Color
@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import android.view.WindowManager
 import android.widget.NumberPicker
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogFragmentStartTimeBinding
 import java.text.DecimalFormat
 

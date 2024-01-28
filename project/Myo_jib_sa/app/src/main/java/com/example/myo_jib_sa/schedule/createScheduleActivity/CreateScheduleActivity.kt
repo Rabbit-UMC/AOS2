@@ -11,14 +11,12 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
-import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
-import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
 import com.example.myo_jib_sa.databinding.ToastCreateScheduleBinding
 import com.example.myo_jib_sa.schedule.ScheduleFragment
@@ -28,6 +26,9 @@ import com.example.myo_jib_sa.schedule.api.MissionAPI
 import com.example.myo_jib_sa.schedule.api.MyMissionResponse
 import com.example.myo_jib_sa.schedule.api.MyMissionResult
 import com.example.myo_jib_sa.schedule.api.ScheduleAPI
+import com.example.myo_jib_sa.schedule.createScheduleActivity.dialog.CalendarDialogFragment
+import com.example.myo_jib_sa.schedule.createScheduleActivity.dialog.EndTimeDialogFragment
+import com.example.myo_jib_sa.schedule.createScheduleActivity.dialog.StartTimeDialogFragment
 import com.example.myo_jib_sa.schedule.createScheduleActivity.spinner.ScheduleCreateSpinnerDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.DialogMissionAdapter
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -35,7 +36,6 @@ import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -81,18 +81,25 @@ class CreateScheduleActivity : AppCompatActivity() {
         binding.missionListRv.adapter = dialogMissionAdapter
         binding.missionListRv.layoutManager = LinearLayoutManager(this ,RecyclerView.HORIZONTAL, false)
 
+        var preMissionId : Long = -1
         dialogMissionAdapter.setItemClickListener(object : DialogMissionAdapter.OnItemClickListener{
             override fun onClick(data: MyMissionResult) {
-                binding.missionTitleTv.text = data.missionTitle
-                scheduleData.missionId = data.missionId
-                createScheduleBtn()
+                if(preMissionId == data.missionId){
+                    binding.missionTitleTv.text = "현재 미션이 없습니다."
+                    scheduleData.missionId = null
+                    preMissionId=-1
+                }else{
+                    binding.missionTitleTv.text = data.missionTitle
+                    scheduleData.missionId = data.missionId
+                    preMissionId=data.missionId
+                }
             }
         })
     }
 
     fun createScheduleBtn(){
         //생성 조건 만족시
-        if(binding.scheduleTitleEtv.text.isNotEmpty() && scheduleData.missionId != null &&  scheduleData.startAt != null &&  scheduleData.endAt != null &&  scheduleData.scheduleWhen != null && (scheduleData.endAt!! > scheduleData.startAt!!)){
+        if(binding.scheduleTitleEtv.text.isNotEmpty() &&  scheduleData.startAt != null &&  scheduleData.endAt != null &&  scheduleData.scheduleWhen != null && (scheduleData.endAt!! > scheduleData.startAt!!)){
             binding.createBtn.isEnabled = true
             binding.createBtn.setBackgroundResource(R.drawable.view_round_r8_blue)
         }else{ //만족 못했을 시
@@ -126,7 +133,7 @@ class CreateScheduleActivity : AppCompatActivity() {
         })
         //완료 버튼
         binding.createBtn.setOnClickListener {
-            if(binding.scheduleTitleEtv.text.isNotEmpty() && scheduleData.missionId != null &&  scheduleData.startAt != null &&  scheduleData.endAt != null &&  scheduleData.scheduleWhen != null && (scheduleData.endAt!! > scheduleData.startAt!!)){
+            if(binding.scheduleTitleEtv.text.isNotEmpty() &&  scheduleData.startAt != null &&  scheduleData.endAt != null &&  scheduleData.scheduleWhen != null && (scheduleData.endAt!! > scheduleData.startAt!!)){
                 binding.createBtn.isEnabled = true
                 binding.createBtn.setBackgroundResource(R.drawable.view_round_r8_blue)
                 Log.d("exitDebug", "yes!!")

@@ -166,7 +166,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
                 call: Call<ScheduleDetailResponse>,
                 response: Response<ScheduleDetailResponse>
             ) {
-                if (response.isSuccessful) {
+                if (response.body()!!.isSuccess) {
                     Log.d("debug", "retrofit: "+response.body().toString());
                     result = response.body()!!.result
 
@@ -182,9 +182,8 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
                     binding.scheduleMemoTv.text = result!!.content
 
                 } else {
-                    Log.e("retrofit", "onResponse: Error ${response.code()}")
-                    val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                    Log.e("retrofit", "onResponse: Error Msg ${response.body()!!.errorMessage}")
+                    Log.e("retrofit", "onResponse: Error Code ${response.body()!!.errorCode}}")
                 }
             }
 
