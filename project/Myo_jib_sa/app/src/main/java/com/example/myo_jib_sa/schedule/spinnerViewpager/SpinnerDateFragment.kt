@@ -11,14 +11,15 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.NumberPicker
 import androidx.annotation.RequiresApi
+import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.databinding.FragmentSpinnerDateBinding
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
+import com.example.myo_jib_sa.schedule.api.ScheduleAPI
+import com.example.myo_jib_sa.schedule.api.ScheduleDetailResult
 import java.text.DecimalFormat
 import java.util.*
 
 
 class SpinnerDateFragment : Fragment() {
-
     private lateinit var binding : FragmentSpinnerDateBinding
     private var scheduleData : ScheduleDetailResult = ScheduleDetailResult(//sharedPreferences로 받은값 저장
         scheduleId = 0,

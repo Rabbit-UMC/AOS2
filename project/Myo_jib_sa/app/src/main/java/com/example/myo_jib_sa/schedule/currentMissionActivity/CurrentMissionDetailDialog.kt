@@ -12,11 +12,11 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.DialogCurrentMissionDetailBinding
+import com.example.myo_jib_sa.schedule.api.MissionAPI
+import com.example.myo_jib_sa.schedule.api.MyMissionDetailResponse
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
-import com.example.myo_jib_sa.databinding.DialogFragmentCurrentMissionDetailBinding
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDetail.CurrentMissionDetailResponse
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDetail.CurrentMissionDetailService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -87,18 +87,11 @@ class CurrentMissionDetailDialog(private val missionId : Long) : DialogFragment(
 
     //missionDetail api연결
     private fun missionDetailApi(missionId: Long) {
-        // JWT 값 가져오기
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("jwt", null)
-
-        val service = RetrofitClient.getInstance().create(CurrentMissionDetailService::class.java)
-        val listCall = service.currentMissionDetail(token, missionId)
-
-        listCall.enqueue(object : Callback<CurrentMissionDetailResponse> {
+        sRetrofit.create(MissionAPI::class.java).getMyMissionDetail(missionId).enqueue(object : Callback<MyMissionDetailResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(
-                call: Call<CurrentMissionDetailResponse>,
-                response: Response<CurrentMissionDetailResponse>
+                call: Call<MyMissionDetailResponse>,
+                response: Response<MyMissionDetailResponse>
             ) {
                 if (response.isSuccessful) {
                     Log.d("debug", "retrofit: " + response.body().toString());
@@ -129,8 +122,7 @@ class CurrentMissionDetailDialog(private val missionId : Long) : DialogFragment(
                     Log.e("retrofit", "onResponse: Error Body $errorBody")
                 }
             }
-
-            override fun onFailure(call: Call<CurrentMissionDetailResponse>, t: Throwable) {
+            override fun onFailure(call: Call<MyMissionDetailResponse>, t: Throwable) {
                 Log.e("retrofit", "onFailure: ${t.message}")
             }
         })

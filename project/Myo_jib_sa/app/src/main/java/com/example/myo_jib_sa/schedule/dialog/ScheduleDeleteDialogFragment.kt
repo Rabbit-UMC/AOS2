@@ -11,11 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDeleteBinding
-import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
-import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteService
 import com.example.myo_jib_sa.schedule.adapter.ScheduleAdaptar
+import com.example.myo_jib_sa.schedule.api.DeleteScheduleResponse
+import com.example.myo_jib_sa.schedule.api.ScheduleAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,8 +26,8 @@ class ScheduleDeleteDialogFragment(
     val scheduleAdaptar: ScheduleAdaptar,
     val scheduleId:Long
 ) : DialogFragment() {
+    val retrofit:ScheduleAPI = sRetrofit.create(ScheduleAPI::class.java)
     private lateinit var binding: DialogFragmentScheduleDeleteBinding
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -107,18 +108,10 @@ class ScheduleDeleteDialogFragment(
 
     //scheduleDelete api연결: 일정삭제
     fun scheduleDeleteApi() {
-        // JWT 값 가져오기
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("jwt", null)
-
-        val sDataList = scheduleAdaptar.getItem()
-        val service = RetrofitClient.getInstance().create(ScheduleDeleteService::class.java)
-        val listCall = service.scheduleDelete(token, scheduleId)
-
-        listCall.enqueue(object : Callback<ScheduleDeleteResponse> {
+        retrofit.deleteSchedule(scheduleId).enqueue(object : Callback<DeleteScheduleResponse> {
             override fun onResponse(
-                call: Call<ScheduleDeleteResponse>,
-                response: Response<ScheduleDeleteResponse>
+                call: Call<DeleteScheduleResponse>,
+                response: Response<DeleteScheduleResponse>
             ) {
                 if (response.isSuccessful) {
                     Log.d("retrofit", response.body().toString());
@@ -129,7 +122,7 @@ class ScheduleDeleteDialogFragment(
                     val errorBody = response.errorBody()?.string()
                     Log.e("retrofit", "onResponse: Error Body $errorBody")
                 }}
-            override fun onFailure(call: Call<ScheduleDeleteResponse>, t: Throwable) {
+            override fun onFailure(call: Call<DeleteScheduleResponse>, t: Throwable) {
                 Log.e("retrofit", "onFailure: ${t.message}")
             }
         })
