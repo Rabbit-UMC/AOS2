@@ -34,7 +34,8 @@ class MissionFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var missionRVAdapter: MissionRVAdapter
     private lateinit var missionList: List<Mission>
-    val retrofit: MissionAPI = sRetrofit.create(MissionAPI::class.java)
+
+    private val retrofit: MissionAPI = sRetrofit.create(MissionAPI::class.java)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

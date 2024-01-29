@@ -76,18 +76,24 @@ class SwipeHelper: ItemTouchHelper.Callback() {  // ItemTouchHelper.Callback 을
             )
             ViewCompat.setElevation(view, 6.dpToPx())
 
-            view.setBackgroundResource(R.drawable.background_item_clamped_mission_layout)
-            reportTextView?.elevation = 6.dpToPx()
-            reportTextView?.isClickable = true
-            Log.d("isNotClamped", "reportTextView?.isClickable : ${reportTextView?.isClickable}")
-
-            if(!isClamped) {
-                view.setBackgroundResource(R.drawable.background_item_mission_layout)
-                reportTextView?.elevation = 0f
-                reportTextView?.isClickable = false
-                Log.d("isClamped", "reportTextView?.isClickable : ${reportTextView?.isClickable}")
+            if (isCurrentlyActive) {
+                // 스와이프 중인 상태에서의 뷰 업데이트
+                view.setBackgroundResource(R.drawable.background_item_clamped_mission_layout)
+                reportTextView?.elevation = 6.dpToPx()
+                Log.d("isNotClamped", "reportTextView?.isClickable : ${reportTextView?.isClickable}")
             }
-
+            else {
+                view.setBackgroundResource(R.drawable.background_item_clamped_mission_layout)
+                reportTextView?.elevation = 6.dpToPx()
+                reportTextView?.isClickable = true
+                Log.d("isNotClamped", "reportTextView?.isClickable : ${reportTextView?.isClickable}")
+                if(!isClamped) {
+                    view.setBackgroundResource(R.drawable.background_item_mission_layout)
+                    reportTextView?.elevation = 0f
+                    reportTextView?.isClickable = false
+                    Log.d("isClamped", "reportTextView?.isClickable : ${reportTextView?.isClickable}")
+                }
+            }
         }
     }
     private fun getView(viewHolder: RecyclerView.ViewHolder): View {
