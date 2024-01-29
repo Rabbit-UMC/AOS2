@@ -45,5 +45,23 @@ data class GetCheckDuplicationResponse(
 ): BaseResponse()
 
 data class GetHistoryResponse(
-    val string: String
+    val code: String,
+    val isSuccess: Boolean,
+    val message: String,
+    val result: GetHistoryResult
+)
+data class GetHistoryResult(
+    val missionCnt: Int,
+    val targetCnt: Int,
+    val userMissionResDtos: List<UserMissionResDto>
+)
+data class UserMissionResDto(
+    val categoryId: Int,
+    val challengerCnt: Int,
+    val endAt: String,
+    val image: String,
+    val missionId: Int,
+    val startAt: String,
+    val successCnt: Int,
+    val title: String
 )
