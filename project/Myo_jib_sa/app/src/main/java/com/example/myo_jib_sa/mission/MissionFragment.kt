@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,24 +36,44 @@ class MissionFragment : Fragment() {
     private lateinit var missionRVAdapter: MissionRVAdapter
     private lateinit var missionList: List<Mission>
 
+    private var currentPage = 1
+    private var isLoading = false
+    private var isLastPage = false
+
+
     private val retrofit: MissionAPI = sRetrofit.create(MissionAPI::class.java)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMissionBinding.inflate(inflater, container, false)
+
+        setMissionList()
+
+        // NestedScrollView 스크롤 리스너 설정
+        binding.missionScroll.setOnScrollChangeListener {
+                v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            if (v != null) {
+                if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                    if (!isLoading && !isLastPage) {
+                        currentPage += 1
+                        getMissionListAPI(currentPage)
+                    }
+                }
+            }
+        }
+
+        //floating 버튼 설정
+        binding.newMissionFloatingBtn.setOnClickListener{
+            startActivity(Intent(activity, MissionCreateActivity::class.java))
+        }
 
         return binding.root
     }
 
-    override fun onResume() {
+
+    private fun setMissionList() {
         super.onResume()
         recyclerView = binding.missionMissionRecycler
-
-        binding.missionCategoryTl.removeAllTabs()
         missionList = emptyList()
-
         // 전체 리스트 탭
         binding.missionCategoryTl.addTab(binding.missionCategoryTl.newTab().setText("전체").setId(0))
 
@@ -60,36 +81,36 @@ class MissionFragment : Fragment() {
         getMissionCategoryListApi()
 
         // 미션 리스트 조회 api 호출
-        getMissionListAPI()
-
-        //floating 버튼 설정
-        binding.newMissionFloatingBtn.setOnClickListener{
-            startActivity(Intent(activity, MissionCreateActivity::class.java))
-        }
-
+        getMissionListAPI(0)
     }
 
     // 미션 리스트 조회
-    private fun getMissionListAPI() {
-        retrofit.getMissionList().enqueue(object : Callback<MissionListResponse> {
+    private fun getMissionListAPI(page: Int) {
+        isLoading = true // 데이터 로딩 시작
+
+        retrofit.getMissionList(page).enqueue(object : Callback<MissionListResponse> {
             override fun onResponse(call: Call<MissionListResponse>, response: Response<MissionListResponse>) {
+                isLoading = false // 데이터 로딩 완료
+
                 if (response.isSuccessful) {
-                    missionList = response.body()?.result ?: emptyList()
-                    Log.d("getMissionListAPI isSuccess",response.body().toString())
-                    // 어댑터 생성 및 리사이클러뷰에 설정
-                    setMissionAdapter(missionList)
-                } else {
-                    // API 요청 실패 처리
-                    Log.d("getMissionListAPI isFail",response.body().toString())
+                    val newItems = response.body()?.result ?: emptyList()
+                    if (newItems.isNotEmpty()) {
+                        missionList = missionList + newItems
+                        setMissionAdapter(missionList)
+                        missionRVAdapter.notifyDataSetChanged()
+                    } else {
+                        isLastPage = true
+                    }
                 }
             }
 
             override fun onFailure(call: Call<MissionListResponse>, t: Throwable) {
-                // 네트워크 등의 문제로 API 요청이 실패한 경우 처리
+                isLoading = false // 네트워크 오류 등으로 인한 로딩 실패
                 Log.d("getMissionListAPI Fail", t.toString())
             }
         })
     }
+
 
     // 미션 리스트 리사이클러뷰 어댑터 구성
     private fun setMissionAdapter(dataList: List<Mission>) {

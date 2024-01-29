@@ -6,7 +6,9 @@ import retrofit2.http.*
 interface MissionAPI {
     // 일반 미션 리스트 조회
     @GET("app/mission")
-    fun getMissionList(): Call<MissionListResponse>
+    fun getMissionList(
+        @Query("page") page: Int
+    ): Call<MissionListResponse>
 
     // 일반 미션 카테고리 리스트 조회
     @GET("app/mission/category")
