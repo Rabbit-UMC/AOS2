@@ -164,7 +164,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     //닉네임 중복 검사
     private fun checkNicknameDuplicate(nickName: String) {
-        retrofit.getCheckDuplication(nickName).enqueue(object : Callback<GetCheckDuplicationResponse> {
+        retrofit.getCheckDuplication(nickName, true).enqueue(object : Callback<GetCheckDuplicationResponse> {
             override fun onResponse(call: Call<GetCheckDuplicationResponse>, response: Response<GetCheckDuplicationResponse>) {
                 if (response.body() != null) {
                     binding.editProfileDuplicateStateTxt.visibility = View.VISIBLE

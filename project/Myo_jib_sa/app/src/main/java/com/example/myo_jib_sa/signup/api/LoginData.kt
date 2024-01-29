@@ -20,5 +20,6 @@ data class SignUpResponse(
 ): BaseResponse()
 data class SignUpResult(
     val id:Long,
-    val userName: String
+    val jwtAccessToken:String,
+    val jwtRefreshToken:String
 )
