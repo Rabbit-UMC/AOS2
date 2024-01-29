@@ -17,6 +17,8 @@ import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteResponse
 import com.example.myo_jib_sa.schedule.api.scheduleDelete.ScheduleDeleteService
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteResponse
 import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionDelete.CurrentMissionDeleteService
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionNScheduleDelete.CurrentMissionNScheduleDeleteResponse
+import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionNScheduleDelete.CurrentMissionNScheduleDeleteService
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,7 +26,7 @@ import retrofit2.Response
 
 
 class DeleteDialogFragment(
-    private val missionId: Long?,
+    private var missionId: Long?,
     private val scheduleIdList: MutableList<Long>
 ) : DialogFragment() {
     private lateinit var binding: DialogFragmentCurrentMissionDeleteBinding
@@ -55,10 +57,11 @@ class DeleteDialogFragment(
         //확인
         binding.yesTv.setOnClickListener{
             dismiss()
-            if (missionId != null)
-                currentMissionDeleteApi(missionId)//미션삭제api
-            if(scheduleIdList.isNotEmpty())
-                scheduleDeleteApi(scheduleIdList)//스케줄 삭제 api
+            currentMissionNSchedulesDeleteApi(missionId, scheduleIdList)
+//            if (missionId != null)
+//                currentMissionDeleteApi(missionId)//미션삭제api
+//            if(scheduleIdList.isNotEmpty())
+//                scheduleDeleteApi(scheduleIdList)//스케줄 삭제 api
         }
         //취소
         binding.exitTv.setOnClickListener {
@@ -66,89 +69,50 @@ class DeleteDialogFragment(
         }
     }
 
-    //currentMission api연결
-    private fun currentMissionDeleteApi(missionId:Long) {
+    private fun currentMissionNSchedulesDeleteApi(missionId:Long?, deleteScheduleIdList:List<Long>){
         // JWT 값 가져오기
         val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         val token = sharedPreferences.getString("jwt", null)
 
-        val service = RetrofitClient.getInstance().create(CurrentMissionDeleteService::class.java)
-//        val url ="app/mission/my-missions/${deleteMissionIdList.joinToString(",")}"
-//        Log.d("debug", "$url");
-//        val listCall = service.currentMissionDelete(token, url)
+        val service = RetrofitClient.getInstance().create(CurrentMissionNScheduleDeleteService::class.java)
 
-        val listCall = service.currentMissionDelete(token, missionId)
-        listCall.enqueue(object : Callback<CurrentMissionDeleteResponse> {
-            override fun onResponse(
-                call: Call<CurrentMissionDeleteResponse>,
-                response: Response<CurrentMissionDeleteResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("retrofit", "retrofit: "+response.body().toString());
-                    val result = response.body()!!.result
-                    deleteDialogListener.onDeleteListener("선택하신 항목이 삭제되었어요.", true)
-
-                } else {
-                    Log.e("retrofit", "currentMissionDeleteApi_onResponse: Error ${response.code()}")
-                    val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "currentMissionDeleteApi_onResponse: Error Body $errorBody")
-                    deleteDialogListener.onDeleteListener("미션 삭제 실패", true)
-
-                }
-            }
-            override fun onFailure(call: Call<CurrentMissionDeleteResponse>, t: Throwable) {
-                Log.e("retrofit", "currentMissionDeleteApi_onFailure: ${t.message}")
-                deleteDialogListener.onDeleteListener("미션 삭제 실패", true)
-
-            }
-        })
-    }
-
-    //scheduleDelete api연결: 일정삭제
-    private fun scheduleDeleteApi(deleteScheduleIdList:List<Long>) {
-        // JWT 값 가져오기
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("jwt", null)
-
-        val service = RetrofitClient.getInstance().create(ScheduleDeleteService::class.java)
-//        val url ="app/schedule/${deleteScheduleIdList.joinToString(", ")}"
-//        Log.d("debug", "$url");
-//        val listCall = service.scheduleDeleteModifyVer(token, url)
+        Log.d("retrofit", "missionId : "+missionId)
         Log.d("retrofit", "deleteScheduleIdList : "+deleteScheduleIdList.joinToString(", "))
-        val listCall = service.scheduleDeleteModifyVer(token, deleteScheduleIdList.joinToString(", "))
+        val listCall = service.currentMissionNScheduleDelete(token, missionId.toString(), deleteScheduleIdList.joinToString(", "))
 
-        listCall.enqueue(object : Callback<ScheduleDeleteResponse> {
+        listCall.enqueue(object : Callback<CurrentMissionNScheduleDeleteResponse> {
             override fun onResponse(
-                call: Call<ScheduleDeleteResponse>,
-                response: Response<ScheduleDeleteResponse>
+                call: Call<CurrentMissionNScheduleDeleteResponse>,
+                response: Response<CurrentMissionNScheduleDeleteResponse>
             ) {
                 if (response.isSuccessful) {
                     if(response.body() != null && response.body()!!.isSuccess) {
                         Log.d("retrofit", response.body().toString());
-
-                        deleteDialogListener.onDeleteListener("선택하신 항목이 삭제되었어요.", false)
-
+                        var missionFlag = true
+                        if(missionId == null) {
+                            missionFlag = false
+                        }
+                        deleteDialogListener.onDeleteListener("선택하신 항목이 삭제되었어요.", missionFlag)
                     }else{
-                        Log.e("retrofit", "scheduleDeleteApi_onResponse: Error ${response.body()?.errorMessage}")
+                        deleteDialogListener.onDeleteListener("[ERROR] ${response.body()?.errorMessage}", false)
+                        Log.e("retrofit", "currentMissionNSchedulesDeleteApi_onResponse: code: ${response.body()?.errorCode}")
+                        Log.e("retrofit", "currentMissionNSchedulesDeleteApi_onResponse: message : ${response.body()?.errorMessage}")
                     }
-
 
                     //scheduleAdaptar.removeTask(position)
                 }else {
-                    Log.e("retrofit", "scheduleDeleteApi_onResponse: Error ${response.code()}")
+                    Log.e("retrofit", "currentMissionNSchedulesDeleteApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "scheduleDeleteApi_onResponse: Error Body $errorBody")
+                    Log.e("retrofit", "currentMissionNSchedulesDeleteApi_onResponse: Error Body $errorBody")
 
-                    deleteDialogListener.onDeleteListener("일정 삭제 실패", false)
+                    deleteDialogListener.onDeleteListener("삭제 실패", false)
                 }}
-            override fun onFailure(call: Call<ScheduleDeleteResponse>, t: Throwable) {
-                Log.e("retrofit", "scheduleDeleteApi_onFailure: ${t.message}")
-                deleteDialogListener.onDeleteListener("일정 삭제 실패", false)
+            override fun onFailure(call: Call<CurrentMissionNScheduleDeleteResponse>, t: Throwable) {
+                Log.e("retrofit", "currentMissionNSchedulesDeleteApi_onFailure: ${t.message}")
+                deleteDialogListener.onDeleteListener("삭제 실패", false)
             }
         })
     }
-    private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
-
 
     //dialog크기 조절
     fun resizeDialog() {
