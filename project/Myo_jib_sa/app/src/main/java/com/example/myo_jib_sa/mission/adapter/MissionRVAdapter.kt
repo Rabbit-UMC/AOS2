@@ -67,12 +67,9 @@ class MissionRVAdapter(
         return dataList.size
     }
 
-    fun updateDataByCategory(wholeList:List<Mission>, newCategoryId: Int) {
-        dataList = if (newCategoryId != 0){
-            wholeList.filter { it.categoryId == newCategoryId.toLong() }
-        } else {
-            wholeList
-        }
-        notifyDataSetChanged()
+
+    fun updateData(newMissions: List<Mission>) {
+        dataList = newMissions
+        notifyDataSetChanged() // 데이터가 변경되었음을 어댑터에 알려줍니다.
     }
 }

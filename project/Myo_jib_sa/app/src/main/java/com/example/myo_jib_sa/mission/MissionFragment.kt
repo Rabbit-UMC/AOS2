@@ -32,11 +32,11 @@ import retrofit2.Response
 
 class MissionFragment : Fragment() {
     private lateinit var binding:FragmentMissionBinding
-    private lateinit var recyclerView: RecyclerView
     private lateinit var missionRVAdapter: MissionRVAdapter
     private lateinit var missionList: List<Mission>
+    private var categoryList = emptyList<MissionCategoryListResult>()
 
-    private var currentPage = 1
+    private var currentPage = 0
     private var isLoading = false
     private var isLastPage = false
 
@@ -46,20 +46,7 @@ class MissionFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMissionBinding.inflate(inflater, container, false)
 
-        setMissionList()
-
-        // NestedScrollView 스크롤 리스너 설정
-        binding.missionScroll.setOnScrollChangeListener {
-                v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-            if (v != null) {
-                if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
-                    if (!isLoading && !isLastPage) {
-                        currentPage += 1
-                        getMissionListAPI(currentPage)
-                    }
-                }
-            }
-        }
+        initView()
 
         //floating 버튼 설정
         binding.newMissionFloatingBtn.setOnClickListener{
@@ -69,57 +56,17 @@ class MissionFragment : Fragment() {
         return binding.root
     }
 
-
-    private fun setMissionList() {
-        super.onResume()
-        recyclerView = binding.missionMissionRecycler
-        missionList = emptyList()
-        // 전체 리스트 탭
-        binding.missionCategoryTl.addTab(binding.missionCategoryTl.newTab().setText("전체").setId(0))
-
-        // 카테고리 리스트 조회 api 호출
-        getMissionCategoryListApi()
-
-        // 미션 리스트 조회 api 호출
-        getMissionListAPI(0)
+    private fun initView() {
+        setRecyclerView()
+        setMissionCategoryList()
+        setScrollListener()
+        getMissionList(0, currentPage)
     }
-
-    // 미션 리스트 조회
-    private fun getMissionListAPI(page: Int) {
-        isLoading = true // 데이터 로딩 시작
-
-        retrofit.getMissionList(page).enqueue(object : Callback<MissionListResponse> {
-            override fun onResponse(call: Call<MissionListResponse>, response: Response<MissionListResponse>) {
-                isLoading = false // 데이터 로딩 완료
-
-                if (response.isSuccessful) {
-                    val newItems = response.body()?.result ?: emptyList()
-                    if (newItems.isNotEmpty()) {
-                        missionList = missionList + newItems
-                        setMissionAdapter(missionList)
-                        missionRVAdapter.notifyDataSetChanged()
-                    } else {
-                        isLastPage = true
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<MissionListResponse>, t: Throwable) {
-                isLoading = false // 네트워크 오류 등으로 인한 로딩 실패
-                Log.d("getMissionListAPI Fail", t.toString())
-            }
-        })
-    }
-
-
-    // 미션 리스트 리사이클러뷰 어댑터 구성
-    private fun setMissionAdapter(dataList: List<Mission>) {
-        if (!isAdded) {
-            return
-        }
-        missionRVAdapter = MissionRVAdapter(
-            dataList,
-            onClickListener = object : MissionRVAdapter.OnClickListener {
+    // 리사이클러뷰 어댑터 설정
+    private fun setRecyclerView() {
+        binding.missionMissionRecycler.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = MissionRVAdapter(emptyList(), object : MissionRVAdapter.OnClickListener {
                 override fun onReportClick(reportItem: Mission) {
                     showReportDialog(reportItem)
                 }
@@ -127,26 +74,19 @@ class MissionFragment : Fragment() {
                 override fun onItemClick(detailItem: Mission) {
                     showDetailDialog(detailItem)
                 }
-            }
-        )
-        recyclerView.adapter = missionRVAdapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        // ItemTouchHelper.Callback 을 리사이클러뷰와 연결
-        val swipeHelper = SwipeHelper().apply {
-            setClamp(83f)
+            }).also { missionRVAdapter = it }
         }
-        val itemTouchHelper = ItemTouchHelper(swipeHelper)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+
+        ItemTouchHelper(SwipeHelper()).attachToRecyclerView(binding.missionMissionRecycler)
 
     }
 
     // 미션 카테고리 리스트 조회
-    private fun getMissionCategoryListApi(){
+    private fun setMissionCategoryList(){
         retrofit.getCategoryList().enqueue(object : Callback<MissionCategoryListResponse> {
             override fun onResponse(call: Call<MissionCategoryListResponse>, response: Response<MissionCategoryListResponse>) {
                 if (response.isSuccessful) {
-                    val categoryList = response.body()?.result ?: emptyList()
+                    categoryList = response.body()?.result ?: emptyList()
                     Log.d("getMissionCategoryListApi",response.body().toString())
                     // 카테고리 리스트로 탭 레이아웃 구성
                     setCategoryTabs(categoryList)
@@ -154,7 +94,6 @@ class MissionFragment : Fragment() {
                     // API 요청 실패 처리
                 }
             }
-
             override fun onFailure(call: Call<MissionCategoryListResponse>, t: Throwable) {
                 // 네트워크 등의 문제로 API 요청이 실패한 경우 처리
             }
@@ -162,35 +101,69 @@ class MissionFragment : Fragment() {
     }
 
     // 탭 레이아웃 구성
-    private fun setCategoryTabs(categoryList: List<MissionCategoryListResult>) {
-        with(binding) {
-            // 카테고리 리스트 탭
-            categoryList.forEachIndexed { _, category ->
-                missionCategoryTl.addTab(
-                    missionCategoryTl.newTab()
-                        .setText(category.title)
-                        .setId(category.id.toInt())
-                )
+    private fun setCategoryTabs(categories: List<MissionCategoryListResult>) {
+        binding.missionCategoryTl.apply {
+            addTab(newTab().setText("전체").setId(0))
+            categories.forEach { category ->
+                addTab(newTab().setText(category.title).setId(category.id.toInt()))
             }
 
-            missionCategoryTl.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
-                    val selectedCategoryId = when (tab.id) {
-                        0 -> 0 // 전체 카테고리
-                        else -> categoryList[tab.position - 1].id.toInt() // 해당 카테고리의 id를 가져옴
-                    }
-
-                    missionRVAdapter.updateDataByCategory(missionList, selectedCategoryId)
+                    currentPage = 0
+                    isLastPage = false
+                    val categoryId = if (tab.position == 0) 0 else categories[tab.position - 1].id.toInt()
+                    getMissionList(categoryId, currentPage)
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
                 override fun onTabReselected(tab: TabLayout.Tab?) {}
             })
         }
     }
 
-    // 신고 다이얼로그
+    // 미션 리스트 조회
+    private fun getMissionList(categoryId: Int, page: Int) {
+        isLoading = true
+        val call = if (categoryId == 0) retrofit.getMissionList(page) else retrofit.getMissionListByCategory(categoryId, page)
+        call.enqueue(object : Callback<MissionListResponse> {
+            override fun onResponse(call: Call<MissionListResponse>, response: Response<MissionListResponse>) {
+                if (response.body()?.isSuccess == true) {
+                    updateMissionList(response.body()?.result ?: emptyList(), page == 0)
+                } else isLastPage = true
+                isLoading = false
+            }
+
+            override fun onFailure(call: Call<MissionListResponse>, t: Throwable) {
+                Log.e("MissionFragment", "Failed to load missions", t)
+                isLoading = false
+            }
+        })
+    }
+
+    // 리사이클러뷰 아이템 업데이트
+    private fun updateMissionList(newMissions: List<Mission>, isReset: Boolean) {
+        if (isReset) missionList = newMissions
+        else missionList += newMissions
+        missionRVAdapter.updateData(missionList)
+        isLastPage = newMissions.isEmpty()
+    }
+
+    // 스크롤 리스너
+    private fun setScrollListener() {
+        binding.missionScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            if (!isLoading && !isLastPage && scrollY > oldScrollY) {
+                val view = binding.missionScroll.getChildAt(binding.missionScroll.childCount - 1)
+                val diff = (view.bottom - (binding.missionScroll.height + binding.missionScroll.scrollY))
+                if (diff == 0) {
+                    val selectedTab = binding.missionCategoryTl.getTabAt(binding.missionCategoryTl.selectedTabPosition)
+                    val categoryId = if (selectedTab?.position == 0) 0 else categoryList[selectedTab!!.position - 1].id.toInt()
+                    getMissionList(categoryId, ++currentPage)
+                }
+            }
+        })
+    }
+     // 신고 다이얼로그
     private fun showReportDialog(reportItem: Mission) {
         val reportDialog = MissionReportDialogFragment(reportItem)
 
