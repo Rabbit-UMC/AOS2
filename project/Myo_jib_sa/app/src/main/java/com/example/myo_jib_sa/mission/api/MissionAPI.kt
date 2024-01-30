@@ -22,10 +22,10 @@ interface MissionAPI {
 
     // 카테고리 별 미션 조회
     @GET("app/mission/category/{categoryId}")
-    fun getMissionByCategory(
-        @Header("X-ACCESS-TOKEN") accessToken: String,
-        @Path ("categoryId") categoryId: Int
-    ): Call<MissionByCategoryResponse>
+    fun getMissionListByCategory(
+        @Path ("categoryId") categoryId: Int,
+        @Query("page") page: Int
+    ): Call<MissionListResponse>
 
     //미션 상세보기
     @GET("app/mission/{missionId}")
