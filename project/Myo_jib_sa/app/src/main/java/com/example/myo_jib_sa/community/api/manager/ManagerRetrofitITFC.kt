@@ -1,9 +1,11 @@
 package com.example.myo_jib_sa.community.api.manager
 
+import com.example.myo_jib_sa.base.BaseResponse
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.post.SimpleResponse
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -15,14 +17,19 @@ interface ManagerRetrofitITFC {
     @PATCH("app/host/main-image/{categoryId}")
     fun EditPhoto(@Header(Constance.author)author:String
                   ,@Path("categoryId") categoryId: Long,
-                  @Body request: PatchCategoryImageReq): Call<SimpleResponse>
+                  @Body request: PatchCategoryImageReq): Call<BaseResponse>
 
     //미션 생성
     @POST("app/host/main-mission/{categoryId}")
     fun missionCreate(@Header(Constance.author)author:String
                       ,@Path("categoryId")categoryId:Long
                       ,@Body request: MissionCreateRequest
-                      ): Call<SimpleResponse>
+                      ): Call<BaseResponse>
+
+    @GET("app/host/main-mission/{mainMissionId}")
+    fun joinManagerMission(@Header(Constance.author)author:String
+                           ,@Path("mainMissionId")mainMissionId:Long
+    ): Call<JoinManagerMissionResponse>
 }
 
 data class MissionCreateRequest(
@@ -44,3 +51,12 @@ data class ManagerMissionJoinRequest(
     val missionEndTime:String,
     val missionImg:String
 )
+
+data class JoinManagerMissionResponse(
+    val userName:String,
+    val missionImageUrl:String,
+    val missionTitle:String,
+    val missionStartDay:String,
+    val missionEndDay:String,
+    val memo:String
+):BaseResponse()

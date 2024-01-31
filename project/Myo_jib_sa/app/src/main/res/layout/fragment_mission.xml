@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <com.amar.library.ui.StickyScrollView
+        android:id="@+id/mission_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top"
