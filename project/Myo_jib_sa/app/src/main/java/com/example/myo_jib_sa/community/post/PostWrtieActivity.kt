@@ -1,5 +1,6 @@
-package com.example.myo_jib_sa.community
+package com.example.myo_jib_sa.community.post
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -11,20 +12,28 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.example.myo_jib_sa.community.Constance
+import com.example.myo_jib_sa.community.ImgPath
+import com.example.myo_jib_sa.community.adapter.PostEditAdapter
+import com.example.myo_jib_sa.community.adapter.PostImgAdapter
 import com.example.myo_jib_sa.community.api.imgUpload.imgUploadRetrofitManager
 import com.example.myo_jib_sa.community.api.post.ImageList
 import com.example.myo_jib_sa.community.api.post.PostCreateRequest
 import com.example.myo_jib_sa.community.api.post.PostEditRequest
 import com.example.myo_jib_sa.community.api.post.PostRetrofitManager
 import com.example.myo_jib_sa.databinding.ActivityWritePostingBinding
+import okhttp3.MultipartBody
 import java.io.ByteArrayOutputStream
 import java.io.File
 
-class WritePostingActivity : AppCompatActivity() {
+class PostWrtieActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWritePostingBinding
-    private var imgList: List<String> = listOf("","")
+
+    private var imgList: List<ImageList> = listOf()
+
     private var imgListEdit:List<ImageList> = listOf(ImageList(0,""), ImageList(0, ""))
+
     private var isEdit:Boolean=false
     private var postId:Long=0 //수정할 때만 씀
     private var boardId:Int=0
@@ -36,9 +45,9 @@ class WritePostingActivity : AppCompatActivity() {
     private var isHasNewImg:Boolean=false
 
 
+
     companion object {
-        private const val GALLERY_REQUEST_CODE1 = 1001
-        private const val GALLERY_REQUEST_CODE2 = 1002
+        private const val GALLERY_REQUEST_CODE = 1001
     }
 
 
@@ -57,13 +66,13 @@ class WritePostingActivity : AppCompatActivity() {
         boardId=intent.getIntExtra("boardId", 0)
         //게시판 이름
         when(boardId.toLong()){
-            Constance.ART_ID-> {
+            Constance.ART_ID -> {
                 binding.postWriteNameTxt.text="예술 게시판"
             }
-            Constance.FREE_ID-> {
+            Constance.FREE_ID -> {
                 binding.postWriteNameTxt.text="자유 게시판"
             }
-            Constance.EXERCISE_ID-> {
+            Constance.EXERCISE_ID -> {
                 binding.postWriteNameTxt.text="운동 게시판"
             }
 
@@ -73,6 +82,9 @@ class WritePostingActivity : AppCompatActivity() {
 
         //게시글 쓰기, 수정 완료
         complete()
+
+        //이미지 어댑터
+        val adapter = PostEditAdapter(this, imgList)
 
 
         //todo: 이미지뷰 터치시 갤러리로 가서 사진 선택 후 해당 이미지 뷰에 뷰 설정

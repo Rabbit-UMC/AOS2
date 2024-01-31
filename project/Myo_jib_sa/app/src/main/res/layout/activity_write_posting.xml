@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".community.WritePostingActivity">
+    tools:context=".community.post.PostWrtieActivity">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,11 +21,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:fontFamily="@font/font_inter"
+            android:fontFamily="@font/font_paragraph_4"
             android:text="게시판 이름"
             android:textColor="@color/black"
             android:textSize="16dp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +53,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:background="@android:color/transparent"
-        android:fontFamily="@font/font_inter"
+        android:fontFamily="@font/font_paragraph_2"
         android:hint="제목을 입력하세요"
         android:inputType="textMultiLine"
         android:maxLength="10"
@@ -78,7 +77,7 @@
         android:background="@drawable/background_post"
         android:backgroundTint="#F1F1F1"
         android:duplicateParentState="false"
-        android:fontFamily="@font/font_inter"
+        android:fontFamily="@font/font_caption_text_2"
         android:gravity="left"
         android:hint="내용을 입력하세요"
         android:inputType="textMultiLine"
@@ -88,7 +87,6 @@
         android:singleLine="false"
         android:textColor="@color/black"
         android:textSize="12dp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -157,7 +155,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="제목"
-        android:textStyle="bold"
+        android:fontFamily="@font/font_paragraph_1"
         android:textSize="16dp"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
@@ -172,6 +170,7 @@
         android:text="내용"
         android:textStyle="bold"
         android:textSize="16dp"
+        android:fontFamily="@font/font_paragraph_1"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/writePost_title_Etxt" />

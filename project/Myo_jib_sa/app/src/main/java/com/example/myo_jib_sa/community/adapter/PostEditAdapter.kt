@@ -7,18 +7,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.community.post.PostPictureActivity
-import com.example.myo_jib_sa.community.api.post.ArticleImage
+import com.example.myo_jib_sa.community.api.post.ImageList
 import com.example.myo_jib_sa.databinding.ItemPostImgBinding
 import com.google.gson.Gson
 
-class PostImgAdapter(
-    private val context: Context,
-    private val dataList:List<ArticleImage>)
-    : RecyclerView.Adapter<PostImgAdapter.ViewHolder>(){
 
+class PostEditAdapter (
+    private val context: Context,
+    private val dataList:List<ImageList>)
+    : RecyclerView.Adapter<PostEditAdapter.ViewHolder>(){
+
+    private var itemClickListener: AdapterView.OnItemClickListener? = null
 
 
     //뷰홀더
@@ -26,7 +29,15 @@ class PostImgAdapter(
         private val binding: ItemPostImgBinding
     )
         : RecyclerView.ViewHolder(binding.root){
-        fun bind(item: List<ArticleImage>, position: Int){
+
+        init {
+            // 아이템 뷰에 터치 리스너 등록
+            binding.postImgImg.setOnClickListener {
+                // 누르면 사진 첨부
+            }
+        }
+
+        fun bind(item: List<ImageList>, position: Int){
 
             //이미지 설정
             if(item[position].filePath.isNotBlank()){
@@ -34,7 +45,7 @@ class PostImgAdapter(
                     .load(item[position].filePath)
                     .into(binding.postImgImg)
             }else{
-                binding.postImgImg.visibility=View.GONE
+                binding.postImgImg.visibility= View.GONE
             }
 
             //클릭 이벤트
@@ -44,6 +55,10 @@ class PostImgAdapter(
                 intent.putExtra("itemListJson", Gson().toJson(item))
                 intent.putExtra("current", position)
                 context.startActivity(intent)
+            }
+
+            binding.postImgDelete.setOnClickListener { //삭제
+                binding.postImgImg.setImageURI(null)
             }
 
 
@@ -79,9 +94,11 @@ class PostImgAdapter(
         recyclerView.addItemDecoration(CustomItemDecoration(spacing))
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(position: Int)
+
+    fun setOnItemClickListener(listener: AdapterView.OnItemClickListener) {
+        this.itemClickListener = listener
     }
+
 
 
 }
