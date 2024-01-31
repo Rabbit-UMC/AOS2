@@ -83,7 +83,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView27" />
 
     <TextView
-        android:id="@+id/textView29"
+        android:id="@+id/manager_create_mission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
