@@ -18,10 +18,10 @@ import com.google.gson.Gson
 
 class PostEditAdapter (
     private val context: Context,
-    private val dataList:List<ImageList>)
+    private val dataList:List<String>)
     : RecyclerView.Adapter<PostEditAdapter.ViewHolder>(){
 
-    private var itemClickListener: AdapterView.OnItemClickListener? = null
+    private var itemClickListener: OnItemClickListener? = null
 
 
     //뷰홀더
@@ -31,18 +31,24 @@ class PostEditAdapter (
         : RecyclerView.ViewHolder(binding.root){
 
         init {
-            // 아이템 뷰에 터치 리스너 등록
+
+            // 이미지 클릭 이벤트
             binding.postImgImg.setOnClickListener {
-                // 누르면 사진 첨부
+                itemClickListener?.onImageClick(adapterPosition)
+            }
+
+            // 삭제 버튼 클릭 이벤트
+            binding.postImgDelete.setOnClickListener {
+                itemClickListener?.onDeleteClick(adapterPosition)
             }
         }
 
-        fun bind(item: List<ImageList>, position: Int){
+        fun bind(item: List<String>, position: Int){
 
             //이미지 설정
-            if(item[position].filePath.isNotBlank()){
+            if(item[position].isNotBlank()){
                 Glide.with(context)
-                    .load(item[position].filePath)
+                    .load(item[position])
                     .into(binding.postImgImg)
             }else{
                 binding.postImgImg.visibility= View.GONE
@@ -89,16 +95,18 @@ class PostEditAdapter (
             outRect.right = spaceHeight // 아이템 사이의 간격을 설정 (오른쪽
         }
     }
+
     // 아이템 간격 설정을 위한 메소드
     fun setItemSpacing(recyclerView: RecyclerView, spacing: Int) {
         recyclerView.addItemDecoration(CustomItemDecoration(spacing))
     }
 
 
-    fun setOnItemClickListener(listener: AdapterView.OnItemClickListener) {
+    fun setOnItemClickListener(listener: OnItemClickListener) {
         this.itemClickListener = listener
     }
-
-
-
+    interface OnItemClickListener {
+        fun onImageClick(position: Int)
+        fun onDeleteClick(postition:Int)
+    }
 }

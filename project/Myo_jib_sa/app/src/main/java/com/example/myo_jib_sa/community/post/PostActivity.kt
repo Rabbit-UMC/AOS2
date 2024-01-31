@@ -142,6 +142,8 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     intent.putExtra("postId", postId)
                     intent.putExtra("boardId", boardId.toInt())
                     //사진 리스트 첨부
+
+
                     intent.putExtra("imgList1_id", imageList[0].imageId)
                     intent.putExtra("imgList1_path", imageList[0].filePath)
                     intent.putExtra("imgList2_id", imageList[1].imageId)
