@@ -21,10 +21,6 @@ class ManagerMissionFragment : Fragment() {
     private var data: ManagerMissionJoinRequest? =null
     private var selectedImageUri: Uri? = null
 
-    companion object {
-        private const val GALLERY_REQUEST_CODE1 = 1001
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +32,6 @@ class ManagerMissionFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding= FragmentManagerMissionBinding.inflate(inflater, container, false)
-
-        //사진 추가하기 버튼 누르면
-        binding.managerImgAddBtn.setOnClickListener {
-            addImg()
-        }
 
         return binding.root
     }
@@ -64,23 +55,6 @@ class ManagerMissionFragment : Fragment() {
 
             }
 
-    }
-
-    //이미지 첨부
-    fun addImg(){
-        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        galleryLauncher.launch(galleryIntent)
-
-    }
-
-    //갤러리
-    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val selectedImageUri: Uri? = result.data?.data
-            val intent=Intent(requireContext(), ManagerImgActivity::class.java)
-            intent.putExtra("ingPath",selectedImageUri.toString())
-            startActivity(intent)
-        }
     }
 
 }
