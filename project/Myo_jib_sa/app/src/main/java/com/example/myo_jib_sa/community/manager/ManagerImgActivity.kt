@@ -16,7 +16,7 @@ class ManagerImgActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // 인텐트에서 데이터 가져오기
-        val imageUriString = intent.getStringExtra("imgPath")
+        val imageUriString = intent.getStringExtra("imgUri")
 
         // URI 문자열을 Uri 객체로 변환
         val imageUri: Uri? = imageUriString?.let { Uri.parse(it) }

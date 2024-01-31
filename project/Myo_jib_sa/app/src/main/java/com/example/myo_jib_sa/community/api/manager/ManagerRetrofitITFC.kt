@@ -5,6 +5,7 @@ import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.post.SimpleResponse
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -24,6 +25,11 @@ interface ManagerRetrofitITFC {
                       ,@Path("categoryId")categoryId:Long
                       ,@Body request: MissionCreateRequest
                       ): Call<BaseResponse>
+
+    @GET("app/host/main-mission/{mainMissionId}")
+    fun joinManagerMission(@Header(Constance.author)author:String
+                           ,@Path("mainMissionId")mainMissionId:Long
+    ): Call<JoinManagerMissionResponse>
 }
 
 data class MissionCreateRequest(
@@ -45,3 +51,12 @@ data class ManagerMissionJoinRequest(
     val missionEndTime:String,
     val missionImg:String
 )
+
+data class JoinManagerMissionResponse(
+    val userName:String,
+    val missionImageUrl:String,
+    val missionTitle:String,
+    val missionStartDay:String,
+    val missionEndDay:String,
+    val memo:String
+):BaseResponse()

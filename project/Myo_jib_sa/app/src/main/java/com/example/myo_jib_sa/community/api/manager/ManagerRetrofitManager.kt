@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.community.api.manager
 
 import android.content.Context
+import android.graphics.Paint.Join
 import android.util.Log
 import com.example.myo_jib_sa.base.BaseResponse
 import com.example.myo_jib_sa.community.Constance
@@ -92,6 +93,38 @@ class ManagerRetrofitManager (context: Context){
                 }
             }
             override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.d("미션 생성", "RetrofitManager 미션 생성 onFailure \t :$t ")
+            }
+        })
+    }
+
+    fun joinMission(author: String,missionId: Long,completion: (response:JoinManagerMissionResponse) -> Unit){
+        val call: Call<JoinManagerMissionResponse> = retrofit?.joinManagerMission(author, missionId) ?: return
+
+        call.enqueue(object : retrofit2.Callback<JoinManagerMissionResponse> {
+            override fun onResponse(
+                call: Call<JoinManagerMissionResponse>,
+                response: Response<JoinManagerMissionResponse>
+            ) {
+                Log.d("미션 생성", "RetrofitManager 미션 생성 onResponse \t :${response.message()} ")
+                val response: JoinManagerMissionResponse? = response?.body()
+                if (response != null) {
+                    if (response.isSuccess) {
+                        Log.d("미션 생성",
+                            "RetrofitManager 미션 생성 is Success\t :${response.errorMessage}   ${response.errorCode}")
+                        Log.d("미션 생성",
+                            "RetrofitManager 미션 생성 is Success\t :${response.errorMessage}   ${response.errorCode}")
+                        completion(response)
+                    } else {
+                        Log.d("미션 생성",
+                            "RetrofitManager 미션 생성 is NOT Success\t :${response.errorMessage}   ${response.errorCode}")
+                        completion(response)
+                    }
+                } else {
+                    Log.d("미션 생성", "RetrofitManager 미션 생성 null")
+                }
+            }
+            override fun onFailure(call: Call<JoinManagerMissionResponse>, t: Throwable) {
                 Log.d("미션 생성", "RetrofitManager 미션 생성 onFailure \t :$t ")
             }
         })
