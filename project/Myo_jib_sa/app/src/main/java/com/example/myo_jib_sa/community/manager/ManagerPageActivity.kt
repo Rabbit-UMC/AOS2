@@ -77,6 +77,14 @@ class ManagerPageActivity : AppCompatActivity() {
             startActivityForResult(intent, REQUEST_CODE)
         }*/
 
+        //미션 생성 페이지 이동
+        binding.managerCreateMission.setOnClickListener {
+            val intent=Intent(this, ManagerMissionCreateActivity2::class.java)
+            intent.putExtra("boardId", boardId)
+            startActivity(intent)
+        }
+
+
         //묘방생 페이지로 이동
        /* binding.managerPageByeBtn.setOnClickListener {
             val intent=Intent(this, ManagerMissionCreateActivity::class.java)
