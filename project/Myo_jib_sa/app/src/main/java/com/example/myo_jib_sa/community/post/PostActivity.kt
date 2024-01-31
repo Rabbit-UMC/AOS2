@@ -136,7 +136,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
             when (item?.itemId) { // 메뉴 아이템에 따라 동작 다르게 하기
                 R.id.postMenu_edit -> {
                     //수정 page 이동
-                    val intent = Intent(this, PostWrtieActivity::class.java)
+                    val intent = Intent(this, PostEditActivity::class.java)
                     intent.putExtra("title", binding.postPostNameTxt.text.toString())
                     intent.putExtra("postText", binding.postPostTextTxt.text.toString())
                     intent.putExtra("postId", postId)
