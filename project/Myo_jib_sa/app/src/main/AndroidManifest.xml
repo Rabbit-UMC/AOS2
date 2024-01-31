@@ -51,6 +51,9 @@
             android:name=".community.post.PostWrtieActivity"
             android:exported="false" />
         <activity
+            android:name=".community.post.PostEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".schedule.currentMissionActivity.DeleteCurrentMissionActivity"
             android:exported="false" />
         <activity
