@@ -120,8 +120,8 @@ class CommunityFragment : Fragment() {
             ObjectAnimator.ofFloat(binding.myoZip1Btn, "translationY", 0f).apply { start() }
             ObjectAnimator.ofFloat(binding.myoZipMainBtn, View.ROTATION, 45f, 0f).apply { start() }
         } else { // 플로팅 액션 버튼 열기 - 닫혀있는 플로팅 버튼 꺼내는 애니메이션
-            ObjectAnimator.ofFloat(binding.myoZip3Btn, "translationY", -360f).apply { start() }
-            ObjectAnimator.ofFloat(binding.myoZip2Btn, "translationY", -180f).apply { start() }
+            ObjectAnimator.ofFloat(binding.myoZip3Btn, "translationY", -540f).apply { start() }
+            ObjectAnimator.ofFloat(binding.myoZip2Btn, "translationY", -360f).apply { start() }
             ObjectAnimator.ofFloat(binding.myoZip1Btn, "translationY", -180f).apply { start() }
             ObjectAnimator.ofFloat(binding.myoZipMainBtn, View.ROTATION, 0f, 45f).apply { start() }
         }
