@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa.community.api.manager
 
+import com.example.myo_jib_sa.base.BaseResponse
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.post.SimpleResponse
 import retrofit2.Call
@@ -15,14 +16,14 @@ interface ManagerRetrofitITFC {
     @PATCH("app/host/main-image/{categoryId}")
     fun EditPhoto(@Header(Constance.author)author:String
                   ,@Path("categoryId") categoryId: Long,
-                  @Body request: PatchCategoryImageReq): Call<SimpleResponse>
+                  @Body request: PatchCategoryImageReq): Call<BaseResponse>
 
     //미션 생성
     @POST("app/host/main-mission/{categoryId}")
     fun missionCreate(@Header(Constance.author)author:String
                       ,@Path("categoryId")categoryId:Long
                       ,@Body request: MissionCreateRequest
-                      ): Call<SimpleResponse>
+                      ): Call<BaseResponse>
 }
 
 data class MissionCreateRequest(

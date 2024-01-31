@@ -19,7 +19,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.base.BaseResponse
 import com.example.myo_jib_sa.base.MyojibsaApplication
+import com.example.myo_jib_sa.community.Constance
+import com.example.myo_jib_sa.community.api.manager.ManagerRetrofitITFC
+import com.example.myo_jib_sa.community.api.manager.MissionCreateRequest
 import com.example.myo_jib_sa.databinding.ActivityMissionCreateBinding
 import com.example.myo_jib_sa.databinding.ToastMissionCreateBinding
 import com.example.myo_jib_sa.mission.api.MissionAPI
@@ -50,6 +54,8 @@ class ManagerMissionCreateActivity2 : AppCompatActivity(), MissionCreateCalendar
     private var isMissionTitleInputted = false
     private var isMissionMemoInputted = false
 
+    private var boardId:Long=0
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +75,7 @@ class ManagerMissionCreateActivity2 : AppCompatActivity(), MissionCreateCalendar
         binding.missionCreateStartDateBtnTxt.text = fromDateYYYYMMDD(startSelectedDate)
         binding.missionCreateEndDateBtnTxt.text = fromDateYYYYMMDD(endSelectedDate)
 
+        boardId=intent.getLongExtra("boardId", 0)
 
         initListener()
 
@@ -99,40 +106,40 @@ class ManagerMissionCreateActivity2 : AppCompatActivity(), MissionCreateCalendar
 
     //미션 생성 API 연결
     private fun postMissionCreate() {
-        var missionRequest : MissionCreateRequests
+        var missionRequest : MissionCreateRequest
         // Retrofit을 사용한 API 호출
         with(binding) {
-            missionRequest = MissionCreateRequests(
-                title = missionCreateTitleEt.text.toString(),
-                startAt = missionCreateStartDateBtnTxt.text.toString(),
-                endAt = missionCreateEndDateBtnTxt.text.toString(),
-                categoryId = missionCreateCategoryRadioGroup.checkedRadioButtonId.toLong(),
-                isOpen = if(missionCreateOpenSwitch.isChecked) 0 else 1,
-                content = missionCreateMemoEt.text.toString(),
-                status = "ACTIVE"
+            missionRequest = MissionCreateRequest(
+                mainMissionTitle = missionCreateTitleEt.text.toString(),
+                missionStartTime = missionCreateStartDateBtnTxt.text.toString(),
+                missionEndTime = missionCreateEndDateBtnTxt.text.toString(),
+                lastMission = missionCreateOpenSwitch.isChecked,
+                mainMissionContent = missionCreateMemoEt.text.toString()
             )
             Log.d("postMissionCreate", "missionRequest : $missionRequest")
         }
 
-        MyojibsaApplication.sRetrofit.create(MissionAPI::class.java).postMissionCreate(missionRequest).enqueue(object :
-            Callback<MissionCreateResponse> {
-            override fun onResponse(call: Call<MissionCreateResponse>, response: Response<MissionCreateResponse>) {
-                val writeResponse = response.body()
-                if (writeResponse != null) {
-                    if(writeResponse.isSuccess){
-                        showSnackbar(writeResponse.errorMessage)
-                        finish()
-                    }
-                    else {
-                        showSnackbar(writeResponse.errorMessage)
-                    }
+        Constance.jwt?.let {
+            MyojibsaApplication.sRetrofit.create(ManagerRetrofitITFC::class.java).missionCreate(it,boardId,missionRequest).enqueue(object :
+                Callback<BaseResponse> {
+                override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                    val writeResponse = response.body()
+                    if (writeResponse != null) {
+                        if(writeResponse.isSuccess){
+                            showSnackbar(writeResponse.errorMessage)
+                            finish()
+                        } else {
+                            showSnackbar(writeResponse.errorMessage)
+                        }
 
+                    }
                 }
-            }
-            override fun onFailure(call: Call<MissionCreateResponse>, t: Throwable) {
-                showSnackbar("네트워크 요청 실패")
-            }
-        })
+
+                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                    showSnackbar("네트워크 요청 실패")
+                }
+            })
+        }
 
     }
 
