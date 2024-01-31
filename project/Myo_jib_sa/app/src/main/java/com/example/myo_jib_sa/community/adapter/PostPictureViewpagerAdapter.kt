@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.myo_jib_sa.community.PostPictureFragment
+import com.example.myo_jib_sa.community.post.PostPictureFragment
 import com.example.myo_jib_sa.community.api.post.ArticleImage
 
 class PostPictureViewpagerAdapter
