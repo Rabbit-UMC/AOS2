@@ -33,6 +33,7 @@ class PostImgAdapter(
                 Glide.with(context)
                     .load(item[position].filePath)
                     .into(binding.postImgImg)
+                binding.postImgDelete.visibility=View.GONE
             }else{
                 binding.postImgImg.visibility=View.GONE
             }
