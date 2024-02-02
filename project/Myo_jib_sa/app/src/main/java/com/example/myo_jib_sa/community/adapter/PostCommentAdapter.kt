@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.community.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Rect
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +16,11 @@ import com.example.myo_jib_sa.community.api.post.ArticleImage
 import com.example.myo_jib_sa.community.api.post.CommentList
 import com.example.myo_jib_sa.community.api.post.PostRetrofitManager
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
+import com.example.myo_jib_sa.community.dialog.CommunityPostDeleteDialog
 import com.example.myo_jib_sa.databinding.ItemCommentBinding
+import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 
 class PostCommentAdapter(
     private val context: Context,
@@ -25,12 +30,24 @@ class PostCommentAdapter(
     ,private val jwt:String)
     : RecyclerView.Adapter<PostCommentAdapter.ViewHolder>(){
 
+    private var itemClickListener: OnItemClickListener? = null
 
     //뷰홀더
     inner class ViewHolder(
         private val binding: ItemCommentBinding
     )
         : RecyclerView.ViewHolder(binding.root){
+        init {
+
+            // 이미지 클릭 이벤트
+            binding.commentBtn.setOnClickListener {
+                if(isPostWriter){
+                    itemClickListener?.onChangeClick(adapterPosition)
+                }
+                itemClickListener?.onDeleteClick(adapterPosition)
+            }
+        }
+
         fun bind(item: CommentList){
             //댓글 작성자 이름, 내용 세팅
             binding.commentWriterNameTxt.text=item.commentAuthorName
@@ -51,56 +68,6 @@ class PostCommentAdapter(
                 binding.commentBtn.setImageDrawable(null)
                 binding.commentBtn.isEnabled = false
             }
-
-            binding.commentBtn.setOnClickListener {
-                Log.d("댓글 id", "${item.commentId}")
-                if(item.commentUserId== Constance.USER_ID){
-                    //댓글 작성자 일떄
-                        val DelDialog = CommunityPopupOk(context,"해당 댓글을 삭제 하나요?")
-
-                        DelDialog.setCustomDialogListener(object : CommunityPopupOk.CustomDialogListener {
-                            override fun onPositiveButtonClicked(value: Boolean) {
-                                if (value){
-                                    //댓글 삭제하기
-                                    Log.d("댓글 id", item.commentId.toString())
-                                    commentDelete(jwt, item.commentId){isSuccess->
-                                        if(isSuccess){
-                                            setCommentData(jwt,postId)
-                                            notifyDataSetChanged()
-                                        }else{
-                                            showToast("댓글 삭제에 실패 했습니다.")
-                                        }
-                                    }
-
-                                }
-                            }
-                        })
-                    DelDialog.show()
-                }else if(isPostWriter){
-                    //게시글 작성자 일때
-                        val DelDialog = CommunityPopupOk(context,"댓글 변경 후 되돌릴 수 없습니다")
-                        DelDialog.setCustomDialogListener(object : CommunityPopupOk.CustomDialogListener {
-                            override fun onPositiveButtonClicked(value: Boolean) {
-                                if (value){
-                                    //댓글 변경하기
-                                    commentChange(jwt, item.commentId){isSuccess->
-                                        if(isSuccess){
-                                            setCommentData(jwt,postId)
-                                        }else{
-                                            showToast("댓글 변경에 실패 했습니다.")
-                                        }
-                                    }
-                                }
-                            }
-                        })
-                    DelDialog.show()
-                }else{
-                    //일반 사용자 일때
-                    binding.commentBtn.setImageDrawable(null)
-                    binding.commentBtn.isEnabled = false
-                }
-            }
-
             // TODO:바뀐 글인지 아닌지 상태 체크 후 내용 색상 바꾸기
 
             // 묘집사는 파란 닉네임
@@ -218,5 +185,13 @@ class PostCommentAdapter(
     fun updateData(newDataList: List<CommentList>) {
         dataList = newDataList
         notifyDataSetChanged()
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.itemClickListener = listener
+    }
+    interface OnItemClickListener {
+        fun onDeleteClick(position: Int)
+        fun onChangeClick(postition:Int)
     }
 }

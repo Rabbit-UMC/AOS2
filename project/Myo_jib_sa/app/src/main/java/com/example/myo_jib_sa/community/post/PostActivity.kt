@@ -1,9 +1,12 @@
 package com.example.myo_jib_sa.community.post
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Outline
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -21,9 +24,19 @@ import com.example.myo_jib_sa.community.api.post.CommentList
 import com.example.myo_jib_sa.community.api.post.PostRetrofitManager
 import com.example.myo_jib_sa.community.api.post.PostViewResponse
 import com.example.myo_jib_sa.community.adapter.PostCommentAdapter
+import com.example.myo_jib_sa.community.adapter.PostEditAdapter
 import com.example.myo_jib_sa.community.adapter.PostImgAdapter
 import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
+import com.example.myo_jib_sa.community.dialog.CommunityPostCommentChangeDialog
+import com.example.myo_jib_sa.community.dialog.CommunityPostCommentDeleteDialog
+import com.example.myo_jib_sa.community.dialog.CommunityPostDeleteDialog
+import com.example.myo_jib_sa.community.dialog.CommunityPostReportDialog
 import com.example.myo_jib_sa.databinding.ActivityPostBinding
+import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
+import com.example.myo_jib_sa.mission.api.Mission
+import com.example.myo_jib_sa.mission.dialog.MissionReportDialogFragment
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 
 
 class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
@@ -153,25 +166,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     startActivity(intent)
                 }
                 R.id.postMenu_delete -> {
-                    val DelDialog = CommunityPopupOk(this,"해당 게시물을 삭제 하나요?")
-                    DelDialog.setCustomDialogListener(object : CommunityPopupOk.CustomDialogListener {
-                        override fun onPositiveButtonClicked(value: Boolean) {
-                            if (value){
-                                //신고 재확인 팝업창 띄우고 확인 누르면 api 연결
-                                Constance.jwt?.let {
-                                    postDelete(it, postId){ isSuccess->
-                                        if(isSuccess){
-                                            finish()
-                                        }else{
-                                            showToast("게시글 삭제 실패")
-                                        }
-                                    }
-                                }
-
-                            }
-                        }
-                    })
-                    DelDialog.show()
+                    showDeleteDialog(postId)
 
                 }
             }
@@ -179,25 +174,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         }else{
             when (item?.itemId) { // 메뉴 아이템에 따라 동작 다르게 하기
                 R.id.postMenu_report -> {
-
-                    val DelDialog = CommunityPopupOk(this,"해당 게시물을 신고 하나요?")
-                    DelDialog.setCustomDialogListener(object : CommunityPopupOk.CustomDialogListener {
-                        override fun onPositiveButtonClicked(value: Boolean) {
-                            if (value){
-                                //신고 재확인 팝업창 띄우고 확인 누르면 api 연결
-                                Constance.jwt?.let {
-                                    postReport(it,postId){ isSuccess->
-                                        if(isSuccess){
-                                            showToast("해당 게시글이 신고 되었습니다")
-                                        }else{
-                                            showToast("신고 실패했습니다")
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    })
-                    DelDialog.show()
+                    showReportDialog(postId)
 
                 }
             }
@@ -314,39 +291,132 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     }
 
     //게시물 신고
-    private fun postReport(author:String, articleId: Long, callback: (Boolean) -> Unit){
-        val retrofitManager = PostRetrofitManager.getInstance(this)
-        retrofitManager.postReport(author,articleId){response ->
-            if(response){
-                //로그
-                Log.d("게시물 신고", "${response.toString()}")
-                callback(true)
+    // 신고 다이얼로그
+    private fun showReportDialog(postId: Long) {
+        val reportDialog = CommunityPostReportDialog(postId)
 
-            } else {
-                // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                Log.d("게시물 신고 API isSuccess가 false", "${response.toString()}")
-                showToast("게시물 신고 실패")
-                callback(false)
+        reportDialog.setReportDialogListener(object : CommunityPostReportDialog.ReportDialogListener {
+            override fun onReportSubmitted(message: String) {
+                Log.d("onReportSubmitted", "$message")
+                // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
+                val snackbarBinding = ToastMissionReportBinding.inflate(layoutInflater)
+                snackbarBinding.toastMissionReportTxt.text = message
+
+                // 스낵바 생성 및 설정
+                val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+                    animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+                    (view as Snackbar.SnackbarLayout).apply {
+                        setBackgroundColor(Color.TRANSPARENT)
+                        addView(snackbarBinding.root)
+                        translationY = -70.dpToPx(this.context).toFloat()
+                        elevation = 0f
+                    }
+                }
+
+                // 스낵바 표시
+                snackbar.show()
+                reportDialog.dismiss()
             }
-        }
+        })
+
+        Log.d("showReportDialog","report ID: ${postId}")
+        reportDialog.show(this.supportFragmentManager, "mission_report_dialog")
     }
 
     //게시물 삭제
-    private fun postDelete(author:String, articleId: Long, callback: (Boolean) -> Unit){
+    private fun showDeleteDialog(postId: Long) {
+        val reportDialog = CommunityPostDeleteDialog(postId)
 
-        val retrofitManager = PostRetrofitManager.getInstance(this)
-        retrofitManager.postDelete(author,articleId){response ->
-            if(response){
-                //로그
-                Log.d("게시물 삭제", "${response.toString()}")
-                callback(true)
+        reportDialog.setDeleteDialogListener(object : CommunityPostDeleteDialog.DeleteDialogListener {
+            override fun onDeleteSubmitted(message: String) {
+                Log.d("onReportSubmitted", "$message")
+                // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
+                val snackbarBinding = ToastMissionReportBinding.inflate(layoutInflater)
+                snackbarBinding.toastMissionReportTxt.text = message
 
-            } else {
-                // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                Log.d("게시물 삭제 API isSuccess가 false", "${response.toString()}")
-                callback(false)
+                // 스낵바 생성 및 설정
+                val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+                    animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+                    (view as Snackbar.SnackbarLayout).apply {
+                        setBackgroundColor(Color.TRANSPARENT)
+                        addView(snackbarBinding.root)
+                        translationY = -70.dpToPx(this.context).toFloat()
+                        elevation = 0f
+                    }
+                }
+
+                // 스낵바 표시
+                snackbar.show()
+                reportDialog.dismiss()
             }
-        }
+        })
+
+        Log.d("showReportDialog","report ID: ${postId}")
+        reportDialog.show(this.supportFragmentManager, "mission_report_dialog")
+    }
+
+    //댓글 지우기
+    private fun showCommentDeleteDialog(commentId: Long) {
+        val reportDialog = CommunityPostCommentDeleteDialog(commentId)
+
+        reportDialog.setDeleteDialogListener(object : CommunityPostCommentDeleteDialog.DeleteDialogListener {
+            override fun onDeleteSubmitted(message: String) {
+                Log.d("onReportSubmitted", "$message")
+                // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
+                val snackbarBinding = ToastMissionReportBinding.inflate(layoutInflater)
+                snackbarBinding.toastMissionReportTxt.text = message
+
+                // 스낵바 생성 및 설정
+                val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+                    animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+                    (view as Snackbar.SnackbarLayout).apply {
+                        setBackgroundColor(Color.TRANSPARENT)
+                        addView(snackbarBinding.root)
+                        translationY = -70.dpToPx(this.context).toFloat()
+                        elevation = 0f
+                    }
+                }
+
+                // 스낵바 표시
+                snackbar.show()
+                reportDialog.dismiss()
+            }
+        })
+
+        Log.d("showReportDialog","report ID: ${postId}")
+        reportDialog.show(this.supportFragmentManager, "mission_report_dialog")
+    }
+
+    //댓글 바꾸기
+    private fun showCommentChangeDialog(commentId: Long) {
+        val reportDialog = CommunityPostCommentChangeDialog(commentId)
+
+        reportDialog.setReportDialogListener(object : CommunityPostCommentChangeDialog.ReportDialogListener {
+            override fun onReportSubmitted(message: String) {
+                Log.d("onReportSubmitted", "$message")
+                // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
+                val snackbarBinding = ToastMissionReportBinding.inflate(layoutInflater)
+                snackbarBinding.toastMissionReportTxt.text = message
+
+                // 스낵바 생성 및 설정
+                val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+                    animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+                    (view as Snackbar.SnackbarLayout).apply {
+                        setBackgroundColor(Color.TRANSPARENT)
+                        addView(snackbarBinding.root)
+                        translationY = -70.dpToPx(this.context).toFloat()
+                        elevation = 0f
+                    }
+                }
+
+                // 스낵바 표시
+                snackbar.show()
+                reportDialog.dismiss()
+            }
+        })
+
+        Log.d("showReportDialog","report ID: ${postId}")
+        reportDialog.show(this.supportFragmentManager, "mission_report_dialog")
     }
 
     //이미지 리사이클러뷰, 어댑터 연결
@@ -369,6 +439,21 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
         binding.postCommentRecyclr.layoutManager = layoutManager
         binding.postCommentRecyclr.adapter = adapter
+
+        if (adapter != null) {
+            adapter.setOnItemClickListener(object : PostCommentAdapter.OnItemClickListener {
+
+                override fun onDeleteClick(postition: Int) {
+                    showCommentDeleteDialog(list[postition].commentId)
+                    adapter.notifyDataSetChanged()
+                }
+
+                override fun onChangeClick(postition: Int) {
+                    showCommentChangeDialog(list[postition].commentId)
+                    adapter.notifyDataSetChanged()
+                }
+            })
+        }
     }
 
     //하트 버튼 아이콘 설정
@@ -421,5 +506,10 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+    private fun Int.dpToPx(context: Context): Int {
+        val scale = context.resources.displayMetrics.density
+        return (this * scale + 0.5f).toInt()
+    }
+
 
 }
