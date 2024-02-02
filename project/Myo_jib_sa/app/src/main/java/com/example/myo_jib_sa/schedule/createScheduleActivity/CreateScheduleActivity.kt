@@ -282,7 +282,7 @@ class CreateScheduleActivity : AppCompatActivity() {
             (view as Snackbar.SnackbarLayout).apply {
                 setBackgroundColor(Color.TRANSPARENT)
                 addView(snackbarBinding.root)
-                translationY = -30.dpToPx().toFloat()
+                translationY = -15.dpToPx().toFloat()
                 elevation = 0f
             }
         }
@@ -298,7 +298,7 @@ class CreateScheduleActivity : AppCompatActivity() {
             startAt = scheduleData.startAt,
             endAt = scheduleData.endAt,
             missionId = scheduleData.missionId,
-            scheduleWhen = scheduleDateFormatter()
+            scheduleWhen = binding.scheduleDateTv.text.toString()
         )
 
         Log.d("retrofit", "ScheduleAddRequest: $requestBody");
@@ -425,25 +425,4 @@ class CreateScheduleActivity : AppCompatActivity() {
         }
     }
 
-
-    //화면의 날짜를 yyyy-mm-dd형식으로 포맷
-    private fun scheduleDateFormatter():String{
-        val formatter = DecimalFormat("00")
-
-        return binding.scheduleDateTv.text.toString()
-    }
-
-    //M월 형식으로 포맷
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun monthFromDate(date : LocalDate):String{
-        var formatter = DateTimeFormatter.ofPattern("M월")
-        return date.format(formatter)
-    }
-
-    //YYYY년 형식으로 포맷
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun yearFromDate(date : LocalDate):String{
-        var formatter = DateTimeFormatter.ofPattern("YYYY년")
-        return date.format(formatter)
-    }
 }

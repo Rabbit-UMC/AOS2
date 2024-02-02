@@ -1,3 +1,5 @@
+package com.example.myo_jib_sa.schedule.utils
+
 import android.content.Context
 import android.graphics.Canvas
 import android.icu.lang.UCharacter.IndicPositionalCategory.LEFT
