@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleEditBinding
+import com.example.myo_jib_sa.databinding.ToastCurrentMissionDeleteBinding
 import com.example.myo_jib_sa.schedule.api.MissionAPI
 import com.example.myo_jib_sa.schedule.api.MyMissionResponse
 import com.example.myo_jib_sa.schedule.api.MyMissionResult
@@ -28,6 +29,9 @@ import com.example.myo_jib_sa.schedule.api.ScheduleAPI
 import com.example.myo_jib_sa.schedule.api.ScheduleDetailResult
 import com.example.myo_jib_sa.schedule.api.UpdateScheduleRequest
 import com.example.myo_jib_sa.schedule.api.UpdateScheduleResponse
+import com.example.myo_jib_sa.schedule.utils.DateFormatter
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,6 +45,8 @@ import java.util.regex.Pattern
 
 class ScheduleEditDialogFragment : DialogFragment() {
     val retrofit:ScheduleAPI =sRetrofit.create(ScheduleAPI::class.java)
+    val dateFormatter = DateFormatter()
+
     private lateinit var binding: DialogFragmentScheduleEditBinding
     private var scheduleData : ScheduleDetailResult = ScheduleDetailResult(
         scheduleId = 0,
@@ -103,11 +109,20 @@ class ScheduleEditDialogFragment : DialogFragment() {
         binding.missionRv.adapter = dialogMissionAdapter
         binding.missionRv.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
 
+        var preMissionId : Long = -1
         dialogMissionAdapter.setItemClickListener(object : DialogMissionAdapter.OnItemClickListener{
             override fun onClick(data: MyMissionResult) {
-                binding.missionTitleTv.text = data.missionTitle
-                scheduleData.missionTitle = data.missionTitle
-                scheduleData.missionId = data.missionId
+                if(preMissionId == data.missionId){
+                    binding.missionTitleTv.text = "현재 미션이 없습니다."
+                    scheduleData.missionTitle = "현재 미션이 없습니다."
+                    scheduleData.missionId = null
+                    preMissionId=-1
+                }else{
+                    binding.missionTitleTv.text = data.missionTitle
+                    scheduleData.missionTitle = data.missionTitle
+                    scheduleData.missionId = data.missionId
+                    preMissionId=data.missionId
+                }
             }
         })
     }
@@ -124,13 +139,13 @@ class ScheduleEditDialogFragment : DialogFragment() {
         binding.preMonthBtn.setOnClickListener{
             standardDate = standardDate.minusMonths(1)
             //CoroutineScope(Dispatchers.Main).launch {
-            binding.selectedMonthTv.text = monthFromDate(standardDate)
+            binding.selectedMonthTv.text = dateFormatter.monthFromDate(standardDate)
             setMonthView()
         }
         //다음달로 이동
         binding.nextMonthBtn.setOnClickListener{
             standardDate =standardDate.plusMonths(1)
-            binding.selectedMonthTv.text = monthFromDate(standardDate)
+            binding.selectedMonthTv.text = dateFormatter.monthFromDate(standardDate)
             setMonthView()
         }
     }
@@ -138,8 +153,8 @@ class ScheduleEditDialogFragment : DialogFragment() {
     //month화면에 보여주기
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setMonthView(){
-        binding.selectedMonthTv.text = monthFromDate(standardDate)//결과: 1월
-        binding.selectedYearTv.text = yearFromDate(standardDate)//결과: 2023년
+        binding.selectedMonthTv.text = dateFormatter.monthFromDate(standardDate)//결과: 1월
+        binding.selectedYearTv.text = dateFormatter.yearFromDate(standardDate)//결과: 2023년
 
         //이번달 날짜 가져오기
         val dayList = DayInMonthArray(standardDate)
@@ -292,7 +307,6 @@ class ScheduleEditDialogFragment : DialogFragment() {
             saveData()//scheduleData&sharedPreference에 저장
             buttonClickListener.onClickEditBtn(scheduleData)
             scheduleModifyApi()//수정완료 누르면 데이터 서버로 보내기
-            dismiss()
         }
 
         //미션 제목 클릭시
@@ -314,7 +328,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
         binding.calendarCompleteTv.setOnClickListener {
             binding.calendarLayout.visibility = View.GONE
             binding.scheduleMemoEtv.visibility = View.VISIBLE
-            binding.scheduleDateTv.text = yearMonthDate(selectedDate)
+            binding.scheduleDateTv.text = dateFormatter.yearMonthDate(selectedDate)
             scheduleData.scheduleWhen = selectedDate.toString()
         }
         //시간 클릭시
@@ -487,7 +501,23 @@ class ScheduleEditDialogFragment : DialogFragment() {
             ) {
                 if (response.isSuccessful) {
                     Log.d("retrofit", "scheduleModifyApi"+response.body().toString());
+                    dismiss()
                 }else {
+                    // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
+                    val snackbarBinding = ToastCurrentMissionDeleteBinding.inflate(layoutInflater)
+                    snackbarBinding.toastMessageTv.text = "[ERROR] ${response.body()?.errorMessage}"
+                    // 스낵바 생성 및 설정
+                    val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+                        animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+                        (view as Snackbar.SnackbarLayout).apply {
+                            setBackgroundColor(Color.TRANSPARENT)
+                            addView(snackbarBinding.root)
+                            translationY = -15.dpToPx().toFloat()
+                            elevation = 0f
+                        }
+                    }
+                    // 스낵바 표시
+                    snackbar.show()
                     Log.e("retrofit", "scheduleModifyApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
                     Log.e("retrofit", "scheduleModifyApi_onResponse: Error Body $errorBody")
@@ -497,6 +527,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
             }
         })
     }
+    private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
 
 
 
@@ -565,26 +596,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
     }
 
 
-    //M월 형식으로 포맷
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun monthFromDate(date : LocalDate):String{
-        var formatter = DateTimeFormatter.ofPattern("M월")
-        return date.format(formatter)
-    }
 
-    //YYYY년 형식으로 포맷
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun yearFromDate(date : LocalDate):String{
-        var formatter = DateTimeFormatter.ofPattern("yyyy년")
-        return date.format(formatter)
-    }
-
-    //YYYY년 MM월 D일
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun yearMonthDate(date : LocalDate):String{
-        var formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 DD일")
-        return date.format(formatter)
-    }
     private fun scheduleWhenFormatter(scheduleWhen: String?): String {
         val date = scheduleWhen!!.split("-")
         val year = date[0]
