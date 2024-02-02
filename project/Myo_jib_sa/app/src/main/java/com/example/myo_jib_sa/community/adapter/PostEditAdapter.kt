@@ -7,18 +7,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.community.post.PostPictureActivity
-import com.example.myo_jib_sa.community.api.post.ArticleImage
+import com.example.myo_jib_sa.community.api.post.ImageList
 import com.example.myo_jib_sa.databinding.ItemPostImgBinding
 import com.google.gson.Gson
 
-class PostImgAdapter(
-    private val context: Context,
-    private val dataList:List<ArticleImage>)
-    : RecyclerView.Adapter<PostImgAdapter.ViewHolder>(){
 
+class PostEditAdapter (
+    private val context: Context,
+    private val dataList:List<String>)
+    : RecyclerView.Adapter<PostEditAdapter.ViewHolder>(){
+
+    private var itemClickListener: OnItemClickListener? = null
 
 
     //뷰홀더
@@ -26,16 +29,29 @@ class PostImgAdapter(
         private val binding: ItemPostImgBinding
     )
         : RecyclerView.ViewHolder(binding.root){
-        fun bind(item: List<ArticleImage>, position: Int){
+
+        init {
+
+            // 이미지 클릭 이벤트
+            binding.postImgImg.setOnClickListener {
+                itemClickListener?.onImageClick(adapterPosition)
+            }
+
+            // 삭제 버튼 클릭 이벤트
+            binding.postImgDelete.setOnClickListener {
+                itemClickListener?.onDeleteClick(adapterPosition)
+            }
+        }
+
+        fun bind(item: List<String>, position: Int){
 
             //이미지 설정
-            if(item[position].filePath.isNotBlank()){
+            if(item[position].isNotBlank()){
                 Glide.with(context)
-                    .load(item[position].filePath)
+                    .load(item[position])
                     .into(binding.postImgImg)
-                binding.postImgDelete.visibility=View.GONE
             }else{
-                binding.postImgImg.visibility=View.GONE
+                binding.postImgImg.visibility= View.GONE
             }
 
             //클릭 이벤트
@@ -45,6 +61,10 @@ class PostImgAdapter(
                 intent.putExtra("itemListJson", Gson().toJson(item))
                 intent.putExtra("current", position)
                 context.startActivity(intent)
+            }
+
+            binding.postImgDelete.setOnClickListener { //삭제
+                binding.postImgImg.setImageURI(null)
             }
 
 
@@ -75,14 +95,18 @@ class PostImgAdapter(
             outRect.right = spaceHeight // 아이템 사이의 간격을 설정 (오른쪽
         }
     }
+
     // 아이템 간격 설정을 위한 메소드
     fun setItemSpacing(recyclerView: RecyclerView, spacing: Int) {
         recyclerView.addItemDecoration(CustomItemDecoration(spacing))
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(position: Int)
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.itemClickListener = listener
     }
-
-
+    interface OnItemClickListener {
+        fun onImageClick(position: Int)
+        fun onDeleteClick(postition:Int)
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community
+package com.example.myo_jib_sa.community.post
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,11 +6,8 @@ import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
-import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.adapter.MissionCertViewpagerAdapter
 import com.example.myo_jib_sa.community.adapter.PostPictureViewpagerAdapter
 import com.example.myo_jib_sa.community.api.post.ArticleImage
-import com.example.myo_jib_sa.databinding.ActivityBoardBinding
 import com.example.myo_jib_sa.databinding.ActivityPostPictureBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

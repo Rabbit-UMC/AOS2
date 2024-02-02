@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.community
+package com.example.myo_jib_sa.community.post
 
 import android.content.Context
 import android.os.Bundle
@@ -8,8 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.databinding.ActivityBoardBinding
-import com.example.myo_jib_sa.databinding.FragmentManagerMissionBinding
 import com.example.myo_jib_sa.databinding.FragmentPostPictureBinding
 
 

@@ -1,7 +1,6 @@
-package com.example.myo_jib_sa.community
+package com.example.myo_jib_sa.community.post
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Outline
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -11,12 +10,12 @@ import android.view.View
 import android.view.ViewOutlineProvider
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
+import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.post.ArticleImage
 import com.example.myo_jib_sa.community.api.post.CommentList
 import com.example.myo_jib_sa.community.api.post.PostRetrofitManager
@@ -137,12 +136,14 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
             when (item?.itemId) { // 메뉴 아이템에 따라 동작 다르게 하기
                 R.id.postMenu_edit -> {
                     //수정 page 이동
-                    val intent = Intent(this, WritePostingActivity::class.java)
+                    val intent = Intent(this, PostEditActivity::class.java)
                     intent.putExtra("title", binding.postPostNameTxt.text.toString())
                     intent.putExtra("postText", binding.postPostTextTxt.text.toString())
                     intent.putExtra("postId", postId)
                     intent.putExtra("boardId", boardId.toInt())
                     //사진 리스트 첨부
+
+
                     intent.putExtra("imgList1_id", imageList[0].imageId)
                     intent.putExtra("imgList1_path", imageList[0].filePath)
                     intent.putExtra("imgList2_id", imageList[1].imageId)
@@ -231,7 +232,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 binding.postNameTxt.text="$boardName 게시판"
 
                 //내 게시글인지 아닌지
-                if(Constance.USER_ID==response.result.authorId){
+                if(Constance.USER_ID ==response.result.authorId){
                     myPost=true
                 }
 
@@ -281,13 +282,13 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
         //게시판 이름
         when(boardId.toLong()){
-            Constance.ART_ID-> {
+            Constance.ART_ID -> {
                 binding.postNameTxt.text="예술 게시판"
             }
-            Constance.FREE_ID-> {
+            Constance.FREE_ID -> {
                 binding.postNameTxt.text="자유 게시판"
             }
-            Constance.EXERCISE_ID-> {
+            Constance.EXERCISE_ID -> {
                 binding.postNameTxt.text="운동 게시판"
             }
 
