@@ -13,6 +13,7 @@ import com.example.myo_jib_sa.community.api.BoardPost.Articles
 import com.example.myo_jib_sa.community.api.BoardPost.PostBoardRetrofitManager
 import com.example.myo_jib_sa.community.adapter.BoardAdapter
 import com.example.myo_jib_sa.community.missionCert.MissionCertificationActivity
+import com.example.myo_jib_sa.community.post.PostWrtieActivity
 import com.example.myo_jib_sa.databinding.ActivityBoardBinding
 
 class BoardActivity : AppCompatActivity() {
@@ -67,7 +68,7 @@ class BoardActivity : AppCompatActivity() {
 
         //글쓰기
         binding.boardPostingBtn.setOnClickListener {
-            val intent= Intent(this, WritePostingActivity::class.java)
+            val intent= Intent(this, PostWrtieActivity::class.java)
             intent.putExtra("boardId", boardId)
             startActivity(intent)
         }
