@@ -18,54 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/top"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:gravity="center_vertical|left"
-                android:orientation="vertical"
-                android:paddingRight="8dp"
-                app:layout_constraintBottom_toBottomOf="@id/horizontalguideline_top"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-
-                <ImageView
-                    android:id="@+id/imageView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="17dp"
-                    android:src="@drawable/ic_schedule_ogo" />
-
-            </LinearLayout>
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/horizontalguideline_top"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.06" />
-            <View
-                android:id="@+id/top_line_v"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#C6C6C6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/horizontalguideline_top" />
-
-            <!--ImageView
-        android:id="@+id/schedule_ad_iv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_schedule_ad"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_line_v" /-->
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -76,7 +28,7 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/horizontalguideline_top">
+                app:layout_constraintTop_toTopOf="parent">
 
 
                 <TextView

@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.createScheduleActivity
+package com.example.myo_jib_sa.schedule.createScheduleActivity.dialog
 
 import android.content.Context
 import android.graphics.Color
@@ -7,17 +7,14 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogFragmentCalendarBinding
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.DialogCalendarAdapter
 import com.example.myo_jib_sa.schedule.createScheduleActivity.adapter.SelectDateData
@@ -61,13 +58,13 @@ class CalendarDialogFragment(private var setOnClickListener : SetOnClickListener
         binding.preMonthBtn.setOnClickListener{
             standardDate = standardDate.minusMonths(1)
             //CoroutineScope(Dispatchers.Main).launch {
-            binding.monthTv.text = monthFromDate(standardDate)
+            binding.monthTv.text = standardDate.monthValue.toString()+"월"
             setMonthView()
         }
         //다음달로 이동
         binding.nextMonthBtn.setOnClickListener{
             standardDate =standardDate.plusMonths(1)
-            binding.monthTv.text = monthFromDate(standardDate)
+            binding.monthTv.text = standardDate.monthValue.toString()+"월"
             setMonthView()
         }
         binding.calendarCompleteTv.setOnClickListener {
@@ -87,9 +84,10 @@ class CalendarDialogFragment(private var setOnClickListener : SetOnClickListener
     private fun setMonthView(){
 
         //month를 month text view에 보여주기 (결과: 1월)
-        binding.monthTv.text = monthFromDate(standardDate)
+        binding.monthTv.text = standardDate.monthValue.toString()+"월"
         //year를 year text view에 보여주기 (결과: 2023년)
-        binding.yearTv.text = yearFromDate(standardDate)
+        binding.yearTv.text = standardDate.year.toString();
+
 
         //이번달 날짜 가져오기
         val dayList = DayInMonthArray(standardDate)
@@ -107,20 +105,6 @@ class CalendarDialogFragment(private var setOnClickListener : SetOnClickListener
     private fun monthFromDate(date : LocalDate):String{
         var formatter = DateTimeFormatter.ofPattern("M월")
         return date.format(formatter)
-    }
-
-    //YYYY년 형식으로 포맷
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun yearFromDate(date : LocalDate):String{
-        var formatter = DateTimeFormatter.ofPattern("YYYY년")
-        return date.format(formatter)
-    }
-
-    //YYYY-MM-DD 형식으로 포맷
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun YYYYMMDDFromDate(date: LocalDate?): String? {
-        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        return date?.format(formatter)
     }
 
     //날짜 생성: ArrayList<CalendarData>()생성
