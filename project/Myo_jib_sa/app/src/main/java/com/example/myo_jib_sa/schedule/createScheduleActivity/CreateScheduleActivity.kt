@@ -11,23 +11,24 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
-import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.schedule.api.RetrofitClient
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
 import com.example.myo_jib_sa.databinding.ToastCreateScheduleBinding
 import com.example.myo_jib_sa.schedule.ScheduleFragment
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResponse
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionResult
-import com.example.myo_jib_sa.schedule.api.currentMission.CurrentMissionService
-
-import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddRequest
-import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddResponse
-import com.example.myo_jib_sa.schedule.createScheduleActivity.api.scheduleAdd.ScheduleAddService
+import com.example.myo_jib_sa.schedule.api.CreateScheduleRequest
+import com.example.myo_jib_sa.schedule.api.CreateScheduleResponse
+import com.example.myo_jib_sa.schedule.api.MissionAPI
+import com.example.myo_jib_sa.schedule.api.MyMissionResponse
+import com.example.myo_jib_sa.schedule.api.MyMissionResult
+import com.example.myo_jib_sa.schedule.api.ScheduleAPI
+import com.example.myo_jib_sa.schedule.createScheduleActivity.dialog.CalendarDialogFragment
+import com.example.myo_jib_sa.schedule.createScheduleActivity.dialog.EndTimeDialogFragment
+import com.example.myo_jib_sa.schedule.createScheduleActivity.dialog.StartTimeDialogFragment
 import com.example.myo_jib_sa.schedule.createScheduleActivity.spinner.ScheduleCreateSpinnerDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.DialogMissionAdapter
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -41,11 +42,12 @@ import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 
 class CreateScheduleActivity : AppCompatActivity() {
+    val scheduleRetrofit : ScheduleAPI =sRetrofit.create(ScheduleAPI::class.java)
     private lateinit var binding : ActivityCreateScheduleBinding
     private lateinit var referenceDate : LocalDate //오늘 날짜
     private lateinit var selectedDate : LocalDate //선택한 날짜
 
-    private var scheduleData : ScheduleAddRequest = ScheduleAddRequest(
+    private var scheduleData : CreateScheduleRequest = CreateScheduleRequest(
         missionId = null,
         scheduleTitle = null,
         startAt = null,
@@ -74,23 +76,30 @@ class CreateScheduleActivity : AppCompatActivity() {
         currentMissionApi()
     }
 
-    private fun setDialogMissionAdapter(missionList: List<CurrentMissionResult>){
+    private fun setDialogMissionAdapter(missionList: List<MyMissionResult>){
         var dialogMissionAdapter = DialogMissionAdapter(missionList)
         binding.missionListRv.adapter = dialogMissionAdapter
         binding.missionListRv.layoutManager = LinearLayoutManager(this ,RecyclerView.HORIZONTAL, false)
 
+        var preMissionId : Long = -1
         dialogMissionAdapter.setItemClickListener(object : DialogMissionAdapter.OnItemClickListener{
-            override fun onClick(data: CurrentMissionResult) {
-                binding.missionTitleTv.text = data.missionTitle
-                scheduleData.missionId = data.missionId
-                createScheduleBtn()
+            override fun onClick(data: MyMissionResult) {
+                if(preMissionId == data.missionId){
+                    binding.missionTitleTv.text = "현재 미션이 없습니다."
+                    scheduleData.missionId = null
+                    preMissionId=-1
+                }else{
+                    binding.missionTitleTv.text = data.missionTitle
+                    scheduleData.missionId = data.missionId
+                    preMissionId=data.missionId
+                }
             }
         })
     }
 
     fun createScheduleBtn(){
         //생성 조건 만족시
-        if(binding.scheduleTitleEtv.text.isNotEmpty() && scheduleData.missionId != null &&  scheduleData.startAt != null &&  scheduleData.endAt != null &&  scheduleData.scheduleWhen != null && (scheduleData.endAt!! > scheduleData.startAt!!)){
+        if(binding.scheduleTitleEtv.text.isNotEmpty() &&  scheduleData.startAt != null &&  scheduleData.endAt != null &&  scheduleData.scheduleWhen != null && (scheduleData.endAt!! > scheduleData.startAt!!)){
             binding.createBtn.isEnabled = true
             binding.createBtn.setBackgroundResource(R.drawable.view_round_r8_blue)
         }else{ //만족 못했을 시
@@ -124,7 +133,7 @@ class CreateScheduleActivity : AppCompatActivity() {
         })
         //완료 버튼
         binding.createBtn.setOnClickListener {
-            if(binding.scheduleTitleEtv.text.isNotEmpty() && scheduleData.missionId != null &&  scheduleData.startAt != null &&  scheduleData.endAt != null &&  scheduleData.scheduleWhen != null && (scheduleData.endAt!! > scheduleData.startAt!!)){
+            if(binding.scheduleTitleEtv.text.isNotEmpty() &&  scheduleData.startAt != null &&  scheduleData.endAt != null &&  scheduleData.scheduleWhen != null && (scheduleData.endAt!! > scheduleData.startAt!!)){
                 binding.createBtn.isEnabled = true
                 binding.createBtn.setBackgroundResource(R.drawable.view_round_r8_blue)
                 Log.d("exitDebug", "yes!!")
@@ -273,7 +282,7 @@ class CreateScheduleActivity : AppCompatActivity() {
             (view as Snackbar.SnackbarLayout).apply {
                 setBackgroundColor(Color.TRANSPARENT)
                 addView(snackbarBinding.root)
-                translationY = -30.dpToPx().toFloat()
+                translationY = -15.dpToPx().toFloat()
                 elevation = 0f
             }
         }
@@ -282,30 +291,21 @@ class CreateScheduleActivity : AppCompatActivity() {
     }
     private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
 
-
     private fun scheduleAddApi() {
-        // SharedPreferences 객체 가져오기
-        val sharedPreferences = getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        // JWT 값 가져오기
-        val token = sharedPreferences.getString("jwt", null)
-
-        val requestBody = ScheduleAddRequest(
+        val requestBody = CreateScheduleRequest(
             scheduleTitle = binding.scheduleTitleEtv.text.toString(),
             content = binding.scheduleMemoEtv.text.toString(),//메모
             startAt = scheduleData.startAt,
             endAt = scheduleData.endAt,
             missionId = scheduleData.missionId,
-            scheduleWhen = scheduleDateFormatter()
+            scheduleWhen = binding.scheduleDateTv.text.toString()
         )
+
         Log.d("retrofit", "ScheduleAddRequest: $requestBody");
-
-        val service = RetrofitClient.getInstance().create(ScheduleAddService::class.java)
-        val listCall = service.scheduleAdd(token, requestBody)
-
-        listCall.enqueue(object : Callback<ScheduleAddResponse> {
+        scheduleRetrofit.createSchedule(requestBody).enqueue(object : Callback<CreateScheduleResponse> {
             override fun onResponse(
-                call: Call<ScheduleAddResponse>,
-                response: Response<ScheduleAddResponse>
+                call: Call<CreateScheduleResponse>,
+                response: Response<CreateScheduleResponse>
             ) {
                 if (response.isSuccessful && response.body()!!.isSuccess) {
                     Log.d("retrofit", response.body().toString());
@@ -319,14 +319,14 @@ class CreateScheduleActivity : AppCompatActivity() {
                     finish()
 
                 } else {
-                    createToast("일정 저장 실패 : ${response.body()?.message}")
+                    createToast("일정 저장 실패 : ${response.body()?.errorMessage}")
                     Log.e("retrofit", "scheduleAddApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
                     Log.e("retrofit", "scheduleAddApi_onResponse: Error Body $errorBody")
                 }
             }
 
-            override fun onFailure(call: Call<ScheduleAddResponse>, t: Throwable) {
+            override fun onFailure(call: Call<CreateScheduleResponse>, t: Throwable) {
                 createToast("일정 저장 실패")
                 Log.e("retrofit", "scheduleAddApi_onFailure: ${t.message}")
             }
@@ -335,28 +335,24 @@ class CreateScheduleActivity : AppCompatActivity() {
 
     //currentMission api연결
     private fun currentMissionApi() {
-        val sharedPreferences =
-            getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("jwt", null)
-
-        val service = RetrofitClient.getInstance().create(CurrentMissionService::class.java)
-        val listCall = service.currentMission(token)
-        listCall.enqueue(object : Callback<CurrentMissionResponse> {
+        sRetrofit.create(MissionAPI::class.java).getMyMission().enqueue(object : Callback<MyMissionResponse> {
             override fun onResponse(
-                call: Call<CurrentMissionResponse>, response: Response<CurrentMissionResponse>
+                call: Call<MyMissionResponse>, response: Response<MyMissionResponse>
             ) {
                 if (response.isSuccessful) {
                     Log.d("retrofit", "currentMissionApi " + response.body().toString());
-                    val missionList:ArrayList<CurrentMissionResult> = (response.body()?.result as ArrayList<CurrentMissionResult>?)!!
-                    setDialogMissionAdapter(missionList)
+                    if(response.body()!!.result!=null){
+                        val missionList:ArrayList<MyMissionResult> =
+                            (response.body()?.result as ArrayList<MyMissionResult>?)!!
+                        setDialogMissionAdapter(missionList)
+                    }
                 } else {
                     Log.e("retrofit", "currentMissionApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
                     Log.e("retrofit", "currentMissionApi_onResponse: Error Body $errorBody")
                 }
             }
-
-            override fun onFailure(call: Call<CurrentMissionResponse>, t: Throwable) {
+            override fun onFailure(call: Call<MyMissionResponse>, t: Throwable) {
                 Log.e("retrofit", "currentMissionApi_onFailure: ${t.message}")
             }
         })
@@ -429,25 +425,4 @@ class CreateScheduleActivity : AppCompatActivity() {
         }
     }
 
-
-    //화면의 날짜를 yyyy-mm-dd형식으로 포맷
-    private fun scheduleDateFormatter():String{
-        val formatter = DecimalFormat("00")
-
-        return binding.scheduleDateTv.text.toString()
-    }
-
-    //M월 형식으로 포맷
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun monthFromDate(date : LocalDate):String{
-        var formatter = DateTimeFormatter.ofPattern("M월")
-        return date.format(formatter)
-    }
-
-    //YYYY년 형식으로 포맷
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun yearFromDate(date : LocalDate):String{
-        var formatter = DateTimeFormatter.ofPattern("YYYY년")
-        return date.format(formatter)
-    }
 }

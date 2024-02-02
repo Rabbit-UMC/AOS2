@@ -9,11 +9,11 @@ import androidx.core.os.persistableBundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemScheduleScheduleBinding
 import com.example.myo_jib_sa.databinding.ItemSubScheduleBinding
-import com.example.myo_jib_sa.schedule.currentMissionActivity.api.currentMissionSchedule.CurrentMissionScheduleResult
+import com.example.myo_jib_sa.schedule.api.MyMissionScheduleResult
 
 
 data class ScheduleDeleteAdapterData(
-    var currentMissionScheduleResult: CurrentMissionScheduleResult,
+    var currentMissionScheduleResult: MyMissionScheduleResult,
     var selected :Boolean = false
 )
 class CurrentMissionScheduleAdapter(private val scheduleList:ArrayList<ScheduleDeleteAdapterData>,

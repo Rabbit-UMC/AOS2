@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule
+package com.example.myo_jib_sa.schedule.utils
 
 import android.annotation.SuppressLint
 import android.content.Context

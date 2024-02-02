@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.NumberPicker
 import android.widget.TimePicker
 import com.example.myo_jib_sa.databinding.FragmentSpinnerStartTimeBinding
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
+import com.example.myo_jib_sa.schedule.api.ScheduleDetailResult
 import java.text.DecimalFormat
 
 

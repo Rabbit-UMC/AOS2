@@ -8,18 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
+import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.FragmentSpinnerMissionBinding
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
-import com.example.myo_jib_sa.schedule.api.scheduleHome.Mission
-import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeResponse
-import com.example.myo_jib_sa.schedule.api.scheduleHome.ScheduleHomeService
+import com.example.myo_jib_sa.schedule.api.Mission
+import com.example.myo_jib_sa.schedule.api.ScheduleAPI
+import com.example.myo_jib_sa.schedule.api.ScheduleDetailResult
+import com.example.myo_jib_sa.schedule.api.ScheduleHomeResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
 class SpinnerMissionFragment : Fragment() {
+    val retrofit: ScheduleAPI = MyojibsaApplication.sRetrofit.create(ScheduleAPI::class.java)
+
     private lateinit var binding : FragmentSpinnerMissionBinding
     private lateinit var missionTitleList : MutableList<String>//numberpicker타이틀 리스트
     private lateinit var titleIdMap : HashMap<String, Long>//id로 찾기
@@ -129,18 +132,7 @@ class SpinnerMissionFragment : Fragment() {
 
     //scheduleHome api연결 for missionList받기위해
     private fun scheduleHomeApi() {
-        // SharedPreferences 객체 가져오기
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        // JWT 값 가져오기
-        val token = sharedPreferences.getString("jwt", null)
-
-        //val token : String = BuildConfig.API_TOKEN
-//        Log.d("retrofit", "token = "+token+"l");
-
-        val service = RetrofitClient.getInstance().create(ScheduleHomeService::class.java)
-        val listCall = service.scheduleHome(token)
-
-        listCall.enqueue(object : Callback<ScheduleHomeResponse> {
+        retrofit.getScheduleHome().enqueue(object : Callback<ScheduleHomeResponse> {
             override fun onResponse(
                 call: Call<ScheduleHomeResponse>,
                 response: Response<ScheduleHomeResponse>

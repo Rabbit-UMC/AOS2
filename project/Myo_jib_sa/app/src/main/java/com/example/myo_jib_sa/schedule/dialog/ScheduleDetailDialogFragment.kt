@@ -13,11 +13,12 @@ import android.util.Log
 import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDetailBinding
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResponse
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailResult
-import com.example.myo_jib_sa.schedule.api.scheduleDetail.ScheduleDetailService
+import com.example.myo_jib_sa.schedule.api.ScheduleAPI
+import com.example.myo_jib_sa.schedule.api.ScheduleDetailResponse
+import com.example.myo_jib_sa.schedule.api.ScheduleDetailResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -30,6 +31,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
+    val retrofit: ScheduleAPI = sRetrofit.create(ScheduleAPI::class.java)
     private lateinit var binding: DialogFragmentScheduleDetailBinding
     private var result: ScheduleDetailResult = ScheduleDetailResult(
         scheduleId = 0,
@@ -159,19 +161,12 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
 
     //scheduleDetail api연결
     private fun scheduleDetailApi(scheduleId: Long) {
-        // JWT 값 가져오기
-        val sharedPreferences = requireContext().getSharedPreferences("getJwt", Context.MODE_PRIVATE)
-        val token = sharedPreferences.getString("jwt", null)
-
-        val service = RetrofitClient.getInstance().create(ScheduleDetailService::class.java)
-        val listCall = service.scheduleDetail(token, scheduleId)
-
-        listCall.enqueue(object : Callback<ScheduleDetailResponse> {
+        retrofit.getScheduleDetail(scheduleId).enqueue(object : Callback<ScheduleDetailResponse> {
             override fun onResponse(
                 call: Call<ScheduleDetailResponse>,
                 response: Response<ScheduleDetailResponse>
             ) {
-                if (response.isSuccessful) {
+                if (response.body()!!.isSuccess) {
                     Log.d("debug", "retrofit: "+response.body().toString());
                     result = response.body()!!.result
 
@@ -187,9 +182,8 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
                     binding.scheduleMemoTv.text = result!!.content
 
                 } else {
-                    Log.e("retrofit", "onResponse: Error ${response.code()}")
-                    val errorBody = response.errorBody()?.string()
-                    Log.e("retrofit", "onResponse: Error Body $errorBody")
+                    Log.e("retrofit", "onResponse: Error Msg ${response.body()!!.errorMessage}")
+                    Log.e("retrofit", "onResponse: Error Code ${response.body()!!.errorCode}}")
                 }
             }
 
