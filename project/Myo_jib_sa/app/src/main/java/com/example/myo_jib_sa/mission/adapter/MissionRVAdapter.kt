@@ -2,9 +2,11 @@ package com.example.myo_jib_sa.mission.adapter
 
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.ItemMissionMissionBinding
 import com.example.myo_jib_sa.mission.api.Mission
 
@@ -12,18 +14,15 @@ class MissionRVAdapter(
     private var dataList: List<Mission>,
     private val onClickListener: OnClickListener
 ) : RecyclerView.Adapter<MissionRVAdapter.MissionViewHolder>() {
-
     interface OnClickListener {
         fun onReportClick(item:Mission)
         fun onItemClick(item:Mission)
     }
 
-    inner class MissionViewHolder(private val binding: ItemMissionMissionBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MissionViewHolder(val binding: ItemMissionMissionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Mission) {
             with(binding) {
-                Glide.with(missionImgIv)
-                    .load(item.image)
-                    .into(missionImgIv)
+                setTitleImage(missionImgIv, item.categoryId)
                 missionTitleTxt.text = item.title
                 missionCntTxt.text = item.challengerCnt.toString()
                 missionDateTxt.text = item.dday
@@ -71,5 +70,22 @@ class MissionRVAdapter(
     fun updateData(newMissions: List<Mission>) {
         dataList = newMissions
         notifyDataSetChanged() // 데이터가 변경되었음을 어댑터에 알려줍니다.
+    }
+
+    fun setTitleImage(imageView: ImageView, category: Long) {
+        imageView.setImageResource(
+            when(category){
+                FREE -> R.drawable.ic_mission_list_free
+                EXERCISE -> R.drawable.ic_mission_list_exercise
+                ART -> R.drawable.ic_mission_list_art
+                else -> R.drawable.ic_curmission_myo_icon
+            }
+        )
+
+    }
+    companion object {
+        const val FREE = 1L
+        const val EXERCISE = 2L
+        const val ART = 3L
     }
 }
