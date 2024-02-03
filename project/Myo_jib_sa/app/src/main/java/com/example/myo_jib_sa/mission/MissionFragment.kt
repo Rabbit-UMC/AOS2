@@ -11,8 +11,7 @@ import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.amar.library.ui.StickyScrollView
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.FragmentMissionBinding
 import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
@@ -182,25 +181,30 @@ class MissionFragment : Fragment() {
         val reportDialog = MissionReportDialogFragment(reportItem)
 
         reportDialog.setReportDialogListener(object : MissionReportDialogFragment.ReportDialogListener {
-            override fun onReportSubmitted(message: String) {
+            override fun onReportSubmitted(message: String, isSuccess: Boolean) {
                 Log.d("onReportSubmitted", "$message")
                 // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
-                val snackbarBinding = ToastMissionReportBinding.inflate(layoutInflater)
-                snackbarBinding.toastMissionReportTxt.text = message
+                val snackBarBinding = ToastMissionReportBinding.inflate(layoutInflater)
+                snackBarBinding.toastMissionReportTxt.text = message
+
+                snackBarBinding.toastMissionReportIv.setImageResource(
+                    if(isSuccess) R.drawable.ic_report_toast_check
+                    else R.drawable.ic_toast_fail
+                )
 
                 // 스낵바 생성 및 설정
-                val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+                val snackBar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
                     animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
                     (view as Snackbar.SnackbarLayout).apply {
                         setBackgroundColor(Color.TRANSPARENT)
-                        addView(snackbarBinding.root)
+                        addView(snackBarBinding.root)
                         translationY = -70.dpToPx().toFloat()
                         elevation = 0f
                     }
                 }
 
                 // 스낵바 표시
-                snackbar.show()
+                snackBar.show()
                 reportDialog.dismiss()
             }
         })
@@ -213,6 +217,33 @@ class MissionFragment : Fragment() {
     private fun showDetailDialog(detailItem: Mission) {
         val detailDialog = MissionDetailDialogFragment(detailItem, requireContext())
         Log.d("showDetailDialog","detail ID: {$detailItem.id.toString()}")
+
+        detailDialog.setDetailDialogListener(object : MissionDetailDialogFragment.DetailDialogListener {
+            override fun onMissionWith(message: String, isSuccess: Boolean) {
+                val snackBarBinding = ToastMissionReportBinding.inflate(layoutInflater)
+                snackBarBinding.toastMissionReportTxt.text = message
+
+                snackBarBinding.toastMissionReportIv.setImageResource(
+                    if(isSuccess) R.drawable.ic_schedule_create_check
+                    else R.drawable.ic_toast_fail
+                )
+
+                // 스낵바 생성 및 설정
+                val snackBar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+                    animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+                    (view as Snackbar.SnackbarLayout).apply {
+                        setBackgroundColor(Color.TRANSPARENT)
+                        addView(snackBarBinding.root)
+                        translationY = -70.dpToPx().toFloat()
+                        elevation = 0f
+                    }
+                }
+
+                // 스낵바 표시
+                snackBar.show()
+                if (isSuccess) detailDialog.dismiss()
+            }
+        })
         detailDialog.show(requireActivity().supportFragmentManager, "mission_detail_dialog")
     }
 
