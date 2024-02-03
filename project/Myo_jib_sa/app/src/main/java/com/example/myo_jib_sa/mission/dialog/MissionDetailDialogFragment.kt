@@ -14,8 +14,11 @@ import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.DialogMissionDetailBinding
+import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
 import com.example.myo_jib_sa.mission.api.*
 import com.example.myo_jib_sa.mission.api.Mission
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,10 +28,13 @@ import java.util.Locale
 class MissionDetailDialogFragment(private val item: Mission, private val context: Context) : DialogFragment() {
     private lateinit var binding:DialogMissionDetailBinding
     private val retrofit = sRetrofit.create(MissionAPI::class.java)
+    private var listener: DetailDialogListener? = null
 
-    companion object {
-        const val DIALOG_MARGIN_DP = 20
-        const val DIALOG_HEIGHT_DP = 612
+    interface DetailDialogListener {
+        fun onMissionWith(message: String, isSuccess: Boolean)
+    }
+    fun setDetailDialogListener(listener: DetailDialogListener) {
+        this.listener = listener
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -82,7 +88,7 @@ class MissionDetailDialogFragment(private val item: Mission, private val context
                 call: Call<MissionDetailResponse>,
                 response: Response<MissionDetailResponse>
             ) {
-                if (response.isSuccessful) {
+                if (response.isSuccessful && response.body()?.isSuccess == true) {
                     val detailData = response.body()?.result
                     val density = context.resources.displayMetrics.density
                     val cornerRadiusPx = 16 * density
@@ -137,15 +143,17 @@ class MissionDetailDialogFragment(private val item: Mission, private val context
                 override fun onResponse(call: Call<MissionWithResponse>, response: Response<MissionWithResponse>) {
                     if (response.isSuccessful) {
                         Log.d("postMissionWith", "response.isSuccessful success")
+                        listener?.onMissionWith(SUCCESS_MESSAGE, true)
                     } else {
                         Log.d("postMissionWith", "response.isSuccessful fail")
+                        listener?.onMissionWith(ERROR_MESSAGE, false)
                     }
-                    dismiss()
+
                 }
 
                 override fun onFailure(call: Call<MissionWithResponse>, t: Throwable) {
                     Log.d("postMissionWith", "onFailure $t")
-                    dismiss()
+                    listener?.onMissionWith(ERROR_MESSAGE, false)
                 }
             })
         }
@@ -153,5 +161,13 @@ class MissionDetailDialogFragment(private val item: Mission, private val context
         binding.dialogExitBtn.setOnClickListener{
             dismiss()
         }
+    }
+
+
+    companion object {
+        const val DIALOG_MARGIN_DP = 20
+        const val DIALOG_HEIGHT_DP = 612
+        const val ERROR_MESSAGE = "오류가 발생했습니다. 다시 시도해주세요."
+        const val SUCCESS_MESSAGE = "해당 미션을 수락하셨습니다!"
     }
 }
