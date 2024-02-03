@@ -12,6 +12,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.amar.library.ui.StickyScrollView
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.FragmentMissionBinding
 import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
@@ -77,7 +78,7 @@ class MissionFragment : Fragment() {
             }).also { missionRVAdapter = it }
         }
 
-        ItemTouchHelper(SwipeHelper()).attachToRecyclerView(binding.missionMissionRecycler)
+        ItemTouchHelper(SwipeHelper().apply{ setClamp(83f) }).attachToRecyclerView(binding.missionMissionRecycler)
 
     }
 
@@ -152,6 +153,7 @@ class MissionFragment : Fragment() {
     // 스크롤 리스너
     private fun setScrollListener() {
         binding.missionScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            // 페이징
             if (!isLoading && !isLastPage && scrollY > oldScrollY) {
                 val view = binding.missionScroll.getChildAt(binding.missionScroll.childCount - 1)
                 val diff = (view.bottom - (binding.missionScroll.height + binding.missionScroll.scrollY))
@@ -160,6 +162,18 @@ class MissionFragment : Fragment() {
                     val categoryId = if (selectedTab?.position == 0) 0 else categoryList[selectedTab!!.position - 1].id.toInt()
                     getMissionList(categoryId, ++currentPage)
                 }
+            }
+
+            // 탭 레이아웃 고정
+            val stickyOffset = 20.dpToPx()
+
+            if (scrollY > binding.missionCategoryTl.top - stickyOffset) {
+                // 스크롤 위치가 탭 레이아웃의 상단 위치를 넘어설 때
+                val offset = scrollY - (binding.missionCategoryTl.top - stickyOffset)
+                binding.missionCategoryTl.translationY = offset.toFloat()
+            } else {
+                // 그렇지 않으면 기본 위치로
+                binding.missionCategoryTl.translationY = 0f
             }
         })
     }
