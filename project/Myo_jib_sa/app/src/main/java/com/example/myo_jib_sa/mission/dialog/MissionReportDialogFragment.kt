@@ -21,14 +21,10 @@ class MissionReportDialogFragment(private val item: Mission) : DialogFragment() 
     private lateinit var binding: DialogMissionReportFragmentBinding
     private val retrofit = sRetrofit.create(MissionAPI::class.java)
     private var listener: ReportDialogListener? = null
-    companion object {
-        const val DIALOG_MARGIN_DP = 20
-        const val DIALOG_HEIGHT_DP = 248
-    }
 
 
     interface ReportDialogListener {
-        fun onReportSubmitted(message: String)
+        fun onReportSubmitted(message: String, isSuccess: Boolean)
     }
 
     fun setReportDialogListener(listener: ReportDialogListener) {
@@ -94,28 +90,35 @@ class MissionReportDialogFragment(private val item: Mission) : DialogFragment() 
                         val reportResponse = response.body()
                         if (reportResponse != null) {
                             if (reportResponse.isSuccess) {
-                                listener?.onReportSubmitted("신고가 접수되었어요.")
+                                listener?.onReportSubmitted(SUCCESS_MESSAGE, isSuccess = true)
                                 Log.d("report","신고가 접수되었어요.")
                             } else {
                                 Log.d("report",reportResponse.errorMessage)
-                                listener?.onReportSubmitted(reportResponse.errorMessage)
+                                listener?.onReportSubmitted(ERROR_MESSAGE, isSuccess = false)
                             }
                         }
                     } else {
                         // API 호출 실패 처리
                         Log.d("report","API 호출 실패")
-                        listener?.onReportSubmitted("api 호출 실패 response.isSuccessful : ${response.isSuccessful}")
+                        listener?.onReportSubmitted(ERROR_MESSAGE, isSuccess = false)
                     }
                 }
 
                 override fun onFailure(call: Call<MissionReportResponse>, t: Throwable) {
                     // 네트워크 등의 문제로 API 호출이 실패한 경우 처리
                     Log.d("report","onFailure : $t")
-                    listener?.onReportSubmitted("api 호출 실패 : $t")
+                    listener?.onReportSubmitted(ERROR_MESSAGE, isSuccess = false)
                 }
             })
 
         }
+    }
+
+    companion object {
+        const val DIALOG_MARGIN_DP = 20
+        const val DIALOG_HEIGHT_DP = 248
+        const val ERROR_MESSAGE = "오류가 발생했습니다. 다시 시도해주세요."
+        const val SUCCESS_MESSAGE = "신고가 접수되었어요."
     }
 }
 
