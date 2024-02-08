@@ -1,6 +1,8 @@
 package com.example.myo_jib_sa.mission
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +23,6 @@ import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.ActivityMissionCreateBinding
 import com.example.myo_jib_sa.databinding.ToastMissionCreateBinding
-import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
 import com.example.myo_jib_sa.mission.api.MissionAPI
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResponse
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResult
@@ -41,14 +42,11 @@ class MissionCreateActivity : AppCompatActivity(), MissionCreateCalendarDialogFr
     private lateinit var binding:ActivityMissionCreateBinding
 
     private lateinit var referenceDate : LocalDate //오늘 날짜
-    private lateinit var selectedDate : LocalDate //종료 날짜
 
     private lateinit var startSelectedDate : LocalDate //시작 날짜
     private lateinit var endSelectedDate : LocalDate //종료 날짜
 
     private var isCategorySelected = false
-    private var isStartDateSelected = false
-    private var isEndDateSelected = false
     private var isMissionTitleInputted = false
     private var isMissionMemoInputted = false
 
@@ -60,7 +58,6 @@ class MissionCreateActivity : AppCompatActivity(), MissionCreateCalendarDialogFr
 
         //오늘 날짜
         referenceDate = LocalDate.now()
-        selectedDate = referenceDate
 
         startSelectedDate = referenceDate
         endSelectedDate = referenceDate
@@ -122,6 +119,7 @@ class MissionCreateActivity : AppCompatActivity(), MissionCreateCalendarDialogFr
                 resources.displayMetrics
             )
             setTextSize(TypedValue.COMPLEX_UNIT_PX, scaledPixels)
+            setTextColor(ContextCompat.getColor(context, R.color.gray7))
             gravity = Gravity.CENTER
             id = category.id.toInt()
             background = context.getDrawable(R.drawable.selector_mission_create_category)
@@ -158,11 +156,17 @@ class MissionCreateActivity : AppCompatActivity(), MissionCreateCalendarDialogFr
                 val writeResponse = response.body()
                 if (writeResponse != null) {
                     if(writeResponse.isSuccess){
-                        showSnackbar(writeResponse.errorMessage)
+                        setResult(
+                            Activity.RESULT_OK,
+                            Intent().putExtra("resultMessage", "미션 생성 성공!")
+                            .putExtra("isSuccess", true)
+                        )
                         finish()
                     }
                     else {
-                        showSnackbar(writeResponse.errorMessage)
+                        if(writeResponse.errorCode == "MISSION4013" || writeResponse.errorCode == "MISSION4005")
+                            showSnackbar(writeResponse.errorMessage)
+                        else showSnackbar()
                     }
 
                 }
@@ -197,12 +201,12 @@ class MissionCreateActivity : AppCompatActivity(), MissionCreateCalendarDialogFr
 
             // 시작일
             missionCreateStartDateBtnTxt.setOnClickListener {
-                showCalendarDialog(true)
+                showCalendarDialog(true, startSelectedDate)
             }
 
             // 종료일
             missionCreateEndDateBtnTxt.setOnClickListener {
-                showCalendarDialog(false)
+                showCalendarDialog(false, endSelectedDate)
             }
 
             // 완료 버튼
@@ -223,16 +227,18 @@ class MissionCreateActivity : AppCompatActivity(), MissionCreateCalendarDialogFr
             isCategorySelected && isMissionTitleInputted && isMissionMemoInputted
     }
 
-    private fun showCalendarDialog(isStartDate: Boolean) {
-        val calendarDialog = MissionCreateCalendarDialogFragment(isStartDate)
-        calendarDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.roundCornerBottomSheetDialogTheme)
-        calendarDialog.setDateSelectedListener(this)
+    private fun showCalendarDialog(isStartDate: Boolean, date: LocalDate) {
+        val calendarDialog = MissionCreateCalendarDialogFragment(isStartDate, date). apply {
+            setStyle(DialogFragment.STYLE_NORMAL, R.style.roundCornerBottomSheetDialogTheme)
+            setDateSelectedListener(this@MissionCreateActivity)
+        }
         calendarDialog.show(supportFragmentManager, "MissionCreateCalendarDialogFragment")
     }
 
-    private fun showSnackbar(message: String) {
+    private fun showSnackbar(message: String = "오류가 발생했습니다. 다시 시도해주세요.") {
         val snackbarBinding = ToastMissionCreateBinding.inflate(layoutInflater)
         snackbarBinding.toastMissionReportTxt.text = message
+        snackbarBinding.toastMissionReportIv.setImageResource(R.drawable.ic_toast_fail)
 
         val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
             animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
@@ -247,12 +253,16 @@ class MissionCreateActivity : AppCompatActivity(), MissionCreateCalendarDialogFr
         snackbar.show()
     }
 
-    override fun onStartDateSelected(date: String) {
-        binding.missionCreateStartDateBtnTxt.text = date
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onStartDateSelected(date: LocalDate) {
+        startSelectedDate = date
+        binding.missionCreateStartDateBtnTxt.text = fromDateYYYYMMDD(date)
     }
 
-    override fun onEndDateSelected(date: String) {
-        binding.missionCreateEndDateBtnTxt.text = date
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onEndDateSelected(date: LocalDate) {
+        endSelectedDate = date
+        binding.missionCreateEndDateBtnTxt.text = fromDateYYYYMMDD(date)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
