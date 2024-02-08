@@ -166,12 +166,12 @@ class ManagerMissionCreateActivity2 : AppCompatActivity(), MissionCreateCalendar
 
             // 시작일
             missionCreateStartDateBtnTxt.setOnClickListener {
-                showCalendarDialog(true)
+                showCalendarDialog(true, startSelectedDate)
             }
 
             // 종료일
             missionCreateEndDateBtnTxt.setOnClickListener {
-                showCalendarDialog(false)
+                showCalendarDialog(false, endSelectedDate)
             }
 
             // 완료 버튼
@@ -192,8 +192,8 @@ class ManagerMissionCreateActivity2 : AppCompatActivity(), MissionCreateCalendar
             isMissionTitleInputted && isMissionMemoInputted
     }
 
-    private fun showCalendarDialog(isStartDate: Boolean) {
-        val calendarDialog = MissionCreateCalendarDialogFragment(isStartDate)
+    private fun showCalendarDialog(isStartDate: Boolean, date: LocalDate) {
+        val calendarDialog = MissionCreateCalendarDialogFragment(isStartDate, date)
         calendarDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.roundCornerBottomSheetDialogTheme)
         calendarDialog.setDateSelectedListener(this)
         calendarDialog.show(supportFragmentManager, "MissionCreateCalendarDialogFragment")
@@ -216,12 +216,16 @@ class ManagerMissionCreateActivity2 : AppCompatActivity(), MissionCreateCalendar
         snackbar.show()
     }
 
-    override fun onStartDateSelected(date: String) {
-        binding.missionCreateStartDateBtnTxt.text = date
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onStartDateSelected(date: LocalDate) {
+        startSelectedDate = date
+        binding.missionCreateStartDateBtnTxt.text = fromDateYYYYMMDD(date)
     }
 
-    override fun onEndDateSelected(date: String) {
-        binding.missionCreateEndDateBtnTxt.text = date
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onEndDateSelected(date: LocalDate) {
+        endSelectedDate = date
+        binding.missionCreateEndDateBtnTxt.text = fromDateYYYYMMDD(date)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

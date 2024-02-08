@@ -49,21 +49,23 @@ data class MissionDetailResponse(
 ): BaseResponse()
 
 data class Detail(
-    val id:Long,
-    val title:String,
-    val categoryTitle:String,
-    val content:String,
-    val startAt:String,
-    val endAt : String,
+    val id: Long,
+    val title: String,
+    val image: String,
+    val categoryTitle: String,
+    val categoryId: Long,
+    val content: String?,
+    val startAt: String,
+    val endAt: String,
     val alreadyIn: Boolean
 )
 
 data class MissionWithResponse(
-    val result: String
+    val result: Object
 ): BaseResponse()
 
 data class MissionReportResponse(
-    val result: String
+    val result: Object
 ): BaseResponse()
 
 data class MissionCreateDate(

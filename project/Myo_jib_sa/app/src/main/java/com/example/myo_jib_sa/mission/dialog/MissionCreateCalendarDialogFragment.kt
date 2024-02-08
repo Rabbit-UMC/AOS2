@@ -22,7 +22,7 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-class MissionCreateCalendarDialogFragment(private val isStartDate: Boolean) : BottomSheetDialogFragment() {
+class MissionCreateCalendarDialogFragment(private val isStartDate: Boolean, private val date: LocalDate) : BottomSheetDialogFragment() {
     private lateinit var binding : DialogMissionCreateCalendarBinding
 
     private var dateSelectedListener: OnDateSelectedListener? = null
@@ -35,8 +35,8 @@ class MissionCreateCalendarDialogFragment(private val isStartDate: Boolean) : Bo
     private var firstSelectedDatePosition : Int = 0
 
     interface OnDateSelectedListener {
-        fun onStartDateSelected(date: String)
-        fun onEndDateSelected(date: String)
+        fun onStartDateSelected(date: LocalDate)
+        fun onEndDateSelected(date: LocalDate)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -54,7 +54,7 @@ class MissionCreateCalendarDialogFragment(private val isStartDate: Boolean) : Bo
         binding = DialogMissionCreateCalendarBinding.inflate(inflater, container, false)
 
         //오늘 날짜
-        selectedDate = LocalDate.now()
+        selectedDate = date
         standardDate = selectedDate
 
         // calendar 간격 설정
@@ -86,9 +86,9 @@ class MissionCreateCalendarDialogFragment(private val isStartDate: Boolean) : Bo
         // 확인 버튼
         binding.missionCreateCalendarCompleteBtn.setOnClickListener {
             if(isStartDate) {
-                dateSelectedListener?.onStartDateSelected(fromDateYYYYMMDD(selectedDate)!!)
+                dateSelectedListener?.onStartDateSelected(selectedDate)
             } else {
-                dateSelectedListener?.onEndDateSelected(fromDateYYYYMMDD(selectedDate)!!)
+                dateSelectedListener?.onEndDateSelected(selectedDate)
             }
 
             dismiss()
