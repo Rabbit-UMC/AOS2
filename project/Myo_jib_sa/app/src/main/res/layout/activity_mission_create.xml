@@ -237,7 +237,7 @@
                     android:fontFamily="@font/font_caption_text_4"
                     android:textSize="10sp"
                     android:textColor="@color/black"
-                    android:hint="@string/mission_create_name"
+                    android:hint="@string/mission_create_memo_hint"
                     android:gravity="top"
                     android:paddingHorizontal="20dp"
                     android:paddingTop="20dp"

@@ -14,7 +14,6 @@ import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.DialogMissionDetailBinding
-import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
 import com.example.myo_jib_sa.mission.api.*
 import com.example.myo_jib_sa.mission.api.Mission
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -92,11 +91,11 @@ class MissionDetailDialogFragment(private val item: Mission, private val context
                     val detailData = response.body()?.result
                     val density = context.resources.displayMetrics.density
                     val cornerRadiusPx = 16 * density
-
+                    Log.d("getMissionDetail", "${response.body()}")
                     with(binding) {
                         Glide.with(context)
-                            .load(R.drawable.ic_launcher_background)
-                            .error(R.drawable.ic_launcher_background)
+                            .load(detailData?.image)
+                            .error(R.drawable.ic_curmission_myo_icon)
                             .transform(CenterCrop(), GranularRoundedCorners(cornerRadiusPx, cornerRadiusPx, 0F, 0F))
                             .into(missionDetailTitleIv)
 
@@ -141,8 +140,8 @@ class MissionDetailDialogFragment(private val item: Mission, private val context
             Log.d("home","{같이하기 ID: ${item.missionId}")
             retrofit.postMissionWith(item.missionId).enqueue(object : Callback<MissionWithResponse> {
                 override fun onResponse(call: Call<MissionWithResponse>, response: Response<MissionWithResponse>) {
-                    if (response.isSuccessful) {
-                        Log.d("postMissionWith", "response.isSuccessful success")
+                    if (response.isSuccessful && response.body()?.isSuccess == true) {
+                        Log.d("postMissionWith", "response success ${response.body()}")
                         listener?.onMissionWith(SUCCESS_MESSAGE, true)
                     } else {
                         Log.d("postMissionWith", "response.isSuccessful fail")
@@ -150,7 +149,6 @@ class MissionDetailDialogFragment(private val item: Mission, private val context
                     }
 
                 }
-
                 override fun onFailure(call: Call<MissionWithResponse>, t: Throwable) {
                     Log.d("postMissionWith", "onFailure $t")
                     listener?.onMissionWith(ERROR_MESSAGE, false)
