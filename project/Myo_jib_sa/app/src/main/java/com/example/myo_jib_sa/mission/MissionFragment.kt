@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa.mission
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -8,13 +9,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.FragmentMissionBinding
-import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
+import com.example.myo_jib_sa.databinding.ToastMissionBinding
 import com.example.myo_jib_sa.mission.adapter.MissionRVAdapter
 import com.example.myo_jib_sa.mission.api.Mission
 import com.example.myo_jib_sa.mission.api.MissionCategoryListResponse
@@ -40,6 +42,22 @@ class MissionFragment : Fragment() {
     private var isLoading = false
     private var isLastPage = false
 
+    // ActivityResultLauncher 초기화
+    private val missionCreateLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.getStringExtra("resultMessage")?.let { message ->
+                val isSuccess = result.data?.getBooleanExtra("isSuccess", false) ?: false
+                if (isSuccess) {
+                    Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+                    showSnackbar("작성하신 일반 미션이 저장되었어요!",
+                        R.drawable.ic_schedule_create_check,
+                        binding.root)
+                }
+            }
+        }
+    }
 
     private val retrofit: MissionAPI = sRetrofit.create(MissionAPI::class.java)
 
@@ -50,7 +68,7 @@ class MissionFragment : Fragment() {
 
         //floating 버튼 설정
         binding.newMissionFloatingBtn.setOnClickListener{
-            startActivity(Intent(activity, MissionCreateActivity::class.java))
+            missionCreateLauncher.launch(Intent(requireContext(), MissionCreateActivity::class.java))
         }
 
         return binding.root
@@ -177,74 +195,63 @@ class MissionFragment : Fragment() {
         })
     }
      // 신고 다이얼로그
-    private fun showReportDialog(reportItem: Mission) {
-        val reportDialog = MissionReportDialogFragment(reportItem)
-
-        reportDialog.setReportDialogListener(object : MissionReportDialogFragment.ReportDialogListener {
-            override fun onReportSubmitted(message: String, isSuccess: Boolean) {
-                Log.d("onReportSubmitted", "$message")
-                // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
-                val snackBarBinding = ToastMissionReportBinding.inflate(layoutInflater)
-                snackBarBinding.toastMissionReportTxt.text = message
-
-                snackBarBinding.toastMissionReportIv.setImageResource(
-                    if(isSuccess) R.drawable.ic_report_toast_check
-                    else R.drawable.ic_toast_fail
-                )
-
-                // 스낵바 생성 및 설정
-                val snackBar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
-                    animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
-                    (view as Snackbar.SnackbarLayout).apply {
-                        setBackgroundColor(Color.TRANSPARENT)
-                        addView(snackBarBinding.root)
-                        translationY = -70.dpToPx().toFloat()
-                        elevation = 0f
-                    }
-                }
-
-                // 스낵바 표시
-                snackBar.show()
-                reportDialog.dismiss()
-            }
-        })
-
-        Log.d("showReportDialog","report ID: ${reportItem.missionId}")
-        reportDialog.show(requireActivity().supportFragmentManager, "mission_report_dialog")
-    }
+     private fun showReportDialog(reportItem: Mission) {
+         val reportDialog = MissionReportDialogFragment(reportItem)
+         reportDialog.setReportDialogListener(object : MissionReportDialogFragment.ReportDialogListener {
+             override fun onReportSubmitted(message: String, isSuccess: Boolean) {
+                 Log.d("onReportSubmitted", message)
+                 val iconResId = if (isSuccess) R.drawable.ic_report_toast_check else R.drawable.ic_toast_fail
+                 showSnackbar(message, iconResId, binding.root)
+                 reportDialog.dismiss()
+             }
+         })
+         Log.d("showReportDialog","report ID: ${reportItem.missionId}")
+         reportDialog.show(requireActivity().supportFragmentManager, "mission_report_dialog")
+     }
 
     // 상세 다이얼로그
     private fun showDetailDialog(detailItem: Mission) {
         val detailDialog = MissionDetailDialogFragment(detailItem, requireContext())
-        Log.d("showDetailDialog","detail ID: {$detailItem.id.toString()}")
+        Log.d("showDetailDialog","detail ID: ${detailItem.missionId}")
 
         detailDialog.setDetailDialogListener(object : MissionDetailDialogFragment.DetailDialogListener {
             override fun onMissionWith(message: String, isSuccess: Boolean) {
-                val snackBarBinding = ToastMissionReportBinding.inflate(layoutInflater)
-                snackBarBinding.toastMissionReportTxt.text = message
+                val iconResId = if (isSuccess) R.drawable.ic_schedule_create_check else R.drawable.ic_toast_fail
 
-                snackBarBinding.toastMissionReportIv.setImageResource(
-                    if(isSuccess) R.drawable.ic_schedule_create_check
-                    else R.drawable.ic_toast_fail
+                showSnackbar(
+                    message, iconResId,
+                    if (isSuccess) binding.root else detailDialog.view?.rootView ?: binding.root,
+                    isSuccess
                 )
 
-                // 스낵바 생성 및 설정
-                val snackBar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
-                    animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
-                    (view as Snackbar.SnackbarLayout).apply {
-                        setBackgroundColor(Color.TRANSPARENT)
-                        addView(snackBarBinding.root)
-                        translationY = -70.dpToPx().toFloat()
-                        elevation = 0f
-                    }
-                }
-
-                // 스낵바 표시
-                snackBar.show()
                 if (isSuccess) detailDialog.dismiss()
             }
         })
         detailDialog.show(requireActivity().supportFragmentManager, "mission_detail_dialog")
+    }
+
+    // 스낵바 생성
+    private fun showSnackbar(message: String, iconResId: Int, rootView: View, isSuccess: Boolean? = null) {
+        val snackBarBinding = ToastMissionBinding.inflate(layoutInflater)
+        snackBarBinding.toastMissionReportTxt.text = message
+        snackBarBinding.toastMissionReportIv.setImageResource(iconResId)
+
+        val translationYValue = when (isSuccess) {
+            true -> -70.dpToPx().toFloat()  // 상세 다이얼로그 같이하기 성공했을 때
+            false -> 0f                     // 실패했을 때
+            else -> -70.dpToPx().toFloat()  // 신고 다이얼로그
+        }
+
+        val snackBar = Snackbar.make(rootView, "", Snackbar.LENGTH_SHORT).apply {
+            animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+            (view as Snackbar.SnackbarLayout).apply {
+                setBackgroundColor(Color.TRANSPARENT)
+                addView(snackBarBinding.root, 0)
+                translationY = translationYValue
+                elevation = 0f
+            }
+        }
+        snackBar.show()
     }
 
     private fun Int.dpToPx(): Int = (this * requireContext().resources.displayMetrics.density).toInt()
