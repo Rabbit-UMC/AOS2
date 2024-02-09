@@ -331,9 +331,18 @@ class ScheduleEditDialogFragment : DialogFragment() {
             binding.scheduleDateTv.text = dateFormatter.yearMonthDate(selectedDate)
             scheduleData.scheduleWhen = selectedDate.toString()
         }
+
         //시간 클릭시
         binding.scheduleStartAtTv.setOnClickListener {
-            binding.timeViewPager.setCurrentItem(1, true)
+            binding.timeViewPager.setCurrentItem(0, true)
+
+            val sharedPreferenceModified = requireContext().getSharedPreferences("scheduleModifiedData",
+                Context.MODE_PRIVATE
+            )
+            val editor = sharedPreferenceModified.edit()
+            editor.putString("scheduleStartTime", scheduleData.startAt)//값 변경하지 않았을때 기본값으로 전달
+            editor.putString("scheduleEndTime", scheduleData.endAt)//값 변경하지 않았을때 기본값으로 전달
+            editor.apply()// data 저장!
 
             if(binding.timeLayout.visibility == View.GONE)
                 binding.timeLayout.visibility = View.VISIBLE
@@ -341,6 +350,14 @@ class ScheduleEditDialogFragment : DialogFragment() {
         }
         binding.scheduleEndAtTv.setOnClickListener {
             binding.timeViewPager.setCurrentItem(1, false)
+
+            val sharedPreferenceModified = requireContext().getSharedPreferences("scheduleModifiedData",
+                Context.MODE_PRIVATE
+            )
+            val editor = sharedPreferenceModified.edit()
+            editor.putString("scheduleStartTime", scheduleData.startAt)//값 변경하지 않았을때 기본값으로 전달
+            editor.putString("scheduleEndTime", scheduleData.endAt)//값 변경하지 않았을때 기본값으로 전달
+            editor.apply()// data 저장!
 
             if(binding.timeLayout.visibility == View.GONE)
                 binding.timeLayout.visibility = View.VISIBLE

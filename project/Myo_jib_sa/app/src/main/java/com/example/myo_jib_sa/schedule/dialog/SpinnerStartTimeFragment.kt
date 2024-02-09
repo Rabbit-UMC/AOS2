@@ -1,4 +1,4 @@
-package com.example.myo_jib_sa.schedule.spinnerViewpager
+package com.example.myo_jib_sa.schedule.dialog
 
 import android.content.Context
 import android.os.Bundle
