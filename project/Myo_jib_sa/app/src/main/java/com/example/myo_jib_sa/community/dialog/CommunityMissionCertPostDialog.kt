@@ -14,30 +14,27 @@ import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.api.post.PostRetrofitManager
-import com.example.myo_jib_sa.databinding.DialogCommunityBlueWhiteBinding
-import com.example.myo_jib_sa.databinding.DialogMissionReportFragmentBinding
-import com.example.myo_jib_sa.mission.api.Mission
+import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
+import com.example.myo_jib_sa.databinding.DialogBlueBlackBinding
+import com.example.myo_jib_sa.databinding.DialogCommunityRedBlackBinding
 import com.example.myo_jib_sa.mission.api.MissionAPI
-import com.example.myo_jib_sa.mission.api.MissionReportResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import okhttp3.MultipartBody
 
-class CommunityPostDeleteDialog (private val postId: Long) : DialogFragment() {
-    private lateinit var binding: DialogCommunityBlueWhiteBinding
-    private var listener: DeleteDialogListener? = null
+class CommunityMissionCertPostDialog (private val boardId: Long, private val img: MultipartBody.Part) : DialogFragment() {
+    private lateinit var binding: DialogBlueBlackBinding
+    private val retrofit = MyojibsaApplication.sRetrofit.create(MissionAPI::class.java)
+    private var listener: ReportDialogListener? = null
     companion object {
         const val DIALOG_MARGIN_DP = 20
         const val DIALOG_HEIGHT_DP = 248
     }
 
 
-    interface DeleteDialogListener {
-        fun onDeleteSubmitted(message: String)
+    interface ReportDialogListener {
+        fun onReportSubmitted(message: String)
     }
 
-    fun setDeleteDialogListener(listener: DeleteDialogListener) {
+    fun setReportDialogListener(listener: ReportDialogListener) {
         this.listener = listener
     }
 
@@ -45,14 +42,14 @@ class CommunityPostDeleteDialog (private val postId: Long) : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogCommunityBlueWhiteBinding.inflate(inflater, container, false)
-
-        binding.missionReportTitleTxt.text=resources.getString(R.string.post_delete_title)
-        binding.missionReportDescTxt.text=resources.getString(R.string.post_delete_decs)
-        binding.missionReportYesBtn.text=resources.getString(R.string.post_delete_yes)
-        binding.missionReportNoBtn.text=resources.getString(R.string.post_delete_no)
+        binding = DialogBlueBlackBinding.inflate(inflater, container, false)
 
         initListener()
+
+        binding.missionReportTitleTxt.text=resources.getString(R.string.mission_cert_post_title)
+        binding.missionReportDescTxt.text=resources.getString(R.string.mission_cert_post_decs)
+        binding.missionReportYesBtn.text=resources.getString(R.string.mission_cert_post_yes)
+        binding.missionReportNoBtn.text=resources.getString(R.string.mission_cert_post_no)
 
         return binding.root
     }
@@ -67,13 +64,12 @@ class CommunityPostDeleteDialog (private val postId: Long) : DialogFragment() {
     override fun onResume() {
         super.onResume()
         // 다이얼로그의 크기 설정
-
-        binding.missionReportTitleTxt.text=resources.getString(R.string.post_delete_title)
-        binding.missionReportDescTxt.text=resources.getString(R.string.post_delete_decs)
-        binding.missionReportYesBtn.text=resources.getString(R.string.post_delete_yes)
-        binding.missionReportNoBtn.text=resources.getString(R.string.post_delete_no)
-
         setDialogSize()
+
+        binding.missionReportTitleTxt.text=resources.getString(R.string.mission_cert_post_title)
+        binding.missionReportDescTxt.text=resources.getString(R.string.mission_cert_post_decs)
+        binding.missionReportYesBtn.text=resources.getString(R.string.mission_cert_post_yes)
+        binding.missionReportNoBtn.text=resources.getString(R.string.mission_cert_post_no)
     }
 
     private fun setDialogSize() {
@@ -98,31 +94,31 @@ class CommunityPostDeleteDialog (private val postId: Long) : DialogFragment() {
     }
 
     private fun initListener() {
-        //post delete api 호출
+        //미션 report api 호출
         binding.missionReportNoBtn.setOnClickListener {
             dismiss()
         }
 
         binding.missionReportYesBtn.setOnClickListener {
-
-            val retrofitManager = PostRetrofitManager.getInstance(requireContext())
+            // 신고 api 연결
+            val retrofitManager = MissionCertRetrofitManager.getInstance(requireContext())
             Constance.jwt?.let { it1 ->
-                retrofitManager.postDelete(it1,postId) { response ->
+                retrofitManager.postImg(it1, boardId, img) { response ->
                     if (response) {
                         //로그
-                        Log.d("게시물 삭제", "${response.toString()}")
-                        listener?.onDeleteSubmitted("게시글이 삭제되었어요.")
-                        Log.d("report", "게시글이 삭제되었어요.")
+                        Log.d("게시물 신고", "${response.toString()}")
+                        listener?.onReportSubmitted("작성하신 미션 인증 글이 저장되었어요.")
+                        Log.d("report", "신고가 접수되었어요.")
 
                     } else {
                         // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                        Log.d("게시물 삭제 API isSuccess가 false", "${response.toString()}")
-                        Log.d("report", "게시글 삭제에 실패 했어요")
-                        listener?.onDeleteSubmitted("오류가 발생했습니다. 다시 시도해주세요.")
+                        Log.d("게시물 신고 API isSuccess가 false", "${response.toString()}")
+                        Log.d("게시물 신고", "${response.toString()}")
+                        listener?.onReportSubmitted("오류가 발생했습니다. 다시 시도해주세요.")
                     }
+
                 }
             }
-
         }
     }
 }

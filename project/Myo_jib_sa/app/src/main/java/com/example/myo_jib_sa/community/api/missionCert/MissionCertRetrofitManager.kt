@@ -7,6 +7,7 @@ import com.example.myo_jib_sa.base.BaseResponse
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.RetrofitClient
 import com.example.myo_jib_sa.community.api.post.SimpleResponse
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Response
 
@@ -167,7 +168,7 @@ class MissionCertRetrofitManager(context: Context) : ViewModel() {
     }
 
     //미션 인증 사진 올리기
-    fun postImg(author: String,boardId:Long, filePath:String,completion: (isSuccess:Boolean) -> Unit){
+    fun postImg(author: String,boardId:Long, filePath:MultipartBody.Part ,completion: (isSuccess:Boolean) -> Unit){
         val call: Call<BaseResponse> = retrofit?.postImg(author, boardId, filePath) ?: return
 
         call.enqueue(object : retrofit2.Callback<BaseResponse> {
