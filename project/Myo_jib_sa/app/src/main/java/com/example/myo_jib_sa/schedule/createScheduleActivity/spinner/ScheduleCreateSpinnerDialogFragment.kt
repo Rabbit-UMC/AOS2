@@ -17,6 +17,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleSpinnerBinding
+import com.example.myo_jib_sa.schedule.dialog.SpinnerEndTimeFragment
+import com.example.myo_jib_sa.schedule.dialog.SpinnerStartTimeFragment
 import com.example.myo_jib_sa.schedule.spinnerViewpager.*
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
