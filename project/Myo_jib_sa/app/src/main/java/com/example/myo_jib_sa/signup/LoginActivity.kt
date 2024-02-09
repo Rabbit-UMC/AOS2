@@ -30,6 +30,10 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //todo: 지워
+        val intent=Intent(this, MainActivity::class.java)
+        startActivity(intent)
+
         binding.kakaoLoginBtn.setOnClickListener {
             kakaoLogin()
         }

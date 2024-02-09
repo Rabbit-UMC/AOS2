@@ -1,5 +1,7 @@
 package com.example.myo_jib_sa.community.missionCert
 
+import android.content.Context
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -13,7 +15,12 @@ import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.community.dialog.CommunityDialogRedBlack
+import com.example.myo_jib_sa.community.dialog.CommunityMissionCertReportDialog
+import com.example.myo_jib_sa.community.dialog.CommunityPostCommentChangeDialog
 import com.example.myo_jib_sa.databinding.ActivityMissionPictureBinding
+import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -160,40 +167,40 @@ class MissionPictureActivity : AppCompatActivity() {
     private fun clikeReport(){
         //신고하기
         binding.reportTxt.setOnClickListener {
-            val DelDialog = CommunityDialogRedBlack(this, "해당 게시글을 신고하시겠어요?"
-                , "다른 사용자에게 불쾌감을 조성하는 게시글인지 다시 확인해주세요."
-                ,"게시글을 신고할게요"
-                ,"아니요, 취소할게요")
-            DelDialog.setCustomDialogListener(object : CommunityDialogRedBlack.CustomDialogListener {
-                override fun onPositiveButtonClicked(value: Boolean) {
-                    if (value){
-                        //신고 재확인 팝업창 띄우고 확인 누르면 api 연결
-                        Log.d("미션 인증 게시물 신고", "미션 인증 게시물 신고")
-                        Constance.jwt?.let { it1 -> report(it1, imgId) }
-                    }
-                }
-            })
-            DelDialog.show()
+            report(imgId)
         }
     }
 
     //신고 api
-    private fun report(author:String ,imgId:Long){
+    private fun report(imgId:Long){
+        val reportDialog = CommunityMissionCertReportDialog(imgId)
 
-        val retrofitManager = MissionCertRetrofitManager.getInstance(this)
-        retrofitManager.report(author, imgId){response ->
-            if(response){
-                Log.d("mission report", "mission report 성공")
+        reportDialog.setReportDialogListener(object : CommunityMissionCertReportDialog.ReportDialogListener {
+            override fun onReportSubmitted(message: String) {
+                Log.d("onReportSubmitted", "$message")
+                // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
+                val snackbarBinding = ToastMissionReportBinding.inflate(layoutInflater)
+                snackbarBinding.toastMissionReportTxt.text = message
 
-            } else {
-                // API 호출은 성공했으나 isSuccess가 false인 경우 처리
+                // 스낵바 생성 및 설정
+                val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+                    animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+                    (view as Snackbar.SnackbarLayout).apply {
+                        setBackgroundColor(Color.TRANSPARENT)
+                        addView(snackbarBinding.root)
+                        translationY = -70.dpToPx(this.context).toFloat()
+                        elevation = 0f
+                    }
+                }
 
-                Log.d("mission report", "mission report 실패")
-                showToast("신고 실패")
+                // 스낵바 표시
+                snackbar.show()
+                reportDialog.dismiss()
             }
+        })
 
-
-        }
+        Log.d("showReportDialog","report ID: ${imgId}")
+        reportDialog.show(this.supportFragmentManager, "mission_report_dialog")
     }
 
     //사진 다운로드 todo : 삭제하기.
@@ -246,19 +253,9 @@ class MissionPictureActivity : AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-
-    //todo : 신고 토스트 메시지
-    private fun reportToast(){
-        // Inflate the custom layout
-        val inflater: LayoutInflater = layoutInflater
-        val layout: View = inflater.inflate(R.layout.toast_red_black, findViewById(R.id.toast_red_black_constraint))
-
-        val toast = Toast(applicationContext)
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0)
-        toast.duration = Toast.LENGTH_LONG
-        toast.view
-
-        toast.show()
+    private fun Int.dpToPx(context: Context): Int {
+        val scale = context.resources.displayMetrics.density
+        return (this * scale + 0.5f).toInt()
     }
 
 }
