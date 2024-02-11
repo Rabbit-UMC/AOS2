@@ -75,13 +75,6 @@ class MissionPictureActivity : AppCompatActivity() {
         binding.missionCertPictureBackBtn.setOnClickListener {
             finish()
         }
-
-        //이미지 다운로드 todo : 삭제하기
-        //binding.imgCheckDownloadBtn.setOnClickListener {
-        //    download()
-        //}
-
-
     }
     private fun setView(){
         //todo :
@@ -196,52 +189,6 @@ class MissionPictureActivity : AppCompatActivity() {
 
         Log.d("showReportDialog","report ID: ${imgId}")
         reportDialog.show(this.supportFragmentManager, "mission_report_dialog")
-    }
-
-    //사진 다운로드 todo : 삭제하기.
-    private fun download(){
-        val request = Request.Builder()
-            .url(filePath)
-            .build()
-
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                // 다운로드 실패 처리
-                runOnUiThread {
-                    // 토스트 메시지 출력
-                    showToast("사진 저장 실패")
-                }
-
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                if (response.isSuccessful) {
-                    val tempResponseBody = response.peekBody(Long.MAX_VALUE) // 임시 복사본 생성
-                    val inputStream = tempResponseBody.byteStream()
-                    if (inputStream != null) {
-                        val fileName = filePath.substringAfterLast("/") // 파일명 추출
-                        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), fileName)
-                        val outputStream = FileOutputStream(file)
-                        inputStream.copyTo(outputStream)
-
-                        outputStream.close()
-                        inputStream.close()
-
-                        runOnUiThread {
-                            // 토스트 메시지 출력
-                            showToast("사진 저장 완료")
-                        }
-                    }
-                } else {
-                    // 응답이 실패한 경우 처리
-                    runOnUiThread {
-                        // 토스트 메시지 출력
-                        showToast("사진 저장 실패")
-                    }
-                }
-            }
-        })
     }
 
     //토스트 메시지
