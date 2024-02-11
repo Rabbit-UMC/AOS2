@@ -15,7 +15,6 @@ import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.post.ArticleImage
 import com.example.myo_jib_sa.community.api.post.CommentList
 import com.example.myo_jib_sa.community.api.post.PostRetrofitManager
-import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.community.dialog.CommunityPostDeleteDialog
 import com.example.myo_jib_sa.databinding.ItemCommentBinding
 import com.example.myo_jib_sa.databinding.ToastMissionReportBinding

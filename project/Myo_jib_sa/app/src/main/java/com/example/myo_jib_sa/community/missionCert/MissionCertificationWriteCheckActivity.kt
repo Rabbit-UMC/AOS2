@@ -8,17 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.Toast
-import androidx.core.net.toUri
-import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.ImgPath
-import com.example.myo_jib_sa.community.api.imgUpload.imgUploadRetrofitManager
-import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
-import com.example.myo_jib_sa.community.dialog.CommunityDialogBlueBlack
-import com.example.myo_jib_sa.community.dialog.CommunityDialogRedBlack
 import com.example.myo_jib_sa.community.dialog.CommunityMissionCertPostDialog
-import com.example.myo_jib_sa.community.dialog.CommunityMissionCertReportDialog
 import com.example.myo_jib_sa.databinding.ActivityMissionCertificationWriteCheckBinding
 import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -30,7 +20,6 @@ import java.io.File
 
 class MissionCertificationWriteCheckActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMissionCertificationWriteCheckBinding
-    private var imgUrl:String=""
     private var boardId:Long=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
