@@ -6,17 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
-import com.example.myo_jib_sa.community.dialog.CommunityDialogRedBlack
 import com.example.myo_jib_sa.community.dialog.CommunityMissionCertReportDialog
-import com.example.myo_jib_sa.community.dialog.CommunityPostCommentChangeDialog
 import com.example.myo_jib_sa.databinding.ActivityMissionPictureBinding
 import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
 import com.google.android.material.snackbar.BaseTransientBottomBar

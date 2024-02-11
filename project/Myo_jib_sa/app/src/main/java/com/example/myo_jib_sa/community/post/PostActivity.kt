@@ -26,7 +26,6 @@ import com.example.myo_jib_sa.community.api.post.PostViewResponse
 import com.example.myo_jib_sa.community.adapter.PostCommentAdapter
 import com.example.myo_jib_sa.community.adapter.PostEditAdapter
 import com.example.myo_jib_sa.community.adapter.PostImgAdapter
-import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.community.dialog.CommunityPostCommentChangeDialog
 import com.example.myo_jib_sa.community.dialog.CommunityPostCommentDeleteDialog
 import com.example.myo_jib_sa.community.dialog.CommunityPostDeleteDialog

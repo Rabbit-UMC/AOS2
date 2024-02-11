@@ -17,7 +17,6 @@ import com.example.myo_jib_sa.community.api.manager.ManagerRetrofitManager
 import com.example.myo_jib_sa.community.api.manager.MissionCreateRequest
 import com.example.myo_jib_sa.community.adapter.CreateScheduleCalendarAdapter
 import com.example.myo_jib_sa.community.adapter.SelectDateData
-import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.databinding.ActivityManagerPageMissionBinding
 import java.time.LocalDate
 import java.time.YearMonth
@@ -100,7 +99,6 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
                 Log.d("날짜 or 제목 잘못됨", "${binding.missionTitleInput.text.toString()}")
                 Log.d("날짜 or 제목 잘못됨", "start:${startSelectedDate}  end:$endSelectedDate")
                 Log.d("날짜 or 제목 잘못됨", is30Down.toString())
-                showDialog("날짜, 제목을 다시 확인해주세요")
             } else {//정상적일때
                 Log.d("exitDebug", "yes!!")
                 //미션 작성 api 호출
@@ -470,11 +468,6 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
         var formatter = DateTimeFormatter.ofPattern("YYYY년")
         return date.format(formatter)
     }
-
-    //팝업창 띄우기
-    private fun showDialog(txt:String){
-        val DelDialog = CommunityPopupOk(this,txt)
-        DelDialog.show()}
 
     //미션 생성 api 연결
     //api 연결

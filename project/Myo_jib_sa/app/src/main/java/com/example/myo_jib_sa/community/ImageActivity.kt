@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
-import com.example.myo_jib_sa.community.dialog.CommunityPopupOk
 import com.example.myo_jib_sa.databinding.ActivityImageBinding
 import okhttp3.Call
 import okhttp3.Callback
@@ -67,7 +66,7 @@ class ImageActivity: AppCompatActivity()  {
     //신고 누르기
     private fun clikeReport(){
         //신고하기
-        binding.imgCheckReportTxt.setOnClickListener {
+        /*binding.imgCheckReportTxt.setOnClickListener {
             val DelDialog = CommunityPopupOk(this,"해당 게시물을 신고 하나요?")
             DelDialog.setCustomDialogListener(object : CommunityPopupOk.CustomDialogListener {
                 override fun onPositiveButtonClicked(value: Boolean) {
@@ -79,7 +78,7 @@ class ImageActivity: AppCompatActivity()  {
                 }
             })
             DelDialog.show()
-        }
+        }*/
     }
 
     //신고 api

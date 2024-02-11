@@ -15,13 +15,13 @@ object Constance {
     const val FREE_COLOR="#C1C1C1"
 
     //유저 id 1인 토큰
-    var jwt: String? = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDI2NjM2MTgsImV4cCI6MTcwNDEzNDg0N30.va4im_CNjnmyRRZxtPxxHc7v4b2SstL3XLebcJ1EXm0"
+    var jwt: String? = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDc0NjkxODEsImV4cCI6MTcwODk0MDQxMH0.G1p6OlGcYPzFVxRS-muOAyBJLyme8m6_AbD3fT7RhqA"
     const val USER_ID:Long=1
 
      fun initializeJwt(context: Context) {
         //val sharedPreferences = context.getSharedPreferences("getJwt", Context.MODE_PRIVATE)
         //jwt = sharedPreferences.getString("jwt", null)
-         jwt = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDQxNzgzODQsImV4cCI6MTcwNTY0OTYxM30.9ALZ4r1x29gf0FcWejrTFTNk2RcPEbmw8EIKvjB1Log"
+         jwt = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDc0NjkxODEsImV4cCI6MTcwODk0MDQxMH0.G1p6OlGcYPzFVxRS-muOAyBJLyme8m6_AbD3fT7RhqA"
      }
 }
 
