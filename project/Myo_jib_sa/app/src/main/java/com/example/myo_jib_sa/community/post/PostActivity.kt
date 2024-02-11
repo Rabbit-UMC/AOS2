@@ -89,7 +89,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     if(isSuccess){
                         setPostData(Constance.jwt!!, binding, boardId.toInt(), postId)
                     }else{
-                        showToast("댓글 달기 실패")
+                        //todo: showToast("댓글 달기 실패")
                     }
                     binding.postCommentInputEtxt.text.clear()
                 }
@@ -320,6 +320,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
         Log.d("showReportDialog","report ID: ${postId}")
         reportDialog.show(this.supportFragmentManager, "mission_report_dialog")
+        setPostData(Constance.jwt!!, binding, boardId.toInt(), postId)
     }
 
     //게시물 삭제
@@ -352,6 +353,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
         Log.d("showReportDialog","report ID: ${postId}")
         reportDialog.show(this.supportFragmentManager, "mission_report_dialog")
+        finish()
     }
 
     //댓글 지우기
