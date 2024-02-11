@@ -13,7 +13,7 @@ import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
 import com.example.myo_jib_sa.community.dialog.CommunityMissionCertReportDialog
 import com.example.myo_jib_sa.databinding.ActivityMissionPictureBinding
-import com.example.myo_jib_sa.databinding.ToastMissionReportBinding
+import com.example.myo_jib_sa.databinding.ToastRedBlackBinding
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import okhttp3.Call
@@ -174,8 +174,8 @@ class MissionPictureActivity : AppCompatActivity() {
             override fun onReportSubmitted(message: String) {
                 Log.d("onReportSubmitted", "$message")
                 // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
-                val snackbarBinding = ToastMissionReportBinding.inflate(layoutInflater)
-                snackbarBinding.toastMissionReportTxt.text = message
+                val snackbarBinding = ToastRedBlackBinding.inflate(layoutInflater)
+                snackbarBinding.toastRedBlackTxt.text = message
 
                 // 스낵바 생성 및 설정
                 val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
