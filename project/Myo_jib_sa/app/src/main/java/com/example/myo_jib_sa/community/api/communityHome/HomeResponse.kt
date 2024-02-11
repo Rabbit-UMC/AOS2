@@ -8,7 +8,7 @@ data class HomeResponse (
 data class HomeResult(
     val mainMission:List<MainMission>,
     val popularArticle:List<PopularArticle>,
-    val userHostCategory:List<Int>
+    val userHostCategory:List<Long>
 )
 data class MainMission(
     val mainMissionId:Long,
