@@ -21,6 +21,9 @@ class BoardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBoardBinding
     private var hostId:Long=0
 
+    //버튼 클릭
+    private var isClick=false
+
     //아래 두개 관리자 페이지로 넘겨줌
     private var missionId:Long=0
     private var missionImg:String=""
@@ -287,7 +290,12 @@ class BoardActivity : AppCompatActivity() {
 
         // 플로팅 버튼 클릭시 애니메이션 동작 기능
         binding.boardPostingBtn.setOnClickListener {
-            toggleFab()
+            if(isClick){
+                val intent=Intent(this,PostWrtieActivity::class.java)
+                startActivity(intent)
+            }else{
+                toggleFab()
+            }
         }
 
         // 플로팅 버튼 클릭 이벤트
@@ -307,10 +315,10 @@ class BoardActivity : AppCompatActivity() {
         // 플로팅 액션 버튼 닫기 - 열려있는 플로팅 버튼 집어넣는 애니메이션
         if (isFabOpen) {
             ObjectAnimator.ofFloat(binding.boardMissionBtn, "translationY", 0f).apply { start() }
-            ObjectAnimator.ofFloat(binding.boardPostingBtn, View.ROTATION, 45f, 0f).apply { start() }
+            ObjectAnimator.ofFloat(binding.boardPostingBtn, View.ROTATION, 0f, 0f).apply { start() }
         } else { // 플로팅 액션 버튼 열기 - 닫혀있는 플로팅 버튼 꺼내는 애니메이션
             ObjectAnimator.ofFloat(binding.boardMissionBtn, "translationY", -180f).apply { start() }
-            ObjectAnimator.ofFloat(binding.boardPostingBtn, View.ROTATION, 0f, 45f).apply { start() }
+            ObjectAnimator.ofFloat(binding.boardPostingBtn, View.ROTATION, 0f, 0f).apply { start() }
         }
 
         isFabOpen = !isFabOpen
