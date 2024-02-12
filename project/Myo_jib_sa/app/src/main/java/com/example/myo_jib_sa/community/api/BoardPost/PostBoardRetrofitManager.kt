@@ -68,13 +68,13 @@ class PostBoardRetrofitManager(context: Context) {
                 Log.d("Post 베스트 게시판 api", "RetrofitManager profile onResponse \t :${response.message()} ")
                 val response: PopularPostResponse? = response?.body() //LoginResponse 형식의 응답 받음
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("Post 베스트 게시판 api",
-                            "RetrofitManager Post 베스트 게시판 is Success\t :${response.code} ")
+                            "RetrofitManager Post 베스트 게시판 is Success\t :${response.errorCode}+ ${response.errorMessage} ")
                         completion(response)
                     } else {
                         Log.d("Post 게시판 api",
-                            "RetrofitManager Post 베스트 게시판 is NOT Success\t :${response.code} ")
+                            "RetrofitManager Post 베스트 게시판 is NOT Success\t :${response.errorCode}+ ${response.errorMessage} ")
                     }
                 } else {
                     Log.d("Post 베스트 게시판 api", "RetrofitManager Post 게시판 null")

@@ -21,6 +21,7 @@ import java.io.File
 class MissionCertificationWriteCheckActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMissionCertificationWriteCheckBinding
     private var boardId:Long=0
+    private var isFinish:Boolean=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +49,12 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
             val imagePart = MultipartBody.Part.createFormData("file", imageFile.name, requestFile)
 
             postImg(boardId, imagePart)
+            if(isFinish){
+                val intent=Intent(this, MissionCertificationWriteActivity::class.java)
+                intent.putExtra("isFinish", true)
+                startActivity(intent)
+                finish()
+            }
 
         }
     }
@@ -72,6 +79,10 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
                         translationY = -70.dpToPx(this.context).toFloat()
                         elevation = 0f
                     }
+                }
+
+                if(message=="작성하신 미션 인증 글이 저장되었어요."){
+                    isFinish=true
                 }
 
                 // 스낵바 표시

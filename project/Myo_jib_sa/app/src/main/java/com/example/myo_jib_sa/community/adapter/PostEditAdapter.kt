@@ -54,20 +54,6 @@ class PostEditAdapter (
                 binding.postImgImg.visibility= View.GONE
             }
 
-            //클릭 이벤트
-            binding.postImgImg.setOnClickListener {
-                //누르면 사진 자세히 보기
-                val intent= Intent(context, PostPictureActivity::class.java)
-                intent.putExtra("itemListJson", Gson().toJson(item))
-                intent.putExtra("current", position)
-                context.startActivity(intent)
-            }
-
-            binding.postImgDelete.setOnClickListener { //삭제
-                binding.postImgImg.setImageURI(null)
-            }
-
-
         }
     }
 

@@ -20,15 +20,11 @@ data class Articles(
 )
 
 data class PopularPostResponse(
-    val isSuccess:String,
-    val code:Int,
-    val message:String,
     val result: List<PopularPostResult>
-)
+): BaseResponse()
 
 data class PopularPostResult(
-    val categoryName:String
-    ,val articleId: Long
+    val articleId: Long
     ,val articleTitle: String
     ,val uploadTime: String
     ,val likeCount: Int

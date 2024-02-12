@@ -38,8 +38,6 @@ class CommunityFragment : Fragment() {
     private var adLoader: AdLoader? = null //광고를 불러올 adLoader 객체
     //val AD_UNIT_ID = BuildConfig.AD_UNIT_ID
 
-    private var userHostCategory:List<Long> = listOf()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,9 +66,6 @@ class CommunityFragment : Fragment() {
         //api 연결, 뷰 띄우기
         Constance.jwt?.let { getHomeData(it, requireContext()) }
 
-        //플로팅 버튼 액션
-        setFABClickEvent()
-
         return binding.root
     }
 
@@ -81,78 +76,48 @@ class CommunityFragment : Fragment() {
         Constance.jwt?.let { getHomeData(it, requireContext()) }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setFABClickEvent() //플로팅 버튼 동작 이벤트
-    }
-
     //플로팅 버튼
-    private fun setFABClickEvent() {
+    private fun setFABClickEvent(userHostCategory:List<Long>) {
 
         if(userHostCategory.isEmpty()){
             binding.myoZipMainBtn.hide() //관리자가 아닌 유저의 경우
         }
-
+        Log.d("내가 묘집사인 카테고리", userHostCategory.toString())
         binding.myoZip1Btn.hide()
         binding.myoZip2Btn.hide()
         binding.myoZip3Btn.hide()
 
         for (i in userHostCategory.indices) {
-            when (userHostCategory[i]) {
-                Constance.ART_ID -> {
-                    val fab = when (i) {
-                        0 -> binding.myoZip1Btn
-                        1 -> binding.myoZip2Btn
-                        2 -> binding.myoZip3Btn
-                        // Add more cases if needed
-                        else -> null
-                    }
+            val fab = when (i) {
+                0 -> binding.myoZip1Btn
+                1 -> binding.myoZip2Btn
+                2 -> binding.myoZip3Btn
+                else -> null
+            }
 
-                    fab?.apply {
-                        show()
-                        background = ContextCompat.getDrawable(requireContext(), R.drawable.ic_floating_art)
+            fab?.apply {
+                show()
+
+                when (userHostCategory[i]) {
+                    Constance.ART_ID -> {
+                        setImageResource(R.drawable.ic_floating_art)
                         setOnClickListener {
                             val intent = Intent(requireContext(), ManagerPageActivity::class.java)
                             intent.putExtra("boardId", userHostCategory[i])
                             startActivity(intent)
                         }
                     }
-                }
-                Constance.FREE_ID -> {
-                    val fab = when (i) {
-                        0 -> binding.myoZip1Btn
-                        1 -> binding.myoZip2Btn
-                        2 -> binding.myoZip3Btn
-                        // Add more cases if needed
-                        else -> null
-                    }
-
-                    fab?.apply {
-                        show()
-                        // Set background or other properties for ART_ID FAB
-                        background = ContextCompat.getDrawable(requireContext(), R.drawable.ic_floating_free)
+                    Constance.FREE_ID -> {
+                        setImageResource(R.drawable.ic_floating_free)
                         setOnClickListener {
-                            // Handle ART_ID FAB click event
                             val intent = Intent(requireContext(), ManagerPageActivity::class.java)
                             intent.putExtra("boardId", userHostCategory[i])
                             startActivity(intent)
                         }
                     }
-                }
-                Constance.EXERCISE_ID -> {
-                    val fab = when (i) {
-                        0 -> binding.myoZip1Btn
-                        1 -> binding.myoZip2Btn
-                        2 -> binding.myoZip3Btn
-                        // Add more cases if needed
-                        else -> null
-                    }
-
-                    fab?.apply {
-                        show()
-                        // Set background or other properties for ART_ID FAB
-                        background = ContextCompat.getDrawable(requireContext(), R.drawable.ic_floating_exercise)
+                    Constance.EXERCISE_ID -> {
+                        setImageResource(R.drawable.ic_floating_exercise)
                         setOnClickListener {
-                            // Handle ART_ID FAB click event
                             val intent = Intent(requireContext(), ManagerPageActivity::class.java)
                             intent.putExtra("boardId", userHostCategory[i])
                             startActivity(intent)
@@ -216,7 +181,8 @@ class CommunityFragment : Fragment() {
             if (homeResponse.isSuccess) {
                 val missionList: List<MainMission> = homeResponse.result.mainMission
                 val postList: List<PopularArticle> = homeResponse.result.popularArticle
-                userHostCategory=homeResponse.result.userHostCategory
+                setFABClickEvent(homeResponse.result.userHostCategory)
+                Log.d("내가 묘집사인 카테고리 (응답)", homeResponse.result.userHostCategory.toString())
                 if (missionList.isNotEmpty()) {
                     linkMrecyclr(context, missionList)
                 } else {

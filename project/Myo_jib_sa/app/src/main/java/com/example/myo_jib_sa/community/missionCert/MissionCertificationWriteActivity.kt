@@ -34,6 +34,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
     private lateinit var binding:ActivityMissionCertificationWriteBinding
     private var imgPath:String=""
     private var boardId:Int=0
+    private var isFinish:Boolean=false
 
     private var imgUri:Uri= Uri.EMPTY
     private var imgUrl:String=""
@@ -51,6 +52,10 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         boardId=intent.getIntExtra("boardId", 0)
+        isFinish=intent.getBooleanExtra("isFinish", false)
+        if(isFinish){
+            finish()
+        }
 
         //binding.missionCertImg.clipToOutline=true //둥근 모서리 todo
 

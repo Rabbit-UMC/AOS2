@@ -22,7 +22,6 @@ import okhttp3.MultipartBody
 
 class CommunityMissionCertPostDialog (private val boardId: Long, private val img: MultipartBody.Part) : DialogFragment() {
     private lateinit var binding: DialogBlueBlackBinding
-    private val retrofit = MyojibsaApplication.sRetrofit.create(MissionAPI::class.java)
     private var listener: ReportDialogListener? = null
     companion object {
         const val DIALOG_MARGIN_DP = 20
@@ -100,20 +99,19 @@ class CommunityMissionCertPostDialog (private val boardId: Long, private val img
         }
 
         binding.missionReportYesBtn.setOnClickListener {
-            // 신고 api 연결
+            //api 연결
             val retrofitManager = MissionCertRetrofitManager.getInstance(requireContext())
             Constance.jwt?.let { it1 ->
                 retrofitManager.postImg(it1, boardId, img) { response ->
                     if (response) {
                         //로그
-                        Log.d("게시물 신고", "${response.toString()}")
+                        Log.d("사진 올리기", "${response.toString()}")
                         listener?.onReportSubmitted("작성하신 미션 인증 글이 저장되었어요.")
-                        Log.d("report", "신고가 접수되었어요.")
 
                     } else {
                         // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                        Log.d("게시물 신고 API isSuccess가 false", "${response.toString()}")
-                        Log.d("게시물 신고", "${response.toString()}")
+                        Log.d("사진 올리기 API isSuccess가 false", "${response.toString()}")
+                        Log.d("사진 올리기", "${response.toString()}")
                         listener?.onReportSubmitted("오류가 발생했습니다. 다시 시도해주세요.")
                     }
 
