@@ -318,7 +318,7 @@ class CreateScheduleActivity : AppCompatActivity() {
                     finish()
 
                 } else {
-                    createToast("일정 저장 실패 : 해당 날짜에, 이미 일정(동일 미션)이 있습니다.")
+                    createToast("해당 날짜에, 이미 일정(동일 미션)이 있습니다.")
                     Log.e("retrofit", "scheduleAddApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
                     Log.e("retrofit", "scheduleAddApi_onResponse: Error Body $errorBody")
