@@ -22,6 +22,14 @@
         <item name="android:windowSplashScreenAnimationDuration">500</item>-->
     </style>
 
+
+    <!--바텀 네비게이션-->
+    <style name="BottomNavigationViewTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/font_caption_text_4</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="AppTheme.PopupActivity"
         parent="Theme.AppCompat.Light.Dialog">
         <item name="windowNoTitle">true</item>
@@ -68,4 +76,50 @@
 
     <style name="Theme.Myo_jib_sa.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- 일반 미션 tabLayout 텍스트 커스텀 -->
+    <style name="mission_tab_text_style">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/gray7</item>
+        <item name="android:fontFamily">@font/font_caption_text_3</item>
+    </style>
+    <!-- 일반 미션 tabLayout 선택 텍스트 커스텀 -->
+    <style name="mission_tab_selected_text_style">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/main2</item>
+        <item name="android:fontFamily">@font/font_caption_text_1</item>
+    </style>
+
+    <!-- 일반 미션 tabLayout 커스텀-->
+    <style name="mission_tab_style">
+        <item name="tabTextAppearance">@style/mission_tab_text_style</item>
+        <item name="tabSelectedTextAppearance">@style/mission_tab_selected_text_style</item>
+        <item name="tabIndicatorHeight">24dp</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabIndicator">@drawable/background_mission_tab_indicator</item>
+        <item name="tabRippleColor">@null</item>
+    </style>
+
+    <!-- TabLayout 텍스트 테마 -->
+    <style name="schedule_tablayout_style" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/gray6</item>
+        <item name="android:fontFamily">@font/font_caption_text_1</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+    <style name="adjustResizeStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="roundCornerBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/roundCornerModalStyle</item>
+    </style>
+
+    <style name="roundCornerModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/background_mission_create_calendar_dialog</item>
+    </style>
 </resources>
