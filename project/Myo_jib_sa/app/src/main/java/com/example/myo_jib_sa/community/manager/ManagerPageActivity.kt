@@ -118,9 +118,9 @@ class ManagerPageActivity : AppCompatActivity() {
                         .load(missionImg)
                         .into(binding.managerMissionImg)
 
-                    Log.d("관리자 페이지 불러오기", "성공!!")
+                    Log.d("관리자 페이지 불러오기", "성공")
                 } else {
-                    Log.d("관리자 페이지 불러오기", "실패 ㅜㅠ")
+                    Log.d("관리자 페이지 불러오기", "실패")
                 }
             }
         }

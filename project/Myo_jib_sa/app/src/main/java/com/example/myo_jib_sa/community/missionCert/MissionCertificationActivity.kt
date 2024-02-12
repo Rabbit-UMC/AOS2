@@ -193,8 +193,7 @@ class MissionCertificationActivity: AppCompatActivity() {
                     if (response.result.startDay.isNotEmpty()) {
 
                         //미션  몇일차인지 설정
-                        //todo : date = setMissionDate(response.result.startDay)
-                        date=9
+                        date = setMissionDate(response.result.startDay)
                         Log.d("미션 인증 n일차", "$date")
 
                         //미션 시작 전일 경우

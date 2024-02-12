@@ -69,30 +69,9 @@ class BoardActivity : AppCompatActivity() {
             finish()
         }
 
-        //글쓰기
-        binding.boardPostingBtn.setOnClickListener {
-            val intent= Intent(this, PostWrtieActivity::class.java)
-            intent.putExtra("boardId", boardId)
-            startActivity(intent)
-        }
-
         //페이징
         paging()
 
-
-        //관리자 페이지 넘어가기
-        binding.boardExcsNameTxt.setOnClickListener(View.OnClickListener {
-            if(hostId== Constance.USER_ID){
-                val intent=Intent(this, ManagerPageActivity::class.java)
-                intent.putExtra("boardId", boardId)
-                intent.putExtra("missionImg", missionImg)
-                startActivity(intent)
-            }
-
-        })
-
-        //미션 인증 페이지 넘어가기
-        //todo: 플로팅 버튼 터치 시 넘어가기로 바꾸기
         setFABClickEvent()
 
     }
@@ -127,6 +106,11 @@ class BoardActivity : AppCompatActivity() {
     private fun getBoardData(author:String ,id:Long){
 
         //게시판 이름
+        if(isBest){
+            binding.boardExcsNameTxt.text="인기 게시글"
+            getBestData(author)
+            return
+        }
             when(id){
                 Constance.ART_ID-> {
                     binding.boardExcsNameTxt.text="예술 게시판"
@@ -137,11 +121,6 @@ class BoardActivity : AppCompatActivity() {
                 Constance.EXERCISE_ID-> {
                     binding.boardExcsNameTxt.text="운동 게시판"
                 }
-        }
-        if(isBest){
-            binding.boardExcsNameTxt.text="인기 게시글"
-            getBestData(author)
-            return
         }
 
 
@@ -230,7 +209,7 @@ class BoardActivity : AppCompatActivity() {
     private fun getBestData(author:String){
         val retrofitManager = PostBoardRetrofitManager.getInstance(this)
         retrofitManager.popular(author,page){response ->
-            if(response.isSuccess=="true"){
+            if(response.isSuccess){
                 val list:MutableList<Articles> = mutableListOf()
                 var tempList=Articles(0,",",",",-1,-1)
                 for(i in 1..response.result.size){
@@ -270,9 +249,8 @@ class BoardActivity : AppCompatActivity() {
                 isLoading = false
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                val returnCode = response.code
-                val returnMsg = response.message
-
+                val returnCode = response.errorCode
+                val returnMsg = response.errorMessage
                 Log.d("게시판 API isSuccess가 false", "${returnCode}  ${returnMsg}")
             }
 
@@ -281,8 +259,8 @@ class BoardActivity : AppCompatActivity() {
     }
 
     private fun setBestBoard(){
-        //binding.boardExcsMissiomTxt.visibility=View.INVISIBLE todo
         binding.boardPostingBtn.hide()
+        binding.boardMissionBtn.hide()
     }
 
     //플로팅 버튼
