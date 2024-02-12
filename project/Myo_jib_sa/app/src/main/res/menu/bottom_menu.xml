@@ -5,7 +5,7 @@
     <item
         android:id="@+id/menu_schedule"
         android:icon="@drawable/selector_menu_schedule"
-        android:title="스케줄"
+        android:title="일정"
         android:enabled="true"
         app:showAsAction="always"
         />
@@ -13,7 +13,7 @@
     <item
         android:id="@+id/menu_mission"
         android:icon="@drawable/selector_menu_mission"
-        android:title="즐겨찾기"
+        android:title="미션"
         android:enabled="true"
         app:showAsAction="always"
         />
@@ -28,7 +28,7 @@
     <item
         android:id="@+id/menu_mypage"
         android:icon="@drawable/selector_menu_mypage"
-        android:title="마이페이지"
+        android:title="프로필"
         android:enabled="true"
         app:showAsAction="always"
         />
