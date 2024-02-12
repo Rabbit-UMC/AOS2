@@ -8,9 +8,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myo_jib_sa.BuildConfig
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.manager.ManagerPageActivity
 import com.example.myo_jib_sa.community.api.communityHome.CommunityHomeManager
 import com.example.myo_jib_sa.community.api.communityHome.MainMission
@@ -35,6 +37,8 @@ class CommunityFragment : Fragment() {
 
     private var adLoader: AdLoader? = null //광고를 불러올 adLoader 객체
     //val AD_UNIT_ID = BuildConfig.AD_UNIT_ID
+
+    private var userHostCategory:List<Long> = listOf()
 
 
     override fun onCreateView(
@@ -84,34 +88,89 @@ class CommunityFragment : Fragment() {
     //플로팅 버튼
     private fun setFABClickEvent() {
 
+        if(userHostCategory.isEmpty()){
+            binding.myoZipMainBtn.hide() //관리자가 아닌 유저의 경우
+        }
+
+        binding.myoZip1Btn.hide()
+        binding.myoZip2Btn.hide()
+        binding.myoZip3Btn.hide()
+
+        for (i in userHostCategory.indices) {
+            when (userHostCategory[i]) {
+                Constance.ART_ID -> {
+                    val fab = when (i) {
+                        0 -> binding.myoZip1Btn
+                        1 -> binding.myoZip2Btn
+                        2 -> binding.myoZip3Btn
+                        // Add more cases if needed
+                        else -> null
+                    }
+
+                    fab?.apply {
+                        show()
+                        background = ContextCompat.getDrawable(requireContext(), R.drawable.ic_floating_art)
+                        setOnClickListener {
+                            val intent = Intent(requireContext(), ManagerPageActivity::class.java)
+                            intent.putExtra("boardId", userHostCategory[i])
+                            startActivity(intent)
+                        }
+                    }
+                }
+                Constance.FREE_ID -> {
+                    val fab = when (i) {
+                        0 -> binding.myoZip1Btn
+                        1 -> binding.myoZip2Btn
+                        2 -> binding.myoZip3Btn
+                        // Add more cases if needed
+                        else -> null
+                    }
+
+                    fab?.apply {
+                        show()
+                        // Set background or other properties for ART_ID FAB
+                        background = ContextCompat.getDrawable(requireContext(), R.drawable.ic_floating_free)
+                        setOnClickListener {
+                            // Handle ART_ID FAB click event
+                            val intent = Intent(requireContext(), ManagerPageActivity::class.java)
+                            intent.putExtra("boardId", userHostCategory[i])
+                            startActivity(intent)
+                        }
+                    }
+                }
+                Constance.EXERCISE_ID -> {
+                    val fab = when (i) {
+                        0 -> binding.myoZip1Btn
+                        1 -> binding.myoZip2Btn
+                        2 -> binding.myoZip3Btn
+                        // Add more cases if needed
+                        else -> null
+                    }
+
+                    fab?.apply {
+                        show()
+                        // Set background or other properties for ART_ID FAB
+                        background = ContextCompat.getDrawable(requireContext(), R.drawable.ic_floating_exercise)
+                        setOnClickListener {
+                            // Handle ART_ID FAB click event
+                            val intent = Intent(requireContext(), ManagerPageActivity::class.java)
+                            intent.putExtra("boardId", userHostCategory[i])
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
+        }
+
+
         // 플로팅 버튼 클릭시 애니메이션 동작 기능
         binding.myoZipMainBtn.setOnClickListener {
             toggleFab()
-        }
-
-        // 플로팅 버튼 클릭 이벤트
-        binding.myoZip1Btn.setOnClickListener {
-            val intent=Intent(requireContext(), ManagerPageActivity::class.java)
-            startActivity(intent)
-        }
-
-        // 플로팅 버튼 클릭 이벤트
-        binding.myoZip2Btn.setOnClickListener {
-            val intent=Intent(requireContext(), ManagerPageActivity::class.java)
-            startActivity(intent)
-        }
-
-        // 플로팅 버튼 클릭 이벤트
-        binding.myoZip3Btn.setOnClickListener {
-            val intent=Intent(requireContext(), ManagerPageActivity::class.java)
-            startActivity(intent)
         }
     }
 
     //플로팅 버튼 꺼내기
     private fun toggleFab() {
-
-        //todo: 관리자 권한에 따라 플로팅 버튼 숨기기 나타내기
 
         // 플로팅 액션 버튼 닫기 - 열려있는 플로팅 버튼 집어넣는 애니메이션
         if (isFabOpen) {
@@ -157,7 +216,7 @@ class CommunityFragment : Fragment() {
             if (homeResponse.isSuccess) {
                 val missionList: List<MainMission> = homeResponse.result.mainMission
                 val postList: List<PopularArticle> = homeResponse.result.popularArticle
-                //todo : 플로팅 버튼 설정 (Gone)
+                userHostCategory=homeResponse.result.userHostCategory
                 if (missionList.isNotEmpty()) {
                     linkMrecyclr(context, missionList)
                 } else {
