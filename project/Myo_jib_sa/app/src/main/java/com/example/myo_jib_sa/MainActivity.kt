@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        spfManager.setAccessToken("eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDU4MTExMjEsImV4cCI6MTcwNzI4MjM1MH0.Lre_HeCZbsabDXcS0xUvUEWPVNjJZTxuYvVG2ekVT3Y")
+        spfManager.setAccessToken("eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VySWR4IjoxLCJpYXQiOjE3MDc0NjkxODEsImV4cCI6MTcwODk0MDQxMH0.G1p6OlGcYPzFVxRS-muOAyBJLyme8m6_AbD3fT7RhqA")
 
         //바텀 네비게이션 설정
         binding.mainBottomNavi.itemIconTintList = null //아이콘 태마색 변경 방지
@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         // Item을 클릭했을 때 나타나는 이벤트 설정
         binding.mainBottomNavi.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-
                 R.id.menu_schedule -> {
                     setFragment(ScheduleFragment())
                     binding.unregisterBtn.visibility = View.GONE
