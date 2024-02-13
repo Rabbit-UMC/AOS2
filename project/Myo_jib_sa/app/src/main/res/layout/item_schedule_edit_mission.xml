@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/view_round_r16"
-    android:backgroundTint="#234BD9">
+    android:background="@drawable/view_round_r16_main2"
+    android:layout_marginRight="4dp">
 
     <TextView
         android:id="@+id/missionTitle_tv"
@@ -14,9 +14,9 @@
         android:layout_marginBottom="6dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/font_pretendard_regular"
+        android:fontFamily="@font/font_caption_text_4"
         android:text="프로레슬링 한 판"
-        android:textSize="10dp"
+        android:textSize="10sp"
         android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,11 +28,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="10dp"
-        android:fontFamily="@font/font_pretendard_regular"
+        android:fontFamily="@font/font_caption_text_4"
         android:text="D+40"
-        android:textSize="10dp"
+        android:textSize="10sp"
         android:textColor="#FFFFFF"
-
         app:layout_constraintBaseline_toBaselineOf="@+id/missionTitle_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/missionTitle_tv" />
