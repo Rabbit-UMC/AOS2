@@ -19,6 +19,7 @@ import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.ActivityCreateScheduleBinding
 import com.example.myo_jib_sa.databinding.ToastCreateScheduleBinding
+import com.example.myo_jib_sa.databinding.ToastRedBlackBinding
 import com.example.myo_jib_sa.schedule.ScheduleFragment
 import com.example.myo_jib_sa.schedule.api.CreateScheduleRequest
 import com.example.myo_jib_sa.schedule.api.CreateScheduleResponse
@@ -272,8 +273,8 @@ class CreateScheduleActivity : AppCompatActivity() {
 
     private fun createToast(message : String){
         // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
-        val snackbarBinding = ToastCreateScheduleBinding.inflate(layoutInflater)
-        snackbarBinding.toastMessageTv.text = message
+        val snackbarBinding = ToastRedBlackBinding.inflate(layoutInflater)
+        snackbarBinding.toastRedBlackTxt.text = message
 
         // 스낵바 생성 및 설정
         val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
