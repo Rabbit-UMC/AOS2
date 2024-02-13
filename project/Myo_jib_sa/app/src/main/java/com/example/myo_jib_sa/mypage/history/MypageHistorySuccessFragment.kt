@@ -25,9 +25,15 @@ class MypageHistorySuccessFragment(private val nickname: String?) : Fragment() {
         binding = FragmentMypageHistorySuccessBinding.inflate(layoutInflater)
 
         binding.mypageHistorySuccessNicknameTv.text = nickname
-        getSuccessHistory()
+
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        getSuccessHistory()
     }
 
     private fun getSuccessHistory() {

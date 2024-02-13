@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
         android:text="닉네임"
-        android:textColor="@color/main2"
+        android:textColor="@color/main4"
         android:textSize="20sp"
         android:fontFamily="@font/font_title_3"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,15 +55,13 @@
         android:id="@+id/mypage_history_fail_cnt_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/font_title_1"
+        android:fontFamily="@font/font_title_3"
         android:text="10개"
-        android:textColor="@color/main2"
-        android:textSize="30sp"
-        android:minHeight="45sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mypage_history_fail_cnt_title_tv" />
+        android:textColor="@color/main4"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/mypage_history_fail_cnt_title_tv"
+        app:layout_constraintStart_toEndOf="@+id/mypage_history_fail_cnt_title_tv"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_history_fail_nickname_title_tv" />
 
     <TextView
         android:id="@+id/mypage_history_fail_whole_mission_tv"
@@ -73,11 +71,11 @@
         android:fontFamily="@font/font_caption_text_3"
         android:minHeight="18sp"
         android:text="10개"
-        android:textColor="@color/main2"
+        android:textColor="@color/main4"
         android:textSize="12sp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="9dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mypage_history_fail_cnt_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/mypage_history_fail_cnt_title_tv" />
     <TextView
         android:id="@+id/mypage_history_fail_mission_of_tv"
         android:layout_width="wrap_content"
@@ -98,7 +96,7 @@
         android:fontFamily="@font/font_caption_text_3"
         android:minHeight="18sp"
         android:text="13개"
-        android:textColor="@color/main2"
+        android:textColor="@color/main4"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/mypage_history_fail_mission_of_tv"
         app:layout_constraintStart_toEndOf="@+id/mypage_history_fail_mission_of_tv"
@@ -125,4 +123,6 @@
         android:layout_marginBottom="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mypage_history_fail_whole_mission_tv" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

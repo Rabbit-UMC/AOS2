@@ -90,6 +90,7 @@
         android:layout_marginTop="40dp"
         android:hint="@string/edit_profile_nickname"
         android:textColorHint="@color/gray4"
+        android:backgroundTint="@color/selector_et_underline"
         android:textSize="14sp"
         android:textColor="@color/black"
         android:maxLength="6"
