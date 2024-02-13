@@ -80,7 +80,7 @@ class CurrentMissionActivity : AppCompatActivity() {
     }
 
     private fun showDetailDialog(missionId: Long) {
-        val detailDialog = CurrentMissionDetailDialog(missionId)
+        val detailDialog = CurrentMissionDetailDialogFragment(missionId)
         detailDialog.show(supportFragmentManager, "mission_detail_dialog")
     }
 

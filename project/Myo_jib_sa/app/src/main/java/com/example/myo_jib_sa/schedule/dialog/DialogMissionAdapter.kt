@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.R
-import com.example.myo_jib_sa.databinding.ItemScheduleMissionBinding
+import com.example.myo_jib_sa.databinding.ItemScheduleEditMissionBinding
 import com.example.myo_jib_sa.schedule.api.MyMissionResult
 
 class DialogMissionAdapter(private val missionList: List<MyMissionResult>):
@@ -16,7 +16,7 @@ class DialogMissionAdapter(private val missionList: List<MyMissionResult>):
         viewType: Int
     ): ViewHolder {
         val binding =
-            ItemScheduleMissionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemScheduleEditMissionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -25,7 +25,7 @@ class DialogMissionAdapter(private val missionList: List<MyMissionResult>):
         holder.bind(missionList[position])
     }
 
-    inner class ViewHolder(private val binding: ItemScheduleMissionBinding) :
+    inner class ViewHolder(private val binding: ItemScheduleEditMissionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: MyMissionResult) {
             when(data.categoryId){
