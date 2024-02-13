@@ -2,10 +2,11 @@ package com.example.myo_jib_sa.schedule.utils
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class DateFormatter {
+class Formatter {
     //YYYY-MM-DD 형식으로 포맷
     @RequiresApi(Build.VERSION_CODES.O)
     public fun YYYYMMDDFromDate(date: LocalDate?): String? {
@@ -57,5 +58,20 @@ class DateFormatter {
         return date?.format(formatter)
     }
 
+    //startTime, endTime 포맷
+    public fun scheduleTimeFormatter(startAt: String?): String {
+        val formatter = DecimalFormat("00")
 
+        val time = startAt!!.split(":")
+        val hour = time[0].toInt()
+        val minute = time[1].toInt()
+        if (hour < 12) {
+            return "오전 ${hour}:${formatter.format(minute)}"
+        } else {
+            if (hour == 12)
+                return "오후 ${hour}:${formatter.format(minute)}"
+            else
+                return "오후 ${hour - 12}:${formatter.format(minute)}"
+        }
+    }
 }

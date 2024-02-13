@@ -37,7 +37,7 @@ import com.example.myo_jib_sa.schedule.api.ScheduleMonthResponse
 import com.example.myo_jib_sa.schedule.api.ScheduleOfDayResponse
 import com.example.myo_jib_sa.schedule.api.ScheduleOfDayResult
 import com.example.myo_jib_sa.schedule.utils.CustomItemDecoration
-import com.example.myo_jib_sa.schedule.utils.DateFormatter
+import com.example.myo_jib_sa.schedule.utils.Formatter
 import com.google.android.ads.nativetemplates.TemplateView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.nativead.NativeAd
@@ -50,13 +50,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 
 
 class ScheduleFragment() : Fragment() {
     val scheduleRetrofit:ScheduleAPI = sRetrofit.create(ScheduleAPI::class.java)
     val missionRetrofit:MissionAPI = sRetrofit.create(MissionAPI::class.java)
-    val dateFormatter = DateFormatter()
+    val formatter = Formatter()
 
     private lateinit var mContext:Context //requireContext 대신 사용
     lateinit var binding: FragmentScheduleBinding
@@ -91,11 +90,11 @@ class ScheduleFragment() : Fragment() {
         selectedDate = LocalDate.now()
         standardDate = selectedDate
         //m월 d일 일정 표시 (예: 6월 1일 일정 표시)
-        binding.selectedMonthDayTv.text = dateFormatter.MMDDFromDate(selectedDate)
+        binding.selectedMonthDayTv.text = formatter.MMDDFromDate(selectedDate)
         //YYYY년 표시 - calendar
-        binding.selectedYearTv.text = dateFormatter.yearFromDate(selectedDate)
+        binding.selectedYearTv.text = formatter.yearFromDate(selectedDate)
         //MM월 표시 - calendar
-        binding.selectedMonthTv.text = dateFormatter.monthFromDate(selectedDate)
+        binding.selectedMonthTv.text = formatter.monthFromDate(selectedDate)
 
 
         //화면전환
@@ -141,11 +140,11 @@ class ScheduleFragment() : Fragment() {
     private fun setCalendarHeader(date: LocalDate) {
 
         //m월 d일 일정 표시 (예: 6월 1일 일정 표시)
-        binding.selectedMonthDayTv.text = dateFormatter.MMDDFromDate(date)
+        binding.selectedMonthDayTv.text = formatter.MMDDFromDate(date)
         //YYYY년 표시 - calendar
-        binding.selectedYearTv.text = dateFormatter.yearFromDate(date)
+        binding.selectedYearTv.text = formatter.yearFromDate(date)
         //MM월 표시 - calendar
-        binding.selectedMonthTv.text = dateFormatter.monthFromDate(date)
+        binding.selectedMonthTv.text = formatter.monthFromDate(date)
 
         //일정 있는지 없는지 api로 체크
         //<api 안에서>
@@ -175,7 +174,7 @@ class ScheduleFragment() : Fragment() {
                     break
                     //dayList.add(CalendarData(null)) //끝에 빈칸 자르기
                 } else if (standardDate == selectedDate && i == selectedDate.dayOfMonth) {//선택한 날짜일때 파란 동그라미 표시 위해
-                    var currentDate = dateFormatter.YYYYMMDDFromDate(
+                    var currentDate = formatter.YYYYMMDDFromDate(
                         LocalDate.of(
                             standardDate.year, standardDate.monthValue, i
                         )
@@ -189,7 +188,7 @@ class ScheduleFragment() : Fragment() {
                     )
                     firstSelectedDatePosition = i - 1
                 } else {
-                    var currentDate = dateFormatter.YYYYMMDDFromDate(
+                    var currentDate = formatter.YYYYMMDDFromDate(
                         LocalDate.of(standardDate.year, standardDate.monthValue, i)
                     )
                     dayList.add(
@@ -205,7 +204,7 @@ class ScheduleFragment() : Fragment() {
             } else if (i > (lastDay + dayOfWeek)) {//끝에 빈칸 자르기위해
                 break
             } else if (standardDate == selectedDate && i - dayOfWeek == selectedDate.dayOfMonth) {//선택한 날짜일때 파란 동그라미 표시 위해
-                var currentDate = dateFormatter.YYYYMMDDFromDate(
+                var currentDate = formatter.YYYYMMDDFromDate(
                     LocalDate.of(standardDate.year, standardDate.monthValue, i - dayOfWeek)
                 )
                 dayList.add(
@@ -217,7 +216,7 @@ class ScheduleFragment() : Fragment() {
                 )
                 firstSelectedDatePosition = i - 1
             } else {
-                var currentDate = dateFormatter.YYYYMMDDFromDate(
+                var currentDate = formatter.YYYYMMDDFromDate(
                     LocalDate.of(standardDate.year, standardDate.monthValue, i - dayOfWeek)
                 )
                 dayList.add(
@@ -315,9 +314,9 @@ class ScheduleFragment() : Fragment() {
                 selectedDate = calendarData.date!!
                 standardDate = selectedDate
 
-                binding.selectedYearTv.text = dateFormatter.yearFromDate(selectedDate)//ex. 2023년
-                binding.selectedMonthTv.text = dateFormatter.monthFromDate(selectedDate)//ex. 6월
-                binding.selectedMonthDayTv.text = dateFormatter.MMDDFromDate(selectedDate)//ex. 6월 1일
+                binding.selectedYearTv.text = formatter.yearFromDate(selectedDate)//ex. 2023년
+                binding.selectedMonthTv.text = formatter.monthFromDate(selectedDate)//ex. 6월
+                binding.selectedMonthDayTv.text = formatter.MMDDFromDate(selectedDate)//ex. 6월 1일
 
                 scheduleOfDayApi(selectedDate)//scheduleOfDay api연결
             }
@@ -477,15 +476,15 @@ class ScheduleFragment() : Fragment() {
         //이전달로 이동
         binding.preMonthBtn.setOnClickListener {
             standardDate = standardDate.minusMonths(1)
-            binding.selectedMonthTv.text = dateFormatter.monthFromDate(standardDate)
-            binding.selectedYearTv.text = dateFormatter.yearFromDate(standardDate)
+            binding.selectedMonthTv.text = formatter.monthFromDate(standardDate)
+            binding.selectedYearTv.text = formatter.yearFromDate(standardDate)
             scheduleMonthApi()
         }
         //다음달로 이동
         binding.nextMonthBtn.setOnClickListener {
             standardDate = standardDate.plusMonths(1)
-            binding.selectedMonthTv.text = dateFormatter.monthFromDate(standardDate)
-            binding.selectedYearTv.text = dateFormatter.yearFromDate(standardDate)
+            binding.selectedMonthTv.text = formatter.monthFromDate(standardDate)
+            binding.selectedYearTv.text = formatter.yearFromDate(standardDate)
             scheduleMonthApi()
         }
     }
@@ -539,7 +538,7 @@ class ScheduleFragment() : Fragment() {
     fun scheduleOfDayApi(date: LocalDate) {
         sDataList.removeAll(sDataList.toSet())//초기화
 
-        scheduleRetrofit.getScheduleOfDay(dateFormatter.YYYYMMDDFromDate(date)).enqueue(object : Callback<ScheduleOfDayResponse> {
+        scheduleRetrofit.getScheduleOfDay(formatter.YYYYMMDDFromDate(date)).enqueue(object : Callback<ScheduleOfDayResponse> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(
                 call: Call<ScheduleOfDayResponse>, response: Response<ScheduleOfDayResponse>
@@ -584,7 +583,7 @@ class ScheduleFragment() : Fragment() {
     //scheduleMonthApi 연결: 스케줄 있는지 없는지 체크 | standardDate기준으로 달력 생성
     @RequiresApi(Build.VERSION_CODES.O)
     private fun scheduleMonthApi() {
-        var yyyyMM = dateFormatter.YYYY_MMFromDate(standardDate)
+        var yyyyMM = formatter.YYYY_MMFromDate(standardDate)
         Log.d("retrofit", "date" + standardDate)
         Log.d("retrofit", "yyyyMM" + yyyyMM)
 
