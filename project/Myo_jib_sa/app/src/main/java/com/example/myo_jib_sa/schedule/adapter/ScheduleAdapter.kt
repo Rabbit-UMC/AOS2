@@ -10,8 +10,10 @@ import com.example.myo_jib_sa.schedule.api.ScheduleOfDayResult
 import com.example.myo_jib_sa.schedule.utils.Formatter
 import java.text.DecimalFormat
 
-class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):
-    RecyclerView.Adapter<ScheduleAdaptar.ViewHolder>() {
+class ScheduleAdaptar (
+    private val scheduleList:ArrayList<ScheduleOfDayResult>
+    ,private val onItemClickListener : OnItemClickListener
+): RecyclerView.Adapter<ScheduleAdaptar.ViewHolder>() {
 
     //화면 설정
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,47 +38,23 @@ class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):
             binding.scheduleEndTimeTv.text = Formatter().scheduleTimeFormatter(data.scheduleEnd)
 
             binding.scheduleLayout.setOnClickListener {
-                itemClickListener.onClick(data)
+                onItemClickListener.onClick(data)
             }
 
             binding.deleteTv.setOnClickListener {
-                itemClickListener.onDeleteClick(data.scheduleId)
+                onItemClickListener.onDeleteClick(data.scheduleId)
             }
         }
     }
 
-    //클릭 이벤트 처리 ==============================================
-    //리스너 인터페이스
+    //클릭 이벤트 처리
     interface  OnItemClickListener{
         fun onClick(scheduleData: ScheduleOfDayResult)
         fun onDeleteClick(scheduleId: Long)
-    }
-    // (3) 외부에서 클릭 시 이벤트 설정
-    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
-        this.itemClickListener = onItemClickListener
-    }
-    // (4) setItemClickListener로 설정한 함수 실행
-    private lateinit var itemClickListener : OnItemClickListener
-    //==============================================================
-
-
-    //swipe시 내부 데이터 값 제거
-    fun removeTask(position: Int) {
-        scheduleList.removeAt(position)
-
-        notifyDataSetChanged()
-    }
-
-
-
-    fun getItem():ArrayList<ScheduleOfDayResult> {
-        return scheduleList
     }
 
     override fun getItemCount(): Int {
         return scheduleList.size
     }
-
-
 
 }

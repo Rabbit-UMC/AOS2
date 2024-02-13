@@ -23,7 +23,6 @@ import retrofit2.Response
 
 
 class ScheduleDeleteDialogFragment(
-    val scheduleAdaptar: ScheduleAdaptar,
     val scheduleId:Long
 ) : DialogFragment() {
     val retrofit:ScheduleAPI = sRetrofit.create(ScheduleAPI::class.java)

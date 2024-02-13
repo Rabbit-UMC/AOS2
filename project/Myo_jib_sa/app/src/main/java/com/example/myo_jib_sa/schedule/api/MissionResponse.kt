@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 //내 미션 조회
 data class MyMissionResponse(
-    val result: List<MyMissionResult>
+    val result: MutableList<MyMissionResult>
 ): BaseResponse()
 data class MyMissionResult(
     @SerializedName("id")
