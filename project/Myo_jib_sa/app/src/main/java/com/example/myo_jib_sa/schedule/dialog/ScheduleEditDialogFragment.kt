@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleEditBinding
 import com.example.myo_jib_sa.databinding.ToastCurrentMissionDeleteBinding
+import com.example.myo_jib_sa.databinding.ToastRedBlackBinding
 import com.example.myo_jib_sa.schedule.api.MissionAPI
 import com.example.myo_jib_sa.schedule.api.MyMissionResponse
 import com.example.myo_jib_sa.schedule.api.MyMissionResult
@@ -516,9 +517,10 @@ class ScheduleEditDialogFragment : DialogFragment() {
                     Log.d("retrofit", "scheduleModifyApi"+response.body().toString());
                     dismiss()
                 }else {
+
                     // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
-                    val snackbarBinding = ToastCurrentMissionDeleteBinding.inflate(layoutInflater)
-                    snackbarBinding.toastMessageTv.text = "[ERROR] ${response.body()?.errorMessage}"
+                    val snackbarBinding = ToastRedBlackBinding.inflate(layoutInflater)
+                    snackbarBinding.toastRedBlackTxt.text = "[ERROR] ${response.body()?.errorMessage}"
                     // 스낵바 생성 및 설정
                     val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
                         animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
@@ -531,6 +533,7 @@ class ScheduleEditDialogFragment : DialogFragment() {
                     }
                     // 스낵바 표시
                     snackbar.show()
+
                     Log.e("retrofit", "scheduleModifyApi_onResponse: Error ${response.code()}")
                     val errorBody = response.errorBody()?.string()
                     Log.e("retrofit", "scheduleModifyApi_onResponse: Error Body $errorBody")
