@@ -291,9 +291,7 @@ class ScheduleFragment() : Fragment() {
                     }
 
                     override fun onDeleteClick(scheduleId: Long) {
-                        var scheduleDeleteDialog = ScheduleDeleteDialogFragment(
-                            binding.scheduleRv.adapter as ScheduleAdaptar, scheduleId
-                        )
+                        var scheduleDeleteDialog = ScheduleDeleteDialogFragment(scheduleId)
                         scheduleDeleteDialog.setButtonClickListener(object :
                             ScheduleDeleteDialogFragment.OnButtonClickListener {
                             override fun onClickExitBtn() {
