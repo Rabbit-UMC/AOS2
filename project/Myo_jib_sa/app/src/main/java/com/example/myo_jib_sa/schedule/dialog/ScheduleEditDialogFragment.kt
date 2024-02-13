@@ -13,13 +13,11 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
-import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleEditBinding
 import com.example.myo_jib_sa.databinding.ToastCurrentMissionDeleteBinding
 import com.example.myo_jib_sa.schedule.api.MissionAPI
@@ -29,23 +27,21 @@ import com.example.myo_jib_sa.schedule.api.ScheduleAPI
 import com.example.myo_jib_sa.schedule.api.ScheduleDetailResult
 import com.example.myo_jib_sa.schedule.api.UpdateScheduleRequest
 import com.example.myo_jib_sa.schedule.api.UpdateScheduleResponse
-import com.example.myo_jib_sa.schedule.utils.DateFormatter
+import com.example.myo_jib_sa.schedule.utils.Formatter
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 
 class ScheduleEditDialogFragment : DialogFragment() {
     val retrofit:ScheduleAPI =sRetrofit.create(ScheduleAPI::class.java)
-    val dateFormatter = DateFormatter()
+    val formatter = Formatter()
 
     private lateinit var binding: DialogFragmentScheduleEditBinding
     private var scheduleData : ScheduleDetailResult = ScheduleDetailResult(
@@ -139,13 +135,13 @@ class ScheduleEditDialogFragment : DialogFragment() {
         binding.preMonthBtn.setOnClickListener{
             standardDate = standardDate.minusMonths(1)
             //CoroutineScope(Dispatchers.Main).launch {
-            binding.selectedMonthTv.text = dateFormatter.monthFromDate(standardDate)
+            binding.selectedMonthTv.text = formatter.monthFromDate(standardDate)
             setMonthView()
         }
         //다음달로 이동
         binding.nextMonthBtn.setOnClickListener{
             standardDate =standardDate.plusMonths(1)
-            binding.selectedMonthTv.text = dateFormatter.monthFromDate(standardDate)
+            binding.selectedMonthTv.text = formatter.monthFromDate(standardDate)
             setMonthView()
         }
     }
@@ -153,8 +149,8 @@ class ScheduleEditDialogFragment : DialogFragment() {
     //month화면에 보여주기
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setMonthView(){
-        binding.selectedMonthTv.text = dateFormatter.monthFromDate(standardDate)//결과: 1월
-        binding.selectedYearTv.text = dateFormatter.yearFromDate(standardDate)//결과: 2023년
+        binding.selectedMonthTv.text = formatter.monthFromDate(standardDate)//결과: 1월
+        binding.selectedYearTv.text = formatter.yearFromDate(standardDate)//결과: 2023년
 
         //이번달 날짜 가져오기
         val dayList = DayInMonthArray(standardDate)
@@ -328,12 +324,21 @@ class ScheduleEditDialogFragment : DialogFragment() {
         binding.calendarCompleteTv.setOnClickListener {
             binding.calendarLayout.visibility = View.GONE
             binding.scheduleMemoEtv.visibility = View.VISIBLE
-            binding.scheduleDateTv.text = dateFormatter.yearMonthDate(selectedDate)
+            binding.scheduleDateTv.text = formatter.yearMonthDate(selectedDate)
             scheduleData.scheduleWhen = selectedDate.toString()
         }
+
         //시간 클릭시
         binding.scheduleStartAtTv.setOnClickListener {
-            binding.timeViewPager.setCurrentItem(1, true)
+            binding.timeViewPager.setCurrentItem(0, true)
+
+            val sharedPreferenceModified = requireContext().getSharedPreferences("scheduleModifiedData",
+                Context.MODE_PRIVATE
+            )
+            val editor = sharedPreferenceModified.edit()
+            editor.putString("scheduleStartTime", scheduleData.startAt)//값 변경하지 않았을때 기본값으로 전달
+            editor.putString("scheduleEndTime", scheduleData.endAt)//값 변경하지 않았을때 기본값으로 전달
+            editor.apply()// data 저장!
 
             if(binding.timeLayout.visibility == View.GONE)
                 binding.timeLayout.visibility = View.VISIBLE
@@ -341,6 +346,14 @@ class ScheduleEditDialogFragment : DialogFragment() {
         }
         binding.scheduleEndAtTv.setOnClickListener {
             binding.timeViewPager.setCurrentItem(1, false)
+
+            val sharedPreferenceModified = requireContext().getSharedPreferences("scheduleModifiedData",
+                Context.MODE_PRIVATE
+            )
+            val editor = sharedPreferenceModified.edit()
+            editor.putString("scheduleStartTime", scheduleData.startAt)//값 변경하지 않았을때 기본값으로 전달
+            editor.putString("scheduleEndTime", scheduleData.endAt)//값 변경하지 않았을때 기본값으로 전달
+            editor.apply()// data 저장!
 
             if(binding.timeLayout.visibility == View.GONE)
                 binding.timeLayout.visibility = View.VISIBLE
@@ -394,66 +407,66 @@ class ScheduleEditDialogFragment : DialogFragment() {
 
     }
 
-    private fun setSpinnerDialog(position:Int){
-        //sharedPreference저장
-        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
-            Context.MODE_PRIVATE
-        )
-        val editor = sharedPreference.edit()
-        editor.putString("scheduleTitle", binding.scheduleTitleEtv.text.toString())
-        editor.putString("scheduleDate", binding.scheduleDateTv.text.toString())
-        editor.putString("missionTitle", binding.missionTitleTv.text.toString())
-        editor.putString("scheduleStartTime", scheduleData?.startAt)
-        editor.putString("scheduleEndTime", scheduleData?.endAt)
-        editor.putString("scheduleMemo", binding.scheduleMemoEtv.text.toString())
-        if(scheduleData.missionId == null){
-            editor.putLong("missionId", -1)
-        }else{
-            editor.putLong("missionId", scheduleData.missionId!!)
-        }
-        editor.putLong("scheduleId", scheduleData!!.scheduleId)
-        editor.apply()
+//    private fun setSpinnerDialog(position:Int){
+//        //sharedPreference저장
+//        val sharedPreference = requireContext().getSharedPreferences("scheduleData",
+//            Context.MODE_PRIVATE
+//        )
+//        val editor = sharedPreference.edit()
+//        editor.putString("scheduleTitle", binding.scheduleTitleEtv.text.toString())
+//        editor.putString("scheduleDate", binding.scheduleDateTv.text.toString())
+//        editor.putString("missionTitle", binding.missionTitleTv.text.toString())
+//        editor.putString("scheduleStartTime", scheduleData?.startAt)
+//        editor.putString("scheduleEndTime", scheduleData?.endAt)
+//        editor.putString("scheduleMemo", binding.scheduleMemoEtv.text.toString())
+//        if(scheduleData.missionId == null){
+//            editor.putLong("missionId", -1)
+//        }else{
+//            editor.putLong("missionId", scheduleData.missionId!!)
+//        }
+//        editor.putLong("scheduleId", scheduleData!!.scheduleId)
+//        editor.apply()
+//
+//        Log.d("Datedebug", "EditSetSpinnerDialog = ${scheduleData?.scheduleWhen}")
+//
+//
+//        var bundle = Bundle()
+//        bundle.putInt("position", position)
+//
+//        val scheduleSpinnerDialogFragment = ScheduleSpinnerDialogFragment()
+//        scheduleSpinnerDialogFragment.arguments = bundle
+//        scheduleSpinnerDialogItemClickEvent(scheduleSpinnerDialogFragment)//scheduleSpinnerDialogFragment Item클릭 이벤트 setting
+//        scheduleSpinnerDialogFragment.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
+//
+//        //dismiss()//editDialog종료
+//    }
 
-        Log.d("Datedebug", "EditSetSpinnerDialog = ${scheduleData?.scheduleWhen}")
-
-
-        var bundle = Bundle()
-        bundle.putInt("position", position)
-
-        val scheduleSpinnerDialogFragment = ScheduleSpinnerDialogFragment()
-        scheduleSpinnerDialogFragment.arguments = bundle
-        scheduleSpinnerDialogItemClickEvent(scheduleSpinnerDialogFragment)//scheduleSpinnerDialogFragment Item클릭 이벤트 setting
-        scheduleSpinnerDialogFragment.show(requireActivity().supportFragmentManager, "ScheduleEditDialog")
-
-        //dismiss()//editDialog종료
-    }
-
-    private fun scheduleSpinnerDialogItemClickEvent(dialog: ScheduleSpinnerDialogFragment){
-        dialog.setButtonClickListener(object: ScheduleSpinnerDialogFragment.OnButtonClickListener{
-            override fun onClickCompeleteBtn(isEdit: Boolean) {
-                if (isEdit) {//수정한 값이 있다면
-                    //Log.d("debug", "isEdit: "+"받았다!"+bundle.getBoolean("isEdit"))
-                    val sharedPreferenceModified = requireContext().getSharedPreferences("scheduleModifiedData",
-                        Context.MODE_PRIVATE
-                    )
-                    scheduleData?.scheduleWhen = sharedPreferenceModified.getString("scheduleDate", "").toString()
-                    scheduleData?.missionTitle = sharedPreferenceModified.getString("missionTitle", "").toString()
-                    scheduleData?.missionId = sharedPreferenceModified.getLong("missionId", -1)
-                    scheduleData?.startAt = sharedPreferenceModified.getString("scheduleStartTime", "").toString()
-                    scheduleData?.endAt = sharedPreferenceModified.getString("scheduleEndTime", "").toString()
-
-
-                    Log.d("Datedebug", "EditCallback = ${scheduleData?.scheduleWhen}")
-
-                    //화면에 반영
-                    binding.scheduleDateTv.text = scheduleData?.scheduleWhen
-                    binding.missionTitleTv.text = scheduleData?.missionTitle
-                    binding.scheduleStartAtTv.text = scheduleTimeFormatter(scheduleData?.startAt)
-                    binding.scheduleEndAtTv.text = scheduleTimeFormatter(scheduleData?.endAt)
-                }
-            }
-        })
-    }
+//    private fun scheduleSpinnerDialogItemClickEvent(dialog: ScheduleSpinnerDialogFragment){
+//        dialog.setButtonClickListener(object: ScheduleSpinnerDialogFragment.OnButtonClickListener{
+//            override fun onClickCompeleteBtn(isEdit: Boolean) {
+//                if (isEdit) {//수정한 값이 있다면
+//                    //Log.d("debug", "isEdit: "+"받았다!"+bundle.getBoolean("isEdit"))
+//                    val sharedPreferenceModified = requireContext().getSharedPreferences("scheduleModifiedData",
+//                        Context.MODE_PRIVATE
+//                    )
+//                    scheduleData?.scheduleWhen = sharedPreferenceModified.getString("scheduleDate", "").toString()
+//                    scheduleData?.missionTitle = sharedPreferenceModified.getString("missionTitle", "").toString()
+//                    scheduleData?.missionId = sharedPreferenceModified.getLong("missionId", -1)
+//                    scheduleData?.startAt = sharedPreferenceModified.getString("scheduleStartTime", "").toString()
+//                    scheduleData?.endAt = sharedPreferenceModified.getString("scheduleEndTime", "").toString()
+//
+//
+//                    Log.d("Datedebug", "EditCallback = ${scheduleData?.scheduleWhen}")
+//
+//                    //화면에 반영
+//                    binding.scheduleDateTv.text = scheduleData?.scheduleWhen
+//                    binding.missionTitleTv.text = scheduleData?.missionTitle
+//                    binding.scheduleStartAtTv.text = scheduleTimeFormatter(scheduleData?.startAt)
+//                    binding.scheduleEndAtTv.text = scheduleTimeFormatter(scheduleData?.endAt)
+//                }
+//            }
+//        })
+//    }
 
     //currentMission api연결
     private fun currentMissionApi() {

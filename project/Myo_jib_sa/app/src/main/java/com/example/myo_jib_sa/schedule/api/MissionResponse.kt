@@ -47,7 +47,9 @@ data class MyMissionScheduleResult(
     @SerializedName("title")
     var scheduleTitle: String,
     @SerializedName("when")
-    var scheduleWhen: String
+    var scheduleWhen: String,
+    var startAt:String,
+    var endAt: String
 )
 
 //내미션 지우기

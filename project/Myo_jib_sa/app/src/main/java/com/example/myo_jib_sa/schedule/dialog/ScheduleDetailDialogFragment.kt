@@ -67,12 +67,6 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
         binding.scheduleMemoTv.movementMethod = ScrollingMovementMethod()
 
 
-        //x누르면 dialog종료
-//        binding.exitTv.setOnClickListener {
-//            buttonClickListener.onClickEditBtn()
-//            dismiss()
-//        }
-
         CoroutineScope(Dispatchers.Main).launch {
             delay(100)
 
