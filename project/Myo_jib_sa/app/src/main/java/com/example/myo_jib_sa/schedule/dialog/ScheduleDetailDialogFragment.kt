@@ -16,6 +16,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDetailBinding
+import com.example.myo_jib_sa.mission.adapter.MissionRVAdapter
 import com.example.myo_jib_sa.schedule.api.ScheduleAPI
 import com.example.myo_jib_sa.schedule.api.ScheduleDetailResponse
 import com.example.myo_jib_sa.schedule.api.ScheduleDetailResult
@@ -30,7 +31,10 @@ import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
+class ScheduleDetailDialogFragment(
+    private val scheduleId : Long
+    , private val onButtonClickListener: OnButtonClickListener
+    ) : DialogFragment(){
     val retrofit: ScheduleAPI = sRetrofit.create(ScheduleAPI::class.java)
     private lateinit var binding: DialogFragmentScheduleDetailBinding
     private var result: ScheduleDetailResult = ScheduleDetailResult(
@@ -50,11 +54,6 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
         savedInstanceState: Bundle?
     ): View? {
         binding = DialogFragmentScheduleDetailBinding.inflate(inflater, container, false)
-
-        //shceduleFragment의 스케줄클릭이벤트함수에서 scheduleId값 받아오기
-        val bundle = arguments
-        var scheduleId = bundle?.getLong("scheduleId")?: -1
-        Log.d("debug", "\"scheduleId\" : $scheduleId")
 
         //scheduleDetail api연결
         scheduleDetailApi(scheduleId)
@@ -115,7 +114,7 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        buttonClickListener.whenDismiss()
+        onButtonClickListener.whenDismiss()
         Log.d("debug","dismiss")
 
     }
@@ -215,13 +214,6 @@ class ScheduleDetailDialogFragment(context: Context) : DialogFragment(){
         //fun onClickEditBtn()
         fun whenDismiss()
     }
-    // 클릭 이벤트 설정
-    fun setButtonClickListener(buttonClickListener: OnButtonClickListener) {
-        this.buttonClickListener = buttonClickListener
-    }
-    // 클릭 이벤트 실행
-    private lateinit var buttonClickListener: OnButtonClickListener
-
 
     private fun scheduleWhenFormatter(scheduleWhen: String?): String {
         val date = scheduleWhen!!.split("-")
