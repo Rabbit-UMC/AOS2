@@ -1,7 +1,9 @@
 package com.example.myo_jib_sa.mypage.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
@@ -11,16 +13,38 @@ import com.example.myo_jib_sa.mypage.api.UserMissionResDto
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class MypageHistoryRVAdapter(private val items: List<UserMissionResDto>) : RecyclerView.Adapter<MypageHistoryRVAdapter.ViewHolder>() {
-    inner class ViewHolder(
-        private val binding: ItemMypageHistoryMissionBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
+class MypageHistoryRVAdapter(private val items: List<UserMissionResDto>, private val isSuccess: Boolean) : RecyclerView.Adapter<MypageHistoryRVAdapter.ViewHolder>() {
+    inner class ViewHolder(private val binding: ItemMypageHistoryMissionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: UserMissionResDto) {
             with(binding) {
-                Glide.with(historyMissionTitleIv)
-                    .load(item.image)
-                    .error(R.drawable.ic_app_logo)
-                    .into(historyMissionTitleIv)
+                if (item.missionId == -1) {
+                    configureVisibility(isSuccess)
+                    setMissionImage(
+                        if(isSuccess) R.drawable.background_mypage_history_fail_default else R.drawable.background_mypage_history_fail_default
+                    )
+                } else {
+                    setItemDetails(item)
+                    setMissionImage(item.image)
+                }
+            }
+        }
+
+        private fun setMissionImage(image: Any) {
+            Glide.with(binding.historyMissionTitleIv)
+                .load(image)
+                .error(R.drawable.ic_app_logo)
+                .into(binding.historyMissionTitleIv)
+        }
+        private fun configureVisibility(isSuccess: Boolean) {
+            with(binding) {
+                historyMissionInfoExistCl.visibility = View.GONE
+                historyMissionInfoSuccessCl.visibility = if (isSuccess) View.VISIBLE else View.GONE
+                historyMissionInfoFailCl.visibility = if (!isSuccess) View.VISIBLE else View.GONE
+            }
+        }
+
+        private fun setItemDetails(item: UserMissionResDto) {
+            with(binding) {
                 historyMissionTitleTv.text = item.title
                 historyMissionStartDateTv.text = convertDateFormat(item.startAt)
                 historyMissionEndDateTv.text = convertDateFormat(item.endAt)
@@ -47,5 +71,4 @@ class MypageHistoryRVAdapter(private val items: List<UserMissionResDto>) : Recyc
         val date = inputFormat.parse(dateStr)
         return if (date != null) outputFormat.format(date) else ""
     }
-
 }

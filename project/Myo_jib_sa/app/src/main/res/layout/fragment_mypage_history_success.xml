@@ -47,7 +47,6 @@
         android:text="@string/mypage_history_success_cnt_title"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:minHeight="30sp"
         app:layout_constraintStart_toStartOf="@+id/mypage_history_success_nickname_tv"
         app:layout_constraintTop_toBottomOf="@+id/mypage_history_success_nickname_tv" />
 
@@ -124,5 +123,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mypage_history_success_whole_mission_tv" />
 
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>

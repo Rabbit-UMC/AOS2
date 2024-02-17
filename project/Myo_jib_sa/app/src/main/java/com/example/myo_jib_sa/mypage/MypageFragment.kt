@@ -1,6 +1,8 @@
 package com.example.myo_jib_sa.mypage
 
+import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,14 +10,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.FragmentMypageBinding
+import com.example.myo_jib_sa.databinding.ToastMissionBinding
+import com.example.myo_jib_sa.mission.MissionCreateActivity
 import com.example.myo_jib_sa.mypage.api.GetUserProfileResponse
 import com.example.myo_jib_sa.mypage.api.MypageAPI
 import com.example.myo_jib_sa.mypage.adapter.MypageTabVpAdapter
 import com.example.myo_jib_sa.mypage.history.MypageHistoryActivity
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,6 +34,18 @@ class MypageFragment : Fragment() {
 
     val retrofit: MypageAPI = sRetrofit.create(MypageAPI::class.java)
     var nickname: String = ""
+
+    // ActivityResultLauncher 초기화
+    private val editProfileLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.getStringExtra("resultMessage")?.let { message ->
+                Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+                showSnackbar("작성하신 일반 미션이 저장되었어요!")
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,11 +80,10 @@ class MypageFragment : Fragment() {
 
     private fun initListener() {
         binding.myPageHistoryBtn.setOnClickListener {
-            startActivity(Intent(requireActivity(), MypageHistoryActivity::class.java)
-                .putExtra("nickname", nickname))
+            startActivity(Intent(requireActivity(), MypageHistoryActivity::class.java))
         }
         binding.myPageEditProfileBtn.setOnClickListener{
-            startActivity(Intent(requireActivity(), EditProfileActivity::class.java))
+            editProfileLauncher.launch(Intent(requireContext(), EditProfileActivity::class.java))
         }
     }
     private fun getProfileInfo() {
@@ -82,7 +100,7 @@ class MypageFragment : Fragment() {
                         binding.myPageNicknameTxt.text = profileData.userName
                         Glide.with(requireContext())
                             .load(profileData.userProfileImage)
-                            .error(R.drawable.ic_app)
+                            .error(R.drawable.ic_profile)
                             .into(binding.myPageProfileImg)
 
                         nickname = profileData.userName
@@ -99,4 +117,24 @@ class MypageFragment : Fragment() {
             }
         })
     }
+
+    // 스낵바 생성
+    private fun showSnackbar(message: String) {
+        val snackBarBinding = ToastMissionBinding.inflate(layoutInflater)
+        snackBarBinding.toastMissionReportIv.setImageResource(R.drawable.ic_schedule_create_check)
+        snackBarBinding.toastMissionReportTxt.text = message
+
+        val snackBar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+            animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+            (view as Snackbar.SnackbarLayout).apply {
+                setBackgroundColor(Color.TRANSPARENT)
+                addView(snackBarBinding.root, 0)
+                translationY = -30.dpToPx().toFloat()
+                elevation = 0f
+            }
+        }
+        snackBar.show()
+    }
+
+    private fun Int.dpToPx(): Int = (this * requireContext().resources.displayMetrics.density).toInt()
 }
