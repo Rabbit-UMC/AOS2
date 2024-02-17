@@ -47,7 +47,6 @@
         android:text="@string/mypage_history_success_cnt_title"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:minHeight="30sp"
         app:layout_constraintStart_toStartOf="@+id/mypage_history_success_nickname_tv"
         app:layout_constraintTop_toBottomOf="@+id/mypage_history_success_nickname_tv" />
 
@@ -55,15 +54,13 @@
         android:id="@+id/mypage_history_success_cnt_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/font_title_1"
+        android:fontFamily="@font/font_title_3"
         android:text="개"
         android:textColor="@color/main2"
-        android:textSize="30sp"
-        android:minHeight="45sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mypage_history_success_cnt_title_tv" />
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/mypage_history_success_cnt_title_tv"
+        app:layout_constraintStart_toEndOf="@+id/mypage_history_success_cnt_title_tv"
+        app:layout_constraintTop_toTopOf="@+id/mypage_history_success_cnt_title_tv" />
 
     <TextView
         android:id="@+id/mypage_history_success_whole_mission_tv"
@@ -75,9 +72,9 @@
         android:text="개"
         android:textColor="@color/main2"
         android:textSize="12sp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="9dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mypage_history_success_cnt_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/mypage_history_success_cnt_title_tv" />
     <TextView
         android:id="@+id/mypage_history_success_mission_of_tv"
         android:layout_width="wrap_content"
@@ -125,4 +122,6 @@
         android:layout_marginBottom="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mypage_history_success_whole_mission_tv" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

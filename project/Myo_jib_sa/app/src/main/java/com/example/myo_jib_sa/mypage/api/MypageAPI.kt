@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.mypage.api
 
 
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -30,17 +31,23 @@ interface MypageAPI {
     ): Call<GetCheckDuplicationResponse>
 
     //이미지 업로드
+    @Multipart
     @PATCH("app/users/profile")
     fun patchProfile(
-        @Query("userProfileImage") userProfileImage: String,
-        @Query("userName") userName: String
+        @Part userProfileImage: MultipartBody.Part?,
+        @Query("userName") userName: String?
+    ): Call<PatchProfileResponse>
+
+    @PATCH("app/users/profile")
+    fun patchProfileWithoutImage(
+        @Query("userName") userName: String?
     ): Call<PatchProfileResponse>
 
     // 성공 히스토리 조회
-    @PATCH("app/users/success")
+    @GET("app/users/success")
     fun getSuccessHistory(): Call<GetHistoryResponse>
 
     // 실패 히스토리 조회
-    @PATCH("app/users/failure")
+    @GET("app/users/failure")
     fun getFailureHistory(): Call<GetHistoryResponse>
 }

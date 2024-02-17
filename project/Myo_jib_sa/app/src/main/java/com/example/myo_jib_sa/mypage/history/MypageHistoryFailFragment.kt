@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.databinding.FragmentMypageHistoryFailBinding
-import com.example.myo_jib_sa.databinding.FragmentMypageHistorySuccessBinding
 import com.example.myo_jib_sa.mypage.adapter.MypageHistoryRVAdapter
 import com.example.myo_jib_sa.mypage.api.GetHistoryResponse
 import com.example.myo_jib_sa.mypage.api.MypageAPI
@@ -42,7 +41,11 @@ class MypageHistoryFailFragment(private val nickname: String?) : Fragment() {
                 ) {
                     val historyResponse = response.body()
                     if(historyResponse != null && historyResponse.isSuccess){
-                        setViewpager(historyResponse.result.userMissionResDtos)
+                        val items = historyResponse.result.userMissionResDtos.ifEmpty {
+                            listOf(getEmptyDto())
+                        }
+
+                        setViewpager(items)
                         binding.mypageHistoryFailCntTv.text = historyResponse.result.targetCnt.toString()+"개"
                         binding.mypageHistoryFailWholeMissionTv.text = historyResponse.result.missionCnt.toString()+"개"
                         binding.mypageHistoryFailMissionFailCntTv.text = historyResponse.result.targetCnt.toString()+"개"
@@ -57,7 +60,19 @@ class MypageHistoryFailFragment(private val nickname: String?) : Fragment() {
     }
 
     private fun setViewpager(items : List<UserMissionResDto>) {
-        val adapter = MypageHistoryRVAdapter(items)
+        val adapter = MypageHistoryRVAdapter(items, false)
         binding.mypageHistoryFailVp.adapter = adapter
+    }
+    companion object {
+        fun getEmptyDto() = UserMissionResDto(
+            categoryId = -1,
+            challengerCnt = -1,
+            endAt = "",
+            image = "",
+            missionId = -1,
+            startAt = "",
+            successCnt = -1,
+            title = ""
+        )
     }
 }
