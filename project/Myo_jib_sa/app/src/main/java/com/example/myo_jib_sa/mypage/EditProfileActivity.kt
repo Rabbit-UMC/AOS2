@@ -1,50 +1,50 @@
 package com.example.myo_jib_sa.mypage
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Rect
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Base64
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.community.missionCert.MissionCertificationWriteActivity
 import com.example.myo_jib_sa.databinding.ActivityEditProfileBinding
-import com.example.myo_jib_sa.databinding.ToastCreateScheduleBinding
+import com.example.myo_jib_sa.databinding.ToastMissionBinding
 import com.example.myo_jib_sa.mypage.api.GetCheckDuplicationResponse
 import com.example.myo_jib_sa.mypage.api.GetUserProfileResponse
 import com.example.myo_jib_sa.mypage.api.MypageAPI
 import com.example.myo_jib_sa.mypage.api.PatchProfileResponse
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
+import java.io.File
+
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditProfileBinding
 
-    private var imgUri: String = ""
+    private var imgUri: String? = null
+    private var userName: String? = null
 
-    lateinit var previousUserName : String
-
-    private var userName: String = ""
-
-    private var returnCode: Int? = null
 
     val retrofit: MypageAPI = sRetrofit.create(MypageAPI::class.java)
 
@@ -72,15 +72,10 @@ class EditProfileActivity : AppCompatActivity() {
                     val profileData = response.body()?.result
                     if (profileData != null) {
                         Log.d("img", profileData.userProfileImage)
-                        binding.editProfileNicknameEt.setText(profileData.userName)
-                        previousUserName = profileData.userName
                         Glide.with(this@EditProfileActivity)
                             .load(profileData.userProfileImage)
                             .error(R.drawable.ic_profile)
                             .into(binding.editProfileImgBtn)
-
-                        userName = profileData.userName
-                        imgUri = profileData.userProfileImage
                     }
                 } else {
                     // API 요청 실패 처리
@@ -102,6 +97,8 @@ class EditProfileActivity : AppCompatActivity() {
                 override fun afterTextChanged(p0: Editable?) {}
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     editProfileDuplicateBtn.isEnabled = isValidNickname(editProfileNicknameEt.text.toString())
+                    editProfileDuplicateStateTxt.visibility = View.GONE
+                    editProfileCompleteBtn.isEnabled = false
                 }
             })
 
@@ -154,10 +151,6 @@ class EditProfileActivity : AppCompatActivity() {
                 imgUri = getRealPathFromURI(uri).toString()
 
                 Log.d("img","img uri $imgUri")
-
-                /*   binding.missionWriteImgLayout.backgroundTintList=
-                    ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
-            }*/
             }
         }
     }
@@ -180,7 +173,7 @@ class EditProfileActivity : AppCompatActivity() {
                         binding.editProfileDuplicateStateTxt.apply {
                             text = "사용 불가능한 닉네임이에요."
                             setTextColor(getColor(R.color.alert))
-                            userName = ""
+                            userName = null
                             binding.editProfileCompleteBtn.isEnabled = false
                         }
                     }
@@ -194,32 +187,38 @@ class EditProfileActivity : AppCompatActivity() {
         })
     }
 
-    // 프로필 편집 api
-    private fun patchProfile(){
-        retrofit.patchProfile(imgUri, userName).enqueue(object : Callback<PatchProfileResponse> {
-            override fun onResponse(
-                call: Call<PatchProfileResponse>,
-                response: Response<PatchProfileResponse>
-            ) {
-                if(response.body()?.isSuccess == true){
-                    createToast("프로필 편집 사항이 저장되었어요!")
+    // 프로필 편집
+    private fun patchProfile() {
+        val file = if(imgUri != null) File(imgUri)
+        else { File.createTempFile("empty", null, this.cacheDir).apply { writeText("") } }
+
+        val requestFile = RequestBody.create(MediaType.parse("image/*"), file)
+        // MultipartBody.Part를 생성
+        val body = MultipartBody.Part.createFormData("userProfileImage", file.name, requestFile)
+
+        retrofit.patchProfile(body, userName).enqueue(object : Callback<PatchProfileResponse> {
+            override fun onResponse(call: Call<PatchProfileResponse>, response: Response<PatchProfileResponse>) {
+                if(response.isSuccessful && response.body()?.isSuccess == true) {
+                    setResult(Activity.RESULT_OK, Intent().putExtra("resultMessage", "프로필 편집 사항이 저장되었어요!"))
                     finish()
                 } else {
+                    showSnackbar("오류가 발생했습니다. 다시 시도해주세요.")
+                    Log.d("patchProfile onFailure", "onFailure : ${response.errorBody()?.string()}")
                 }
             }
 
             override fun onFailure(call: Call<PatchProfileResponse>, t: Throwable) {
-                // 네트워크 등의 문제로 API 요청이 실패한 경우 처리
-                createToast("네트워크 연결 실패")
+                showSnackbar("오류가 발생했습니다. 다시 시도해주세요.")
                 Log.d("patchProfile onFailure", "onFailure : $t")
             }
         })
     }
 
-    private fun createToast(message : String){
+    private fun showSnackbar(message : String){
         // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
-        val snackbarBinding = ToastCreateScheduleBinding.inflate(layoutInflater)
-        snackbarBinding.toastMessageTv.text = message
+        val snackbarBinding = ToastMissionBinding.inflate(layoutInflater)
+        snackbarBinding.toastMissionReportIv.setImageResource(R.drawable.ic_toast_fail)
+        snackbarBinding.toastMissionReportTxt.text = message
 
         // 스낵바 생성 및 설정
         val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
@@ -227,7 +226,7 @@ class EditProfileActivity : AppCompatActivity() {
             (view as Snackbar.SnackbarLayout).apply {
                 setBackgroundColor(Color.TRANSPARENT)
                 addView(snackbarBinding.root)
-                translationY = -30.dpToPx().toFloat()
+                translationY = -70.dpToPx().toFloat()
                 elevation = 0f
             }
         }
@@ -240,4 +239,21 @@ class EditProfileActivity : AppCompatActivity() {
         val regex = Regex("^[a-zA-Z0-9가-힣]{1,6}$")
         return regex.matches(nickName)
     }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v is EditText) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                    v.clearFocus()
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.windowToken, 0)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
 }

@@ -47,7 +47,6 @@
         android:text="@string/mypage_history_fail_cnt_title"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:minHeight="30sp"
         app:layout_constraintStart_toStartOf="@+id/mypage_history_fail_nickname_tv"
         app:layout_constraintTop_toBottomOf="@+id/mypage_history_fail_nickname_tv" />
 
