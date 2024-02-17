@@ -25,9 +25,15 @@ class MypageHistorySuccessFragment(private val nickname: String?) : Fragment() {
         binding = FragmentMypageHistorySuccessBinding.inflate(layoutInflater)
 
         binding.mypageHistorySuccessNicknameTv.text = nickname
-        getSuccessHistory()
+
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        getSuccessHistory()
     }
 
     private fun getSuccessHistory() {
@@ -40,7 +46,11 @@ class MypageHistorySuccessFragment(private val nickname: String?) : Fragment() {
                 ) {
                     val historyResponse = response.body()
                     if(historyResponse != null && historyResponse.isSuccess){
-                        setViewpager(historyResponse.result.userMissionResDtos)
+                        val items = historyResponse.result.userMissionResDtos.ifEmpty {
+                            listOf(getEmptyDto())
+                        }
+
+                        setViewpager(items)
                         binding.mypageHistorySuccessCntTv.text = historyResponse.result.targetCnt.toString()+"개"
                         binding.mypageHistorySuccessWholeMissionTv.text = historyResponse.result.missionCnt.toString()+"개"
                         binding.mypageHistorySuccessMissionSuccessCntTv.text = historyResponse.result.targetCnt.toString()+"개"
@@ -50,12 +60,24 @@ class MypageHistorySuccessFragment(private val nickname: String?) : Fragment() {
                 override fun onFailure(call: Call<GetHistoryResponse>, t: Throwable) {
                     Log.d("getSuccessHistory", "onFailure : $t")
                 }
-
             })
     }
 
     private fun setViewpager(items : List<UserMissionResDto>) {
-        val adapter = MypageHistoryRVAdapter(items)
+        val adapter = MypageHistoryRVAdapter(items, true)
         binding.mypageHistorySuccessVp.adapter = adapter
+    }
+
+    companion object {
+        fun getEmptyDto() = UserMissionResDto(
+            categoryId = -1,
+            challengerCnt = -1,
+            endAt = "",
+            image = "",
+            missionId = -1,
+            startAt = "",
+            successCnt = -1,
+            title = ""
+        )
     }
 }
