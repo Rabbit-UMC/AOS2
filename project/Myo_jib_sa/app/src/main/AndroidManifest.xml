@@ -42,6 +42,9 @@
             android:name=".community.manager.ManagerMissionCreateActivity"
             android:exported="false" />
         <activity
+            android:name=".community.manager.ManagerMissionCreateActivity2"
+            android:exported="false" />
+        <activity
             android:name=".community.manager.ManagerPageEditActivity"
             android:exported="false" />
         <activity

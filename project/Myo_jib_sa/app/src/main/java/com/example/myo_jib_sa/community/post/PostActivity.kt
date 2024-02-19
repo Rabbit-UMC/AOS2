@@ -36,6 +36,7 @@ import com.example.myo_jib_sa.mission.api.Mission
 import com.example.myo_jib_sa.mission.dialog.MissionReportDialogFragment
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 
 
 class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
@@ -154,12 +155,11 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     intent.putExtra("postId", postId)
                     intent.putExtra("boardId", boardId.toInt())
                     //사진 리스트 첨부
+                    val gson = Gson()
+                    val jsonImageList = gson.toJson(imageList)
+                    Log.d("이미지", jsonImageList)
+                    intent.putExtra("images", jsonImageList)
 
-
-                    intent.putExtra("imgList1_id", imageList[0].imageId)
-                    intent.putExtra("imgList1_path", imageList[0].filePath)
-                    intent.putExtra("imgList2_id", imageList[1].imageId)
-                    intent.putExtra("imgList2_path", imageList[1].filePath)
                     //수정인지 구별
                     intent.putExtra("isEdit", true)
                     startActivity(intent)
