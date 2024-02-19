@@ -272,6 +272,7 @@ class BoardActivity : AppCompatActivity() {
                 val intent=Intent(this,PostWrtieActivity::class.java)
                 startActivity(intent)
             }else{
+                isClick=!isClick
                 toggleFab()
             }
         }

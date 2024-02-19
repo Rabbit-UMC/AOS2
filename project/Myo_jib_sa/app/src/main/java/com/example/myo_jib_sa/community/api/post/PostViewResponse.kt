@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.community.api.post
 
 import com.example.myo_jib_sa.base.BaseResponse
+import okhttp3.MultipartBody
 import java.io.Serializable
 
 //30번 api (게시물 조회 data class)
@@ -43,7 +44,7 @@ data class SimpleResponse(
 data class PostCreateRequest(
     val articleTitle: String,
     val articleContent:String,
-    val imageList:List<String>
+    val imageList:List<MultipartBody.Part>
 )
 data class ImageListC(
     val filePath:String
@@ -58,7 +59,7 @@ data class PostisSuccessResponse(
 data class PostEditRequest(
     val articleTitle: String,
     val articleContent: String,
-    val imageList: List<ImageList>
+    val imageList: List<String>
 )
 data class ImageList(
     val id:Long,

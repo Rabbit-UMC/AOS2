@@ -114,20 +114,13 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                     }
                 } //카메라
                 CAMERA_REQUEST_CODE -> {
-                    //val imageBitmap = data.extras.get("data") as Bitmap
-                    Log.d("이미지 data", data.toString())
-                    val imageBitmap: Bitmap? = data?.let { getBitmapFromIntentData(it) }
-                    Log.d("이미지 bitmap", imageBitmap.toString())
-                    imageBitmap?.let { bitmap ->
-                        Log.d("이미지 bitmap", bitmap.toString())
-                        val uri: Uri? = bitmapToUri(bitmap, this)
-                        uri?.let {
-                            Log.d("이미지 uri", it.toString())
-                            val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
-                            intent.putExtra("imgUri", it)
-                            startActivity(intent)
-                        }
-                    }
+                    val photo: Bitmap = data?.extras?.get("data") as Bitmap
+
+                    // 이제 가져온 이미지를 사용하면 됩니다.
+                    // 예를 들어, 다른 액티비티로 전달하거나 특정 동작을 수행할 수 있습니다.
+                    val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
+                    intent.putExtra("photo", photo) // 필요한 경우 이미지를 다른 액티비티로 전달할 수 있습니다.
+                    startActivity(intent)
                 }
             }
         }

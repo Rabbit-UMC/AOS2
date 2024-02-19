@@ -1,25 +1,20 @@
 package com.example.myo_jib_sa.community.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Rect
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.community.post.PostPictureActivity
-import com.example.myo_jib_sa.community.api.post.ImageList
 import com.example.myo_jib_sa.databinding.ItemPostImgBinding
-import com.google.gson.Gson
 
-
-class PostEditAdapter (
+class PostWriteAdapter (
     private val context: Context,
-    private val dataList:List<String>)
-    : RecyclerView.Adapter<PostEditAdapter.ViewHolder>(){
+    private val dataList:List<Uri>)
+    : RecyclerView.Adapter<PostWriteAdapter.ViewHolder>(){
 
     private var itemClickListener: OnItemClickListener? = null
 
@@ -43,13 +38,10 @@ class PostEditAdapter (
             }
         }
 
-        fun bind(item: List<String>, position: Int){
-
-            //이미지 설정
+        fun bind(item: List<Uri>, position: Int){
             if(position!=0){
-                Glide.with(context)
-                    .load(item[position])
-                    .into(binding.postImgImg)
+                //이미지 설정
+                binding.postImgImg.setImageURI(item[position-1])
             }
 
         }
