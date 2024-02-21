@@ -204,7 +204,7 @@ class MissionCertificationActivity: AppCompatActivity() {
                         }
                         //뷰페이져 어댑터 연결
                         binding.missionCertVpr2.adapter = mAdapter
-                        mAdapter.setData(date, missionId, this) }
+                        mAdapter.setData(date, missionId,this) }
                         binding.missionCertVpr2.currentItem=date-1
                     }
 
@@ -286,7 +286,7 @@ class MissionCertificationActivity: AppCompatActivity() {
         return (referenceDate.toEpochDay()-missionStartDate.toEpochDay()).toInt()+1
     }
 
-    //todo :  미션 시작 전일 경우 설정
+    //미션 시작 전일 경우 설정
     private fun beforeMission(){
         binding.missionCertDay.visibility=View.GONE
         binding.missionCertLeftDay.visibility=View.GONE

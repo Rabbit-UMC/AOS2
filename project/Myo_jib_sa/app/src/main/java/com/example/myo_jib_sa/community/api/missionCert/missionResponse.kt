@@ -22,7 +22,8 @@ data class MissionProofImages(
     val imageId:Long,
     val userId:Long,
     val filePath:String,
-    val isLike:Boolean
+    val isLike:Boolean,
+    val likeCount:Int
 )
 
 data class MCrecyclrImg(

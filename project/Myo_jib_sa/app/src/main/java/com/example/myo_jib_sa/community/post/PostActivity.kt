@@ -198,6 +198,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
                 //콘텐츠 설정
                 setPost(response, binding, boardId)
+                binding.postItmeCommentCntTxt.text=response.result.commentList.size.toString()
 
                 val boardName=response.result.categoryName
                 binding.postNameTxt.text="$boardName 게시판"
@@ -211,7 +212,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 isHearted=response.result.likeArticle
                 setHeartButtonIcon()
 
-                //todo : 하트 수, 댓글 수 설정
+                //todo : 하트 수
 
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
