@@ -85,9 +85,13 @@ class PostEditActivity : AppCompatActivity() {
 
         adapter.setOnItemClickListener(object : PostEditAdapter.OnItemClickListener {
 
-            override fun onDeleteClick(postition: Int) {
-                imgUrlList.drop(postition) //지우기
-                adapter.notifyDataSetChanged()
+            override fun onDeleteClick(position: Int) {
+                if (position != 0) {
+                    imgUrlList = imgUrlList.toMutableList().apply {
+                        removeAt(position-1)
+                        adapter.notifyItemRemoved(position)
+                    }
+                }
             }
 
             override fun onImageClick(position: Int) {
@@ -120,7 +124,7 @@ class PostEditActivity : AppCompatActivity() {
                     if(imgPosition==0){
                         imgUrlList.add(fileUrl) //이미지 추가
                     }else{
-                        imgUrlList[imgPosition]=fileUrl //이미지 변경
+                        imgUrlList[imgPosition-1]=fileUrl //이미지 변경
                     }
                     adapter.notifyDataSetChanged()
                 }
@@ -148,10 +152,11 @@ class PostEditActivity : AppCompatActivity() {
 
         //이미지 수정
         Log.d("imgUrlList Size", imgUrlList.size.toString())
-        val layoutManager = LinearLayoutManager(this)
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.postWriteImgRecy.layoutManager = layoutManager
         adapter = PostEditAdapter(this, imgUrlList)
         binding.postWriteImgRecy.adapter=adapter
+        adapter.setItemSpacing(binding.postWriteImgRecy, 5)
     }
 
     //글쓰기, 수정 완료

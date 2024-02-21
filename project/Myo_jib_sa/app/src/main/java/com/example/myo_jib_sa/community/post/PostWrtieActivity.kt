@@ -89,16 +89,23 @@ class PostWrtieActivity : AppCompatActivity() {
         complete()
 
         //이미지 어댑터
-        val layoutManager = LinearLayoutManager(this)
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.postWriteImgRecy.layoutManager = layoutManager
         adapter = PostWriteAdapter(this, imgUriList)
         binding.postWriteImgRecy.adapter=adapter
+        adapter.setItemSpacing(binding.postWriteImgRecy, 5)
 
         adapter.setOnItemClickListener(object : PostWriteAdapter.OnItemClickListener {
 
-            override fun onDeleteClick(postition: Int) {
-                imgUriList.drop(postition) //지우기
-                adapter.notifyDataSetChanged()
+            override fun onDeleteClick(position: Int) {
+                if (position != 0) {
+                    imgUriList = imgUriList.toMutableList().apply {
+                        removeAt(position - 1)
+                        adapter.notifyItemRemoved(position)
+                    }
+                    Log.d("이미지 삭제 후 리스트", imgUriList.toString())
+                    Log.d("이미지 삭제 후 리스트 사이즈", imgUriList.size.toString())
+                }
             }
 
             override fun onImageClick(position: Int) {
@@ -127,7 +134,7 @@ class PostWrtieActivity : AppCompatActivity() {
                     if(imgPosition==0){
                         imgUriList.add(uri) //이미지 추가
                     }else{
-                        imgUriList[imgPosition]=uri //이미지 변경
+                        imgUriList[imgPosition-1]=uri //이미지 변경
                     }
                 Log.d("이미지 URi : ", imgUriList.toString())
                 adapter.notifyDataSetChanged()
