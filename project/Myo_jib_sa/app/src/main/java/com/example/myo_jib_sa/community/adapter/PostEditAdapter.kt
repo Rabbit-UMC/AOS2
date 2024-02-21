@@ -51,6 +51,7 @@ class PostEditAdapter (
                     .load(item[position])
                     .into(binding.postImgImg)
             }
+            binding.postImgImg.clipToOutline=true
 
         }
     }
@@ -70,7 +71,7 @@ class PostEditAdapter (
     //아이템 개수
     override fun getItemCount(): Int {
         Log.d("리사이클러뷰 사이즈", "${dataList.size+1}")
-        return dataList.size+1
+        return Integer.max(1, dataList.size + 1)
     }
 
     //간격 설정을 위한 클래스

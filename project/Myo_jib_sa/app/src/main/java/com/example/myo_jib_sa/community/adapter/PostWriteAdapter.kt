@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.databinding.ItemPostImgBinding
+import java.lang.Integer.max
 
 class PostWriteAdapter (
     private val context: Context,
@@ -34,6 +35,7 @@ class PostWriteAdapter (
 
             // 삭제 버튼 클릭 이벤트
             binding.postImgDelete.setOnClickListener {
+                Log.d("이미지 삭제", "삭제가 눌림")
                 itemClickListener?.onDeleteClick(adapterPosition)
             }
         }
@@ -43,6 +45,7 @@ class PostWriteAdapter (
                 //이미지 설정
                 binding.postImgImg.setImageURI(item[position-1])
             }
+            binding.postImgImg.clipToOutline=true
 
         }
     }
@@ -62,7 +65,7 @@ class PostWriteAdapter (
     //아이템 개수
     override fun getItemCount(): Int {
         Log.d("리사이클러뷰 사이즈", "${dataList.size+1}")
-        return dataList.size+1
+        return max(1, dataList.size + 1)
     }
 
     //간격 설정을 위한 클래스
@@ -76,7 +79,6 @@ class PostWriteAdapter (
     fun setItemSpacing(recyclerView: RecyclerView, spacing: Int) {
         recyclerView.addItemDecoration(CustomItemDecoration(spacing))
     }
-
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.itemClickListener = listener
