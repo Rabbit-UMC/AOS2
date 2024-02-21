@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
@@ -33,6 +34,9 @@ class MissionPictureActivity : AppCompatActivity() {
     private var isReportable:Boolean=false //신고가능인지
     private var imgId:Long=0 //이미지 아이디
     private var isLike:Boolean=false //좋아요 여부
+    private var position:Int=0
+    private var date:Int=0
+    private var mainMissionId:Long=0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +49,9 @@ class MissionPictureActivity : AppCompatActivity() {
         isReportable=intent.getBooleanExtra("isReportable", false)
         imgId=intent.getLongExtra("imgId", 0)
         isLike=intent.getBooleanExtra("isLike", false)
+        position=intent.getIntExtra("position", 0)
+        date=intent.getIntExtra("date", 0)
+        mainMissionId=intent.getLongExtra("mainMissionId", 0)
 
         binding.missionCertTitleTxt.text=missioncertInfo.title
         binding.missionCertMemoTxt.text=missioncertInfo.memo
@@ -53,11 +60,6 @@ class MissionPictureActivity : AppCompatActivity() {
         Glide.with(this)
             .load(filePath)
             .into(binding.missionCertImg)
-
-        //신고 설정
-        /*if(!isReportable){
-            binding.imgCheckReportTxt.visibility= View.GONE
-        }*/
 
         //todo : 뷰 설정하기 (사진 조회 api 개발 후)
 
@@ -119,6 +121,7 @@ class MissionPictureActivity : AppCompatActivity() {
         retrofitManager.missionImgLike(imgId){response ->
             if(response){
                 Log.d("missionImgLike", "missionImgLike 성공")
+                updateLikeCnt()
                 callback(true)
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
@@ -138,6 +141,7 @@ class MissionPictureActivity : AppCompatActivity() {
         retrofitManager.missionImgUnlike(imgId){response ->
             if(response){
                 Log.d("missionImgUnlike", "missionImgUnlike 성공")
+                updateLikeCnt()
                 callback(true)
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
@@ -198,5 +202,25 @@ class MissionPictureActivity : AppCompatActivity() {
         val scale = context.resources.displayMetrics.density
         return (this * scale + 0.5f).toInt()
     }
+
+    //좋아요 수 업데이트
+    private fun updateLikeCnt(){
+        val retrofitManager = MissionCertRetrofitManager.getInstance(this)
+        retrofitManager.mission(date, mainMissionId) { response ->
+            Log.d("setMissionCertFrag 미션 인증 날짜 확인", date.toString())
+            Log.d("setMissionCertFrag 미션 인증 사진 현재 위치 확인", position.toString())
+            if (response.isSuccess) {
+                if (response.result != null) {
+                    binding.likeCntTxt.text=response.result.missionProofImages[position].likeCount.toString()
+                }
+
+            } else {
+                Log.d("뷰페이져 어댑터로 리스트 전달", "List가 비었다네요")
+            }
+        }
+    }
+
+    //미션 인증 api 연결
+
 
 }

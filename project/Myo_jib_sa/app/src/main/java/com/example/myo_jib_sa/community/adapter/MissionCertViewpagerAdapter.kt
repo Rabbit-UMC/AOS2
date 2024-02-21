@@ -36,7 +36,7 @@ class MissionCertViewpagerAdapter (fragmentActivity: FragmentActivity) : Fragmen
                     if(response.result.missionProofImages.isNotEmpty()){
                         Log.d("뷰페이저 어댑터에서 이미지 확인", response.result.missionProofImages[0].filePath)
                     }
-                    fragment.updateView(response.result.missionProofImages)
+                    fragment.updateView(response.result.missionProofImages, position+1, id)
 
                 }else{
                     Log.d("뷰페이져 어댑터로 리스트 전달", "List가 비었다네요")
