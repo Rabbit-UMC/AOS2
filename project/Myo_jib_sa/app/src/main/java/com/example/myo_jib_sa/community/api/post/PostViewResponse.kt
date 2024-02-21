@@ -43,8 +43,7 @@ data class SimpleResponse(
 //32번 api 게시글 생성 data class
 data class PostCreateRequest(
     val articleTitle: String,
-    val articleContent:String,
-    val imageList:List<MultipartBody.Part>
+    val articleContent:String
 )
 data class ImageListC(
     val filePath:String
