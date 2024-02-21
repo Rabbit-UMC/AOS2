@@ -99,8 +99,7 @@ class CommunityPostCommentChangeDialog (private val commentId: Long) : DialogFra
 
         binding.missionReportYesBtn.setOnClickListener {
             val retrofitManager = PostRetrofitManager.getInstance(requireContext())
-            Constance.jwt?.let { it1 ->
-                retrofitManager.postCommentLock(it1, commentId){ response ->
+                retrofitManager.postCommentLock(commentId){ response ->
                     if(response){
                         Log.d("댓글 변경", "${response.toString()}")
                         listener?.onReportSubmitted("댓글이 변경되었어요.")
@@ -112,7 +111,7 @@ class CommunityPostCommentChangeDialog (private val commentId: Long) : DialogFra
                     }
 
                 }
-            }
+
         }
     }
 }

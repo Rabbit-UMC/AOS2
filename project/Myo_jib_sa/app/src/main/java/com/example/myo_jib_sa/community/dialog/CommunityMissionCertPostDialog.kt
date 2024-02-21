@@ -101,8 +101,8 @@ class CommunityMissionCertPostDialog (private val boardId: Long, private val img
         binding.missionReportYesBtn.setOnClickListener {
             //api 연결
             val retrofitManager = MissionCertRetrofitManager.getInstance(requireContext())
-            Constance.jwt?.let { it1 ->
-                retrofitManager.postImg(it1, boardId, img) { response ->
+
+                retrofitManager.postImg(boardId, img) { response ->
                     if (response) {
                         //로그
                         Log.d("사진 올리기", "${response.toString()}")
@@ -116,7 +116,6 @@ class CommunityMissionCertPostDialog (private val boardId: Long, private val img
                     }
 
                 }
-            }
         }
     }
 }

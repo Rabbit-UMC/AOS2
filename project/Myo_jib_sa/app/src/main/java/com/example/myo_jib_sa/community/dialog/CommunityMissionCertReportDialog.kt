@@ -103,8 +103,7 @@ class CommunityMissionCertReportDialog (private val postId: Long) : DialogFragme
         binding.missionReportYesBtn.setOnClickListener {
             // 신고 api 연결
             val retrofitManager = MissionCertRetrofitManager.getInstance(requireContext())
-            Constance.jwt?.let { it1 ->
-                retrofitManager.report(it1, postId) { response ->
+                retrofitManager.report(postId) { response ->
                     if (response) {
                         //로그
                         Log.d("게시물 신고", "${response.toString()}")
@@ -119,7 +118,7 @@ class CommunityMissionCertReportDialog (private val postId: Long) : DialogFragme
                     }
 
                 }
-            }
+
         }
     }
 }

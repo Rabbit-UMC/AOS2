@@ -108,15 +108,15 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
                     Log.d("request 데이터", request.missionStartTime)
                     Log.d("request 데이터", request.missionEndTime)
                     Log.d("request 데이터", request.lastMission.toString())
-                    Constance.jwt?.let { it1 ->
-                        missionCreate(it1,request){ isSuccess->
+
+                        missionCreate(request){ isSuccess->
                             if(isSuccess){
                                 finish()
                             }else{
                                 Toast.makeText(this, "미션 생성에 실패 했습니다.", Toast.LENGTH_SHORT).show()
                             }
                         }
-                    }
+
                 }
             }
         }
@@ -471,9 +471,9 @@ class ManagerMissionCreateActivity : AppCompatActivity(){
 
     //미션 생성 api 연결
     //api 연결
-    private fun missionCreate(author:String, data: MissionCreateRequest, callback: (Boolean)->Unit){
+    private fun missionCreate(data: MissionCreateRequest, callback: (Boolean)->Unit){
         val retrofitManager= ManagerRetrofitManager.getInstance(this)
-        retrofitManager.missionCreate(author, data, boardId){isSuccess->
+        retrofitManager.missionCreate(data, boardId){isSuccess->
             if(isSuccess){
                 callback(true)
             }else{

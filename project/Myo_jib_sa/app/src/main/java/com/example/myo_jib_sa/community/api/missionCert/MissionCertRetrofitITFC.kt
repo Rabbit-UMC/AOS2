@@ -19,29 +19,28 @@ interface MissionCertRetrofitITFC {
 
     //미션 인증 화면 조회
     @GET("app/main-mission/{mainMissionId}")
-    fun mission(@Header(Constance.author)author:String
-                  ,@Path("mainMissionId") mainMissionId: Long
+    fun mission(@Path("mainMissionId") mainMissionId: Long
                 ,@Query("day") day:Int): Call<MissionResponse>
 
     //미션 인증 사진 좋아요
     @POST("app/main-mission/proof/{mainMissionProofId}/like")
-    fun missionLike(@Header(Constance.author)author:String,
+    fun missionLike(
                     @Path("mainMissionProofId") mainMissionId: Long):Call<BaseResponse>
 
     //미션 인증 사진 좋아요 취소
     @DELETE("app/main-mission/proof/{mainMissionProofId}/unlike")
-    fun missionUnlike(@Header(Constance.author)author:String,
+    fun missionUnlike(
                       @Path("mainMissionProofId") mainMissionId: Long):Call<BaseResponse>
 
     //미션 인증 사진 신고
     @POST("app/main-mission/proof/{mainMissionProofId}/report")
-    fun missionReport(@Header(Constance.author)author:String,
+    fun missionReport(
                       @Path("mainMissionProofId") mainMissionId: Long):Call<BaseResponse>
 
     //미션 인증 사진 올리기
     @Multipart
     @POST("app/main-mission/upload/{categoryId}")
-    fun postImg(@Header(Constance.author)author:String,
+    fun postImg(
                 @Path("categoryId") categoryId:Long,
                 @Part multipartFile: MultipartBody.Part):Call<BaseResponse>
 

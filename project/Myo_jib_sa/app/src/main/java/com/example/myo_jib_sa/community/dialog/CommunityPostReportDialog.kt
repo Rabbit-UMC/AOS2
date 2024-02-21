@@ -105,8 +105,7 @@ class CommunityPostReportDialog (private val postId: Long) : DialogFragment() {
         binding.missionReportYesBtn.setOnClickListener {
             // 신고 api 연결
             val retrofitManager = PostRetrofitManager.getInstance(requireContext())
-            Constance.jwt?.let { it1 ->
-                retrofitManager.postReport(it1, postId) { response ->
+                retrofitManager.postReport(postId) { response ->
                     if (response) {
                         //로그
                         Log.d("게시물 신고", "${response.toString()}")
@@ -122,7 +121,6 @@ class CommunityPostReportDialog (private val postId: Long) : DialogFragment() {
                     }
 
                 }
-            }
         }
     }
 }

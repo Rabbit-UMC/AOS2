@@ -85,7 +85,7 @@ class ImageActivity: AppCompatActivity()  {
     private fun report(author:String ,imgId:Long){
 
         val retrofitManager = MissionCertRetrofitManager.getInstance(this)
-        retrofitManager.report(author, imgId){response ->
+        retrofitManager.report(imgId){response ->
             if(response){
                 Log.d("mission report", "mission report 성공")
                 showToast("신고 완료")

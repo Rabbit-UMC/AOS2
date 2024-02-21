@@ -2,14 +2,16 @@ package com.example.myo_jib_sa.community.api.communityHome
 
 import android.content.Context
 import android.util.Log
+import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.community.api.RetrofitClient
 import com.example.myo_jib_sa.community.Constance
+import com.example.myo_jib_sa.community.api.post.PostRetrofitITFC
 import retrofit2.Call
 import retrofit2.Response
 
 class CommunityHomeManager(context: Context) {
     //레트로핏 인터페이스 가져오기기
-    private val retrofit : CommunityHomeITFC? = RetrofitClient.getClient(Constance.BASEURL)?.create(CommunityHomeITFC::class.java)
+    private val retrofit = MyojibsaApplication.sRetrofit.create(CommunityHomeITFC::class.java)
 
     companion object {
         private var instance: CommunityHomeManager? = null
@@ -25,8 +27,8 @@ class CommunityHomeManager(context: Context) {
     }
 
     //homeResponse를 반환
-    fun home(author:String, completion: (HomeResponse) -> Unit){
-        val call: Call<HomeResponse> = retrofit?.home(author) ?: return
+    fun home(completion: (HomeResponse) -> Unit){
+        val call: Call<HomeResponse> = retrofit?.home() ?: return
 
         call.enqueue(object : retrofit2.Callback<HomeResponse> {
             override fun onResponse(

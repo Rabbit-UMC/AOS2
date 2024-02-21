@@ -203,9 +203,9 @@ class MissionCertAdapter(
     }
 
     //좋아요
-    private fun like(author:String ,imgId:Long, callback: (Boolean) -> Unit){
+    private fun like(imgId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = MissionCertRetrofitManager.getInstance(context)
-        retrofitManager.missionImgLike(author, imgId){response ->
+        retrofitManager.missionImgLike(imgId){response ->
             if(response){
                     Log.d("missionImgLike", "missionImgLike 성공")
                     callback(true)
@@ -222,9 +222,9 @@ class MissionCertAdapter(
 
 
     //좋아요 삭제
-    private fun unlike(author:String ,imgId:Long, callback: (Boolean) -> Unit){
+    private fun unlike(imgId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = MissionCertRetrofitManager.getInstance(context)
-        retrofitManager.missionImgUnlike(author, imgId){response ->
+        retrofitManager.missionImgUnlike(imgId){response ->
             if(response){
                 Log.d("missionImgUnlike", "missionImgUnlike 성공")
                 callback(true)

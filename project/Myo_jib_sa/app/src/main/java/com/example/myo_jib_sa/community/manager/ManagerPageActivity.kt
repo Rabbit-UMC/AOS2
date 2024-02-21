@@ -110,8 +110,8 @@ class ManagerPageActivity : AppCompatActivity() {
     //관리자 화면 조회
     private fun join(missionId:Long){
         val retrofitManager = ManagerRetrofitManager.getInstance(this)
-        Constance.jwt?.let {
-            retrofitManager.joinMission(it,missionId){ response ->
+
+            retrofitManager.joinMission(missionId){ response ->
                 if(response.isSuccess){
                     binding.managerPageNameTxt.text=response.userName
                     Glide.with(this)
@@ -123,7 +123,7 @@ class ManagerPageActivity : AppCompatActivity() {
                     Log.d("관리자 페이지 불러오기", "실패")
                 }
             }
-        }
-            }
+
+    }
 }
 

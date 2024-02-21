@@ -62,7 +62,7 @@ class BoardActivity : AppCompatActivity() {
         }
 
         //게시판 화면 띄우기
-        Constance.jwt?.let { getBoardData(it, boardId.toLong()) }
+        getBoardData(boardId)
 
         //뒤로가기 버튼
         binding.boardExcsBackBtn.setOnClickListener {
@@ -90,7 +90,7 @@ class BoardActivity : AppCompatActivity() {
                     // 스크롤이 마지막 아이템에 도달하면 다음 페이지 요청
                     isLoadingMore = true
                     page++
-                    Constance.jwt?.let { getBoardData(it, boardId.toLong()) }
+                    getBoardData(boardId)
                 }
             }
 
@@ -103,12 +103,12 @@ class BoardActivity : AppCompatActivity() {
     }
 
     //API 연결, 리사이클러뷰 띄우기
-    private fun getBoardData(author:String ,id:Long){
+    private fun getBoardData(id:Long){
 
         //게시판 이름
         if(isBest){
             binding.boardExcsNameTxt.text="인기 게시글"
-            getBestData(author)
+            getBestData()
             return
         }
             when(id){
@@ -126,7 +126,7 @@ class BoardActivity : AppCompatActivity() {
 
 
         val retrofitManager = PostBoardRetrofitManager.getInstance(this)
-        retrofitManager.board(author,page ,id){response ->
+        retrofitManager.board(page ,id){response ->
             if(response.isSuccess){
                 val list:List<Articles> = response.result.articleLists
                 boardList=list.toMutableList()
@@ -202,13 +202,13 @@ class BoardActivity : AppCompatActivity() {
         //게시판 화면 띄우기
         page=0
         isResume=true
-        Constance.jwt?.let { getBoardData(it, boardId.toLong()) }
+        getBoardData(boardId)
 
     }
 
-    private fun getBestData(author:String){
+    private fun getBestData(){
         val retrofitManager = PostBoardRetrofitManager.getInstance(this)
-        retrofitManager.popular(author,page){response ->
+        retrofitManager.popular(page){response ->
             if(response.isSuccess){
                 val list:MutableList<Articles> = mutableListOf()
                 var tempList=Articles(0,",",",",-1,-1)
