@@ -44,16 +44,22 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
         //게시하기
         binding.missionCertCompleteTxt.setOnClickListener {
             val imgPath = getRealPathFromURI(imgUri)
-            val imageFile = File(imgPath) // 이미지 파일 경로
-            val requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile)
-            val imagePart = MultipartBody.Part.createFormData("file", imageFile.name, requestFile)
+            if (imgPath != null) {
+                val imageFile = File(imgPath) // 이미지 파일 경로
+                val requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile)
+                val imagePart = MultipartBody.Part.createFormData("file", imageFile.name, requestFile)
 
-            postImg(boardId, imagePart)
-            if(isFinish){
-                val intent=Intent(this, MissionCertificationWriteActivity::class.java)
-                intent.putExtra("isFinish", true)
-                startActivity(intent)
-                finish()
+                postImg(boardId, imagePart)
+                if (isFinish) {
+                    val intent = Intent(this, MissionCertificationWriteActivity::class.java)
+                    intent.putExtra("isFinish", true)
+                    startActivity(intent)
+                    finish()
+                }
+            } else {
+                // 이미지 경로를 가져올 수 없을 경우에 대한 처리
+                // 예: Toast 메시지 출력 또는 로그 등
+                Log.e("MissionCertWriteCheck", "Failed to retrieve image path")
             }
 
         }
@@ -105,17 +111,28 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
     private fun getRealPathFromURI(uri: Uri?): String? {
         if (uri == null) return null
 
-        var realPath: String? = null
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = this.contentResolver.query(uri, projection, null, null, null)
-        cursor?.let {
-            if (it.moveToFirst()) {
-                val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                realPath = it.getString(columnIndex)
+        when (uri.scheme) {
+            "content" -> {
+                val projection = arrayOf(MediaStore.Images.Media.DATA)
+                val cursor = contentResolver.query(uri, projection, null, null, null)
+
+                cursor?.use {
+                    if (it.moveToFirst()) {
+                        val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                        return if (columnIndex > -1) {
+                            it.getString(columnIndex)
+                        } else {
+                            null
+                        }
+                    }
+                }
             }
-            it.close()
+            "file" -> return uri.path
         }
-        return realPath
+
+        return null
     }
+
+
 
 }

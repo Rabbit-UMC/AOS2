@@ -48,7 +48,7 @@ class PostEditAdapter (
             //이미지 설정
             if(position!=0){
                 Glide.with(context)
-                    .load(item[position])
+                    .load(item[position-1])
                     .into(binding.postImgImg)
             }
             binding.postImgImg.clipToOutline=true
