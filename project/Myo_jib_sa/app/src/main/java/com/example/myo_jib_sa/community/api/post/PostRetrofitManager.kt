@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.RetrofitClient
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Response
 
@@ -91,8 +92,8 @@ class PostRetrofitManager (context: Context){
     }
 
     //게시물 생성, 생성 완료인지 반환(boolean)
-    fun postCreate(author:String,request:PostCreateRequest, categoryId:Long, completion: (isSucces:Boolean) -> Unit){
-        val call: Call<SimpleResponse> = retrofit?.postCreate(author, request, categoryId) ?: return
+    fun postCreate(author:String, images:List<MultipartBody.Part>, request:PostCreateRequest, categoryId:Long, completion: (isSucces:Boolean) -> Unit){
+        val call: Call<SimpleResponse> = retrofit?.postArticle(author, request, images, categoryId) ?: return
 
         call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(

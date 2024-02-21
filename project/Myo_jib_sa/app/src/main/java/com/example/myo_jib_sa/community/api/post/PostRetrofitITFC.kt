@@ -1,6 +1,8 @@
 package com.example.myo_jib_sa.community.api.post
 
 import com.example.myo_jib_sa.community.Constance
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -19,12 +21,14 @@ interface PostRetrofitITFC {
             Call<SimpleResponse>
 
     //게시물 생성
+    @Multipart
     @POST("app/article")
-    fun postCreate(
+    fun postArticle(
         @Header(Constance.author)author:String,
-        @Body request:PostCreateRequest,
-        @Query("categoryId") categoryId:Long):
-            Call <SimpleResponse>
+        @Body postArticleReq: PostCreateRequest,
+        @Part files: List<MultipartBody.Part>,
+        @Query("categoryId") categoryId: Long
+    ):Call <SimpleResponse>
 
     //게시물 수정
     @PATCH("app/article/{articleID}")

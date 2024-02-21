@@ -151,12 +151,11 @@ class PostWrtieActivity : AppCompatActivity() {
 
             var request=PostCreateRequest(
                 binding.writePostTitleEtxt.text.toString(),
-                binding.postWritePostTextEtxt.text.toString().replace("\n", "<br>"),
-                convertUriListToMultipart(imgUriList) //이미지 리스트 넣음
+                binding.postWritePostTextEtxt.text.toString().replace("\n", "<br>")
             )
 
             Constance.jwt?.let { it1 ->
-                posting(it1,request, boardId.toLong()){ isSuccess->
+                posting(it1,convertUriListToMultipart(imgUriList), request, boardId.toLong()){ isSuccess->
                     if(isSuccess){
                         finish()
                     }else{
@@ -171,12 +170,12 @@ class PostWrtieActivity : AppCompatActivity() {
     }
 
     //게시글쓰기 api 연결
-    private fun posting(author:String,request: PostCreateRequest, categoryId:Long
+    private fun posting(author:String, images:List<MultipartBody.Part> , request: PostCreateRequest, categoryId:Long
                         ,callback: (Boolean) -> Unit){
         val retrofitManager = PostRetrofitManager.getInstance(this)
 
         //게시물 생성 api 연결
-        retrofitManager.postCreate(author,request, categoryId){response ->
+        retrofitManager.postCreate(author, images, request, categoryId){response ->
             if(response){
                 //로그
                 Log.d("게시물 생성", "${response.toString()}")
