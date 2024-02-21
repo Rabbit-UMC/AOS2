@@ -10,6 +10,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
@@ -29,6 +30,8 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class MissionCertificationWriteActivity: AppCompatActivity() {
     private lateinit var binding:ActivityMissionCertificationWriteBinding
@@ -114,51 +117,17 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                     }
                 } //카메라
                 CAMERA_REQUEST_CODE -> {
-                    val photo: Bitmap = data?.extras?.get("data") as Bitmap
-
-                    // 이제 가져온 이미지를 사용하면 됩니다.
-                    // 예를 들어, 다른 액티비티로 전달하거나 특정 동작을 수행할 수 있습니다.
-                    val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
-                    intent.putExtra("photo", photo) // 필요한 경우 이미지를 다른 액티비티로 전달할 수 있습니다.
-                    startActivity(intent)
+                    // 사진이 촬영되었으므로 여기서 imgUri 변수를 사용할 수 있습니다.
+                    if (imgUri != null) {
+                        val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
+                        intent.putExtra("imgUri", imgUri)
+                        startActivity(intent)
+                    } else {
+                        showToast("사진 촬영에 실패했습니다.")
+                    }
                 }
             }
         }
-    }
-
-    //Intent를 통해 전달된 데이터에서 이미지를 가져옴
-    private fun getBitmapFromIntentData(data: Intent): Bitmap? {
-        val extras: Bundle? = data.extras
-        val byteArray: ByteArray? = extras?.getByteArray("data")
-
-        // byteArray로부터 Bitmap 객체 생성
-        return byteArray?.let {
-            BitmapFactory.decodeByteArray(it, 0, it.size)
-        }
-    }
-
-    //bitmap -> uri convert
-    //임시 저장소에 저장
-    fun bitmapToUri(bitmap: Bitmap, context: Context): Uri? {
-        val wrapper = ContextWrapper(context.applicationContext)
-        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
-        file = File(file, "${System.currentTimeMillis()}.jpg")
-
-        try {
-            val stream: OutputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-            stream.flush()
-            stream.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-            return null
-        }
-
-        return FileProvider.getUriForFile(
-            context.applicationContext,
-            "${context.applicationContext.packageName}.fileprovider",
-            file
-        )
     }
 
     // 권한이 있는지 확인하는 함수
@@ -179,17 +148,35 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
     }
 
     // 카메라 권한 확인 후 실행되는 코드
+    // 카메라 권한 확인 후 실행되는 코드
     private fun startCamera() {
         if (checkCameraPermission()) {
             val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             if (takePictureIntent.resolveActivity(packageManager) != null) {
-                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
+                // 이미지를 저장할 임시 파일 생성
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    null
+                }
+
+                // 파일이 성공적으로 생성된 경우에만 계속 진행
+                photoFile?.also {
+                    imgUri = FileProvider.getUriForFile(
+                        applicationContext,
+                        "${packageName}.fileprovider",
+                        it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri)
+                    startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
+                }
             }
         } else {
             // 권한이 없는 경우 권한 요청
             requestCameraPermission()
         }
     }
+
 
     // onRequestPermissionsResult를 통해 사용자의 권한 요청 응답 처리
     override fun onRequestPermissionsResult(
@@ -211,26 +198,22 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         }
     }
 
-    //fun getRealPathFromURI() 이미지 url을 실제 파일 경로로 변환
-    private fun getRealPathFromURI(uri: Uri?): String? {
-        if (uri == null) return null
-
-        var realPath: String? = null
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = this.contentResolver.query(uri, projection, null, null, null)
-        cursor?.let {
-            if (it.moveToFirst()) {
-                val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                realPath = it.getString(columnIndex)
-            }
-            it.close()
-        }
-        return realPath
-    }
-
     //토스트 메시지
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    // 이미지를 저장할 임시 파일을 생성
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // 이미지 파일 이름 생성
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* 접두사 */
+            ".jpg", /* 확장자 */
+            storageDir /* 디렉토리 */
+        )
     }
 
 
