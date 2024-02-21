@@ -119,8 +119,8 @@ class ManagerMissionCreateActivity2 : AppCompatActivity(), MissionCreateCalendar
             Log.d("postMissionCreate", "missionRequest : $missionRequest")
         }
 
-        Constance.jwt?.let {
-            MyojibsaApplication.sRetrofit.create(ManagerRetrofitITFC::class.java).missionCreate(it,boardId,missionRequest).enqueue(object :
+
+            MyojibsaApplication.sRetrofit.create(ManagerRetrofitITFC::class.java).missionCreate(boardId,missionRequest).enqueue(object :
                 Callback<BaseResponse> {
                 override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                     val writeResponse = response.body()
@@ -139,7 +139,6 @@ class ManagerMissionCreateActivity2 : AppCompatActivity(), MissionCreateCalendar
                     showSnackbar("네트워크 요청 실패")
                 }
             })
-        }
 
     }
 

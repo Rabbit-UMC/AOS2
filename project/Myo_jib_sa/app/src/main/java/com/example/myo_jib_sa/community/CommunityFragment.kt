@@ -36,7 +36,7 @@ class CommunityFragment : Fragment() {
     private var isFabOpen = false
 
     private var adLoader: AdLoader? = null //광고를 불러올 adLoader 객체
-    //val AD_UNIT_ID = BuildConfig.AD_UNIT_ID
+    val AD_UNIT_ID = BuildConfig.AD_UNIT_ID
 
 
     override fun onCreateView(
@@ -44,8 +44,6 @@ class CommunityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCommunityBinding.inflate(inflater, container, false)
-//
-        Constance.initializeJwt(requireContext())
 //
         retrofitManager = CommunityHomeManager.getInstance(requireContext())
 
@@ -64,7 +62,7 @@ class CommunityFragment : Fragment() {
         }
 
         //api 연결, 뷰 띄우기
-        Constance.jwt?.let { getHomeData(it, requireContext()) }
+        getHomeData(requireContext())
 
         return binding.root
     }
@@ -73,7 +71,7 @@ class CommunityFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         retrofitManager = CommunityHomeManager.getInstance(requireContext())
-        Constance.jwt?.let { getHomeData(it, requireContext()) }
+       getHomeData(requireContext())
     }
 
     //플로팅 버튼
@@ -176,8 +174,8 @@ class CommunityFragment : Fragment() {
 
 
     //API 연결, 리사이클러뷰 띄우기, 플로팅 버튼 설정 (Gone)
-    private fun getHomeData(author: String, context: Context) {
-        retrofitManager.home(author) { homeResponse ->
+    private fun getHomeData(context: Context) {
+        retrofitManager.home() { homeResponse ->
             if (homeResponse.isSuccess) {
                 val missionList: List<MainMission> = homeResponse.result.mainMission
                 val postList: List<PopularArticle> = homeResponse.result.popularArticle

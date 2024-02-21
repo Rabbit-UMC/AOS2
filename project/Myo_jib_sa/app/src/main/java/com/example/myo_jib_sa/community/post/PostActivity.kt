@@ -74,7 +74,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         Log.d("게시물 ID", "게시물 id : ${postId}")
 
         //게시글 뷰 설정
-        Constance.jwt?.let { setPostData(it, binding, boardId.toInt(), postId) }
+        setPostData(binding, boardId.toInt(), postId)
 
 
         binding.postBackBtn.setOnClickListener {
@@ -83,18 +83,17 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
         //댓글 달기
         binding.boardWriteCommentBtn.setOnClickListener {
-            Constance.jwt?.let { it1 ->
+
                 commenting(
-                    it1,
                     binding.postCommentInputEtxt.text.toString().replace("\n", "<br>"),postId){isSuccess->
                     if(isSuccess){
-                        setPostData(Constance.jwt!!, binding, boardId.toInt(), postId)
+                        setPostData( binding, boardId.toInt(), postId)
                     }else{
                         //todo: showToast("댓글 달기 실패")
                     }
                     binding.postCommentInputEtxt.text.clear()
                 }
-            }
+
         }
 
 
@@ -102,28 +101,24 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         setHeartButtonIcon()
         //좋아요 누르기 기능
         binding.postItemHeartImg.setOnClickListener {
-            Constance.jwt?.let { it1 ->
-                setHeartApi(it1, postId){ isSuccess->
+            setHeartApi(postId){ isSuccess->
                     if(isSuccess){
                         isHearted = !isHearted
                         setHeartButtonIcon()
                     }
                 }
             }
-        }
 
         //작성자, 일반 유저 별로 보이는 메뉴 다르게
         //메뉴 클릭
         binding.postListBtn.setOnClickListener {
-            showPopup(binding.postListBtn) }
-
-
-
+            showPopup(binding.postListBtn)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        Constance.jwt?.let { setPostData(it, binding, boardId.toInt(), postId) }
+        setPostData(binding, boardId.toInt(), postId)
     }
 
 
@@ -184,10 +179,10 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
 
     //API 연결, 게시물 뷰 설정, 리사이클러뷰(이미지) 띄우기
-    private fun setPostData(author:String, binding: ActivityPostBinding,
+    private fun setPostData(binding: ActivityPostBinding,
                             boardId:Int, postId:Long){
         val retrofitManager = PostRetrofitManager.getInstance(this)
-        retrofitManager.postView(author, postId){response ->
+        retrofitManager.postView(postId){response ->
             if(response.isSuccess){
                 val imgList:List<ArticleImage> = response.result.articleImage
 
@@ -272,9 +267,9 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     }
 
     //댓글 달기
-    private fun commenting(author: String, content:String, articleId:Long, callback: (Boolean) -> Unit){
+    private fun commenting(content:String, articleId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = PostRetrofitManager.getInstance(this)
-        retrofitManager.postComment(author,content ,articleId){response ->
+        retrofitManager.postComment(content ,articleId){response ->
             if(response){
                 //로그
                 Log.d("댓글 달기", "${response.toString()}")
@@ -320,7 +315,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
         Log.d("showReportDialog","report ID: ${postId}")
         reportDialog.show(this.supportFragmentManager, "mission_report_dialog")
-        setPostData(Constance.jwt!!, binding, boardId.toInt(), postId)
+        setPostData(binding, boardId.toInt(), postId)
     }
 
     //게시물 삭제
@@ -435,7 +430,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     //댓글 리사이클러뷰, 어댑터 연결
     private fun linkCommentRecyclr(list:List<CommentList>, isPostWriter:Boolean, postId: Long){
         //이미지 뷰
-        val adapter = Constance.jwt?.let { PostCommentAdapter(this,list,isPostWriter, postId, it) }
+        val adapter = PostCommentAdapter(this,list,isPostWriter, postId)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.postCommentRecyclr.layoutManager = layoutManager
@@ -468,11 +463,11 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     }
 
     //하트 api 연결
-    private fun setHeartApi(author:String, postId:Long, callback: (Boolean) -> Unit){
+    private fun setHeartApi(postId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = PostRetrofitManager.getInstance(this)
         if(!isHearted){
             //좋아요 api 연결
-            retrofitManager.postLike(author, postId){response ->
+            retrofitManager.postLike(postId){response ->
                 if(response){
                     //로그
                     Log.d("좋아요 ", "${response.toString()}")
@@ -487,7 +482,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
             }
         }else{
             //좋아요 삭제 api 연결
-            retrofitManager.postUnlike(author, postId){response ->
+            retrofitManager.postUnlike(postId){response ->
                 if(response){
                     //로그
                     Log.d("좋아요 삭제", "${response.toString()}")

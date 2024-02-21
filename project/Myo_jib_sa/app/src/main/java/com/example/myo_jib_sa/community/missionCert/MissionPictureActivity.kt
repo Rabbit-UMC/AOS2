@@ -92,32 +92,31 @@ class MissionPictureActivity : AppCompatActivity() {
     private fun clickLike(){
         binding.likeImg.setOnClickListener{
             if(isLike){
-                Constance.jwt?.let { it1 ->
-                    unlike(it1,imgId){ isSuccess->
+                    unlike(imgId){ isSuccess->
                         if(isSuccess){
                             binding.likeImg.setImageResource(R.drawable.ic_unlike)
                             setView() //좋아요 수 갱신
                             isLike=!isLike
                         }
                     }
-                }
+
             }else{
-                Constance.jwt?.let { it1 -> like(it1,imgId) { isSuccess->
+                like(imgId) { isSuccess->
                     if(isSuccess){
                         binding.likeImg.setImageResource(R.drawable.ic_like)
                         setView() //좋아요 수 갱신
                         isLike=!isLike
                     }
                 }
-                }
+
             }
         }
     }
 
     //좋아요
-    private fun like(author:String ,imgId:Long, callback: (Boolean) -> Unit){
+    private fun like(imgId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = MissionCertRetrofitManager.getInstance(this)
-        retrofitManager.missionImgLike(author, imgId){response ->
+        retrofitManager.missionImgLike(imgId){response ->
             if(response){
                 Log.d("missionImgLike", "missionImgLike 성공")
                 callback(true)
@@ -134,9 +133,9 @@ class MissionPictureActivity : AppCompatActivity() {
 
 
     //좋아요 삭제
-    private fun unlike(author:String ,imgId:Long, callback: (Boolean) -> Unit){
+    private fun unlike(imgId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = MissionCertRetrofitManager.getInstance(this)
-        retrofitManager.missionImgUnlike(author, imgId){response ->
+        retrofitManager.missionImgUnlike(imgId){response ->
             if(response){
                 Log.d("missionImgUnlike", "missionImgUnlike 성공")
                 callback(true)

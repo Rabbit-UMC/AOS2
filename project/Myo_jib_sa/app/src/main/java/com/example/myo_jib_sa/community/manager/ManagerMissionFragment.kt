@@ -19,7 +19,6 @@ class ManagerMissionFragment : Fragment() {
 
     private lateinit var binding:FragmentManagerMissionBinding
     private var data: ManagerMissionJoinRequest? =null
-    private var selectedImageUri: Uri? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

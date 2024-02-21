@@ -167,27 +167,27 @@ class PostEditActivity : AppCompatActivity() {
 
             val request = PostEditRequest(title, postText, imgUrlList)
 
-            Constance.jwt?.let { jwt ->
-                editing(jwt, request, postId) { isSuccess ->
+
+                editing(request, postId) { isSuccess ->
                     if (isSuccess) {
                         finish()
                     } else {
                         showToast("게시글 수정 실패")
                     }
                 }
-            }
+
         }
     }
 
 
 
     //수정 api 연결
-    private fun editing(author:String, request: PostEditRequest, postId:Long
+    private fun editing(request: PostEditRequest, postId:Long
                         , callback: (Boolean) -> Unit){
         val retrofitManager = PostRetrofitManager.getInstance(this)
 
         //게시물 생성 api 연결
-        retrofitManager.postEdit(author,request, postId){response ->
+        retrofitManager.postEdit(request, postId){response ->
             if(response){
                 //로그
                 Log.d("게시물 수정", "${response.toString()}")

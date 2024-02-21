@@ -8,6 +8,6 @@ import retrofit2.http.Header
 interface CommunityHomeITFC {
     //홈 API
     @GET("app/home/v2")
-    fun home(@Header(Constance.author) author: String): Call<HomeResponse>
+    fun home(): Call<HomeResponse>
 
 }
