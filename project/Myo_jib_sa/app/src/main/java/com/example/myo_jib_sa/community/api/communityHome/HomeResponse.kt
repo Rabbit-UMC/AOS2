@@ -13,7 +13,8 @@ data class HomeResult(
 data class MainMission(
     val mainMissionId:Long,
     val mainMissionTitle:String,
-    val hostUserName:String,
+    val topRankUser:String,
+    val missionCategoryId:Long,
     val dday:String
 )
 data class PopularArticle(

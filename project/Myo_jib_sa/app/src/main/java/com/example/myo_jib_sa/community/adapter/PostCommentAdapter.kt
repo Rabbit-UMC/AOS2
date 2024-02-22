@@ -31,16 +31,6 @@ class PostCommentAdapter(
         private val binding: ItemCommentBinding
     )
         : RecyclerView.ViewHolder(binding.root){
-        init {
-
-            // 이미지 클릭 이벤트
-            binding.commentBtn.setOnClickListener {
-                if(isPostWriter){
-                    itemClickListener?.onChangeClick(adapterPosition)
-                }
-                itemClickListener?.onDeleteClick(adapterPosition)
-            }
-        }
 
         fun bind(item: CommentList){
             //댓글 작성자 이름, 내용 세팅
@@ -52,11 +42,17 @@ class PostCommentAdapter(
                 //댓글 작성자 일떄
                 binding.commentBtn.setImageResource(R.drawable.ic_delete)
                 binding.commentBtn.isEnabled = true // Enable the button
+                binding.commentBtn.setOnClickListener {
+                    itemClickListener?.onDeleteClick(adapterPosition)
+                }
 
             }else if(isPostWriter){
                 //게시글 작성자 일때
                 binding.commentBtn.setImageResource(R.drawable.ic_change)
                 binding.commentBtn.isEnabled = true // Enable the button
+                binding.commentBtn.setOnClickListener {
+                    itemClickListener?.onChangeClick(adapterPosition)
+                }
             }else{
                 //일반 사용자 일때
                 binding.commentBtn.setImageDrawable(null)

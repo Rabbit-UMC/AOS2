@@ -41,8 +41,6 @@ class BoardActivity : AppCompatActivity() {
 
     private var boardList:MutableList<Articles> = mutableListOf()
 
-    //다시 화면 조회
-    private var isResume:Boolean=false
 
     //플로팅 토글
     private var isFabOpen = false
@@ -51,8 +49,6 @@ class BoardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityBoardBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        isResume=false
 
         boardId=intent.getLongExtra("boardId", 0)
         isBest=intent.getBooleanExtra("isBest", false)
@@ -75,6 +71,15 @@ class BoardActivity : AppCompatActivity() {
         setFABClickEvent()
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        //게시판 화면 띄우기
+        page=0
+        getBoardData(boardId)
+
+    }
+
 
     //페이징 기능
     private fun paging(){
@@ -181,31 +186,12 @@ class BoardActivity : AppCompatActivity() {
     private fun linkBrecyclr(boardList:List<Articles>){
 
         //미션
-        if (!::Badapter.isInitialized) { // 어댑터가 초기화되지 않았다면
             Badapter = BoardAdapter(this, boardList.toMutableList(), boardId)
             val BlayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
             binding.boardExcsPostRecyclr.layoutManager = BlayoutManager
             binding.boardExcsPostRecyclr.adapter = Badapter
-        } else if( isResume){
-            Badapter.resetUpdateData(boardList)
-        } else {
-            // 어댑터가 이미 초기화되었다면 기존 어댑터의 데이터를 업데이트
-            Badapter.updateData(boardList)
-        }
-
-        //Badapter.setItemSpacing(binding.boardExcsPostRecyclr, 15)
     }
-
-    override fun onResume() {
-        super.onResume()
-        //게시판 화면 띄우기
-        page=0
-        isResume=true
-        getBoardData(boardId)
-
-    }
-
     private fun getBestData(){
         val retrofitManager = PostBoardRetrofitManager.getInstance(this)
         retrofitManager.popular(page){response ->

@@ -3,6 +3,7 @@ package com.example.myo_jib_sa.community.api.BoardPost
 import android.content.Context
 import android.util.Log
 import com.example.myo_jib_sa.base.MyojibsaApplication
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.RetrofitClient
 import com.example.myo_jib_sa.community.api.post.PostRetrofitITFC
@@ -11,7 +12,7 @@ import retrofit2.Response
 
 class PostBoardRetrofitManager(context: Context) {
     //레트로핏 인터페이스 가져오기기
-    private val retrofit = MyojibsaApplication.sRetrofit.create(PostBoardRetrofitITFC::class.java)
+    private val retrofit:PostBoardRetrofitITFC = sRetrofit.create(PostBoardRetrofitITFC::class.java)
 
     companion object {
         private var instance: PostBoardRetrofitManager? = null

@@ -19,7 +19,8 @@ data class PostResult(
     val articleContent:String,
     val articleImage:List<ArticleImage>,
     val commentList:List<CommentList>,
-    val likeArticle:Boolean
+    val likeArticle:Boolean,
+    val likeCount:Int
 )
 data class ArticleImage(
     val imageId:Long,

@@ -11,7 +11,7 @@ import retrofit2.Response
 
 class PostRetrofitManager (context: Context){
     //레트로핏 인터페이스 가져오기기
-    private val retrofit = sRetrofit.create(PostRetrofitITFC::class.java)
+    private val retrofit:PostRetrofitITFC = sRetrofit.create(PostRetrofitITFC::class.java)
 
     companion object {
         private var instance: PostRetrofitManager? = null

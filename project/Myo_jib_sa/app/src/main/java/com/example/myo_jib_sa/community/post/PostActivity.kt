@@ -104,7 +104,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
             setHeartApi(postId){ isSuccess->
                     if(isSuccess){
                         isHearted = !isHearted
-                        setHeartButtonIcon()
+                        setPostData( binding, boardId.toInt(), postId)
                     }
                 }
             }
@@ -212,7 +212,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 isHearted=response.result.likeArticle
                 setHeartButtonIcon()
 
-                //todo : 하트 수
+                binding.postItmeHeartNumTxt.text=response.result.likeCount.toString()
 
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
@@ -250,7 +250,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
         //댓글 리사이클러뷰
         val isWriter:Boolean=(contents.result.authorId== Constance.USER_ID)
-        linkCommentRecyclr(contents.result.commentList,isWriter, contents.result.articleId)
+        linkCommentRecyclr(contents.result.commentList, isWriter, contents.result.articleId)
 
         //게시판 이름
         when(boardId.toLong()){
@@ -344,12 +344,15 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                 // 스낵바 표시
                 snackbar.show()
                 reportDialog.dismiss()
+
+                if(message=="게시글이 삭제되었어요."){
+                    finish()
+                }
             }
         })
 
         Log.d("showReportDialog","report ID: ${postId}")
         reportDialog.show(this.supportFragmentManager, "mission_report_dialog")
-        finish()
     }
 
     //댓글 지우기
@@ -376,6 +379,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
                 // 스낵바 표시
                 snackbar.show()
+                setPostData( binding, boardId.toInt(), postId)
                 reportDialog.dismiss()
             }
         })
@@ -408,6 +412,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
                 // 스낵바 표시
                 snackbar.show()
+                setPostData( binding, boardId.toInt(), postId)
                 reportDialog.dismiss()
             }
         })
@@ -442,12 +447,10 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
                 override fun onDeleteClick(postition: Int) {
                     showCommentDeleteDialog(list[postition].commentId)
-                    adapter.notifyDataSetChanged()
                 }
 
                 override fun onChangeClick(postition: Int) {
                     showCommentChangeDialog(list[postition].commentId)
-                    adapter.notifyDataSetChanged()
                 }
             })
         }
