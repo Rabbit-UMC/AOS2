@@ -29,6 +29,7 @@ interface ManagerRetrofitITFC {
     ): Call<JoinManagerMissionResponse>
 }
 
+
 data class MissionCreateRequest(
     val mainMissionTitle:String,
     val mainMissionContent:String,
@@ -50,10 +51,14 @@ data class ManagerMissionJoinRequest(
 )
 
 data class JoinManagerMissionResponse(
-    val userName:String,
+    val result:List<JoinManagerMissions>
+):BaseResponse()
+
+data class JoinManagerMissions(
+    val nowHostUserName:String,
     val missionImageUrl:String,
     val missionTitle:String,
     val missionStartDay:String,
     val missionEndDay:String,
     val memo:String
-):BaseResponse()
+)

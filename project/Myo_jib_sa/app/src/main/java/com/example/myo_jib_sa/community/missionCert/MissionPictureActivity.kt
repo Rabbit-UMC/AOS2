@@ -34,6 +34,7 @@ class MissionPictureActivity : AppCompatActivity() {
     private var isReportable:Boolean=false //신고가능인지
     private var imgId:Long=0 //이미지 아이디
     private var isLike:Boolean=false //좋아요 여부
+    private var likeCount:String=""
     private var position:Int=0
     private var date:Int=0
     private var mainMissionId:Long=0
@@ -49,12 +50,14 @@ class MissionPictureActivity : AppCompatActivity() {
         isReportable=intent.getBooleanExtra("isReportable", false)
         imgId=intent.getLongExtra("imgId", 0)
         isLike=intent.getBooleanExtra("isLike", false)
+        likeCount=intent.getStringExtra("likeCount").toString()
         position=intent.getIntExtra("position", 0)
         date=intent.getIntExtra("date", 0)
         mainMissionId=intent.getLongExtra("mainMissionId", 0)
 
         binding.missionCertTitleTxt.text=missioncertInfo.title
         binding.missionCertMemoTxt.text=missioncertInfo.memo
+        binding.likeCntTxt.text=likeCount
 
         //이미지 설정
         Glide.with(this)
@@ -78,10 +81,6 @@ class MissionPictureActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun setView(){
-        //todo :
-    }
-
     private fun setLike() {
         if(isLike){
             binding.likeImg.setImageResource(R.drawable.ic_like)
@@ -97,7 +96,6 @@ class MissionPictureActivity : AppCompatActivity() {
                     unlike(imgId){ isSuccess->
                         if(isSuccess){
                             binding.likeImg.setImageResource(R.drawable.ic_unlike)
-                            setView() //좋아요 수 갱신
                             isLike=!isLike
                         }
                     }
@@ -106,7 +104,6 @@ class MissionPictureActivity : AppCompatActivity() {
                 like(imgId) { isSuccess->
                     if(isSuccess){
                         binding.likeImg.setImageResource(R.drawable.ic_like)
-                        setView() //좋아요 수 갱신
                         isLike=!isLike
                     }
                 }
@@ -208,7 +205,6 @@ class MissionPictureActivity : AppCompatActivity() {
         val retrofitManager = MissionCertRetrofitManager.getInstance(this)
         retrofitManager.mission(date, mainMissionId) { response ->
             Log.d("setMissionCertFrag 미션 인증 날짜 확인", date.toString())
-            Log.d("setMissionCertFrag 미션 인증 사진 현재 위치 확인", position.toString())
             if (response.isSuccess) {
                 if (response.result != null) {
                     binding.likeCntTxt.text=response.result.missionProofImages[position].likeCount.toString()

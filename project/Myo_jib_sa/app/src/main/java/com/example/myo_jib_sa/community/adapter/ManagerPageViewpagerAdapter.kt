@@ -4,10 +4,11 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.myo_jib_sa.community.api.manager.JoinManagerMissions
 import com.example.myo_jib_sa.community.manager.ManagerMissionFragment
 import com.example.myo_jib_sa.community.api.manager.ManagerMissionJoinRequest
 
-class ManagerPageViewpagerAdapter (fragmentActivity: FragmentActivity, val dataList:List<ManagerMissionJoinRequest>) : FragmentStateAdapter(fragmentActivity) {
+class ManagerPageViewpagerAdapter (fragmentActivity: FragmentActivity, val dataList:List<JoinManagerMissions>) : FragmentStateAdapter(fragmentActivity) {
 
     override fun getItemCount(): Int = dataList.size
 
