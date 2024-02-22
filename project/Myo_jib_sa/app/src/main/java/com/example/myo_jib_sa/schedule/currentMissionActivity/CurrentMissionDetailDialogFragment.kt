@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.schedule.currentMissionActivity
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
@@ -13,6 +14,7 @@ import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
+import com.example.myo_jib_sa.community.BoardActivity
 import com.example.myo_jib_sa.databinding.DialogFragmentCurrentMissionDetailBinding
 import com.example.myo_jib_sa.schedule.api.MissionAPI
 import com.example.myo_jib_sa.schedule.api.MyMissionDetailResponse
@@ -108,6 +110,7 @@ class CurrentMissionDetailDialogFragment(private val missionId : Long) : DialogF
                         3L->binding.missionCategoryTv.setBackgroundResource(R.drawable.view_round_r12_main4)
                         else -> binding.missionCategoryTv.setBackgroundResource(R.drawable.view_round_r12_gray4)
                     }
+                    setCategoryButton(result.categoryId)
 
                     Glide.with(this@CurrentMissionDetailDialogFragment)
                         .load(result.image)
@@ -127,6 +130,16 @@ class CurrentMissionDetailDialogFragment(private val missionId : Long) : DialogF
         })
     }
 
+    private fun setCategoryButton(missionId: Long){
+        if(isAdded){
+            binding.missionCategoryTv.setOnClickListener {
+                var intent = Intent(activity?.let{requireActivity()}, BoardActivity::class.java)
+                intent.putExtra("boardId", missionId)
+                startActivity(intent)
+            }
+        }
+
+    }
 
     private fun formatDate(inputDate: String?): String? {
         // 입력 형식과 출력 형식 정의
@@ -142,38 +155,4 @@ class CurrentMissionDetailDialogFragment(private val missionId : Long) : DialogF
             null // 파싱 오류가 발생한 경우
         }
     }
-    //startAt, endAt 포맷: yyyy.mm.dd
-    fun missionDateFormatter(startAt: String?): String {
-        val formatter = DecimalFormat("00")
-
-        val time = startAt!!.split("-")
-        val year = time[0].toInt()
-        val month = time[1].toInt()
-        val day = time[2].toInt()
-
-        return "$year.${formatter.format(month)}.${formatter.format(day)}"
-    }
-
-    //미션 기간 구하기: 시작일 넣는 방식으로 계산 즉, startAt-endAt+1
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun calMissionPeriod(startAt: String?, endAt: String?): Long{
-        val start = startAt!!.split("-")
-        val end = endAt!!.split("-")
-
-        val startyear = start[0].toInt()
-        val startmonth = start[1].toInt()
-        val startday = start[2].toInt()
-
-        val endyear = end[0].toInt()
-        val endmonth = end[1].toInt()
-        val endday = end[2].toInt()
-
-        // 시작 날짜와 종료 날짜 생성
-        val startDate = LocalDate.of(startyear, startmonth, startday)
-        val endDate = LocalDate.of(endyear, endmonth, endday)
-
-        return ChronoUnit.DAYS.between(startDate, endDate) + 1
-
-    }
-
 }
