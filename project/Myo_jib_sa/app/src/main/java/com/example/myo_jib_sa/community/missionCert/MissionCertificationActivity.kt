@@ -63,7 +63,7 @@ class MissionCertificationActivity: AppCompatActivity() {
             toggleBottomSheetVisibility()
         }
 
-        Constance.jwt?.let { setMissionCert(it, 1, missionId) }
+        setMissionCert(1, missionId)
 
         //게시판 이름
         when (boardId.toLong()) {
@@ -130,7 +130,7 @@ class MissionCertificationActivity: AppCompatActivity() {
     //돌아왔을 때
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
-        Constance.jwt?.let { setMissionCert(it, 1, missionId) }
+        setMissionCert(1, missionId)
         super.onResume()
     }
 
@@ -169,9 +169,9 @@ class MissionCertificationActivity: AppCompatActivity() {
 
     //미션 인증 사진 화면 프레그먼트 설정 + 미션 인증 화면 설정
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun setMissionCert(author: String, day: Int, mainMissionId: Long) {
+    private fun setMissionCert( day: Int, mainMissionId: Long) {
         val retrofitManager = MissionCertRetrofitManager.getInstance(this)
-        retrofitManager.mission(author, day, mainMissionId) { response ->
+        retrofitManager.mission(day, mainMissionId) { response ->
             Log.d("setMissionCertFrag 미션 인증 날짜 확인", day.toString())
             if (response.isSuccess) {
                 if (response.result != null) {
@@ -193,8 +193,7 @@ class MissionCertificationActivity: AppCompatActivity() {
                     if (response.result.startDay.isNotEmpty()) {
 
                         //미션  몇일차인지 설정
-                        //todo : date = setMissionDate(response.result.startDay)
-                        date=9
+                        date = setMissionDate(response.result.startDay)
                         Log.d("미션 인증 n일차", "$date")
 
                         //미션 시작 전일 경우
@@ -205,22 +204,15 @@ class MissionCertificationActivity: AppCompatActivity() {
                         }
                         //뷰페이져 어댑터 연결
                         binding.missionCertVpr2.adapter = mAdapter
-                        Constance.jwt?.let { mAdapter.setData(it, date, missionId, this) }
+                        mAdapter.setData(date, missionId,this) }
                         binding.missionCertVpr2.currentItem=date-1
                     }
 
                 } else {
                     Log.d("뷰페이져 어댑터로 리스트 전달", "List가 비었다네요")
                 }
-            } else {
-                // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-
-                Log.d("미션 인증 API isSuccess가 false", "${response.errorCode}  ${response.errorMessage}")
             }
-
-
         }
-    }
 
     //n일차 설정
     private fun setDay(day:Int){
@@ -294,7 +286,7 @@ class MissionCertificationActivity: AppCompatActivity() {
         return (referenceDate.toEpochDay()-missionStartDate.toEpochDay()).toInt()+1
     }
 
-    //todo :  미션 시작 전일 경우 설정
+    //미션 시작 전일 경우 설정
     private fun beforeMission(){
         binding.missionCertDay.visibility=View.GONE
         binding.missionCertLeftDay.visibility=View.GONE

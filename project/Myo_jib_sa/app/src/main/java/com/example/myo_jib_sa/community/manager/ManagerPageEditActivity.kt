@@ -65,8 +65,7 @@ class ManagerPageEditActivity : AppCompatActivity() {
 
         //바꾼 사진 저장
         binding.managerPageCompleteBtn.setOnClickListener {
-            Constance.jwt?.let { it1 ->
-                setPhoto(it1, boardId){ isSuccess->
+                setPhoto(boardId){ isSuccess->
                     if(isSuccess){ //저장 성공 시에만 종료
                         val resultIntent = Intent()
                         resultIntent.putExtra("imgPath", imgUrl)
@@ -76,7 +75,7 @@ class ManagerPageEditActivity : AppCompatActivity() {
                     }
 
                 }
-            }
+
         }
 
         //갤러리에서 사진 선택하기
@@ -89,11 +88,11 @@ class ManagerPageEditActivity : AppCompatActivity() {
     }
 
     //사진 저장 api
-    private fun setPhoto(author:String, boardId:Long, callback: (Boolean) -> Unit){
+    private fun setPhoto(boardId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = ManagerRetrofitManager.getInstance(this)
         ImgUpload(){isSuccess->
             if(isSuccess){
-                retrofitManager.missionImgEdit(author,imgUrl ,boardId){response ->
+                retrofitManager.missionImgEdit(imgUrl ,boardId){response ->
                     if(response){
                         Log.d("관리자 페이지 사진 저장", "성공!!")
                         callback(true)

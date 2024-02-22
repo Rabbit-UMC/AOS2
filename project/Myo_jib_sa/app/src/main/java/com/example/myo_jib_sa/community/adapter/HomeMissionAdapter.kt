@@ -49,7 +49,7 @@ class HomeMissionAdapter(
                 binding.homeMissionItemNameTxt.text=item.mainMissionTitle
                 //binding.homeMissionItemBoardNameTxt.text=item.categoryName
                 binding.homeMissionItemDdayTxt.text=item.dday
-                binding.homeMissionItemHostNameTxt.text=item.hostUserName
+                binding.homeMissionItemHostNameTxt.text=item.topRankUser
 
 
 

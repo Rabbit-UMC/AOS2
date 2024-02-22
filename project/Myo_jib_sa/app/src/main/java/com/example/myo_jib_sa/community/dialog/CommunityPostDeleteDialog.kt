@@ -106,8 +106,7 @@ class CommunityPostDeleteDialog (private val postId: Long) : DialogFragment() {
         binding.missionReportYesBtn.setOnClickListener {
 
             val retrofitManager = PostRetrofitManager.getInstance(requireContext())
-            Constance.jwt?.let { it1 ->
-                retrofitManager.postDelete(it1,postId) { response ->
+                retrofitManager.postDelete(postId) { response ->
                     if (response) {
                         //로그
                         Log.d("게시물 삭제", "${response.toString()}")
@@ -121,7 +120,6 @@ class CommunityPostDeleteDialog (private val postId: Long) : DialogFragment() {
                         listener?.onDeleteSubmitted("오류가 발생했습니다. 다시 시도해주세요.")
                     }
                 }
-            }
 
         }
     }

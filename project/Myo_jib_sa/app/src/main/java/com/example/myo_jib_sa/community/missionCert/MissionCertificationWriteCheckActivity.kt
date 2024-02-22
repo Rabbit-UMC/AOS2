@@ -21,6 +21,7 @@ import java.io.File
 class MissionCertificationWriteCheckActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMissionCertificationWriteCheckBinding
     private var boardId:Long=0
+    private var isFinish:Boolean=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,11 +44,23 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
         //게시하기
         binding.missionCertCompleteTxt.setOnClickListener {
             val imgPath = getRealPathFromURI(imgUri)
-            val imageFile = File(imgPath) // 이미지 파일 경로
-            val requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile)
-            val imagePart = MultipartBody.Part.createFormData("file", imageFile.name, requestFile)
+            if (imgPath != null) {
+                val imageFile = File(imgPath) // 이미지 파일 경로
+                val requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile)
+                val imagePart = MultipartBody.Part.createFormData("file", imageFile.name, requestFile)
 
-            postImg(boardId, imagePart)
+                postImg(boardId, imagePart)
+                if (isFinish) {
+                    val intent = Intent(this, MissionCertificationWriteActivity::class.java)
+                    intent.putExtra("isFinish", true)
+                    startActivity(intent)
+                    finish()
+                }
+            } else {
+                // 이미지 경로를 가져올 수 없을 경우에 대한 처리
+                // 예: Toast 메시지 출력 또는 로그 등
+                Log.e("MissionCertWriteCheck", "Failed to retrieve image path")
+            }
 
         }
     }
@@ -72,6 +85,10 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
                         translationY = -70.dpToPx(this.context).toFloat()
                         elevation = 0f
                     }
+                }
+
+                if(message=="작성하신 미션 인증 글이 저장되었어요."){
+                    isFinish=true
                 }
 
                 // 스낵바 표시
@@ -106,5 +123,7 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
         }
         return realPath
     }
+
+
 
 }

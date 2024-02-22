@@ -10,7 +10,6 @@ import com.example.myo_jib_sa.community.missionCert.MissionCertificationPostFrag
 
 class MissionCertViewpagerAdapter (fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
 
-    private var jwt:String=""
     private var id:Long=0
     private lateinit var context:Context
     private var size=0
@@ -29,7 +28,7 @@ class MissionCertViewpagerAdapter (fragmentActivity: FragmentActivity) : Fragmen
         Log.d("lastDay 확인", lastDay.toString())
 
         val retrofitManager = MissionCertRetrofitManager.getInstance(context)
-        retrofitManager.mission(jwt, position+1, id){response ->
+        retrofitManager.mission(position+1, id){response ->
             Log.d("createFragment 미션 인증 날짜 확인", day.toString())
             if(response.isSuccess){
 
@@ -37,7 +36,7 @@ class MissionCertViewpagerAdapter (fragmentActivity: FragmentActivity) : Fragmen
                     if(response.result.missionProofImages.isNotEmpty()){
                         Log.d("뷰페이저 어댑터에서 이미지 확인", response.result.missionProofImages[0].filePath)
                     }
-                    fragment.updateView(response.result.missionProofImages)
+                    fragment.updateView(response.result.missionProofImages, position+1, id)
 
                 }else{
                     Log.d("뷰페이져 어댑터로 리스트 전달", "List가 비었다네요")
@@ -52,8 +51,7 @@ class MissionCertViewpagerAdapter (fragmentActivity: FragmentActivity) : Fragmen
         return fragment
     }
 
-    fun setData(author:String, maxDay:Int, mainMissionId:Long, conText:Context){
-        jwt=author
+    fun setData(maxDay:Int, mainMissionId:Long, conText:Context){
         size=maxDay
         id=mainMissionId
         context=conText

@@ -21,8 +21,7 @@ class PostCommentAdapter(
     private val context: Context,
     private var dataList:List<CommentList>,
     private val isPostWriter:Boolean,
-    private val postId:Long
-    ,private val jwt:String)
+    private val postId:Long)
     : RecyclerView.Adapter<PostCommentAdapter.ViewHolder>(){
 
     private var itemClickListener: OnItemClickListener? = null
@@ -32,16 +31,6 @@ class PostCommentAdapter(
         private val binding: ItemCommentBinding
     )
         : RecyclerView.ViewHolder(binding.root){
-        init {
-
-            // 이미지 클릭 이벤트
-            binding.commentBtn.setOnClickListener {
-                if(isPostWriter){
-                    itemClickListener?.onChangeClick(adapterPosition)
-                }
-                itemClickListener?.onDeleteClick(adapterPosition)
-            }
-        }
 
         fun bind(item: CommentList){
             //댓글 작성자 이름, 내용 세팅
@@ -53,11 +42,17 @@ class PostCommentAdapter(
                 //댓글 작성자 일떄
                 binding.commentBtn.setImageResource(R.drawable.ic_delete)
                 binding.commentBtn.isEnabled = true // Enable the button
+                binding.commentBtn.setOnClickListener {
+                    itemClickListener?.onDeleteClick(adapterPosition)
+                }
 
             }else if(isPostWriter){
                 //게시글 작성자 일때
                 binding.commentBtn.setImageResource(R.drawable.ic_change)
                 binding.commentBtn.isEnabled = true // Enable the button
+                binding.commentBtn.setOnClickListener {
+                    itemClickListener?.onChangeClick(adapterPosition)
+                }
             }else{
                 //일반 사용자 일때
                 binding.commentBtn.setImageDrawable(null)
@@ -106,9 +101,9 @@ class PostCommentAdapter(
     }
 
     //댓글 삭제
-    private fun commentDelete(author:String,  commentId:Long, callback:(Boolean)->Unit){
+    private fun commentDelete(commentId:Long, callback:(Boolean)->Unit){
         val retrofitManager=PostRetrofitManager.getInstance(context)
-        retrofitManager.postCommentDelete(author, commentId){response->
+        retrofitManager.postCommentDelete(commentId){response->
             if(response){
                 //로그
                 Log.d("댓글 삭제", "${response.toString()}")
@@ -123,9 +118,9 @@ class PostCommentAdapter(
     }
 
     //댓글 바꾸기
-    private fun commentChange(author:String, commentId: Long,callback: (Boolean) -> Unit){
+    private fun commentChange(commentId: Long,callback: (Boolean) -> Unit){
         val retrofitManager = PostRetrofitManager.getInstance(context)
-        retrofitManager.postCommentLock(author, commentId){response ->
+        retrofitManager.postCommentLock(commentId){response ->
             if(response){
                 Log.d("댓글 변경", "${response.toString()}")
                 callback(true)
@@ -145,11 +140,11 @@ class PostCommentAdapter(
     }
 
     //댓글 부분 데이터 리스트 받기
-    private fun setCommentData(author:String, postId:Long){
+    private fun setCommentData(postId:Long){
         dataList= emptyList()
 
         val retrofitManager = PostRetrofitManager.getInstance(context)
-        retrofitManager.postView(author, postId){response ->
+        retrofitManager.postView(postId){response ->
             if(response.isSuccess){
                 val imgList:List<ArticleImage> = response.result.articleImage
 

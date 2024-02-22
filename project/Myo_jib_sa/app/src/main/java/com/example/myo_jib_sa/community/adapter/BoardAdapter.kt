@@ -3,6 +3,7 @@ package com.example.myo_jib_sa.community.adapter
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,7 @@ class BoardAdapter(
                val intent= Intent(context, PostActivity::class.java)
                intent.putExtra("postId", postId)
                intent.putExtra("boardId", boardId)
+               Log.d("게시판 아이디(어댑터)", boardId.toString())
                binding.root.context.startActivity(intent)
             }
         }

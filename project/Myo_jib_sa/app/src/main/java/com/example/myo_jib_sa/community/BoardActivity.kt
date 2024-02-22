@@ -21,6 +21,9 @@ class BoardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBoardBinding
     private var hostId:Long=0
 
+    //버튼 클릭
+    private var isClick=false
+
     //아래 두개 관리자 페이지로 넘겨줌
     private var missionId:Long=0
     private var missionImg:String=""
@@ -38,8 +41,6 @@ class BoardActivity : AppCompatActivity() {
 
     private var boardList:MutableList<Articles> = mutableListOf()
 
-    //다시 화면 조회
-    private var isResume:Boolean=false
 
     //플로팅 토글
     private var isFabOpen = false
@@ -49,50 +50,38 @@ class BoardActivity : AppCompatActivity() {
         binding= ActivityBoardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        isResume=false
-
         boardId=intent.getLongExtra("boardId", 0)
         isBest=intent.getBooleanExtra("isBest", false)
+        Log.d("게시판 아이디", boardId.toString())
+
 
         if(isBest){
             setBestBoard()
         }
 
         //게시판 화면 띄우기
-        Constance.jwt?.let { getBoardData(it, boardId.toLong()) }
+        getBoardData(boardId)
 
         //뒤로가기 버튼
         binding.boardExcsBackBtn.setOnClickListener {
             finish()
         }
 
-        //글쓰기
-        binding.boardPostingBtn.setOnClickListener {
-            val intent= Intent(this, PostWrtieActivity::class.java)
-            intent.putExtra("boardId", boardId)
-            startActivity(intent)
-        }
-
         //페이징
         paging()
 
-
-        //관리자 페이지 넘어가기
-        binding.boardExcsNameTxt.setOnClickListener(View.OnClickListener {
-            if(hostId== Constance.USER_ID){
-                val intent=Intent(this, ManagerPageActivity::class.java)
-                intent.putExtra("boardId", boardId)
-                intent.putExtra("missionImg", missionImg)
-                startActivity(intent)
-            }
-
-        })
-
-        //미션 인증 페이지 넘어가기
-        //todo: 플로팅 버튼 터치 시 넘어가기로 바꾸기
         setFABClickEvent()
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        //게시판 화면 띄우기
+        page=0
+        getBoardData(boardId)
+
+    }
+
 
     //페이징 기능
     private fun paging(){
@@ -108,7 +97,7 @@ class BoardActivity : AppCompatActivity() {
                     // 스크롤이 마지막 아이템에 도달하면 다음 페이지 요청
                     isLoadingMore = true
                     page++
-                    Constance.jwt?.let { getBoardData(it, boardId.toLong()) }
+                    getBoardData(boardId)
                 }
             }
 
@@ -121,9 +110,14 @@ class BoardActivity : AppCompatActivity() {
     }
 
     //API 연결, 리사이클러뷰 띄우기
-    private fun getBoardData(author:String ,id:Long){
+    private fun getBoardData(id:Long){
 
         //게시판 이름
+        if(isBest){
+            binding.boardExcsNameTxt.text="인기 게시글"
+            getBestData()
+            return
+        }
             when(id){
                 Constance.ART_ID-> {
                     binding.boardExcsNameTxt.text="예술 게시판"
@@ -135,16 +129,11 @@ class BoardActivity : AppCompatActivity() {
                     binding.boardExcsNameTxt.text="운동 게시판"
                 }
         }
-        if(isBest){
-            binding.boardExcsNameTxt.text="인기 게시글"
-            getBestData(author)
-            return
-        }
 
 
 
         val retrofitManager = PostBoardRetrofitManager.getInstance(this)
-        retrofitManager.board(author,page ,id){response ->
+        retrofitManager.board(page ,id){response ->
             if(response.isSuccess){
                 val list:List<Articles> = response.result.articleLists
                 boardList=list.toMutableList()
@@ -199,35 +188,16 @@ class BoardActivity : AppCompatActivity() {
     private fun linkBrecyclr(boardList:List<Articles>){
 
         //미션
-        if (!::Badapter.isInitialized) { // 어댑터가 초기화되지 않았다면
             Badapter = BoardAdapter(this, boardList.toMutableList(), boardId)
             val BlayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
             binding.boardExcsPostRecyclr.layoutManager = BlayoutManager
             binding.boardExcsPostRecyclr.adapter = Badapter
-        } else if( isResume){
-            Badapter.resetUpdateData(boardList)
-        } else {
-            // 어댑터가 이미 초기화되었다면 기존 어댑터의 데이터를 업데이트
-            Badapter.updateData(boardList)
-        }
-
-        //Badapter.setItemSpacing(binding.boardExcsPostRecyclr, 15)
     }
-
-    override fun onResume() {
-        super.onResume()
-        //게시판 화면 띄우기
-        page=0
-        isResume=true
-        Constance.jwt?.let { getBoardData(it, boardId.toLong()) }
-
-    }
-
-    private fun getBestData(author:String){
+    private fun getBestData(){
         val retrofitManager = PostBoardRetrofitManager.getInstance(this)
-        retrofitManager.popular(author,page){response ->
-            if(response.isSuccess=="true"){
+        retrofitManager.popular(page){response ->
+            if(response.isSuccess){
                 val list:MutableList<Articles> = mutableListOf()
                 var tempList=Articles(0,",",",",-1,-1)
                 for(i in 1..response.result.size){
@@ -267,9 +237,8 @@ class BoardActivity : AppCompatActivity() {
                 isLoading = false
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                val returnCode = response.code
-                val returnMsg = response.message
-
+                val returnCode = response.errorCode
+                val returnMsg = response.errorMessage
                 Log.d("게시판 API isSuccess가 false", "${returnCode}  ${returnMsg}")
             }
 
@@ -278,8 +247,8 @@ class BoardActivity : AppCompatActivity() {
     }
 
     private fun setBestBoard(){
-        //binding.boardExcsMissiomTxt.visibility=View.INVISIBLE todo
         binding.boardPostingBtn.hide()
+        binding.boardMissionBtn.hide()
     }
 
     //플로팅 버튼
@@ -287,7 +256,14 @@ class BoardActivity : AppCompatActivity() {
 
         // 플로팅 버튼 클릭시 애니메이션 동작 기능
         binding.boardPostingBtn.setOnClickListener {
-            toggleFab()
+            if(isClick){
+                val intent=Intent(this,PostWrtieActivity::class.java)
+                intent.putExtra("boardId", boardId)
+                startActivity(intent)
+            }else{
+                isClick=!isClick
+                toggleFab()
+            }
         }
 
         // 플로팅 버튼 클릭 이벤트
@@ -302,15 +278,13 @@ class BoardActivity : AppCompatActivity() {
     //플로팅 버튼 꺼내기
     private fun toggleFab() {
 
-        //todo: 관리자 권한에 따라 플로팅 버튼 숨기기 나타내기
-
         // 플로팅 액션 버튼 닫기 - 열려있는 플로팅 버튼 집어넣는 애니메이션
         if (isFabOpen) {
             ObjectAnimator.ofFloat(binding.boardMissionBtn, "translationY", 0f).apply { start() }
-            ObjectAnimator.ofFloat(binding.boardPostingBtn, View.ROTATION, 45f, 0f).apply { start() }
+            ObjectAnimator.ofFloat(binding.boardPostingBtn, View.ROTATION, 0f, 0f).apply { start() }
         } else { // 플로팅 액션 버튼 열기 - 닫혀있는 플로팅 버튼 꺼내는 애니메이션
             ObjectAnimator.ofFloat(binding.boardMissionBtn, "translationY", -180f).apply { start() }
-            ObjectAnimator.ofFloat(binding.boardPostingBtn, View.ROTATION, 0f, 45f).apply { start() }
+            ObjectAnimator.ofFloat(binding.boardPostingBtn, View.ROTATION, 0f, 0f).apply { start() }
         }
 
         isFabOpen = !isFabOpen

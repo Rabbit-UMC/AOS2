@@ -17,19 +17,10 @@ import com.example.myo_jib_sa.databinding.ActivityManagerPageBinding
 
 class ManagerPageActivity : AppCompatActivity() {
 
-    //todo: 지워
-    val sample=listOf(
-        ManagerMissionJoinRequest("title1","hello world", "11-24", "12-23","sgdahkjdb")
-        ,ManagerMissionJoinRequest("title1","hello world", "11-24", "12-23","sgdahkjdb")
-        ,ManagerMissionJoinRequest("title1","hello world", "11-24", "12-23","sgdahkjdb")
-    )
-
     private lateinit var binding:ActivityManagerPageBinding
-    private val mAdapter=ManagerPageViewpagerAdapter(this, sample)
-    private val REQUEST_CODE=1
-    private var missionImg:String=""
 
     private var missionId:Long=0
+
 
     companion object {
         private const val GALLERY_REQUEST_CODE = 1001
@@ -42,11 +33,6 @@ class ManagerPageActivity : AppCompatActivity() {
         //관리자 페이지 이름 설정
         val boardId= intent.getIntExtra("boardId",0).toLong()
         missionId=intent.getLongExtra("missionId", 0)
-
-        //뷰페이저 프레그먼트 연결
-        binding.managerMissionVp2.adapter=mAdapter
-        val lastItemIndex = mAdapter.itemCount - 1
-        binding.managerMissionVp2.setCurrentItem(lastItemIndex, false) //제일 최근 미션
 
         //관리자 화면 조회
         join(missionId)
@@ -110,20 +96,27 @@ class ManagerPageActivity : AppCompatActivity() {
     //관리자 화면 조회
     private fun join(missionId:Long){
         val retrofitManager = ManagerRetrofitManager.getInstance(this)
-        Constance.jwt?.let {
-            retrofitManager.joinMission(it,missionId){ response ->
+
+            retrofitManager.joinMission(missionId){ response ->
                 if(response.isSuccess){
-                    binding.managerPageNameTxt.text=response.userName
+                    binding.managerPageNameTxt.text=response.result[0].nowHostUserName
                     Glide.with(this)
-                        .load(missionImg)
+                        .load(response.result[0].missionImageUrl)
                         .into(binding.managerMissionImg)
 
-                    Log.d("관리자 페이지 불러오기", "성공!!")
+
+                    //뷰페이저 프레그먼트 연결
+                    val mAdapter=ManagerPageViewpagerAdapter(this, response.result)
+                    binding.managerMissionVp2.adapter=mAdapter
+                    val lastItemIndex = mAdapter.itemCount - 1
+                    binding.managerMissionVp2.setCurrentItem(lastItemIndex, false) //제일 최근 미션
+
+                    Log.d("관리자 페이지 불러오기", "성공")
                 } else {
-                    Log.d("관리자 페이지 불러오기", "실패 ㅜㅠ")
+                    Log.d("관리자 페이지 불러오기", "실패")
                 }
             }
-        }
-            }
+
+    }
 }
 

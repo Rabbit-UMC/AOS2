@@ -12,16 +12,20 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.ImgPath
 import com.example.myo_jib_sa.community.adapter.PostEditAdapter
 import com.example.myo_jib_sa.community.api.imgUpload.imgUploadRetrofitManager
+import com.example.myo_jib_sa.community.api.post.ArticleImage
 import com.example.myo_jib_sa.community.api.post.ImageList
 import com.example.myo_jib_sa.community.api.post.PostCreateRequest
 import com.example.myo_jib_sa.community.api.post.PostEditRequest
 import com.example.myo_jib_sa.community.api.post.PostRetrofitManager
 import com.example.myo_jib_sa.databinding.ActivityWritePostingBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -29,13 +33,9 @@ class PostEditActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWritePostingBinding
 
-    private var imgList: List<String> = listOf()
 
-    private var imgListEdit:List<ImageList> = listOf(ImageList(0,""), ImageList(0, ""))
-
-    private var isEdit:Boolean=false
     private var postId:Long=0 //수정할 때만 씀
-    private var boardId:Int=0
+    private var boardId:Long=0
 
     //이미지 url 저장
     private var imgUrlList:MutableList<String> = mutableListOf()
@@ -62,9 +62,11 @@ class PostEditActivity : AppCompatActivity() {
         //수정인지
         setData()
 
-        boardId=intent.getIntExtra("boardId", 0)
+        boardId=intent.getLongExtra("boardId", 0)
+        Log.d("게시판 아이디", boardId.toString())
+
         //게시판 이름
-        when(boardId.toLong()){
+        when(boardId){
             Constance.ART_ID -> {
                 binding.postWriteNameTxt.text="예술 게시판"
             }
@@ -82,23 +84,7 @@ class PostEditActivity : AppCompatActivity() {
         //게시글 쓰기, 수정 완료
         complete()
 
-        //이미지 어댑터
-        adapter = PostEditAdapter(this, imgUrlList)
-        binding.postWriteImgRecy.adapter=adapter
-
-        adapter.setOnItemClickListener(object : PostEditAdapter.OnItemClickListener {
-
-            override fun onDeleteClick(postition: Int) {
-                imgUrlList.drop(postition) //지우기
-                adapter.notifyDataSetChanged()
-            }
-
-            override fun onImageClick(position: Int) {
-                imgPosition=position //이미지 터치시 갤러리 가서 이미지 추가
-                val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI) //이미지
-                startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
-            }
-        })
+        itemClike()
 
         //뒤로가기 버튼
         binding.postWriteBackBtn.setOnClickListener {
@@ -107,6 +93,33 @@ class PostEditActivity : AppCompatActivity() {
 
     }
 
+    //리사이클러뷰 클릭 리스너
+    private fun itemClike(){
+        adapter.setOnItemClickListener(object : PostEditAdapter.OnItemClickListener {
+
+            override fun onDeleteClick(position: Int) {
+                if (position != 0) {
+                    imgUrlList = imgUrlList.toMutableList().apply {
+                        removeAt(position-1)
+                    }
+
+                    adapter = PostEditAdapter(this@PostEditActivity, imgUrlList)
+                    val layoutManager = LinearLayoutManager(this@PostEditActivity, LinearLayoutManager.HORIZONTAL, false)
+                    binding.postWriteImgRecy.layoutManager = layoutManager
+                    adapter = PostEditAdapter(this@PostEditActivity, imgUrlList)
+                    binding.postWriteImgRecy.adapter=adapter
+                    adapter.setItemSpacing(binding.postWriteImgRecy, 15)
+                    itemClike()
+                }
+            }
+
+            override fun onImageClick(position: Int) {
+                imgPosition=position //이미지 터치시 갤러리 가서 이미지 추가
+                val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI) //이미지
+                startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
+            }
+        })
+    }
 
     //todo : 사진 설정을 위한 onActivityResult
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -123,29 +136,10 @@ class PostEditActivity : AppCompatActivity() {
                     if(imgPosition==0){
                         imgUrlList.add(fileUrl) //이미지 추가
                     }else{
-                        imgUrlList[imgPosition]=fileUrl //이미지 변경
+                        imgUrlList[imgPosition-1]=fileUrl //이미지 변경
                     }
                     adapter.notifyDataSetChanged()
                 }
-
-
-                /* if(requestCode== GALLERY_REQUEST_CODE){
-                     binding.writePostPlusImgLayout.backgroundTintList=
-                         ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
-                     binding.missionCertImg.setImageURI(uri)
-                     isHasNewImg=true
-                     imgList = imgList.toMutableList().apply {
-                         set(0, getRealPathFromURI(uri).toString())
-                     }
-                 }else{
-                     binding.writePostPlusImgLayout1.backgroundTintList=
-                     ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
-                     binding.missionCertImg1.setImageURI(uri)
-                     isHasNewImg=true
-                     imgList = imgList.toMutableList().apply {
-                         set(1, getRealPathFromURI(uri).toString())
-                     }
-                 }*/
             }
         }
     }
@@ -155,150 +149,57 @@ class PostEditActivity : AppCompatActivity() {
         binding.postWritePostTextEtxt.setText(intent.getStringExtra("postText"))
         binding.writePostTitleEtxt.setText(intent.getStringExtra("title"))
 
-        //이미지 설정
-        //todo:이미지 설정하기
-        /*if(!intent.getStringExtra("imgList1_path").toString().isNullOrBlank()){
-            //todo : 이미지 설정
-            //setImgGlide(binding.missionCertImg, intent.getStringExtra("imgList1_path").toString())
-            //배경
-            //binding.writePostPlusImgLayout.backgroundTintList=ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
-
-            //url 저장
-            imgUrlList[0]= intent.getStringExtra("imgList1_path").toString()
-        }
-        if(!intent.getStringExtra("imgList2_path").toString().isNullOrBlank()){
-            // setImgGlide(binding.missionCertImg1, intent.getStringExtra("imgList2_path").toString())
-            //배경
-            //binding.writePostPlusImgLayout1.backgroundTintList=ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
-
-            //url 저장
-            imgUrlList[0]= intent.getStringExtra("imgList2_path").toString()
-        }*/
+        val jsonImageList = intent.getStringExtra("images")
+        val gson = Gson()
+        val type = object : TypeToken<List<ArticleImage>>() {}.type
+        val imageList = gson.fromJson<List<ArticleImage>>(jsonImageList, type)
+        Log.d("이미지 gson.fromJson<List<ArticleImage>>", imageList.toString())
+        imgUrlList= imageList.map{ articleImage ->
+            articleImage.filePath
+        } as MutableList<String>
+        Log.d("이미지 URL 리스트", imgUrlList.toString())
 
         //이후 사용될 데이터 저장
         postId=intent.getLongExtra("postId",0)
-        /*val list1=
-            ImageList(intent.getLongExtra("imgList1_id",0), intent.getStringExtra("imgList1_path").toString())
-        val list2=
-            ImageList(intent.getLongExtra("imgList2_id",0), intent.getStringExtra("imgList2_path").toString())
-        imgListEdit = listOf(list1, list2)*/
+
+        //이미지 수정
+        Log.d("imgUrlList Size", imgUrlList.size.toString())
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.postWriteImgRecy.layoutManager = layoutManager
+        adapter = PostEditAdapter(this, imgUrlList)
+        binding.postWriteImgRecy.adapter=adapter
+        adapter.setItemSpacing(binding.postWriteImgRecy, 15)
     }
 
     //글쓰기, 수정 완료
-    private fun complete(){
+    private fun complete() {
         binding.postWriteCompleteBtn.setOnClickListener {
-            var request: PostEditRequest
-            /*todo: 이미지 수정
-                request= PostEditRequest(
-                    binding.writePostTitleEtxt.text.toString()
-                    , binding.postWritePostTextEtxt.text.toString().replace("\n", "\\n")
-                    , imgUrlList))
-            }
+            val title = binding.writePostTitleEtxt.text.toString()
+            val postText = binding.postWritePostTextEtxt.text.toString().replace("\n", "\\n")
 
-            //api로 콜 보냄
-            Constance.jwt?.let { it1 ->
-                editing(it1, request, postId){ isSuccess->
-                    if(isSuccess){
+            val request = PostEditRequest(title, postText, imgUrlList)
+
+
+                editing(request, postId) { isSuccess ->
+                    if (isSuccess) {
                         finish()
-                    }else{
+                    } else {
                         showToast("게시글 수정 실패")
                     }
                 }
-            }*/
 
-            /*ImgUpload(imgList){isSuccess-> //이미지 있는 경우만 업로드 함
-                if(isSuccess){
-                    if(!isEdit){ //새로운 글쓰기
-                        var request: PostCreateRequest
-                        if(!isHasNewImg){
-                            request= PostCreateRequest(
-                                binding.writePostTitleEtxt.text.toString(),
-                                binding.postWritePostTextEtxt.text.toString().replace("\n", "<br>"),
-                                emptyList() //이미지 리스트 넣음
-                            )
-                        }else{
-                            request= PostCreateRequest(
-                                binding.writePostTitleEtxt.text.toString(),
-                                binding.postWritePostTextEtxt.text.toString().replace("\n", "<br>"),
-                                imgUrlList //이미지 리스트 넣음
-                            )
-                        }
-
-                        Constance.jwt?.let { it1 ->
-                            posting(it1,request, boardId.toLong()){ isSuccess->
-                                if(isSuccess){
-                                    finish()
-                                }else{
-                                    showToast("게시글 쓰기 실패")
-                                }
-                            }
-                        }
-                    }else{ //글 수정
-                        var request: PostEditRequest
-                        //이미지 유무에 따라 분기 나누기
-                        if(isHasNewImg){
-                            imgListEdit[0].filePath=imgUrlList[0]
-                            imgListEdit[1].filePath=imgUrlList[1]
-                            request= PostEditRequest(
-                                binding.writePostTitleEtxt.text.toString()
-                                , binding.postWritePostTextEtxt.text.toString().replace("\n", "\\n")
-                                , imgListEdit)
-                        }else{
-                            request= PostEditRequest(
-                                binding.writePostTitleEtxt.text.toString()
-                                , binding.postWritePostTextEtxt.text.toString().replace("\n", "\\n")
-                                , emptyList()
-                            )
-                        }
-
-                        //api로 콜 보냄
-                        Constance.jwt?.let { it1 ->
-                            editing(it1, request, postId){ isSuccess->
-                                if(isSuccess){
-                                    finish()
-                                }else{
-                                    showToast("게시글 수정 실패")
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-
-        }*/
         }
     }
 
-    //게시글쓰기 api 연결
-    private fun posting(author:String, request: PostCreateRequest, categoryId:Long
-                        , callback: (Boolean) -> Unit){
-        val retrofitManager = PostRetrofitManager.getInstance(this)
 
-        //게시물 생성 api 연결
-        retrofitManager.postCreate(author,request, categoryId){response ->
-            if(response){
-                //로그
-                Log.d("게시물 생성", "${response.toString()}")
-                callback(true)
-
-            } else {
-                // API 호출은 성공했으나 isSuccess가 false인 경우 처리
-                Log.d("게시물 생성 isSuccess가 false", "${response.toString()}")
-                //토스트 메시지 띄우기
-                showToast("게시글 업로드 실패")
-                callback(false)
-            }
-        }
-    }
 
     //수정 api 연결
-    private fun editing(author:String, request: PostEditRequest, postId:Long
+    private fun editing(request: PostEditRequest, postId:Long
                         , callback: (Boolean) -> Unit){
         val retrofitManager = PostRetrofitManager.getInstance(this)
 
         //게시물 생성 api 연결
-        retrofitManager.postEdit(author,request, postId){response ->
+        retrofitManager.postEdit(request, postId){response ->
             if(response){
                 //로그
                 Log.d("게시물 수정", "${response.toString()}")
@@ -382,18 +283,6 @@ class PostEditActivity : AppCompatActivity() {
         }
     }
 
-
-//Base64로 인코딩하기
-fun encodeImageToBase64(imagePath: String): String? {
-    val bitmap = BitmapFactory.decodeFile(imagePath)
-    if (bitmap != null) {
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val byteArray = baos.toByteArray()
-        return Base64.encodeToString(byteArray, Base64.DEFAULT)
-    }
-    return null
-}
 private fun showToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }

@@ -27,11 +27,11 @@ class MissionCertificationPostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        updateView(data)
+        updateView(data, 0, 0) //todo: 문제 없는지 확인하기
     }
 
     //주어진 데이터에 따라 뷰를 업데이트
-    fun updateView(dataa:List<MissionProofImages>){
+    fun updateView(dataa:List<MissionProofImages>, date:Int, mainMissionId:Long){
         Log.d("updateView 실행", "실행함")
 
         data= dataa.toMutableList()
@@ -43,7 +43,7 @@ class MissionCertificationPostFragment : Fragment() {
                 var rlist: MutableList<MCrecyclrImg> = mutableListOf()
                 var tempList:MutableList<MissionProofImages> = mutableListOf()
 
-                val empty=MissionProofImages(-1, -1, "empty", false)
+                val empty=MissionProofImages(-1, -1, "empty", false, 0)
 
                 for (i in 1..data.size) { // 데이터 3개씩 나눠 담기
                     tempList.add(data[i - 1])
@@ -61,7 +61,7 @@ class MissionCertificationPostFragment : Fragment() {
                     }
                 }
 
-                val Madapter = MissionCertAdapter(requireContext(),rlist)
+                val Madapter = MissionCertAdapter(requireContext(),rlist, date, mainMissionId)
                 val MlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
                 binding.missionCertRecyclr.layoutManager = MlayoutManager
