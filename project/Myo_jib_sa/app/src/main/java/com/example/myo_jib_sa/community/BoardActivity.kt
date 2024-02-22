@@ -289,8 +289,6 @@ class BoardActivity : AppCompatActivity() {
     //플로팅 버튼 꺼내기
     private fun toggleFab() {
 
-        //todo: 관리자 권한에 따라 플로팅 버튼 숨기기 나타내기
-
         // 플로팅 액션 버튼 닫기 - 열려있는 플로팅 버튼 집어넣는 애니메이션
         if (isFabOpen) {
             ObjectAnimator.ofFloat(binding.boardMissionBtn, "translationY", 0f).apply { start() }

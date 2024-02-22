@@ -34,7 +34,6 @@ class PostEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWritePostingBinding
 
 
-    private var isEdit:Boolean=false
     private var postId:Long=0 //수정할 때만 씀
     private var boardId:Int=0
 

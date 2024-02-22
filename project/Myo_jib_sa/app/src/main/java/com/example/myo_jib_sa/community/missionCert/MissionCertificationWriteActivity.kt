@@ -35,12 +35,10 @@ import java.util.Date
 
 class MissionCertificationWriteActivity: AppCompatActivity() {
     private lateinit var binding:ActivityMissionCertificationWriteBinding
-    private var imgPath:String=""
     private var boardId:Int=0
     private var isFinish:Boolean=false
 
     private var imgUri:Uri= Uri.EMPTY
-    private var imgUrl:String=""
 
     companion object {
         const val GALLERY_REQUEST_CODE = 1001

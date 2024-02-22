@@ -26,10 +26,10 @@ class ManagerPageActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityManagerPageBinding
     private val mAdapter=ManagerPageViewpagerAdapter(this, sample)
-    private val REQUEST_CODE=1
     private var missionImg:String=""
 
     private var missionId:Long=0
+
 
     companion object {
         private const val GALLERY_REQUEST_CODE = 1001

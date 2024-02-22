@@ -186,13 +186,6 @@ class PostWrtieActivity : AppCompatActivity() {
         }
     }
 
-    //이미지 설정
-    private fun setImgGlide(imgView: ImageView, imgUrl: String){
-        Glide.with(this)
-            .load(imgUrl)
-            .into(imgView)
-    }
-
     @RequiresApi(Build.VERSION_CODES.N)
     fun convertUriListToMultipart(imgUriList: List<Uri>): List<MultipartBody.Part> {
         val fileParts = imgUriList.stream()
@@ -222,18 +215,6 @@ class PostWrtieActivity : AppCompatActivity() {
             it.close()
         }
         return realPath
-    }
-
-    //Base64로 인코딩하기
-    fun encodeImageToBase64(imagePath: String): String? {
-        val bitmap = BitmapFactory.decodeFile(imagePath)
-        if (bitmap != null) {
-            val baos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            val byteArray = baos.toByteArray()
-            return Base64.encodeToString(byteArray, Base64.DEFAULT)
-        }
-        return null
     }
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
