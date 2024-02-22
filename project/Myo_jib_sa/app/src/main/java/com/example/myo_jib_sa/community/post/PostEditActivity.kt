@@ -88,8 +88,15 @@ class PostEditActivity : AppCompatActivity() {
                 if (position != 0) {
                     imgUrlList = imgUrlList.toMutableList().apply {
                         removeAt(position-1)
-                        adapter.notifyItemRemoved(position)
                     }
+
+                    adapter = PostEditAdapter(this@PostEditActivity, imgUrlList)
+                    val layoutManager = LinearLayoutManager(this@PostEditActivity, LinearLayoutManager.HORIZONTAL, false)
+                    binding.postWriteImgRecy.layoutManager = layoutManager
+                    adapter = PostEditAdapter(this@PostEditActivity, imgUrlList)
+                    binding.postWriteImgRecy.adapter=adapter
+                    adapter.setItemSpacing(binding.postWriteImgRecy, 15)
+
                 }
             }
 
