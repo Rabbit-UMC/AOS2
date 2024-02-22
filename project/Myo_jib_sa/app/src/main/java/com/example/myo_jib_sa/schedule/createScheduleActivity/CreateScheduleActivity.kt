@@ -158,7 +158,8 @@ class CreateScheduleActivity : AppCompatActivity() {
                         binding.scheduleDateTv.text = selectedDate.toString()
                         createScheduleBtn()
                     }
-                }
+                },
+                scheduleData.scheduleWhen
             )
             calendarDialogFragment.show(supportFragmentManager, "calendarDialogFragment")
         }
