@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemScheduleScheduleBinding
 import com.example.myo_jib_sa.databinding.ItemSubScheduleBinding
 import com.example.myo_jib_sa.schedule.api.MyMissionScheduleResult
+import com.example.myo_jib_sa.schedule.utils.Formatter
 
 
 data class ScheduleDeleteAdapterData(
@@ -47,6 +48,8 @@ class CurrentMissionScheduleAdapter(private val scheduleList:ArrayList<ScheduleD
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ScheduleDeleteAdapterData) {
             binding.scheduleTitleTv.text = data.currentMissionScheduleResult.scheduleTitle
+            binding.scheduleStartTimeTv.text = Formatter().scheduleTimeFormatter(data.currentMissionScheduleResult.startAt)
+            binding.scheduleEndTimeTv.text = Formatter().scheduleTimeFormatter(data.currentMissionScheduleResult.endAt)
 
             //스케줄 클릭 이벤트
             binding.scheduleLayout.setOnClickListener {

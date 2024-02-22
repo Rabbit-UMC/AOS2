@@ -7,10 +7,13 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myo_jib_sa.databinding.ItemScheduleScheduleBinding
 import com.example.myo_jib_sa.schedule.api.ScheduleOfDayResult
+import com.example.myo_jib_sa.schedule.utils.Formatter
 import java.text.DecimalFormat
 
-class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):
-    RecyclerView.Adapter<ScheduleAdaptar.ViewHolder>() {
+class ScheduleAdaptar (
+    private val scheduleList:ArrayList<ScheduleOfDayResult>
+    ,private val onItemClickListener : OnItemClickListener
+): RecyclerView.Adapter<ScheduleAdaptar.ViewHolder>() {
 
     //화면 설정
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,66 +34,27 @@ class ScheduleAdaptar (private val scheduleList:ArrayList<ScheduleOfDayResult>):
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(data: ScheduleOfDayResult) {
             binding.scheduleTitleTv.text = data.scheduleTitle
-            binding.scheduleStartTimeTv.text = scheduleTimeFormatter(data.scheduleStart)
-            binding.scheduleEndTimeTv.text = scheduleTimeFormatter(data.scheduleEnd)
+            binding.scheduleStartTimeTv.text = Formatter().scheduleTimeFormatter(data.scheduleStart)
+            binding.scheduleEndTimeTv.text = Formatter().scheduleTimeFormatter(data.scheduleEnd)
 
             binding.scheduleLayout.setOnClickListener {
-                itemClickListener.onClick(data)
+                onItemClickListener.onClick(data)
             }
 
             binding.deleteTv.setOnClickListener {
-                itemClickListener.onDeleteClick(data.scheduleId)
+                onItemClickListener.onDeleteClick(data.scheduleId)
             }
         }
     }
 
-    //클릭 이벤트 처리 ==============================================
-    //리스너 인터페이스
+    //클릭 이벤트 처리
     interface  OnItemClickListener{
         fun onClick(scheduleData: ScheduleOfDayResult)
         fun onDeleteClick(scheduleId: Long)
     }
-    // (3) 외부에서 클릭 시 이벤트 설정
-    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
-        this.itemClickListener = onItemClickListener
-    }
-    // (4) setItemClickListener로 설정한 함수 실행
-    private lateinit var itemClickListener : OnItemClickListener
-    //==============================================================
-
-
-    //swipe시 내부 데이터 값 제거
-    fun removeTask(position: Int) {
-        scheduleList.removeAt(position)
-
-        notifyDataSetChanged()
-    }
-
-
-
-    fun getItem():ArrayList<ScheduleOfDayResult> {
-        return scheduleList
-    }
 
     override fun getItemCount(): Int {
         return scheduleList.size
-    }
-
-    //startTime, endTime 포맷
-    fun scheduleTimeFormatter(startAt: String?): String {
-        val formatter = DecimalFormat("00")
-
-        val time = startAt!!.split(":")
-        val hour = time[0].toInt()
-        val minute = time[1].toInt()
-        if (hour < 12) {
-            return "오전 ${hour}:${formatter.format(minute)}"
-        } else {
-            if (hour == 12)
-                return "오후 ${hour}:${formatter.format(minute)}"
-            else
-                return "오후 ${hour - 12}:${formatter.format(minute)}"
-        }
     }
 
 }

@@ -7,12 +7,6 @@
     android:layout_height="match_parent"
     android:gravity="bottom"
     android:background="#FFFFFF"
-    app:umanoDragView="@id/slidingUp_panel_layout"
-    app:umanoFadeColor="@android:color/transparent"
-    app:umanoOverlay="true"
-    app:umanoPanelHeight="50dp"
-    app:umanoScrollableView="@id/scheduleList_rv"
-    app:umanoShadowHeight="0dp"
     tools:context=".schedule.currentMissionActivity.CurrentMissionActivity">
 
     <ImageButton
