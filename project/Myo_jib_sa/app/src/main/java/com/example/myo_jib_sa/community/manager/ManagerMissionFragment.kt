@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.myo_jib_sa.community.api.manager.JoinManagerMissions
 import com.example.myo_jib_sa.community.api.manager.ManagerMissionJoinRequest
 import com.example.myo_jib_sa.databinding.FragmentManagerMissionBinding
 
@@ -18,7 +19,7 @@ import com.example.myo_jib_sa.databinding.FragmentManagerMissionBinding
 class ManagerMissionFragment : Fragment() {
 
     private lateinit var binding:FragmentManagerMissionBinding
-    private var data: ManagerMissionJoinRequest? =null
+    private var data: JoinManagerMissions? =null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,16 +42,15 @@ class ManagerMissionFragment : Fragment() {
     }
 
     //주어진 데이터에 따라 뷰를 업데이트
-    fun updateView(dataa:ManagerMissionJoinRequest){
+    fun updateView(dataa: JoinManagerMissions){
         Log.d("updateView 실행", "실행함")
         if(::binding.isInitialized){
             Log.d("updateView 실행", "정보 설정 실행함")
 
-            //todo:이미지 설정하기
             binding.managerMissionTxt.text=dataa.missionTitle
-            binding.managerMissionEndTxt.text=dataa.missionEndTime
-            binding.managerMissionStartTxt.text=dataa.missionStartTime
-            binding.managerMissionMemoTxt.text=dataa.missionContent
+            binding.managerMissionEndTxt.text=dataa.missionEndDay
+            binding.managerMissionStartTxt.text=dataa.missionStartDay
+            binding.managerMissionMemoTxt.text=dataa.memo
 
             }
 

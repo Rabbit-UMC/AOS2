@@ -65,6 +65,7 @@ class MissionCertAdapter(
                 Glide.with(context)
                     .load(item.data1.filePath)
                     .into(binding.missionImg1)
+                binding.like1Txt.text=item.data1.likeCount.toString()
             }
 
             if(item.data2.filePath=="empty"){
@@ -74,6 +75,7 @@ class MissionCertAdapter(
                 Glide.with(context)
                     .load(item.data2.filePath)
                     .into(binding.missionImg2)
+                binding.like2Txt.text=item.data2.likeCount.toString()
             }
 
             if(item.data3.filePath=="empty"){
@@ -83,12 +85,13 @@ class MissionCertAdapter(
                 Glide.with(context)
                     .load(item.data3.filePath)
                     .into(binding.missionImg3)
+                binding.like3Txt.text=item.data3.likeCount.toString()
             }
 
             //클릭 이벤트
-            imgTouch(binding.missionImg1, item.data1, 3*position+1, mainMissionId)
+            imgTouch(binding.missionImg1, item.data1, 3*position, mainMissionId)
             imgTouch(binding.missionImg2, item.data2, 3*position+1, mainMissionId)
-            imgTouch(binding.missionImg3, item.data3, 3*position+1, mainMissionId)
+            imgTouch(binding.missionImg3, item.data3, 3*position+2, mainMissionId)
         }
     }
 
@@ -127,6 +130,7 @@ class MissionCertAdapter(
             intent.putExtra("filePath", data.filePath)
             intent.putExtra("imgId", data.imageId)
             intent.putExtra("isLike", data.isLike)
+            intent.putExtra("likeCount", data.likeCount)
             intent.putExtra("isReportable", true)
             intent.putExtra("position", position)
             intent.putExtra("date", date)
