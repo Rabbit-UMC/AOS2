@@ -26,7 +26,7 @@ class MissionCertificationActivity: AppCompatActivity() {
     private lateinit var binding: ActivityMissionCertificationBinding
     private val mAdapter = MissionCertViewpagerAdapter(this)
     private var missionId: Long = 0
-    private var boardId: Int = 0
+    private var boardId: Long = 0
     private var missionImg: String = ""
     private var hostId: Long = 0
 
@@ -48,11 +48,13 @@ class MissionCertificationActivity: AppCompatActivity() {
 
 
 
-        missionId = intent.getLongExtra("missionId", 0)
-        missionId = intent.getLongExtra("missionId", 0)
-        boardId = intent.getIntExtra("boardId", 0)
+        missionId = intent.getLongExtra("missionId", 0L)
+        boardId = intent.getLongExtra("boardId", 0L)
         missionImg = intent.getStringExtra("missionImg").toString()
-        hostId = intent.getLongExtra("hostId", 0)
+        hostId = intent.getLongExtra("hostId", 0L)
+
+        Log.d("미션 아이디", missionId.toString())
+
 
         //랭킹 확인 (바텀 시트)
         initializePersistentBottomSheet()
@@ -109,16 +111,6 @@ class MissionCertificationActivity: AppCompatActivity() {
             val intent = Intent(this, MissionCertificationWriteActivity::class.java)
             intent.putExtra("boardId", boardId)
             startActivity(intent)
-        }
-
-        //관리자 페이지 이동
-        binding.missionCertBoardNameTxt.setOnClickListener {
-            if (hostId == Constance.USER_ID) {
-                val intent = Intent(this, ManagerPageActivity::class.java)
-                intent.putExtra("boardId", boardId)
-                intent.putExtra("missionImg", missionImg)
-                startActivity(intent)
-            }
         }
 
         //뒤로가기

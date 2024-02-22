@@ -22,13 +22,16 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMissionCertificationWriteCheckBinding
     private var boardId:Long=0
     private var isFinish:Boolean=false
+    private var isCamera:Boolean=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMissionCertificationWriteCheckBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        boardId=intent.getLongExtra("boardId", 0)
+        isCamera=intent.getBooleanExtra("isCamera", false)
+        boardId=intent.getLongExtra("boardId", 0L)
+        Log.d("게시판 아이디", boardId.toString())
 
         //이미지 설정
         val imgUri: Uri? = intent.getParcelableExtra("imgUri")
@@ -45,9 +48,10 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
         binding.missionCertCompleteTxt.setOnClickListener {
             val imgPath = getRealPathFromURI(imgUri)
             if (imgPath != null) {
-                val imageFile = File(imgPath) // 이미지 파일 경로
+                var imageFile = File(imgPath) // 이미지 파일 경로
                 val requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile)
                 val imagePart = MultipartBody.Part.createFormData("file", imageFile.name, requestFile)
+                Log.d("이미지 파트", imagePart.toString())
 
                 postImg(boardId, imagePart)
                 if (isFinish) {

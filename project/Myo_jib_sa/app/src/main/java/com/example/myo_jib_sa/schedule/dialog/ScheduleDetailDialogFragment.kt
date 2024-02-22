@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
-import com.example.myo_jib_sa.community.toastSample
 import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDetailBinding
 import com.example.myo_jib_sa.mission.adapter.MissionRVAdapter
