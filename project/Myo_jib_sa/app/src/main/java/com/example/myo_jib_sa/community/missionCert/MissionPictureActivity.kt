@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
@@ -33,6 +34,10 @@ class MissionPictureActivity : AppCompatActivity() {
     private var isReportable:Boolean=false //신고가능인지
     private var imgId:Long=0 //이미지 아이디
     private var isLike:Boolean=false //좋아요 여부
+    private var likeCount:String=""
+    private var position:Int=0
+    private var date:Int=0
+    private var mainMissionId:Long=0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,19 +50,19 @@ class MissionPictureActivity : AppCompatActivity() {
         isReportable=intent.getBooleanExtra("isReportable", false)
         imgId=intent.getLongExtra("imgId", 0)
         isLike=intent.getBooleanExtra("isLike", false)
+        likeCount=intent.getStringExtra("likeCount").toString()
+        position=intent.getIntExtra("position", 0)
+        date=intent.getIntExtra("date", 0)
+        mainMissionId=intent.getLongExtra("mainMissionId", 0)
 
         binding.missionCertTitleTxt.text=missioncertInfo.title
         binding.missionCertMemoTxt.text=missioncertInfo.memo
+        binding.likeCntTxt.text=likeCount
 
         //이미지 설정
         Glide.with(this)
             .load(filePath)
             .into(binding.missionCertImg)
-
-        //신고 설정
-        /*if(!isReportable){
-            binding.imgCheckReportTxt.visibility= View.GONE
-        }*/
 
         //todo : 뷰 설정하기 (사진 조회 api 개발 후)
 
@@ -75,18 +80,7 @@ class MissionPictureActivity : AppCompatActivity() {
         binding.missionCertPictureBackBtn.setOnClickListener {
             finish()
         }
-
-        //이미지 다운로드 todo : 삭제하기
-        //binding.imgCheckDownloadBtn.setOnClickListener {
-        //    download()
-        //}
-
-
     }
-    private fun setView(){
-        //todo :
-    }
-
     private fun setLike() {
         if(isLike){
             binding.likeImg.setImageResource(R.drawable.ic_like)
@@ -99,34 +93,32 @@ class MissionPictureActivity : AppCompatActivity() {
     private fun clickLike(){
         binding.likeImg.setOnClickListener{
             if(isLike){
-                Constance.jwt?.let { it1 ->
-                    unlike(it1,imgId){ isSuccess->
+                    unlike(imgId){ isSuccess->
                         if(isSuccess){
                             binding.likeImg.setImageResource(R.drawable.ic_unlike)
-                            setView() //좋아요 수 갱신
                             isLike=!isLike
                         }
                     }
-                }
+
             }else{
-                Constance.jwt?.let { it1 -> like(it1,imgId) { isSuccess->
+                like(imgId) { isSuccess->
                     if(isSuccess){
                         binding.likeImg.setImageResource(R.drawable.ic_like)
-                        setView() //좋아요 수 갱신
                         isLike=!isLike
                     }
                 }
-                }
+
             }
         }
     }
 
     //좋아요
-    private fun like(author:String ,imgId:Long, callback: (Boolean) -> Unit){
+    private fun like(imgId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = MissionCertRetrofitManager.getInstance(this)
-        retrofitManager.missionImgLike(author, imgId){response ->
+        retrofitManager.missionImgLike(imgId){response ->
             if(response){
                 Log.d("missionImgLike", "missionImgLike 성공")
+                updateLikeCnt()
                 callback(true)
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
@@ -141,11 +133,12 @@ class MissionPictureActivity : AppCompatActivity() {
 
 
     //좋아요 삭제
-    private fun unlike(author:String ,imgId:Long, callback: (Boolean) -> Unit){
+    private fun unlike(imgId:Long, callback: (Boolean) -> Unit){
         val retrofitManager = MissionCertRetrofitManager.getInstance(this)
-        retrofitManager.missionImgUnlike(author, imgId){response ->
+        retrofitManager.missionImgUnlike(imgId){response ->
             if(response){
                 Log.d("missionImgUnlike", "missionImgUnlike 성공")
+                updateLikeCnt()
                 callback(true)
             } else {
                 // API 호출은 성공했으나 isSuccess가 false인 경우 처리
@@ -198,52 +191,6 @@ class MissionPictureActivity : AppCompatActivity() {
         reportDialog.show(this.supportFragmentManager, "mission_report_dialog")
     }
 
-    //사진 다운로드 todo : 삭제하기.
-    private fun download(){
-        val request = Request.Builder()
-            .url(filePath)
-            .build()
-
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                // 다운로드 실패 처리
-                runOnUiThread {
-                    // 토스트 메시지 출력
-                    showToast("사진 저장 실패")
-                }
-
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                if (response.isSuccessful) {
-                    val tempResponseBody = response.peekBody(Long.MAX_VALUE) // 임시 복사본 생성
-                    val inputStream = tempResponseBody.byteStream()
-                    if (inputStream != null) {
-                        val fileName = filePath.substringAfterLast("/") // 파일명 추출
-                        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), fileName)
-                        val outputStream = FileOutputStream(file)
-                        inputStream.copyTo(outputStream)
-
-                        outputStream.close()
-                        inputStream.close()
-
-                        runOnUiThread {
-                            // 토스트 메시지 출력
-                            showToast("사진 저장 완료")
-                        }
-                    }
-                } else {
-                    // 응답이 실패한 경우 처리
-                    runOnUiThread {
-                        // 토스트 메시지 출력
-                        showToast("사진 저장 실패")
-                    }
-                }
-            }
-        })
-    }
-
     //토스트 메시지
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -252,5 +199,24 @@ class MissionPictureActivity : AppCompatActivity() {
         val scale = context.resources.displayMetrics.density
         return (this * scale + 0.5f).toInt()
     }
+
+    //좋아요 수 업데이트
+    private fun updateLikeCnt(){
+        val retrofitManager = MissionCertRetrofitManager.getInstance(this)
+        retrofitManager.mission(date, mainMissionId) { response ->
+            Log.d("setMissionCertFrag 미션 인증 날짜 확인", date.toString())
+            if (response.isSuccess) {
+                if (response.result != null) {
+                    binding.likeCntTxt.text=response.result.missionProofImages[position].likeCount.toString()
+                }
+
+            } else {
+                Log.d("뷰페이져 어댑터로 리스트 전달", "List가 비었다네요")
+            }
+        }
+    }
+
+    //미션 인증 api 연결
+
 
 }

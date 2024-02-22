@@ -15,22 +15,20 @@ interface ManagerRetrofitITFC {
 
     //메인 미션 이미지 바꾸기
     @PATCH("app/host/main-image/{categoryId}")
-    fun EditPhoto(@Header(Constance.author)author:String
-                  ,@Path("categoryId") categoryId: Long,
+    fun EditPhoto(@Path("categoryId") categoryId: Long,
                   @Body request: PatchCategoryImageReq): Call<BaseResponse>
 
     //미션 생성
     @POST("app/host/main-mission/{categoryId}")
-    fun missionCreate(@Header(Constance.author)author:String
-                      ,@Path("categoryId")categoryId:Long
+    fun missionCreate(@Path("categoryId")categoryId:Long
                       ,@Body request: MissionCreateRequest
                       ): Call<BaseResponse>
 
     @GET("app/host/main-mission/{mainMissionId}")
-    fun joinManagerMission(@Header(Constance.author)author:String
-                           ,@Path("mainMissionId")mainMissionId:Long
+    fun joinManagerMission(@Path("mainMissionId")mainMissionId:Long
     ): Call<JoinManagerMissionResponse>
 }
+
 
 data class MissionCreateRequest(
     val mainMissionTitle:String,
@@ -53,10 +51,14 @@ data class ManagerMissionJoinRequest(
 )
 
 data class JoinManagerMissionResponse(
-    val userName:String,
+    val result:List<JoinManagerMissions>
+):BaseResponse()
+
+data class JoinManagerMissions(
+    val nowHostUserName:String,
     val missionImageUrl:String,
     val missionTitle:String,
     val missionStartDay:String,
     val missionEndDay:String,
     val memo:String
-):BaseResponse()
+)

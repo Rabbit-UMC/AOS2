@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.myo_jib_sa.base.BaseResponse
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.RetrofitClient
 import com.example.myo_jib_sa.community.api.post.SimpleResponse
@@ -13,8 +14,7 @@ import retrofit2.Response
 
 class MissionCertRetrofitManager(context: Context) : ViewModel() {
     //레트로핏 인터페이스 가져오기기
-    private val retrofit : MissionCertRetrofitITFC? = RetrofitClient.getClient(Constance.BASEURL)?.create(
-        MissionCertRetrofitITFC::class.java)
+    private val retrofit:MissionCertRetrofitITFC=sRetrofit.create(MissionCertRetrofitITFC::class.java)
 
     companion object {
         private var instance: MissionCertRetrofitManager? = null
@@ -31,9 +31,9 @@ class MissionCertRetrofitManager(context: Context) : ViewModel() {
 
 
     //미션 화면 조회
-    fun mission(author: String,day:Int,mainMissionId:Long, completion: (missionResponse: MissionResponse) -> Unit){
+    fun mission(day:Int,mainMissionId:Long, completion: (missionResponse: MissionResponse) -> Unit){
 
-            val call: Call<MissionResponse> = retrofit?.mission(author, mainMissionId, day) ?: return
+            val call: Call<MissionResponse> = retrofit?.mission(mainMissionId, day) ?: return
 
             call.enqueue(object : retrofit2.Callback<MissionResponse> {
                 override fun onResponse(
@@ -69,8 +69,8 @@ class MissionCertRetrofitManager(context: Context) : ViewModel() {
     }
 
     //미션 인증 사진 좋아요
-    fun missionImgLike(author: String,imgId:Long, completion: (isSuccess:Boolean) -> Unit){
-        val call: Call<BaseResponse> = retrofit?.missionLike(author, imgId) ?: return
+    fun missionImgLike(imgId:Long, completion: (isSuccess:Boolean) -> Unit){
+        val call: Call<BaseResponse> = retrofit?.missionLike(imgId) ?: return
 
         call.enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onResponse(
@@ -102,8 +102,8 @@ class MissionCertRetrofitManager(context: Context) : ViewModel() {
     }
 
     //미션 인증 사진 좋아요 취소
-    fun missionImgUnlike(author: String,imgId:Long, completion: (isSuccess:Boolean) -> Unit){
-        val call: Call<BaseResponse> = retrofit?.missionUnlike(author, imgId) ?: return
+    fun missionImgUnlike(imgId:Long, completion: (isSuccess:Boolean) -> Unit){
+        val call: Call<BaseResponse> = retrofit?.missionUnlike(imgId) ?: return
 
         call.enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onResponse(
@@ -135,8 +135,8 @@ class MissionCertRetrofitManager(context: Context) : ViewModel() {
     }
 
     //미션 인증 사진 신고
-    fun report(author: String,imgId:Long, completion: (isSuccess:Boolean) -> Unit){
-        val call: Call<BaseResponse> = retrofit?.missionReport(author, imgId) ?: return
+    fun report(imgId:Long, completion: (isSuccess:Boolean) -> Unit){
+        val call: Call<BaseResponse> = retrofit?.missionReport(imgId) ?: return
 
         call.enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onResponse(
@@ -168,8 +168,8 @@ class MissionCertRetrofitManager(context: Context) : ViewModel() {
     }
 
     //미션 인증 사진 올리기
-    fun postImg(author: String,boardId:Long, filePath:MultipartBody.Part ,completion: (isSuccess:Boolean) -> Unit){
-        val call: Call<BaseResponse> = retrofit?.postImg(author, boardId, filePath) ?: return
+    fun postImg(boardId:Long, filePath:MultipartBody.Part ,completion: (isSuccess:Boolean) -> Unit){
+        val call: Call<BaseResponse> = retrofit?.postImg(boardId, filePath) ?: return
 
         call.enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onResponse(

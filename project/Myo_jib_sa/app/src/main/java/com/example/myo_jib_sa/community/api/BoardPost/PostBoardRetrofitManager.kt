@@ -2,15 +2,17 @@ package com.example.myo_jib_sa.community.api.BoardPost
 
 import android.content.Context
 import android.util.Log
+import com.example.myo_jib_sa.base.MyojibsaApplication
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.RetrofitClient
+import com.example.myo_jib_sa.community.api.post.PostRetrofitITFC
 import retrofit2.Call
 import retrofit2.Response
 
 class PostBoardRetrofitManager(context: Context) {
     //레트로핏 인터페이스 가져오기기
-    private val retrofit : PostBoardRetrofitITFC? = RetrofitClient.getClient(Constance.BASEURL)?.create(
-        PostBoardRetrofitITFC::class.java)
+    private val retrofit:PostBoardRetrofitITFC = sRetrofit.create(PostBoardRetrofitITFC::class.java)
 
     companion object {
         private var instance: PostBoardRetrofitManager? = null
@@ -26,8 +28,8 @@ class PostBoardRetrofitManager(context: Context) {
     }
 
     //PostBoardResponse를 반환
-    fun board(author:String,page:Int,categoryId:Long, completion: (PostBoardResponse) -> Unit){
-        val call: Call<PostBoardResponse> = retrofit?.board(author,page,categoryId) ?: return
+    fun board(page:Int,categoryId:Long, completion: (PostBoardResponse) -> Unit){
+        val call: Call<PostBoardResponse> = retrofit?.board(page,categoryId) ?: return
 
         call.enqueue(object : retrofit2.Callback<PostBoardResponse> {
             override fun onResponse(
@@ -57,8 +59,8 @@ class PostBoardRetrofitManager(context: Context) {
     }
 
     //베스트 게시물 조회
-    fun popular(author:String,page:Int, completion: (PopularPostResponse) -> Unit){
-        val call: Call<PopularPostResponse> = retrofit?.popular(author,page) ?: return
+    fun popular(page:Int, completion: (PopularPostResponse) -> Unit){
+        val call: Call<PopularPostResponse> = retrofit?.popular(page) ?: return
 
         call.enqueue(object : retrofit2.Callback<PopularPostResponse> {
             override fun onResponse(
@@ -68,13 +70,13 @@ class PostBoardRetrofitManager(context: Context) {
                 Log.d("Post 베스트 게시판 api", "RetrofitManager profile onResponse \t :${response.message()} ")
                 val response: PopularPostResponse? = response?.body() //LoginResponse 형식의 응답 받음
                 if (response != null) {
-                    if (response.isSuccess=="true") {
+                    if (response.isSuccess) {
                         Log.d("Post 베스트 게시판 api",
-                            "RetrofitManager Post 베스트 게시판 is Success\t :${response.code} ")
+                            "RetrofitManager Post 베스트 게시판 is Success\t :${response.errorCode}+ ${response.errorMessage} ")
                         completion(response)
                     } else {
                         Log.d("Post 게시판 api",
-                            "RetrofitManager Post 베스트 게시판 is NOT Success\t :${response.code} ")
+                            "RetrofitManager Post 베스트 게시판 is NOT Success\t :${response.errorCode}+ ${response.errorMessage} ")
                     }
                 } else {
                     Log.d("Post 베스트 게시판 api", "RetrofitManager Post 게시판 null")

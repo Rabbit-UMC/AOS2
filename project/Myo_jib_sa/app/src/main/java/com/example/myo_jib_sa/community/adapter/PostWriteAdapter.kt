@@ -1,25 +1,21 @@
 package com.example.myo_jib_sa.community.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Rect
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.myo_jib_sa.community.post.PostPictureActivity
-import com.example.myo_jib_sa.community.api.post.ImageList
 import com.example.myo_jib_sa.databinding.ItemPostImgBinding
-import com.google.gson.Gson
+import java.lang.Integer.max
 
-
-class PostEditAdapter (
+class PostWriteAdapter (
     private val context: Context,
-    private val dataList:List<String>)
-    : RecyclerView.Adapter<PostEditAdapter.ViewHolder>(){
+    private val dataList:List<Uri>)
+    : RecyclerView.Adapter<PostWriteAdapter.ViewHolder>(){
 
     private var itemClickListener: OnItemClickListener? = null
 
@@ -39,17 +35,15 @@ class PostEditAdapter (
 
             // 삭제 버튼 클릭 이벤트
             binding.postImgDelete.setOnClickListener {
+                Log.d("이미지 삭제", "삭제가 눌림")
                 itemClickListener?.onDeleteClick(adapterPosition)
             }
         }
 
-        fun bind(item: List<String>, position: Int){
-
-            //이미지 설정
+        fun bind(item: List<Uri>, position: Int){
             if(position!=0){
-                Glide.with(context)
-                    .load(item[position-1])
-                    .into(binding.postImgImg)
+                //이미지 설정
+                binding.postImgImg.setImageURI(item[position-1])
             }else{
                 binding.postImgDelete.visibility=View.GONE
             }
@@ -73,7 +67,7 @@ class PostEditAdapter (
     //아이템 개수
     override fun getItemCount(): Int {
         Log.d("리사이클러뷰 사이즈", "${dataList.size+1}")
-        return Integer.max(1, dataList.size + 1)
+        return max(1, dataList.size + 1)
     }
 
     //간격 설정을 위한 클래스
@@ -87,7 +81,6 @@ class PostEditAdapter (
     fun setItemSpacing(recyclerView: RecyclerView, spacing: Int) {
         recyclerView.addItemDecoration(CustomItemDecoration(spacing))
     }
-
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.itemClickListener = listener

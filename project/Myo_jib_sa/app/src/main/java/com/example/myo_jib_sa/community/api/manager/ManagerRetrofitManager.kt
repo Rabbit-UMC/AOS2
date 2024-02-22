@@ -4,16 +4,18 @@ import android.content.Context
 import android.graphics.Paint.Join
 import android.util.Log
 import com.example.myo_jib_sa.base.BaseResponse
+import com.example.myo_jib_sa.base.MyojibsaApplication
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.RetrofitClient
+import com.example.myo_jib_sa.community.api.post.PostRetrofitITFC
 import com.example.myo_jib_sa.community.api.post.SimpleResponse
 import retrofit2.Call
 import retrofit2.Response
 
 class ManagerRetrofitManager (context: Context){
     //레트로핏 인터페이스 가져오기기
-    private val retrofit : ManagerRetrofitITFC? = RetrofitClient.getClient(Constance.BASEURL)?.create(
-        ManagerRetrofitITFC::class.java)
+    private val retrofit:ManagerRetrofitITFC = sRetrofit.create(ManagerRetrofitITFC::class.java)
 
     companion object {
         private var instance: ManagerRetrofitManager? = null
@@ -30,9 +32,9 @@ class ManagerRetrofitManager (context: Context){
 
 
     //미션 대표 사진 바꾸기
-    fun missionImgEdit(author: String,filePath:String,boardId:Long, completion: (isSucces:Boolean) -> Unit){
+    fun missionImgEdit(filePath:String,boardId:Long, completion: (isSucces:Boolean) -> Unit){
         val request=PatchCategoryImageReq(filePath)
-        val call: Call<BaseResponse> = retrofit?.EditPhoto(author,boardId, request) ?: return
+        val call: Call<BaseResponse> = retrofit?.EditPhoto(boardId, request) ?: return
         Log.d("RetrofitManager 미션 대표 사진 바꾸기", "데이터 확인 $filePath")
         call.enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onResponse(
@@ -66,8 +68,8 @@ class ManagerRetrofitManager (context: Context){
 
     //미션 생성하기
     //미션 대표 사진 바꾸기
-    fun missionCreate(author: String,data:MissionCreateRequest, boardId: Long,completion: (isSucces:Boolean) -> Unit){
-        val call: Call<BaseResponse> = retrofit?.missionCreate(author,boardId,data) ?: return
+    fun missionCreate(data:MissionCreateRequest, boardId: Long,completion: (isSucces:Boolean) -> Unit){
+        val call: Call<BaseResponse> = retrofit?.missionCreate(boardId,data) ?: return
 
         call.enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onResponse(
@@ -98,8 +100,8 @@ class ManagerRetrofitManager (context: Context){
         })
     }
 
-    fun joinMission(author: String,missionId: Long,completion: (response:JoinManagerMissionResponse) -> Unit){
-        val call: Call<JoinManagerMissionResponse> = retrofit?.joinManagerMission(author, missionId) ?: return
+    fun joinMission(missionId: Long,completion: (response:JoinManagerMissionResponse) -> Unit){
+        val call: Call<JoinManagerMissionResponse> = retrofit?.joinManagerMission(missionId) ?: return
 
         call.enqueue(object : retrofit2.Callback<JoinManagerMissionResponse> {
             override fun onResponse(

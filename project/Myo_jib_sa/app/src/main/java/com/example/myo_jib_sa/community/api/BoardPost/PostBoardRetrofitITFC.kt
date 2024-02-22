@@ -11,13 +11,11 @@ interface PostBoardRetrofitITFC {
     //게시판에 게시물 띄우기
     @GET("app/article")
     fun board(
-        @Header(Constance.author)author:String,
         @Query("page") page: Int,
         @Query("categoryId")categoryId: Long): Call<PostBoardResponse>
 
     @GET("app/popular-posts")
     fun popular(
-        @Header(Constance.author) author:String
-        ,@Query("page") page:Int
+        @Query("page") page:Int
     ): Call<PopularPostResponse>
 }
