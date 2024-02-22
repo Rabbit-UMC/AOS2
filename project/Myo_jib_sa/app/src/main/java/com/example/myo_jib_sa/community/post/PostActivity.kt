@@ -69,9 +69,10 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         }
 
         //정보 저장
-        boardId=intent.getIntExtra("boardId", 0).toLong()
+        boardId=intent.getLongExtra("boardId", 0L)
         postId=intent.getLongExtra("postId", 0L)
         Log.d("게시물 ID", "게시물 id : ${postId}")
+        Log.d("게시판 아이디", boardId.toString())
 
         //게시글 뷰 설정
         setPostData(binding, boardId.toInt(), postId)
@@ -148,7 +149,9 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
                     intent.putExtra("title", binding.postPostNameTxt.text.toString())
                     intent.putExtra("postText", binding.postPostTextTxt.text.toString())
                     intent.putExtra("postId", postId)
-                    intent.putExtra("boardId", boardId.toInt())
+                    intent.putExtra("boardId", boardId)
+
+
                     //사진 리스트 첨부
                     val gson = Gson()
                     val jsonImageList = gson.toJson(imageList)

@@ -35,7 +35,7 @@ class PostEditActivity : AppCompatActivity() {
 
 
     private var postId:Long=0 //수정할 때만 씀
-    private var boardId:Int=0
+    private var boardId:Long=0
 
     //이미지 url 저장
     private var imgUrlList:MutableList<String> = mutableListOf()
@@ -62,9 +62,11 @@ class PostEditActivity : AppCompatActivity() {
         //수정인지
         setData()
 
-        boardId=intent.getIntExtra("boardId", 0)
+        boardId=intent.getLongExtra("boardId", 0)
+        Log.d("게시판 아이디", boardId.toString())
+
         //게시판 이름
-        when(boardId.toLong()){
+        when(boardId){
             Constance.ART_ID -> {
                 binding.postWriteNameTxt.text="예술 게시판"
             }
@@ -82,6 +84,17 @@ class PostEditActivity : AppCompatActivity() {
         //게시글 쓰기, 수정 완료
         complete()
 
+        itemClike()
+
+        //뒤로가기 버튼
+        binding.postWriteBackBtn.setOnClickListener {
+            finish()
+        }
+
+    }
+
+    //리사이클러뷰 클릭 리스너
+    private fun itemClike(){
         adapter.setOnItemClickListener(object : PostEditAdapter.OnItemClickListener {
 
             override fun onDeleteClick(position: Int) {
@@ -96,7 +109,7 @@ class PostEditActivity : AppCompatActivity() {
                     adapter = PostEditAdapter(this@PostEditActivity, imgUrlList)
                     binding.postWriteImgRecy.adapter=adapter
                     adapter.setItemSpacing(binding.postWriteImgRecy, 15)
-
+                    itemClike()
                 }
             }
 
@@ -106,14 +119,7 @@ class PostEditActivity : AppCompatActivity() {
                 startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
             }
         })
-
-        //뒤로가기 버튼
-        binding.postWriteBackBtn.setOnClickListener {
-            finish()
-        }
-
     }
-
 
     //todo : 사진 설정을 위한 onActivityResult
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -162,7 +168,7 @@ class PostEditActivity : AppCompatActivity() {
         binding.postWriteImgRecy.layoutManager = layoutManager
         adapter = PostEditAdapter(this, imgUrlList)
         binding.postWriteImgRecy.adapter=adapter
-        adapter.setItemSpacing(binding.postWriteImgRecy, 5)
+        adapter.setItemSpacing(binding.postWriteImgRecy, 15)
     }
 
     //글쓰기, 수정 완료
@@ -277,18 +283,6 @@ class PostEditActivity : AppCompatActivity() {
         }
     }
 
-
-//Base64로 인코딩하기
-fun encodeImageToBase64(imagePath: String): String? {
-    val bitmap = BitmapFactory.decodeFile(imagePath)
-    if (bitmap != null) {
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val byteArray = baos.toByteArray()
-        return Base64.encodeToString(byteArray, Base64.DEFAULT)
-    }
-    return null
-}
 private fun showToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
