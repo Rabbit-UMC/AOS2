@@ -22,7 +22,8 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
-class CalendarDialogFragment(private var setOnClickListener : SetOnClickListener) : DialogFragment() {
+class CalendarDialogFragment(private var setOnClickListener : SetOnClickListener
+,private var date:String?) : DialogFragment() {
     private lateinit var binding : DialogFragmentCalendarBinding
     lateinit var selectedDate : LocalDate //선택한 날짜
     lateinit var standardDate: LocalDate //캘린더 생성하기 위한 기준 날짜, selectedDate업데이트 하면 얘도 같이 업데이트 해주기
@@ -48,9 +49,14 @@ class CalendarDialogFragment(private var setOnClickListener : SetOnClickListener
         //calendar 간격 설정
         binding.calendarRv.addItemDecoration(DialogCalendarAdapter.GridSpaceDecoration(getDisplayWidthSize()))
 
-        //오늘 날짜
-        selectedDate = LocalDate.now()
+        if(date==null){
+            //오늘 날짜
+            selectedDate = LocalDate.now()
+        }else{
+            selectedDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE)
+        }
         standardDate = selectedDate
+
         //화면 초기화
         setMonthView()
 

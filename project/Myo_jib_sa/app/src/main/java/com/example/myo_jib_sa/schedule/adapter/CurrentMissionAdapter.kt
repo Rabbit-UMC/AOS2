@@ -16,7 +16,10 @@ class CurrentMissionAdapter(private val missionList:MutableList<MyMissionResult>
         fun bind(data: MyMissionResult) {
             binding.missionTitleTv.text = data.missionTitle
             binding.missionNumOfchallengerTv.text = "${data.challengerCnt}명"
-            binding.missionDDayTv.text = "${data.dday}"
+            if(data.during <= 0)
+                binding.missionDDayTv.text = "D${data.during}"
+            else
+                binding.missionDDayTv.text = "D+${data.during}"
         }
     }
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {

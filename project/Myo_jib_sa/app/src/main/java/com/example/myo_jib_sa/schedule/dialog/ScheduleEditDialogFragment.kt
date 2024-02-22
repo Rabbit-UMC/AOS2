@@ -215,8 +215,8 @@ class ScheduleEditDialogFragment : DialogFragment() {
                 selectedDate = selectDateData.date!!
                 standardDate = selectedDate
 
-                Toast.makeText(requireContext(), ""+selectedDate, Toast.LENGTH_SHORT)
-                    .show()
+//                Toast.makeText(requireContext(), ""+selectedDate, Toast.LENGTH_SHORT)
+//                    .show()
             }
         })
     }
