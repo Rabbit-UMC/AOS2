@@ -108,7 +108,7 @@
         android:layout_marginRight="25dp"
         android:visibility="gone"
         android:orientation="horizontal"
-        tools:listitem="@layout/item_schedule_mission"
+        tools:listitem="@layout/item_schedule_edit_mission"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view4" />

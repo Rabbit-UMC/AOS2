@@ -569,8 +569,8 @@ Rabbit-UMC 은(는) 정보주체의 이용정보를 저장하고 수시로 불�
     <string name="mypage_history">히스토리 보기</string>
     <string name="mypage_history_toolbar_title">히스토리</string>
     <string name="mypage_history_nickname_title">&#160;집사님의</string>
-    <string name="mypage_history_success_cnt_title">성공 히스토리는 총</string>
-    <string name="mypage_history_fail_cnt_title">실패 히스토리는 총</string>
+    <string name="mypage_history_success_cnt_title">성공 히스토리는 총&#160;</string>
+    <string name="mypage_history_fail_cnt_title">실패 히스토리는 총&#160;</string>
     <string name="mypage_history_mission_of">&#160;미션 중&#160;</string>
     <string name="mypage_history_mission_success">의 미션을 달성했어요.</string>
     <string name="mypage_history_mission_fail">의 미션을 달성하지 못했어요.</string>
@@ -578,6 +578,10 @@ Rabbit-UMC 은(는) 정보주체의 이용정보를 저장하고 수시로 불�
     <string name="mypage_history_mission_challenger">도전자&#160;</string>
     <string name="mypage_history_mission_challenger_of">명 중에서&#160;</string>
     <string name="mypage_history_mission_achieve">명이 달성했어요!</string>
+    <string name="mypage_history_success_default_title">Hello world!</string>
+    <string name="mypage_history_success_default_desc">묘집사도 여러분이 만족스럽게 사용하는 것을\n성공 목표로 하고있어요.\n\n같이 HISTORY를 채워 보아요!</string>
+    <string name="mypage_history_fail_default_title">실패는 성공의 어머니</string>
+    <string name="mypage_history_fail_default_desc">실패한 미션은\n여러분과 묘집사를 성장시켜줍니다.\n\n같이 되돌아 보는 시간을 가져볼까요?</string>
 
     <!--회원탈퇴-->
     <string name="unregister_title">집사님, 회원탈퇴 하시나요?</string>

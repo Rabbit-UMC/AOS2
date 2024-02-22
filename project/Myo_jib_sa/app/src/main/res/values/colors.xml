@@ -36,4 +36,9 @@
 
     <color name="like">#6BBEA0</color>
     <color name="comment">#688EA0</color>
+
+    <color name="mypage_history_success_default">#F2A5C6</color>
+
+    <color name="kakao_login_btn">#FEE500</color>
+    <color name="kakao_login_label">#D9000000</color>
 </resources>

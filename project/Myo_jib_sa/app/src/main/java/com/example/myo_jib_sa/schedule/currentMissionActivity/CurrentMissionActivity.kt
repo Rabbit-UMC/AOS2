@@ -11,6 +11,7 @@ import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.databinding.ActivityCurrentMissionBinding
 import com.example.myo_jib_sa.databinding.ItemSubScheduleBinding
 import com.example.myo_jib_sa.databinding.ToastCurrentMissionDeleteBinding
+import com.example.myo_jib_sa.databinding.ToastRedBlackBinding
 import com.example.myo_jib_sa.mypage.api.GetUserProfileResponse
 import com.example.myo_jib_sa.mypage.api.MypageAPI
 import com.example.myo_jib_sa.schedule.utils.CustomItemDecoration
@@ -80,7 +81,7 @@ class CurrentMissionActivity : AppCompatActivity() {
     }
 
     private fun showDetailDialog(missionId: Long) {
-        val detailDialog = CurrentMissionDetailDialog(missionId)
+        val detailDialog = CurrentMissionDetailDialogFragment(missionId)
         detailDialog.show(supportFragmentManager, "mission_detail_dialog")
     }
 
@@ -329,6 +330,40 @@ class CurrentMissionActivity : AppCompatActivity() {
             override fun onDeleteListener(message: String, missionFlag : Boolean) {
                 if(missionFlag){
                     currentMissionApi()//currentMission api 재호출
+
+                    // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
+                    val snackbarBinding = ToastCurrentMissionDeleteBinding.inflate(layoutInflater)
+                    snackbarBinding.toastMessageTv.text = message
+
+                    // 스낵바 생성 및 설정
+                    val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+                        animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+                        (view as Snackbar.SnackbarLayout).apply {
+                            setBackgroundColor(Color.TRANSPARENT)
+                            addView(snackbarBinding.root)
+                            translationY = -15.dpToPx().toFloat()
+                            elevation = 0f
+                        }
+                    }
+                    // 스낵바 표시
+                    snackbar.show()
+                }else{
+                    // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
+                    val snackbarBinding = ToastRedBlackBinding.inflate(layoutInflater)
+                    snackbarBinding.toastRedBlackTxt.text = message
+
+                    // 스낵바 생성 및 설정
+                    val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+                        animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+                        (view as Snackbar.SnackbarLayout).apply {
+                            setBackgroundColor(Color.TRANSPARENT)
+                            addView(snackbarBinding.root)
+                            translationY = -15.dpToPx().toFloat()
+                            elevation = 0f
+                        }
+                    }
+                    // 스낵바 표시
+                    snackbar.show()
                 }
                 seeScheduleDeleteBtn = true;
                 binding.missionDeleteLayout.visibility = View.GONE
@@ -337,22 +372,7 @@ class CurrentMissionActivity : AppCompatActivity() {
                 binding.missionScheduleListLayout.visibility = View.GONE
 
 
-                // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
-                val snackbarBinding = ToastCurrentMissionDeleteBinding.inflate(layoutInflater)
-                snackbarBinding.toastMessageTv.text = message
 
-                // 스낵바 생성 및 설정
-                val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
-                    animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
-                    (view as Snackbar.SnackbarLayout).apply {
-                        setBackgroundColor(Color.TRANSPARENT)
-                        addView(snackbarBinding.root)
-                        translationY = -15.dpToPx().toFloat()
-                        elevation = 0f
-                    }
-                }
-                // 스낵바 표시
-                snackbar.show()
             }
         })
     }
