@@ -49,8 +49,6 @@ class CurrentMissionAdapter (
             }
 
 
-            //todo
-            //binding.missionImg.clipToOutline = true //이미지 모서리 둥글게
             binding.missionTitleTv.text = data.missionTitle
             binding.missionChallengerTv.text = "${data.challengerCnt}"
             if(data.during <0)
