@@ -52,6 +52,8 @@ class BoardActivity : AppCompatActivity() {
 
         boardId=intent.getLongExtra("boardId", 0)
         isBest=intent.getBooleanExtra("isBest", false)
+        Log.d("게시판 아이디", boardId.toString())
+
 
         if(isBest){
             setBestBoard()
@@ -256,6 +258,7 @@ class BoardActivity : AppCompatActivity() {
         binding.boardPostingBtn.setOnClickListener {
             if(isClick){
                 val intent=Intent(this,PostWrtieActivity::class.java)
+                intent.putExtra("boardId", boardId)
                 startActivity(intent)
             }else{
                 isClick=!isClick

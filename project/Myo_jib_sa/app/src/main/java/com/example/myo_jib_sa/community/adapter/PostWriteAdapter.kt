@@ -44,6 +44,8 @@ class PostWriteAdapter (
             if(position!=0){
                 //이미지 설정
                 binding.postImgImg.setImageURI(item[position-1])
+            }else{
+                binding.postImgDelete.visibility=View.GONE
             }
             binding.postImgImg.clipToOutline=true
 

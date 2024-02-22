@@ -50,6 +50,8 @@ class PostEditAdapter (
                 Glide.with(context)
                     .load(item[position-1])
                     .into(binding.postImgImg)
+            }else{
+                binding.postImgDelete.visibility=View.GONE
             }
             binding.postImgImg.clipToOutline=true
 

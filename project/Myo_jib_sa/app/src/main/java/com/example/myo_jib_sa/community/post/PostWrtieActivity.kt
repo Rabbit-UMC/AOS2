@@ -43,7 +43,7 @@ class PostWrtieActivity : AppCompatActivity() {
 
     private var isEdit:Boolean=false
     private var postId:Long=0 //수정할 때만 씀
-    private var boardId:Int=0
+    private var boardId:Long=0
 
     //이미지 uri 저장
     private var imgUriList:MutableList<Uri> = mutableListOf()
@@ -68,9 +68,11 @@ class PostWrtieActivity : AppCompatActivity() {
         binding= ActivityWritePostingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        boardId=intent.getIntExtra("boardId", 0)
+        boardId=intent.getLongExtra("boardId", 0L)
+        Log.d("게시판 아이디", boardId.toString())
+
         //게시판 이름
-        when(boardId.toLong()){
+        when(boardId){
             Constance.ART_ID -> {
                 binding.postWriteNameTxt.text="예술 게시판"
             }
@@ -83,18 +85,28 @@ class PostWrtieActivity : AppCompatActivity() {
 
         }
 
-
+        itemClike()
 
         //게시글 쓰기, 수정 완료
         complete()
 
         //이미지 어댑터
-        var layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.postWriteImgRecy.layoutManager = layoutManager
         adapter = PostWriteAdapter(this, imgUriList)
         binding.postWriteImgRecy.adapter=adapter
         adapter.setItemSpacing(binding.postWriteImgRecy, 15)
 
+
+
+        //뒤로가기 버튼
+        binding.postWriteBackBtn.setOnClickListener {
+            finish()
+        }
+
+    }
+
+    private fun itemClike(){
         adapter.setOnItemClickListener(object : PostWriteAdapter.OnItemClickListener {
 
             override fun onDeleteClick(position: Int) {
@@ -104,11 +116,12 @@ class PostWrtieActivity : AppCompatActivity() {
                     }
                     Log.d("이미지 삭제 후 리스트", imgUriList.toString())
                     Log.d("이미지 삭제 후 리스트 사이즈", imgUriList.size.toString())
-                    layoutManager = LinearLayoutManager(this@PostWrtieActivity, LinearLayoutManager.HORIZONTAL, false)
+                    val layoutManager = LinearLayoutManager(this@PostWrtieActivity, LinearLayoutManager.HORIZONTAL, false)
                     binding.postWriteImgRecy.layoutManager = layoutManager
                     adapter = PostWriteAdapter(this@PostWrtieActivity, imgUriList)
                     binding.postWriteImgRecy.adapter=adapter
                     adapter.setItemSpacing(binding.postWriteImgRecy, 15)
+                    itemClike()
                 }
             }
 
@@ -118,14 +131,7 @@ class PostWrtieActivity : AppCompatActivity() {
                 startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
             }
         })
-
-        //뒤로가기 버튼
-        binding.postWriteBackBtn.setOnClickListener {
-            finish()
-        }
-
     }
-
 
     //todo : 사진 설정을 위한 onActivityResult
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
