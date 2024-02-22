@@ -54,9 +54,6 @@
             android:name=".community.post.PostEditActivity"
             android:exported="false" />
         <activity
-            android:name=".schedule.currentMissionActivity.DeleteCurrentMissionActivity"
-            android:exported="false" />
-        <activity
             android:name=".mission.MissionCreateActivity"
             android:windowSoftInputMode="adjustPan" /> <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <!-- ${AD_APP_ID} Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
@@ -72,12 +69,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".schedule.historyActivity.FailedMissionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".schedule.historyActivity.SuccessMissionActivity"
-            android:exported="false" />
         <activity
             android:name=".community.post.PostActivity"
             android:exported="false"

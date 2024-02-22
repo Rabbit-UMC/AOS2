@@ -111,7 +111,7 @@ dependencies {
 
     //구글 애드몹 광고
     implementation project(':nativetemplates')
-    implementation 'com.google.android.gms:play-services-ads:21.1.0'
+    implementation 'com.google.android.gms:play-services-ads:22.6.0'
 
     //원형 이미지 뷰
     implementation'de.hdodenhof:circleimageview:2.2.0' //원형 프로필
