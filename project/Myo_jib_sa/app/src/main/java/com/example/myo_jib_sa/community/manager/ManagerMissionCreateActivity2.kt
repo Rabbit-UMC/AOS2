@@ -49,8 +49,6 @@ class ManagerMissionCreateActivity2 : AppCompatActivity(), MissionCreateCalendar
     private lateinit var startSelectedDate : LocalDate //시작 날짜
     private lateinit var endSelectedDate : LocalDate //종료 날짜
 
-    private var isStartDateSelected = false
-    private var isEndDateSelected = false
     private var isMissionTitleInputted = false
     private var isMissionMemoInputted = false
 

@@ -109,28 +109,13 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
 
     //fun getRealPathFromURI() 이미지 url을 실제 파일 경로로 변환
     private fun getRealPathFromURI(uri: Uri?): String? {
-        if (uri == null) return null
-
-        when (uri.scheme) {
-            "content" -> {
-                val projection = arrayOf(MediaStore.Images.Media.DATA)
-                val cursor = contentResolver.query(uri, projection, null, null, null)
-
-                cursor?.use {
-                    if (it.moveToFirst()) {
-                        val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                        return if (columnIndex > -1) {
-                            it.getString(columnIndex)
-                        } else {
-                            null
-                        }
-                    }
-                }
-            }
-            "file" -> return uri.path
-        }
-
-        return null
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = uri?.let { contentResolver.query(it, projection, null, null, null) }
+        val columnIndex = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor?.moveToFirst()
+        val path = cursor?.getString(columnIndex ?: 0) ?: ""
+        cursor?.close()
+        return path
     }
 
 
