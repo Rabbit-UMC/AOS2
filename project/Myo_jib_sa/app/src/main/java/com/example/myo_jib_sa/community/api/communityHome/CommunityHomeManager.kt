@@ -3,15 +3,16 @@ package com.example.myo_jib_sa.community.api.communityHome
 import android.content.Context
 import android.util.Log
 import com.example.myo_jib_sa.base.MyojibsaApplication
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.community.api.RetrofitClient
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.post.PostRetrofitITFC
 import retrofit2.Call
 import retrofit2.Response
 
-class CommunityHomeManager(context: Context) {
+class CommunityHomeManager() {
     //레트로핏 인터페이스 가져오기기
-    private val retrofit = MyojibsaApplication.sRetrofit.create(CommunityHomeITFC::class.java)
+    private val retrofit:CommunityHomeITFC = sRetrofit.create(CommunityHomeITFC::class.java)
 
     companion object {
         private var instance: CommunityHomeManager? = null
@@ -19,7 +20,7 @@ class CommunityHomeManager(context: Context) {
         // 싱글톤 인스턴스를 가져오는 메서드
         fun getInstance(context: Context): CommunityHomeManager {
             if (instance == null) {
-                instance = CommunityHomeManager(context)
+                instance = CommunityHomeManager()
             }
             return instance as CommunityHomeManager
         }

@@ -3,6 +3,7 @@ package com.example.myo_jib_sa.community.api.imgUpload
 import android.content.Context
 import android.util.Log
 import com.example.myo_jib_sa.base.MyojibsaApplication
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.RetrofitClient
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
@@ -16,7 +17,7 @@ import java.io.File
 
 class imgUploadRetrofitManager(context: Context) {
 
-        private val retrofit= MyojibsaApplication.sRetrofit.create(ImgUploadRetrofitITFC::class.java)
+        private val retrofit:ImgUploadRetrofitITFC= sRetrofit.create(ImgUploadRetrofitITFC::class.java)
 
     companion object {
         private var instance: MissionCertRetrofitManager? = null

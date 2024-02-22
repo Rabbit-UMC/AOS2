@@ -14,7 +14,7 @@ import retrofit2.Response
 
 class MissionCertRetrofitManager(context: Context) : ViewModel() {
     //레트로핏 인터페이스 가져오기기
-    private val retrofit=sRetrofit.create(MissionCertRetrofitITFC::class.java)
+    private val retrofit:MissionCertRetrofitITFC=sRetrofit.create(MissionCertRetrofitITFC::class.java)
 
     companion object {
         private var instance: MissionCertRetrofitManager? = null
