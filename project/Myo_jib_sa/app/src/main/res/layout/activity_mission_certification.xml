@@ -115,7 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
             android:fontFamily="@font/font_title_3"
-            android:text="D-60"
+            android:text="0"
             android:textColor="#234BD9"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -136,6 +136,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/missionCert_missionName_txt" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_title_3"
+            android:text="남은 기간 : "
+            android:textColor="#234BD9"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/missionCert_dday_txt"
+            app:layout_constraintTop_toTopOf="@+id/missionCert_dday_txt" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
