@@ -30,10 +30,6 @@ class MainActivity : AppCompatActivity() {
         //supportFragmentManager.beginTransaction().replace(R.id.main_layout, MissionFragment()).commitAllowingStateLoss()
 
         setBottomNavi()
-
-        binding.unregisterBtn.setOnClickListener {
-            showUnregisterDialog()
-        }
     }
 
     private fun setBottomNavi(){
@@ -42,22 +38,18 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.menu_schedule -> {
                     setFragment(ScheduleFragment())
-                    binding.unregisterBtn.visibility = View.GONE
                     true
                 }
                 R.id.menu_mission -> {
                     setFragment(MissionFragment())
-                    binding.unregisterBtn.visibility = View.GONE
                     true
                 }
                 R.id.menu_community -> {
                     setFragment(CommunityFragment())
-                    binding.unregisterBtn.visibility = View.GONE
                     true
                 }
                 R.id.menu_mypage -> {
                     setFragment(MypageFragment())
-                    binding.unregisterBtn.visibility = View.VISIBLE
                     true
                 }
                 else -> false //처리 완료 x
@@ -68,9 +60,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.main_layout, fragment).commit()
     }
 
-    private fun showUnregisterDialog() {
-        val dialog = UnregisterDialogFragment()
-        dialog.show(supportFragmentManager, "UnregisterDialogFragment")
-    }
+
 
 }

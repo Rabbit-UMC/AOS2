@@ -44,7 +44,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     private var imgUri: String? = null
     private var userName: String? = null
-
+    private var previousName: String? = null
 
     val retrofit: MypageAPI = sRetrofit.create(MypageAPI::class.java)
 
@@ -76,6 +76,8 @@ class EditProfileActivity : AppCompatActivity() {
                             .load(profileData.userProfileImage)
                             .error(R.drawable.ic_profile)
                             .into(binding.editProfileImgBtn)
+                        previousName = profileData.userName
+                        binding.editProfileNicknameEt.hint = previousName
                     }
                 } else {
                     // API 요청 실패 처리
@@ -195,8 +197,9 @@ class EditProfileActivity : AppCompatActivity() {
         val requestFile = RequestBody.create(MediaType.parse("image/*"), file)
         // MultipartBody.Part를 생성
         val body = MultipartBody.Part.createFormData("userProfileImage", file.name, requestFile)
+        val nickname = if(userName.isNullOrEmpty()) previousName else userName
 
-        retrofit.patchProfile(body, userName).enqueue(object : Callback<PatchProfileResponse> {
+        retrofit.patchProfile(body, nickname).enqueue(object : Callback<PatchProfileResponse> {
             override fun onResponse(call: Call<PatchProfileResponse>, response: Response<PatchProfileResponse>) {
                 if(response.isSuccessful && response.body()?.isSuccess == true) {
                     setResult(Activity.RESULT_OK, Intent().putExtra("resultMessage", "프로필 편집 사항이 저장되었어요!"))

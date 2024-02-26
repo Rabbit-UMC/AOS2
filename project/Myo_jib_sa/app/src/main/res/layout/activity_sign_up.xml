@@ -137,7 +137,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="54dp"
         android:fontFamily="@font/font_title_3"
-        android:text="@string/sign_up_terms_of_use_title"
+        android:text="@string/sign_up_terms_of_use_agree"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -169,22 +169,13 @@
         android:id="@+id/sign_up_old_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sine_up_use_old"
+        android:text="@string/sign_up_use_old"
         android:textColor="@color/gray8"
         android:layout_marginStart="15dp"
         android:fontFamily="@font/font_caption_text_3"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/sign_up_old_checkbox"
         app:layout_constraintStart_toEndOf="@+id/sign_up_old_checkbox"
-        app:layout_constraintTop_toTopOf="@+id/sign_up_old_checkbox" />
-    <Button
-        android:id="@+id/sign_up_old_detail_btn"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:background="@drawable/ic_right_arrow"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/sign_up_old_checkbox"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/sign_up_old_checkbox" />
 
     <CheckBox
@@ -201,7 +192,7 @@
         android:id="@+id/sign_up_terms_of_use_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sine_up_terms_of_use"
+        android:text="@string/sign_up_terms_of_use_title"
         android:textColor="@color/gray8"
         android:layout_marginStart="15dp"
         android:fontFamily="@font/font_caption_text_3"
@@ -233,7 +224,7 @@
         android:id="@+id/sign_up_privacy_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sine_up_privacy_title"
+        android:text="@string/sign_up_privacy_title"
         android:textColor="@color/gray8"
         android:layout_marginStart="15dp"
         android:fontFamily="@font/font_caption_text_3"
@@ -252,7 +243,7 @@
         app:layout_constraintTop_toTopOf="@+id/sign_up_privacy_checkbox" />
 
     <CheckBox
-        android:id="@+id/sign_up_mail_checkbox"
+        android:id="@+id/sign_up_marketing_checkbox"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="20dp"
@@ -262,58 +253,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_up_privacy_checkbox" />
     <TextView
-        android:id="@+id/sign_up_mail_txt"
+        android:id="@+id/sign_up_marketing_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sine_up_mail_title"
+        android:text="@string/sign_up_marketing_title"
         android:textColor="@color/gray8"
         android:layout_marginStart="15dp"
         android:fontFamily="@font/font_caption_text_3"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/sign_up_mail_checkbox"
-        app:layout_constraintStart_toEndOf="@+id/sign_up_mail_checkbox"
-        app:layout_constraintTop_toTopOf="@+id/sign_up_mail_checkbox" />
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_marketing_checkbox"
+        app:layout_constraintStart_toEndOf="@+id/sign_up_marketing_checkbox"
+        app:layout_constraintTop_toTopOf="@+id/sign_up_marketing_checkbox" />
     <Button
-        android:id="@+id/sign_up_mail_detail_btn"
+        android:id="@+id/sign_up_marketing_detail_btn"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@drawable/ic_right_arrow"
         android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/sign_up_mail_checkbox"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_up_marketing_checkbox"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sign_up_mail_checkbox" />
+        app:layout_constraintTop_toTopOf="@+id/sign_up_marketing_txt" />
 
-    <CheckBox
-        android:id="@+id/sign_up_identification_checkbox"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="14dp"
-        android:background="@drawable/selector_signup_check_box"
-        android:button="@null"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_mail_checkbox" />
-    <TextView
-        android:id="@+id/sign_up_identification_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sine_up_identification_title"
-        android:textColor="@color/gray8"
-        android:layout_marginStart="15dp"
-        android:fontFamily="@font/font_caption_text_3"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/sign_up_identification_checkbox"
-        app:layout_constraintStart_toEndOf="@+id/sign_up_identification_checkbox"
-        app:layout_constraintTop_toTopOf="@+id/sign_up_identification_checkbox" />
-    <Button
-        android:id="@+id/sign_up_identification_detail_btn"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:background="@drawable/ic_right_arrow"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/sign_up_identification_checkbox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sign_up_identification_checkbox" />
 
 
     <CheckBox

@@ -1,147 +1,293 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-
-    <TextView
-        android:id="@+id/my_page_title_hello_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/font_title_3"
-        android:text="@string/mypage_hello"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/my_page_nickname_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/font_title_3"
-        android:text="닉네임"
-        android:textColor="@color/main2"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@id/my_page_title_hello_txt"
-        app:layout_constraintTop_toBottomOf="@+id/my_page_title_hello_txt" />
-
-    <TextView
-        android:id="@+id/my_page_title_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/font_title_3"
-        android:text="@string/mypage_title"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/my_page_nickname_txt"
-        app:layout_constraintTop_toTopOf="@+id/my_page_nickname_txt" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/my_page_profile_img"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="30dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/my_page_date_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/font_caption_text_3"
-        android:text="2023년 09월 23일"
-        android:textColor="@color/main2"
-        app:layout_constraintStart_toStartOf="@id/my_page_nickname_txt"
-        app:layout_constraintTop_toBottomOf="@id/my_page_nickname_txt" />
-
-    <TextView
-        android:id="@+id/my_page_date_from_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/font_caption_text_3"
-        android:text="@string/mypage_from"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/my_page_date_txt"
-        app:layout_constraintTop_toBottomOf="@id/my_page_nickname_txt" />
-
-    <TextView
-        android:id="@+id/my_page_date_with_myo_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/font_caption_text_3"
-        android:text="@string/mypage_with_myo"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@+id/my_page_date_txt"
-        app:layout_constraintTop_toBottomOf="@+id/my_page_date_txt" />
-
-    <Button
-        android:id="@+id/my_page_edit_profile_btn"
-        android:layout_width="0dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="5dp"
-        android:background="@drawable/background_my_page_edit_profile_btn"
-        android:fontFamily="@font/font_caption_text_1"
-        android:text="@string/mypage_edit_profile"
-        android:textColor="@color/gray7"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@id/my_page_history_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_page_date_with_myo_txt" />
-
-    <Button
-        android:id="@+id/my_page_history_btn"
-        android:layout_width="0dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/background_basic_btn_enabled"
-        android:fontFamily="@font/font_caption_text_1"
-        android:text="@string/mypage_history"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/my_page_edit_profile_btn"
-        app:layout_constraintTop_toTopOf="@+id/my_page_edit_profile_btn" />
-
-    <View
-        android:id="@+id/my_page_background_blank"
+    android:background="@color/gray2">
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="14dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/gray2"
-        app:layout_constraintTop_toBottomOf="@id/my_page_edit_profile_btn" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+                <TextView
+                    android:id="@+id/my_page_title_hello_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/font_title_3"
+                    android:text="@string/mypage_hello"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/myPage_tab"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="20dp"
-        app:tabSelectedTextColor="@color/main2"
-        app:tabTextColor="@color/gray7"
-        app:tabIndicatorColor="@color/main2"
-        app:tabIndicatorHeight="1dp"
-        android:background="@drawable/background_my_page_tab"
-        app:layout_constraintTop_toBottomOf="@id/my_page_background_blank" />
+                <TextView
+                    android:id="@+id/my_page_nickname_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_title_3"
+                    android:text="닉네임"
+                    android:textColor="@color/main2"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@id/my_page_title_hello_txt"
+                    app:layout_constraintTop_toBottomOf="@+id/my_page_title_hello_txt" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/myPage_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myPage_tab" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/my_page_title_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_title_3"
+                    android:text="@string/mypage_title"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/my_page_nickname_txt"
+                    app:layout_constraintTop_toTopOf="@+id/my_page_nickname_txt" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/my_page_profile_img"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="30dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_profile"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/my_page_date_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/font_caption_text_3"
+                    android:text="2023년 09월 23일"
+                    android:textColor="@color/main2"
+                    app:layout_constraintStart_toStartOf="@id/my_page_nickname_txt"
+                    app:layout_constraintTop_toBottomOf="@id/my_page_nickname_txt" />
+
+                <TextView
+                    android:id="@+id/my_page_date_from_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/font_caption_text_3"
+                    android:text="@string/mypage_from"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/my_page_date_txt"
+                    app:layout_constraintTop_toBottomOf="@id/my_page_nickname_txt" />
+
+                <TextView
+                    android:id="@+id/my_page_date_with_myo_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_caption_text_3"
+                    android:text="@string/mypage_with_myo"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="@+id/my_page_date_txt"
+                    app:layout_constraintTop_toBottomOf="@+id/my_page_date_txt" />
+
+                <Button
+                    android:id="@+id/my_page_edit_profile_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="33dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/background_my_page_edit_profile_btn"
+                    android:fontFamily="@font/font_caption_text_1"
+                    android:text="@string/mypage_edit_profile"
+                    android:textColor="@color/gray7"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/my_page_history_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/my_page_date_with_myo_txt" />
+
+                <Button
+                    android:id="@+id/my_page_history_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="33dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@drawable/background_basic_btn_enabled"
+                    android:fontFamily="@font/font_caption_text_1"
+                    android:text="@string/mypage_history"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/my_page_edit_profile_btn"
+                    app:layout_constraintTop_toTopOf="@+id/my_page_edit_profile_btn" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:id="@+id/my_page_community_layout"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:paddingHorizontal="30dp"
+                android:paddingVertical="20dp">
+                <TextView
+                    android:text="커뮤니티"
+                    android:fontFamily="@font/font_paragraph_5"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/mypage_post_tv"
+                    android:text="작성한 글"
+                    android:fontFamily="@font/font_caption_text_3"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/mypage_comment_tv"
+                    android:text="댓글단 글"
+                    android:fontFamily="@font/font_caption_text_3"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/mypage_nickname_rule_tv"
+                    android:text="@string/mypage_nickname_rule"
+                    android:fontFamily="@font/font_caption_text_3"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/mypage_community_rule_tv"
+                    android:text="커뮤니티 이용 규칙"
+                    android:fontFamily="@font/font_caption_text_3"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/my_page_infor_layout"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:paddingHorizontal="30dp"
+                android:paddingVertical="20dp">
+                <TextView
+                    android:text="이용안내"
+                    android:fontFamily="@font/font_paragraph_5"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp">
+                    <TextView
+                        android:text="앱 버전"
+                        android:fontFamily="@font/font_caption_text_3"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:text="1.0.0"
+                        android:fontFamily="@font/font_caption_text_3"
+                        android:textColor="@color/gray7"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/mypage_term_of_use_tv"
+                    android:text="서비스 이용약관"
+                    android:fontFamily="@font/font_caption_text_3"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/mypage_privacy_tv"
+                    android:text="개인정보 처리 방침"
+                    android:fontFamily="@font/font_caption_text_3"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/mypage_marketing_tv"
+                    android:text="마케팅 정보 제공 및 수신"
+                    android:fontFamily="@font/font_caption_text_3"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/my_page_etc_layout"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:paddingHorizontal="30dp"
+                android:paddingVertical="20dp">
+                <TextView
+                    android:text="기타"
+                    android:fontFamily="@font/font_paragraph_5"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/mypage_logout_tv"
+                    android:text="로그아웃"
+                    android:fontFamily="@font/font_caption_text_3"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/mypage_unregister_tv"
+                    android:text="회원탈퇴"
+                    android:fontFamily="@font/font_caption_text_3"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
 
