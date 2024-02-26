@@ -20,11 +20,14 @@ class MypageHistoryRVAdapter(private val items: List<UserMissionResDto>, private
                 if (item.missionId == -1) {
                     configureVisibility(isSuccess)
                     setMissionImage(
-                        if(isSuccess) R.drawable.background_mypage_history_fail_default else R.drawable.background_mypage_history_fail_default
+                        if(isSuccess) R.drawable.background_mypage_history_success_default else R.drawable.background_mypage_history_fail_default
                     )
                 } else {
                     setItemDetails(item)
                     setMissionImage(item.image)
+                    historyMissionInfoExistCl.visibility = View.VISIBLE
+                    historyMissionInfoSuccessCl.visibility = View.GONE
+                    historyMissionInfoFailCl.visibility = View.GONE
                 }
             }
         }

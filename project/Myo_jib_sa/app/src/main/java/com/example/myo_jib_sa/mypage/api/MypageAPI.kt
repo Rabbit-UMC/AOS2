@@ -11,13 +11,13 @@ interface MypageAPI {
     @GET("app/users/articleList")
     fun getMyPost(
         @Query("page") page: Int,
-    ): Call<GetMyPostResponse>
+    ): Call<GetWritingResponse>
 
     //유저 작성 댓글 조회
     @GET("app/users/commented-articles")
     fun getMyComment(
         @Query("page") page: Int,
-    ): Call<GetMyCommentResponse>
+    ): Call<GetWritingResponse>
 
     //유저 정보 가져오기
     @GET("app/users/profile")
@@ -38,10 +38,6 @@ interface MypageAPI {
         @Query("userName") userName: String?
     ): Call<PatchProfileResponse>
 
-    @PATCH("app/users/profile")
-    fun patchProfileWithoutImage(
-        @Query("userName") userName: String?
-    ): Call<PatchProfileResponse>
 
     // 성공 히스토리 조회
     @GET("app/users/success")
@@ -50,4 +46,16 @@ interface MypageAPI {
     // 실패 히스토리 조회
     @GET("app/users/failure")
     fun getFailureHistory(): Call<GetHistoryResponse>
+
+    //로그아웃
+    @GET("app/users/kakao-logout")
+    fun getLogout(
+        @Header("Authorization") Authorization: String,
+    ): Call<LogoutResponse>
+    //회원탈퇴
+    @GET("app/users/kakao-unlink")
+    fun getUnregister(
+        @Header("Authorization") Authorization: String,
+    ): Call<UnregisterResponse>
+
 }
