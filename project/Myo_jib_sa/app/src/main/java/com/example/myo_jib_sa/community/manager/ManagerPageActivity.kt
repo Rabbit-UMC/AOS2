@@ -31,11 +31,13 @@ class ManagerPageActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //관리자 페이지 이름 설정
-        val boardId= intent.getIntExtra("boardId",0).toLong()
+        val boardId= intent.getLongExtra("boardId",0L)
         missionId=intent.getLongExtra("missionId", 0)
 
+        Log.d("관리자 페이지 미션 아이디", missionId.toString())
+
         //관리자 화면 조회
-        join(missionId)
+        join(boardId)
 
 
         //게시판 이름
@@ -94,12 +96,13 @@ class ManagerPageActivity : AppCompatActivity() {
     }
 
     //관리자 화면 조회
-    private fun join(missionId:Long){
+    private fun join(boardId:Long){
         val retrofitManager = ManagerRetrofitManager.getInstance(this)
 
-            retrofitManager.joinMission(missionId){ response ->
+            retrofitManager.joinMission(boardId){ response ->
                 if(response.isSuccess){
-                    binding.managerPageNameTxt.text=response.result[0].nowHostUserName
+                    binding.managerNameTxt.text=response.result[0].nowHostUserName
+
                     Glide.with(this)
                         .load(response.result[0].missionImageUrl)
                         .into(binding.managerMissionImg)
