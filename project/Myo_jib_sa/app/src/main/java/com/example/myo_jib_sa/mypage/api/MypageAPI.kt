@@ -49,13 +49,9 @@ interface MypageAPI {
 
     //로그아웃
     @GET("app/users/kakao-logout")
-    fun getLogout(
-        @Header("Authorization") Authorization: String,
-    ): Call<LogoutResponse>
+    fun getLogout(): Call<LogoutResponse>
     //회원탈퇴
     @GET("app/users/kakao-unlink")
-    fun getUnregister(
-        @Header("Authorization") Authorization: String,
-    ): Call<UnregisterResponse>
+    fun getUnregister(): Call<UnregisterResponse>
 
 }

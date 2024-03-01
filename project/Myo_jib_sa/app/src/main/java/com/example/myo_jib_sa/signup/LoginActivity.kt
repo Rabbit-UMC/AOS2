@@ -89,11 +89,11 @@ class LoginActivity : AppCompatActivity() {
                             .putExtra("kakaoToken", accessToken))
                     }
                 } else {
-                    Log.e("LoginResponse", "API 호출 실패: ${response.code()}, ${response.message()}")
+                    Log.e("LoginResponse", "API 호출 실패: $response")
                 }
             }
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.e("LoginResponse", "onFail API 호출 실패: ${t.message}")
+                Log.e("LoginResponse", "onFailure API 호출 실패: ${t.message}")
             }
         })
     }

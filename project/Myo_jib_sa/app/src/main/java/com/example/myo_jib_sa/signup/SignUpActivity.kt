@@ -12,6 +12,7 @@ import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.spfManager
 import com.example.myo_jib_sa.databinding.*
 import com.example.myo_jib_sa.signup.api.MemeberApi
 import com.example.myo_jib_sa.signup.api.SignUpRequest
@@ -169,8 +170,8 @@ class SignUpActivity : AppCompatActivity() {
                     if(response.body()?.isSuccess == true) {
                         showCompleteDialog()
                         response.body()!!.result?.let {
-                            MyojibsaApplication.spfManager.setAccessToken(it.jwtAccessToken)
-                            MyojibsaApplication.spfManager.setRefreshToken(it.jwtRefreshToken)
+                            spfManager.setAccessToken(it.jwtAccessToken)
+                            spfManager.setRefreshToken(it.jwtRefreshToken)
                         }
                     }
                 }
