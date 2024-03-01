@@ -56,9 +56,9 @@ data class UserMissionResDto(
 )
 
 data class LogoutResponse(
-    val result: Int
+    val result: Long
 ):  BaseResponse()
 
 data class UnregisterResponse(
-    val result: Int
+    val result: Long
 ):  BaseResponse()

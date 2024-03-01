@@ -81,7 +81,7 @@ class UnregisterDialogFragment() : DialogFragment() {
         }
 
         binding.unregisterYesBtn.setOnClickListener {
-            retrofit.getUnregister(spfManager.getAccessToken()).enqueue(object :
+            retrofit.getUnregister().enqueue(object :
                 Callback<UnregisterResponse> {
                 override fun onResponse(call: Call<UnregisterResponse>, response: Response<UnregisterResponse>) {
                     if (response.isSuccessful) {
