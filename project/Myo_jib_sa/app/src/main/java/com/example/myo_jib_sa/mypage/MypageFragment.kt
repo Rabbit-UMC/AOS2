@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.spfManager
 import com.example.myo_jib_sa.databinding.FragmentMypageBinding
 import com.example.myo_jib_sa.databinding.ToastMissionBinding
 import com.example.myo_jib_sa.mypage.api.GetUserProfileResponse
@@ -51,6 +52,7 @@ class MypageFragment : Fragment() {
     ): View? {
         binding = FragmentMypageBinding.inflate(layoutInflater)
 
+        Log.d("MypageFragment Token Check", spfManager.getAccessToken())
         initListener()
 
         return binding.root

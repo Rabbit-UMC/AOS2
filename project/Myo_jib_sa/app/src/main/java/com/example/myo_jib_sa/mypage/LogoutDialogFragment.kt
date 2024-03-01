@@ -82,7 +82,8 @@ class LogoutDialogFragment() : DialogFragment() {
         }
 
         binding.logoutYesBtn.setOnClickListener {
-            retrofit.getLogout(spfManager.getAccessToken()).enqueue(object :
+            Log.d("logout", spfManager.getAccessToken())
+            retrofit.getLogout().enqueue(object :
                 Callback<LogoutResponse> {
                 override fun onResponse(call: Call<LogoutResponse>, response: Response<LogoutResponse>) {
                     if (response.isSuccessful) {

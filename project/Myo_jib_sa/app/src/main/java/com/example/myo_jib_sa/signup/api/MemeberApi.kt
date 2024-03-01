@@ -9,13 +9,14 @@ interface MemeberApi {
     // 로그인
     @GET("app/users/kakao-login")
     fun getLogin(
-        @Header("Authorization") Authorization: String,
+        @Header("Authorization") auth: String,
     ): Call<LoginResponse>
+
 
     // 회원가입
     @POST("app/users/sign-up")
     fun postSignUp(
-        @Header("Authorization") Authorization: String,
+        @Header("Authorization") auth: String,
         @Body requestBody: SignUpRequest
     ): Call<SignUpResponse>
 
