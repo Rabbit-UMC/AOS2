@@ -48,12 +48,12 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
         binding.missionCertCompleteTxt.setOnClickListener {
             val imgPath = getRealPathFromURI(imgUri)
             if (imgPath != null) {
-                var imageFile = File(imgPath) // 이미지 파일 경로
-                val requestFile = RequestBody.create(MediaType.parse("image/*"), imageFile)
-                val imagePart = MultipartBody.Part.createFormData("file", imageFile.name, requestFile)
-                Log.d("이미지 파트", imagePart.toString())
+                val file = File(imgPath) // 이미지 파일 경로
+                val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                val body = MultipartBody.Part.createFormData("multipartFile", file.name, requestFile)
+                Log.d("이미지 파트", body.toString())
 
-                postImg(boardId, imagePart)
+                postImg(boardId, body)
                 if (isFinish) {
                     val intent = Intent(this, MissionCertificationWriteActivity::class.java)
                     intent.putExtra("isFinish", true)
@@ -75,7 +75,7 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
 
         reportDialog.setReportDialogListener(object : CommunityMissionCertPostDialog.ReportDialogListener {
             override fun onReportSubmitted(message: String) {
-                Log.d("onReportSubmitted", "$message")
+                Log.d("onReportSubmitted", message)
                 // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
                 val snackbarBinding = ToastRedBlackBinding.inflate(layoutInflater)
                 snackbarBinding.toastRedBlackTxt.text=message
