@@ -2,11 +2,7 @@ package com.example.myo_jib_sa.community.api.BoardPost
 
 import android.content.Context
 import android.util.Log
-import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
-import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.api.RetrofitClient
-import com.example.myo_jib_sa.community.api.post.PostRetrofitITFC
 import retrofit2.Call
 import retrofit2.Response
 

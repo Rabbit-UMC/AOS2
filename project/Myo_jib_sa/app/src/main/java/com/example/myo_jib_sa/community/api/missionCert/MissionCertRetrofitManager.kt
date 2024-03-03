@@ -5,9 +5,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.myo_jib_sa.base.BaseResponse
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
-import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.api.RetrofitClient
-import com.example.myo_jib_sa.community.api.post.SimpleResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Response

@@ -2,12 +2,8 @@ package com.example.myo_jib_sa.community.api.imgUpload
 
 import android.content.Context
 import android.util.Log
-import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
-import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.api.RetrofitClient
 import com.example.myo_jib_sa.community.api.missionCert.MissionCertRetrofitManager
-import com.example.myo_jib_sa.community.api.post.PostRetrofitITFC
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

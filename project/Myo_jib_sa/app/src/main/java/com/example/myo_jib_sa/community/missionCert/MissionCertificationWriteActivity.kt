@@ -15,6 +15,7 @@ import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -82,15 +83,27 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
         binding.missionCertGalleryConstraint.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
+            galleryLauncher.launch(galleryIntent)
         }
 
-        //todo: 카메라로 사진 찍어서 올리기
-        binding.missionCertCameraConstraint.setOnClickListener {
-            startCamera()
-        }
+        //카메라로 사진 찍어서 올리기
+        //binding.missionCertCameraConstraint.setOnClickListener {
+         //   startCamera()
+        //}
 
     }
+
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            val selectedImageUri: Uri = data?.data!!
+            val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
+            intent.putExtra("imgUri", selectedImageUri)
+            intent.putExtra("boardId", boardId)
+            startActivity(intent)
+        }
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
