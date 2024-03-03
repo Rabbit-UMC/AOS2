@@ -12,8 +12,9 @@ import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.spfManager
 import com.example.myo_jib_sa.databinding.*
-import com.example.myo_jib_sa.signup.api.SignUpTFC
+import com.example.myo_jib_sa.signup.api.MemeberApi
 import com.example.myo_jib_sa.signup.api.SignUpRequest
 import com.example.myo_jib_sa.signup.api.SignUpResponse
 import com.example.myo_jib_sa.mypage.api.GetCheckDuplicationResponse
@@ -58,15 +59,10 @@ class SignUpActivity : AppCompatActivity() {
             }
 
             // 체크박스 클릭 이벤트
-            signUpOldCheckbox.setOnClickListener {
-                checkSignUpBtnEnable()
-            }
-            signUpTermsOfUseCheckbox.setOnClickListener {
-                checkSignUpBtnEnable()
-            }
-            signUpPrivacyCheckbox.setOnClickListener {
-                checkSignUpBtnEnable()
-            }
+            signUpOldCheckbox.setOnClickListener { checkSignUpBtnEnable() }
+            signUpTermsOfUseCheckbox.setOnClickListener { checkSignUpBtnEnable() }
+            signUpPrivacyCheckbox.setOnClickListener { checkSignUpBtnEnable() }
+
             // 체크 박스 텍스트 클릭 이벤트
             signUpOldTxt.setOnClickListener {
                 signUpOldCheckbox.isChecked = !signUpOldCheckbox.isChecked
@@ -80,29 +76,20 @@ class SignUpActivity : AppCompatActivity() {
                 signUpPrivacyCheckbox.isChecked = !signUpPrivacyCheckbox.isChecked
                 checkSignUpBtnEnable()
             }
-            signUpMailTxt.setOnClickListener {
-                signUpMailCheckbox.isChecked = !signUpMailCheckbox.isChecked
-            }
-            signUpIdentificationTxt.setOnClickListener {
-                signUpIdentificationCheckbox.isChecked = !signUpIdentificationCheckbox.isChecked
+            signUpMarketingTxt.setOnClickListener {
+                signUpMarketingCheckbox.isChecked = !signUpMarketingCheckbox.isChecked
             }
 
 
             // 이용약관 디테일
-            signUpOldDetailBtn.setOnClickListener {
-                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
-            }
             signUpTermsOfUseDetailBtn.setOnClickListener {
-                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
+                showTermsOfUseDetailDialog("서비스 이용약관", getString(R.string.sign_up_terms_of_use_content))
             }
             signUpPrivacyDetailBtn.setOnClickListener {
-                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
+                showTermsOfUseDetailDialog("개인정보 처리방침", getString(R.string.sign_up_privacy_content))
             }
-            signUpMailDetailBtn.setOnClickListener {
-                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
-            }
-            signUpIdentificationDetailBtn.setOnClickListener {
-                showTermsOfUseDetailDialog(getString(R.string.sine_up_use_old))
+            signUpMarketingDetailBtn.setOnClickListener {
+                showTermsOfUseDetailDialog("마케팅 정보 제공 및 수신",getString(R.string.sign_up_marketing_content))
             }
 
 
@@ -111,8 +98,7 @@ class SignUpActivity : AppCompatActivity() {
                 signUpOldCheckbox.isChecked = isChecked
                 signUpTermsOfUseCheckbox.isChecked = isChecked
                 signUpPrivacyCheckbox.isChecked = isChecked
-                signUpMailCheckbox.isChecked = isChecked
-                signUpIdentificationCheckbox.isChecked = isChecked
+                signUpMarketingCheckbox.isChecked = isChecked
 
                 checkSignUpBtnEnable()
             }
@@ -174,18 +160,18 @@ class SignUpActivity : AppCompatActivity() {
         })
     }
 
-    private fun showTermsOfUseDetailDialog(desc: String) {
-        SignUpTermsOfUseDetailDialog(desc).show(supportFragmentManager, "SignUpDetailDialog")
+    private fun showTermsOfUseDetailDialog(title: String, desc: String) {
+        SignUpTermsOfUseDetailDialog(title, desc).show(supportFragmentManager, "SignUpDetailDialog")
     }
     private fun postSignUp() {
-        sRetrofit.create(SignUpTFC::class.java)
+        sRetrofit.create(MemeberApi::class.java)
             .postSignUp(kakaoToken, SignUpRequest(nickname)).enqueue(object :Callback<SignUpResponse> {
                 override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
                     if(response.body()?.isSuccess == true) {
                         showCompleteDialog()
                         response.body()!!.result?.let {
-                            MyojibsaApplication.spfManager.setAccessToken(it.jwtAccessToken)
-                            MyojibsaApplication.spfManager.setRefreshToken(it.jwtRefreshToken)
+                            spfManager.setAccessToken(it.jwtAccessToken)
+                            spfManager.setRefreshToken(it.jwtRefreshToken)
                         }
                     }
                 }

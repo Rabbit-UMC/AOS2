@@ -14,11 +14,13 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.spfManager
+import com.example.myo_jib_sa.databinding.DialogLogoutFragmentBinding
 import com.example.myo_jib_sa.databinding.DialogMissionReportFragmentBinding
 import com.example.myo_jib_sa.databinding.DialogUnregisterFragmentBinding
 import com.example.myo_jib_sa.mission.api.Mission
 import com.example.myo_jib_sa.mission.api.MissionAPI
 import com.example.myo_jib_sa.mission.api.MissionReportResponse
+import com.example.myo_jib_sa.mypage.api.LogoutResponse
 import com.example.myo_jib_sa.mypage.api.MypageAPI
 import com.example.myo_jib_sa.mypage.api.UnregisterResponse
 import com.example.myo_jib_sa.signup.LoginActivity
@@ -26,14 +28,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UnregisterDialogFragment() : DialogFragment() {
-    private lateinit var binding: DialogUnregisterFragmentBinding
+class LogoutDialogFragment() : DialogFragment() {
+    private lateinit var binding: DialogLogoutFragmentBinding
     private val retrofit = MyojibsaApplication.sRetrofit.create(MypageAPI::class.java)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogUnregisterFragmentBinding.inflate(inflater, container, false)
+        binding = DialogLogoutFragmentBinding.inflate(inflater, container, false)
 
         initListener()
 
@@ -75,25 +77,25 @@ class UnregisterDialogFragment() : DialogFragment() {
     }
 
     private fun initListener() {
-        //미션 report api 호출
-        binding.unregisterNoBtn.setOnClickListener {
+        binding.logoutNoBtn.setOnClickListener {
             dismiss()
         }
 
-        binding.unregisterYesBtn.setOnClickListener {
-            retrofit.getUnregister().enqueue(object :
-                Callback<UnregisterResponse> {
-                override fun onResponse(call: Call<UnregisterResponse>, response: Response<UnregisterResponse>) {
+        binding.logoutYesBtn.setOnClickListener {
+            Log.d("logout", spfManager.getAccessToken())
+            retrofit.getLogout().enqueue(object :
+                Callback<LogoutResponse> {
+                override fun onResponse(call: Call<LogoutResponse>, response: Response<LogoutResponse>) {
                     if (response.isSuccessful) {
-                        val unregisterResponse = response.body()
-                        if (unregisterResponse != null) {
-                            if (unregisterResponse.isSuccess) {
+                        val logoutResponse = response.body()
+                        if (logoutResponse != null) {
+                            if (logoutResponse.isSuccess) {
                                 spfManager.spfClear()
                                 dismiss()
                                 activity?.finish()
                                 startActivity(Intent(activity, LoginActivity::class.java))
                             } else {
-                                Log.d("report",unregisterResponse.errorMessage)
+                                Log.d("report",logoutResponse.errorMessage)
                             }
                         }
                     } else {
@@ -102,7 +104,7 @@ class UnregisterDialogFragment() : DialogFragment() {
                     }
                 }
 
-                override fun onFailure(call: Call<UnregisterResponse>, t: Throwable) {
+                override fun onFailure(call: Call<LogoutResponse>, t: Throwable) {
                     // 네트워크 등의 문제로 API 호출이 실패한 경우 처리
                     Log.d("unregister","onFailure : $t")
                 }

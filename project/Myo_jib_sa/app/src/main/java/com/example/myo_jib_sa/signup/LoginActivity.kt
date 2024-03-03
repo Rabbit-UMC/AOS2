@@ -4,8 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.myo_jib_sa.signup.api.SignUpTFC
+import com.example.myo_jib_sa.signup.api.MemeberApi
 import com.example.myo_jib_sa.signup.api.LoginResponse
 import com.example.myo_jib_sa.MainActivity
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
@@ -23,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var accessToken:String
     // Retrofit 객체 가져오기
-    private val retrofit = sRetrofit.create(SignUpTFC::class.java)
+    private val retrofit = sRetrofit.create(MemeberApi::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,11 +89,11 @@ class LoginActivity : AppCompatActivity() {
                             .putExtra("kakaoToken", accessToken))
                     }
                 } else {
-                    Log.e("LoginResponse", "API 호출 실패: ${response.code()}, ${response.message()}")
+                    Log.e("LoginResponse", "API 호출 실패: $response")
                 }
             }
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.e("LoginResponse", "onFail API 호출 실패: ${t.message}")
+                Log.e("LoginResponse", "onFailure API 호출 실패: ${t.message}")
             }
         })
     }
