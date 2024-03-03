@@ -17,7 +17,6 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
-        android:usesCleartextTraffic="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/ic_app"
         android:label="묘집사"
@@ -25,7 +24,11 @@
         android:roundIcon="@drawable/ic_app"
         android:supportsRtl="true"
         android:theme="@style/Theme.Myo_jib_sa"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".mypage.MypageWritingActivity"
+            android:exported="false" />
         <activity
             android:name=".community.post.PostPictureActivity"
             android:exported="false" />
@@ -103,21 +106,20 @@
             android:exported="false" />
         <activity
             android:name=".signup.SignUpActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".MainActivity"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".signup.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".signup.LoginActivity"
-            android:exported="true" >
-
         </activity>
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -133,6 +135,7 @@
                     android:scheme="kakao${KAKAO_NATIVE_KEY}" />
             </intent-filter>
         </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.myo_jib_sa.fileprovider"
@@ -140,7 +143,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
     </application>
 

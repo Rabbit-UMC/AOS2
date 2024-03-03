@@ -73,7 +73,7 @@ class ManagerMissionCreateActivity2 : AppCompatActivity(), MissionCreateCalendar
         binding.missionCreateStartDateBtnTxt.text = fromDateYYYYMMDD(startSelectedDate)
         binding.missionCreateEndDateBtnTxt.text = fromDateYYYYMMDD(endSelectedDate)
 
-        boardId=intent.getLongExtra("boardId", 0)
+        boardId=intent.getLongExtra("boardId", 0L)
 
         initListener()
 

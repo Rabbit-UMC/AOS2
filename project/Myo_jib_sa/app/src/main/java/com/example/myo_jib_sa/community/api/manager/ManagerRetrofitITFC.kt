@@ -24,9 +24,11 @@ interface ManagerRetrofitITFC {
                       ,@Body request: MissionCreateRequest
                       ): Call<BaseResponse>
 
-    @GET("app/host/main-mission/{mainMissionId}")
-    fun joinManagerMission(@Path("mainMissionId")mainMissionId:Long
+    @GET("app/host/main-mission/{categoryId}")
+    fun joinManagerMission(@Path("categoryId") categoryId:Long
     ): Call<JoinManagerMissionResponse>
+
+
 }
 
 

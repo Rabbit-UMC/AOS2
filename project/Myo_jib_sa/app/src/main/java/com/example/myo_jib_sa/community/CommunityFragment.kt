@@ -3,11 +3,13 @@ package com.example.myo_jib_sa.community
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,6 +41,7 @@ class CommunityFragment : Fragment() {
     val AD_UNIT_ID = BuildConfig.AD_UNIT_ID
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -68,6 +71,7 @@ class CommunityFragment : Fragment() {
     }
 
     //다시 돌아올 때 뷰 업데이트
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onResume() {
         super.onResume()
         retrofitManager = CommunityHomeManager.getInstance(requireContext())
@@ -75,7 +79,8 @@ class CommunityFragment : Fragment() {
     }
 
     //플로팅 버튼
-    private fun setFABClickEvent(userHostCategory:List<Long>) {
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun setFABClickEvent(userHostCategory:List<Long>, mainMissionList:List<MainMission>) {
 
         if(userHostCategory.isEmpty()){
             binding.myoZipMainBtn.hide() //관리자가 아닌 유저의 경우
@@ -100,8 +105,17 @@ class CommunityFragment : Fragment() {
                     Constance.ART_ID -> {
                         setImageResource(R.drawable.ic_floating_art)
                         setOnClickListener {
+                            //todo: 아래 부분 묘듈화 시키기
                             val intent = Intent(requireContext(), ManagerPageActivity::class.java)
                             intent.putExtra("boardId", userHostCategory[i])
+
+                            mainMissionList.stream().filter { mission ->
+                                mission.missionCategoryId == userHostCategory[i]
+                            }.findFirst().ifPresent { mission ->
+                                intent.putExtra("missionId", mission.mainMissionId)
+                                Log.d("관리자 페이지로 전달할 미션 아이디", mission.mainMissionId.toString())
+                            }
+
                             startActivity(intent)
                         }
                     }
@@ -110,6 +124,14 @@ class CommunityFragment : Fragment() {
                         setOnClickListener {
                             val intent = Intent(requireContext(), ManagerPageActivity::class.java)
                             intent.putExtra("boardId", userHostCategory[i])
+
+                            mainMissionList.stream().filter { mission ->
+                                mission.missionCategoryId == userHostCategory[i]
+                            }.findFirst().ifPresent { mission ->
+                                intent.putExtra("missionId", mission.mainMissionId)
+                                Log.d("관리자 페이지로 전달할 미션 아이디", mission.mainMissionId.toString())
+                            }
+
                             startActivity(intent)
                         }
                     }
@@ -118,6 +140,14 @@ class CommunityFragment : Fragment() {
                         setOnClickListener {
                             val intent = Intent(requireContext(), ManagerPageActivity::class.java)
                             intent.putExtra("boardId", userHostCategory[i])
+
+                            mainMissionList.stream().filter { mission ->
+                                mission.missionCategoryId == userHostCategory[i]
+                            }.findFirst().ifPresent { mission ->
+                                intent.putExtra("missionId", mission.mainMissionId)
+                                Log.d("관리자 페이지로 전달할 미션 아이디", mission.mainMissionId.toString())
+                            }
+
                             startActivity(intent)
                         }
                     }
@@ -174,12 +204,15 @@ class CommunityFragment : Fragment() {
 
 
     //API 연결, 리사이클러뷰 띄우기, 플로팅 버튼 설정 (Gone)
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun getHomeData(context: Context) {
         retrofitManager.home() { homeResponse ->
             if (homeResponse.isSuccess) {
                 val missionList: List<MainMission> = homeResponse.result.mainMission
                 val postList: List<PopularArticle> = homeResponse.result.popularArticle
-                setFABClickEvent(homeResponse.result.userHostCategory)
+
+                setFABClickEvent(homeResponse.result.userHostCategory, homeResponse.result.mainMission)
+
                 Log.d("내가 묘집사인 카테고리 (응답)", homeResponse.result.userHostCategory.toString())
                 if (missionList.isNotEmpty()) {
                     linkMrecyclr(context, missionList)

@@ -2,11 +2,11 @@ package com.example.myo_jib_sa.mypage.api
 
 import com.example.myo_jib_sa.base.BaseResponse
 
-data class GetMyCommentResponse(
-    val result: List<GetMyCommentResult>?
+data class GetWritingResponse(
+    val result: List<Post>?
 ): BaseResponse()
 
-data class GetMyCommentResult(
+data class Post(
     val articleId:Long,
     val articleTitle:String,
     val uploadTime:String,
@@ -14,17 +14,6 @@ data class GetMyCommentResult(
     val commentCount:Int
 )
 
-data class GetMyPostResponse(
-    val result: List<GetMyPostResult>?
-): BaseResponse()
-
-data class GetMyPostResult(
-    val articleId:Long,
-    val articleTitle:String,
-    val uploadTime:String,
-    val likeCount:Int,
-    val commentCount:Int
-)
 
 data class GetUserProfileResponse(
     val result: GetUserProfileResult?
@@ -65,3 +54,11 @@ data class UserMissionResDto(
     val successCnt: Int,
     val title: String
 )
+
+data class LogoutResponse(
+    val result: Long
+):  BaseResponse()
+
+data class UnregisterResponse(
+    val result: Long
+):  BaseResponse()
