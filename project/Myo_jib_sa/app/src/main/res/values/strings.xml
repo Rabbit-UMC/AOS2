@@ -16,12 +16,12 @@
     <string name="sign_up_desc">안녕하세요 집사님 :)\n묘집사 이용을 위해 닉네임을 설정하고 이용 약관에 동의해주세요.</string>
     <string name="sign_up_nickname_title">닉네임 설정</string>
     <string name="sign_up_nickname_desc">묘집사에서 사용할 닉네임을 등록해주세요.</string>
-    <string name="sign_up_terms_of_use_desc">묘집사 앱 사용을 위해 이용 약관에 동의해주세요.</string>
+    <string name="sign_up_terms_desc">묘집사 앱 사용을 위해 이용 약관에 동의해주세요.</string>
 
-    <string name="sign_up_terms_of_use_agree">이용약관 동의</string>
+    <string name="sign_up_terms_agree">이용약관 동의</string>
     <string name="sign_up_use_old">(필수) 만 14세 이상입니다.</string>
-    <string name="sign_up_terms_of_use_title">(필수) 서비스 이용 약관</string>
-    <string name="sign_up_terms_of_use_content">제1조(목적)\n\n
+    <string name="sign_up_terms_title">(필수) 서비스 이용 약관</string>
+    <string name="sign_up_terms_content">제1조(목적)\n\n
 
 묘집사 서비스 이용약관은 래빗 개발 팀(이하 “개발 팀"이라 합니다)가 제공하는 묘집사 서비스 이용과 관련하여 학생 개발 팀과 이용자 간의 권리, 의무 및 책임 사항 등을 규정함을 목적으로 합니다.\n\n
 
@@ -321,7 +321,7 @@
     <string name="mypage_edit_profile">프로필 편집</string>
     <string name="mypage_post">작성한 글</string>
     <string name="mypage_comment">댓글단 글</string>
-    <string name="mypage_terms_of_use_title">서비스 이용 약관</string>
+    <string name="mypage_terms_title">서비스 이용 약관</string>
     <string name="mypage_privacy_title">개인정보 처리방침</string>
     <string name="mypage_marketing_title">마케팅 정보 제공 및 수신</string>
     <string name="mypage_nickname_rule">닉네임 설정 규칙</string>
