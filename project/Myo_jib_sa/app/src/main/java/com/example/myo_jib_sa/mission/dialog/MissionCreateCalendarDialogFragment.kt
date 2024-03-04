@@ -59,7 +59,7 @@ class MissionCreateCalendarDialogFragment(private val isStartDate: Boolean, priv
 
         // calendar 간격 설정
         binding.missionCreateCalendarRv.addItemDecoration(
-                MissionCreateCalendarAdapter.GridSpaceDecoration(resources.displayMetrics.widthPixels))
+            MissionCreateCalendarAdapter.GridSpaceDecoration(resources.displayMetrics.widthPixels))
         //화면 초기화
         setMonthView()
 

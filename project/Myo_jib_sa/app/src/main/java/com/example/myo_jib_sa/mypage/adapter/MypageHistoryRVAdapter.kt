@@ -35,7 +35,7 @@ class MypageHistoryRVAdapter(private val items: List<UserMissionResDto>, private
         private fun setMissionImage(image: Any) {
             Glide.with(binding.historyMissionTitleIv)
                 .load(image)
-                .error(R.drawable.ic_app_logo)
+                .error(R.drawable.background_mypage_history_success_default)
                 .into(binding.historyMissionTitleIv)
         }
         private fun configureVisibility(isSuccess: Boolean) {
