@@ -1,15 +1,12 @@
 package com.example.myo_jib_sa.signup
 
 import android.app.Dialog
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.databinding.DialogSignupDetailBinding
 
-class SignUpTermsOfUseDetailDialog(private val title: String, private val desc: String) : DialogFragment() {
+class SignUpTermsDetailDialog(private val title: String, private val desc: String) : DialogFragment() {
     private lateinit var binding: DialogSignupDetailBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
