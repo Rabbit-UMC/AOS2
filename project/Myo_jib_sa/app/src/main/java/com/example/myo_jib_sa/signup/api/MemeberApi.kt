@@ -12,6 +12,12 @@ interface MemeberApi {
         @Header("Authorization") auth: String,
     ): Call<LoginResponse>
 
+    // 토큰 재발급
+    @GET("app/users/reissue")
+    fun reissueToken(
+        @Header("X-ACCESS-TOKEN") accessToken: String,
+        @Header("X-REFRESH-TOKEN") refreshToken: String,
+    ): Call<LoginResponse>
 
     // 회원가입
     @POST("app/users/sign-up")

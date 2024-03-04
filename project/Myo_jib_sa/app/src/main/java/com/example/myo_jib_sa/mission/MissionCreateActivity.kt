@@ -159,7 +159,7 @@ class MissionCreateActivity : AppCompatActivity(), MissionCreateCalendarDialogFr
                         setResult(
                             Activity.RESULT_OK,
                             Intent().putExtra("resultMessage", "미션 생성 성공!")
-                            .putExtra("isSuccess", true)
+                                .putExtra("isSuccess", true)
                         )
                         finish()
                     }
