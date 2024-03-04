@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="40dp"
-    android:background="@drawable/background_terms_of_use_dialog_radius"
-    tools:context=".signup.SignUpTermsOfUseDetailDialog">
+    android:background="@drawable/background_terms_dialog_radius"
+    tools:context=".signup.SignUpTermsDetailDialog">
 
     <TextView
         android:id="@+id/sign_up_detail_title_txt"
