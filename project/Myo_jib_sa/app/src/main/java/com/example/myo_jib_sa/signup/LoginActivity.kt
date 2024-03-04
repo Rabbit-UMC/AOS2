@@ -7,7 +7,9 @@ import android.util.Log
 import com.example.myo_jib_sa.signup.api.MemeberApi
 import com.example.myo_jib_sa.signup.api.LoginResponse
 import com.example.myo_jib_sa.MainActivity
+import com.example.myo_jib_sa.base.MyojibsaApplication
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.signUpRetrofit
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.spfManager
 import com.example.myo_jib_sa.databinding.ActivityLoginBinding
 import com.kakao.sdk.auth.model.OAuthToken
@@ -20,9 +22,8 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var accessToken:String
     // Retrofit 객체 가져오기
-    private val retrofit = sRetrofit.create(MemeberApi::class.java)
+    private val retrofit = signUpRetrofit.create(MemeberApi::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,8 +75,9 @@ class LoginActivity : AppCompatActivity() {
         retrofit.getLogin(accessToken).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
-                    Log.d("getLogin", "${response.body()}")
+                    Log.d("getLogin", "response.isSuccessful : ${response.body()}")
                     if(response.body()?.isSuccess == true) {
+                        Log.d("getLogin", "response.body()?.isSuccess == true : ${response.body()}")
                         // 토큰 설정
                         response.body()!!.result?.let {
                             spfManager.setAccessToken(it.jwtAccessToken)
@@ -84,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
                         // 메인 액티비티로 이동
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                         finish()
-                    } else {
+                    } else if(response.body()?.errorCode == NOT_IN_DB) {
                         startActivity(Intent(this@LoginActivity, SignUpActivity::class.java)
                             .putExtra("kakaoToken", accessToken))
                     }
@@ -98,4 +100,7 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
+    companion object {
+        const val NOT_IN_DB = "USER4010"
+    }
 }

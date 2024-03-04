@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -12,6 +13,7 @@ import com.example.myo_jib_sa.mission.MissionFragment
 import com.example.myo_jib_sa.mypage.MypageFragment
 import com.example.myo_jib_sa.mypage.UnregisterDialogFragment
 import com.example.myo_jib_sa.schedule.ScheduleFragment
+import com.example.myo_jib_sa.signup.LoginActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,17 +24,22 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        checkToken()
+        setBottomNavi()
+    }
+
+    private fun checkToken() {
+        if(spfManager.getAccessToken() == "") {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+    }
+
+    private fun setBottomNavi(){
         //바텀 네비게이션 설정
         binding.mainBottomNavi.itemIconTintList = null //아이콘 태마색 변경 방지
         //초기 프레그먼트 설정
         supportFragmentManager.beginTransaction().replace(R.id.main_layout, ScheduleFragment()).commitAllowingStateLoss()
-        //supportFragmentManager.beginTransaction().replace(R.id.main_layout, MissionFragment()).commitAllowingStateLoss()
-
-        setBottomNavi()
-    }
-
-
-    private fun setBottomNavi(){
         // Item을 클릭했을 때 나타나는 이벤트 설정
         binding.mainBottomNavi.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {

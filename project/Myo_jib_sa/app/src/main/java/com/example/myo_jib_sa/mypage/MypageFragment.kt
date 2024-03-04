@@ -20,7 +20,7 @@ import com.example.myo_jib_sa.databinding.ToastMissionBinding
 import com.example.myo_jib_sa.mypage.api.GetUserProfileResponse
 import com.example.myo_jib_sa.mypage.api.MypageAPI
 import com.example.myo_jib_sa.mypage.history.MypageHistoryActivity
-import com.example.myo_jib_sa.signup.SignUpTermsOfUseDetailDialog
+import com.example.myo_jib_sa.signup.SignUpTermsDetailDialog
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
@@ -86,7 +86,7 @@ class MypageFragment : Fragment() {
         val dialogActions = mapOf(
             binding.mypageNicknameRuleTv to Pair(R.string.mypage_nickname_rule, R.string.mypage_nickname_rule_content),
             binding.mypageCommunityRuleTv to Pair(R.string.mypage_community_rule_title, R.string.mypage_community_rule_content),
-            binding.mypageTermOfUseTv to Pair(R.string.mypage_terms_of_use_title, R.string.sign_up_terms_of_use_content),
+            binding.mypageTermOfUseTv to Pair(R.string.mypage_terms_title, R.string.sign_up_terms_content),
             binding.mypagePrivacyTv to Pair(R.string.mypage_privacy_title, R.string.sign_up_privacy_content),
             binding.mypageMarketingTv to Pair(R.string.mypage_marketing_title, R.string.sign_up_marketing_content)
         )
@@ -170,7 +170,7 @@ class MypageFragment : Fragment() {
     }
 
     private fun showDetailDialog(title: String, desc: String) {
-        SignUpTermsOfUseDetailDialog(title, desc).show(parentFragmentManager, "SignUpDetailDialog")
+        SignUpTermsDetailDialog(title, desc).show(parentFragmentManager, "SignUpDetailDialog")
     }
 
     private fun Int.dpToPx(): Int = (this * requireContext().resources.displayMetrics.density).toInt()
