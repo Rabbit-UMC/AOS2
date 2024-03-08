@@ -29,6 +29,9 @@ import com.example.myo_jib_sa.schedule.dialog.ScheduleDeleteDialogFragment
 import com.example.myo_jib_sa.schedule.dialog.ScheduleDetailDialogFragment
 import com.example.myo_jib_sa.databinding.FragmentScheduleBinding
 import com.example.myo_jib_sa.databinding.ToastCreateScheduleBinding
+import com.example.myo_jib_sa.databinding.ToastErrorBinding
+import com.example.myo_jib_sa.databinding.ToastRedBlackBinding
+import com.example.myo_jib_sa.databinding.ToastYellowBlackBinding
 import com.example.myo_jib_sa.schedule.api.MissionAPI
 import com.example.myo_jib_sa.schedule.api.MyMissionResponse
 import com.example.myo_jib_sa.schedule.api.MyMissionResult
@@ -64,6 +67,7 @@ class ScheduleFragment() : Fragment() {
     lateinit var standardDate: LocalDate //캘린더의 기준 날짜, selectedDate업데이트 하면 얘도 같이 업데이트 해주기
     var firstSelectedDatePosition: Int = -1
     private lateinit var createScheduleResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var scheduleDetailResultLauncher : ActivityResultLauncher<Intent>
 
 
     var mDataList = mutableListOf<MyMissionResult>() //List<MyMissionResult>() //미션 리스트 데이터
@@ -272,6 +276,7 @@ class ScheduleFragment() : Fragment() {
             adapter = ScheduleAdaptar(sDataList,
                 object : ScheduleAdaptar.OnItemClickListener{
                     override fun onClick(scheduleData: ScheduleOfDayResult) {
+
                         //detailDialog 보여주기
                         val scheduleDetailDialog = ScheduleDetailDialogFragment(
                             scheduleData.scheduleId,
@@ -281,6 +286,27 @@ class ScheduleFragment() : Fragment() {
                                     scheduleMonthApi()//달력 초기화
                                     scheduleOfDayApi(standardDate)//scheduleOfDay api연결, ScheduleAdaptar 리사이클러뷰 연결
                                 }
+                            },
+                            object : ScheduleDetailDialogFragment.DialogDismissListener{
+                                override fun onDialogDismiss() {
+                                    // 뷰 바인딩을 사용하여 커스텀 레이아웃을 인플레이트합니다.
+                                    val snackbarBinding = ToastErrorBinding.inflate(layoutInflater)
+                                    snackbarBinding.toastMessageTv.text = "서버와 연결에 실패하였습니다."
+
+                                    // 스낵바 생성 및 설정
+                                    val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_SHORT).apply {
+                                        animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+                                        (view as Snackbar.SnackbarLayout).apply {
+                                            setBackgroundColor(Color.TRANSPARENT)
+                                            addView(snackbarBinding.root)
+                                            translationY = -15.dpToPx().toFloat()
+                                            elevation = 0f
+                                        }
+                                    }
+                                    // 스낵바 표시
+                                    snackbar.show()
+                                }
+
                             }
                         )
 
@@ -353,7 +379,6 @@ class ScheduleFragment() : Fragment() {
             var missionIntent = Intent(mContext, CurrentMissionActivity::class.java)
             startActivity(missionIntent)
         }
-
 
 
         //floating button누르면 CreateScheduleActivity로 화면 전환
