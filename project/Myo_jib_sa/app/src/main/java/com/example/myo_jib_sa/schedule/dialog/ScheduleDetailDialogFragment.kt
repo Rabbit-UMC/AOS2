@@ -6,18 +6,18 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
-import com.example.myo_jib_sa.schedule.api.RetrofitClient
 import com.example.myo_jib_sa.databinding.DialogFragmentScheduleDetailBinding
-import com.example.myo_jib_sa.mission.adapter.MissionRVAdapter
 import com.example.myo_jib_sa.schedule.api.ScheduleAPI
 import com.example.myo_jib_sa.schedule.api.ScheduleDetailResponse
 import com.example.myo_jib_sa.schedule.api.ScheduleDetailResult
@@ -29,16 +29,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.DecimalFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+
 
 class ScheduleDetailDialogFragment(
     private val scheduleId : Long
     , private val onButtonClickListener: OnButtonClickListener
+    ,private val dismissListener: DialogDismissListener
     ) : DialogFragment(){
     val retrofit: ScheduleAPI = sRetrofit.create(ScheduleAPI::class.java)
     private lateinit var binding: DialogFragmentScheduleDetailBinding
     private lateinit var mContext:Context //requireContext 대신 사용
+
+
     private var result: ScheduleDetailResult = ScheduleDetailResult(
         scheduleId = 0,
         missionId = 0,
@@ -182,7 +184,7 @@ class ScheduleDetailDialogFragment(
                     binding.scheduleMemoTv.text = result!!.content
 
                 } else {
-                    Toast.makeText(requireActivity(), "서버 연결 실패", Toast.LENGTH_SHORT)
+                    dismissListener.onDialogDismiss()
                     dismiss()
                     Log.e("retrofit", "onResponse: Error Msg ${response.body()!!.errorMessage}")
                     Log.e("retrofit", "onResponse: Error Code ${response.body()!!.errorCode}}")
@@ -190,11 +192,15 @@ class ScheduleDetailDialogFragment(
             }
 
             override fun onFailure(call: Call<ScheduleDetailResponse>, t: Throwable) {
-                Toast.makeText(requireActivity(), "서버 연결 실패", Toast.LENGTH_LONG).show()
+                dismissListener.onDialogDismiss()
                 dismiss()
                 Log.e("retrofit", "onFailure: ${t.message}")
             }
         })
+    }
+
+    interface DialogDismissListener {
+        fun onDialogDismiss()
     }
 
 
