@@ -15,6 +15,7 @@ import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -35,7 +36,7 @@ import java.util.Date
 
 class MissionCertificationWriteActivity: AppCompatActivity() {
     private lateinit var binding:ActivityMissionCertificationWriteBinding
-    private var boardId:Int=0
+    private var boardId:Long=0
     private var isFinish:Boolean=false
 
     private var imgUri:Uri= Uri.EMPTY
@@ -52,11 +53,12 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         binding= ActivityMissionCertificationWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        boardId=intent.getIntExtra("boardId", 0)
+        boardId=intent.getLongExtra("boardId", 0L)
         isFinish=intent.getBooleanExtra("isFinish", false)
         if(isFinish){
             finish()
         }
+        Log.d("게시판 아이디", boardId.toString())
 
         //binding.missionCertImg.clipToOutline=true //둥근 모서리 todo
 
@@ -81,26 +83,27 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
         binding.missionCertGalleryConstraint.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
+            galleryLauncher.launch(galleryIntent)
         }
 
-        //todo: 카메라로 사진 찍어서 올리기
-        binding.missionCertCameraConstraint.setOnClickListener {
-            startCamera()
-        }
-
-       /* binding.missionCertCompleteTxt.setOnClickListener {
-            Constance.jwt?.let { it1 ->
-                postImg(it1, boardId.toLong()){ isSuccess->
-                    if(isSuccess){
-                        finish()
-                    }
-                }
-            }
-
-        }*/
+        //카메라로 사진 찍어서 올리기
+        //binding.missionCertCameraConstraint.setOnClickListener {
+         //   startCamera()
+        //}
 
     }
+
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            val selectedImageUri: Uri = data?.data!!
+            val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
+            intent.putExtra("imgUri", selectedImageUri)
+            intent.putExtra("boardId", boardId)
+            startActivity(intent)
+        }
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -111,6 +114,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                         val selectedImageUri: Uri = data.data!!
                         val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
                         intent.putExtra("imgUri", selectedImageUri)
+                        intent.putExtra("boardId", boardId)
                         startActivity(intent)
                     }
                 } //카메라
@@ -119,6 +123,9 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                     if (imgUri != null) {
                         val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
                         intent.putExtra("imgUri", imgUri)
+                        intent.putExtra("isCamera", true)
+                        Log.d("이미지 uri", imgUri.toString())
+                        intent.putExtra("boardId", boardId)
                         startActivity(intent)
                     } else {
                         showToast("사진 촬영에 실패했습니다.")
@@ -145,7 +152,9 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         )
     }
 
-    // 카메라 권한 확인 후 실행되는 코드
+    // 사진을 저장할 파일 경로
+    private var currentPhotoPath: String? = null
+
     // 카메라 권한 확인 후 실행되는 코드
     private fun startCamera() {
         if (checkCameraPermission()) {
@@ -160,6 +169,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
                 // 파일이 성공적으로 생성된 경우에만 계속 진행
                 photoFile?.also {
+
                     imgUri = FileProvider.getUriForFile(
                         applicationContext,
                         "${packageName}.fileprovider",

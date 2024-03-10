@@ -58,14 +58,14 @@ class HomeMissionAdapter(
                     //클릭 이벤트 처리
                     //미션 터치시 해당 미션 이동
                     Log.d("미션 터치", "미션 터치 함")
-                    missionMove(item.mainMissionId, binding.MissionItemConstraintLayout)
+                    missionMove(item.mainMissionId, item.missionCategoryId,binding.MissionItemConstraintLayout)
                }
                 //클릭이벤트
                 binding.MissionItemConstraintLayout.setOnTouchListener { view, event ->
                     when (event.action) {
                         MotionEvent.ACTION_UP -> {
                             // 터치 다운 이벤트 처리
-                            missionMove(item.mainMissionId, binding.MissionItemConstraintLayout)
+                            missionMove(item.mainMissionId, item.missionCategoryId,binding.MissionItemConstraintLayout)
                             true // 이벤트 소비됨
                         }
                         else -> false // 다른 이벤트 무시
@@ -110,9 +110,10 @@ class HomeMissionAdapter(
     }
 
     //게시판 이름에 따라 각 미션으로 이동 todo:게시판 카테고리 알아야함
-    private fun missionMove(id:Long, layout: ConstraintLayout ){
+    private fun missionMove(id:Long, cateId:Long, layout: ConstraintLayout ){
         val intent = Intent(layout.context, MissionCertificationActivity::class.java )
         intent.putExtra("missionId", id)
+        intent.putExtra("boardId", cateId)
         layout.context.startActivity(intent)
         /*when(name){
             "예술 게시판"-> {

@@ -86,6 +86,7 @@ class CommunityFragment : Fragment() {
             binding.myoZipMainBtn.hide() //관리자가 아닌 유저의 경우
         }
         Log.d("내가 묘집사인 카테고리", userHostCategory.toString())
+        binding.myoZipMainBtn.hide()
         binding.myoZip1Btn.hide()
         binding.myoZip2Btn.hide()
         binding.myoZip3Btn.hide()

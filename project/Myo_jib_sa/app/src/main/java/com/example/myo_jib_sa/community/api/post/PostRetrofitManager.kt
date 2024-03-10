@@ -3,8 +3,6 @@ package com.example.myo_jib_sa.community.api.post
 import android.content.Context
 import android.util.Log
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
-import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.api.RetrofitClient
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Response

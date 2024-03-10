@@ -13,6 +13,7 @@ import android.util.Base64
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -126,32 +127,29 @@ class PostWrtieActivity : AppCompatActivity() {
             }
 
             override fun onImageClick(position: Int) {
-                imgPosition=position
-                val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI) //이미지
-                startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
+                imgPosition = position
+                val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                galleryLauncher.launch(galleryIntent)
             }
         })
     }
 
-    //todo : 사진 설정을 위한 onActivityResult
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if ((requestCode == GALLERY_REQUEST_CODE)
-            && resultCode == Activity.RESULT_OK && data != null) {
-            val selectedImageUri: Uri? = data.data
-            // 선택한 이미지를 해당 이미지뷰에 표시
-            selectedImageUri?.let { uri ->
-                    if(imgPosition==0){
-                        imgUriList.add(uri) //이미지 추가
-                    }else{
-                        imgUriList[imgPosition-1]=uri //이미지 변경
-                    }
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            data?.data?.let { uri ->
+                if (imgPosition == 0) {
+                    imgUriList.add(uri)
+                } else {
+                    imgUriList[imgPosition - 1] = uri
+                }
                 Log.d("이미지 URi : ", imgUriList.toString())
                 adapter.notifyDataSetChanged()
-
             }
         }
     }
+
+    //todo : 사진 설정을 위한 onActivityResult
 
     //글쓰기 완료
     @RequiresApi(Build.VERSION_CODES.N)

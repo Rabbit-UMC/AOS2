@@ -270,6 +270,7 @@ class BoardActivity : AppCompatActivity() {
         binding.boardMissionBtn.setOnClickListener {
             val intent=Intent(this, MissionCertificationActivity::class.java)
             intent.putExtra("missionId", missionId)
+            intent.putExtra("boardId", boardId)
             startActivity(intent)
         }
 

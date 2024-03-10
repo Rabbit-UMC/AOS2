@@ -9,6 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -41,7 +42,8 @@ interface MissionCertRetrofitITFC {
     @Multipart
     @POST("app/main-mission/upload/{categoryId}")
     fun postImg(
-                @Path("categoryId") categoryId:Long,
-                @Part multipartFile: MultipartBody.Part):Call<BaseResponse>
+        @Path("categoryId") categoryId: Long,
+        @Part multipartFile: MultipartBody.Part?
+    ): Call<BaseResponse>
 
 }
