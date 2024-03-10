@@ -148,34 +148,34 @@ class SignUpActivity : AppCompatActivity() {
         sRetrofit.create(MypageAPI::class.java)
             .getCheckDuplication(nickName, false)
             .enqueue(object : Callback<GetCheckDuplicationResponse> {
-            override fun onResponse(call: Call<GetCheckDuplicationResponse>, response: Response<GetCheckDuplicationResponse>) {
-                if (response.body() != null) {
-                    binding.signUpDuplicateStateTxt.visibility = View.VISIBLE
-                    if(!response.body()!!.result) {
-                        binding.signUpDuplicateStateTxt.apply {
-                            text = "사용 가능한 닉네임이에요."
-                            setTextColor(getColor(R.color.complete))
-                            nickname = binding.signUpNicknameEt.text.toString()
-                            isDuplicationChecked = true
-                            checkSignUpBtnEnable()
+                override fun onResponse(call: Call<GetCheckDuplicationResponse>, response: Response<GetCheckDuplicationResponse>) {
+                    if (response.body() != null) {
+                        binding.signUpDuplicateStateTxt.visibility = View.VISIBLE
+                        if(!response.body()!!.result) {
+                            binding.signUpDuplicateStateTxt.apply {
+                                text = "사용 가능한 닉네임이에요."
+                                setTextColor(getColor(R.color.complete))
+                                nickname = binding.signUpNicknameEt.text.toString()
+                                isDuplicationChecked = true
+                                checkSignUpBtnEnable()
+                            }
                         }
-                    }
-                    else {
-                        binding.signUpDuplicateStateTxt.apply {
-                            text = "사용 불가능한 닉네임이에요."
-                            setTextColor(getColor(R.color.alert))
-                            isDuplicationChecked = false
-                            checkSignUpBtnEnable()
+                        else {
+                            binding.signUpDuplicateStateTxt.apply {
+                                text = "사용 불가능한 닉네임이에요."
+                                setTextColor(getColor(R.color.alert))
+                                isDuplicationChecked = false
+                                checkSignUpBtnEnable()
+                            }
                         }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<GetCheckDuplicationResponse>, t: Throwable) {
-                // 네트워크 요청 실패 처리
-                Log.d("checkNicknameDuplicate", "$t")
-            }
-        })
+                override fun onFailure(call: Call<GetCheckDuplicationResponse>, t: Throwable) {
+                    // 네트워크 요청 실패 처리
+                    Log.d("checkNicknameDuplicate", "$t")
+                }
+            })
     }
 
     private fun showTermsOfUseDetailDialog(title: String, desc: String) {

@@ -194,20 +194,20 @@ class MissionFragment : Fragment() {
             }
         })
     }
-     // 신고 다이얼로그
-     private fun showReportDialog(reportItem: Mission) {
-         val reportDialog = MissionReportDialogFragment(reportItem)
-         reportDialog.setReportDialogListener(object : MissionReportDialogFragment.ReportDialogListener {
-             override fun onReportSubmitted(message: String, isSuccess: Boolean) {
-                 Log.d("onReportSubmitted", message)
-                 val iconResId = if (isSuccess) R.drawable.ic_report_toast_check else R.drawable.ic_toast_fail
-                 showSnackbar(message, iconResId, binding.root)
-                 reportDialog.dismiss()
-             }
-         })
-         Log.d("showReportDialog","report ID: ${reportItem.missionId}")
-         reportDialog.show(requireActivity().supportFragmentManager, "mission_report_dialog")
-     }
+    // 신고 다이얼로그
+    private fun showReportDialog(reportItem: Mission) {
+        val reportDialog = MissionReportDialogFragment(reportItem)
+        reportDialog.setReportDialogListener(object : MissionReportDialogFragment.ReportDialogListener {
+            override fun onReportSubmitted(message: String, isSuccess: Boolean) {
+                Log.d("onReportSubmitted", message)
+                val iconResId = if (isSuccess) R.drawable.ic_report_toast_check else R.drawable.ic_toast_fail
+                showSnackbar(message, iconResId, binding.root)
+                reportDialog.dismiss()
+            }
+        })
+        Log.d("showReportDialog","report ID: ${reportItem.missionId}")
+        reportDialog.show(requireActivity().supportFragmentManager, "mission_report_dialog")
+    }
 
     // 상세 다이얼로그
     private fun showDetailDialog(detailItem: Mission) {
