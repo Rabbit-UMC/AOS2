@@ -3,7 +3,9 @@ package com.example.myo_jib_sa.community.adapter
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -59,7 +61,11 @@ class MissionCertAdapter(
 
             //이미지 설정
             if(item.data1.filePath=="empty"){
-                binding.missionImg1.visibility=View.INVISIBLE
+                binding.missionImg1.visibility=View.GONE
+                binding.missionHeart1.visibility=View.GONE
+                binding.like1Txt.visibility=View.GONE
+                binding.constraintLayout1.background = ColorDrawable(Color.TRANSPARENT)
+                binding.view1.visibility=View.INVISIBLE
             }else{
                 Log.d("미션 리사이클러 이미지 확인",item.data1.filePath )
                 Glide.with(context)
@@ -70,6 +76,10 @@ class MissionCertAdapter(
 
             if(item.data2.filePath=="empty"){
                 binding.missionImg2.visibility=View.INVISIBLE
+                binding.missionHeart2.visibility=View.GONE
+                binding.like2Txt.visibility=View.GONE
+                binding.constraintLayout2.background = ColorDrawable(Color.TRANSPARENT)
+                binding.view2.visibility=View.INVISIBLE
             }else{
                 Log.d("미션 리사이클러 이미지 확인",item.data2.filePath )
                 Glide.with(context)
@@ -80,6 +90,10 @@ class MissionCertAdapter(
 
             if(item.data3.filePath=="empty"){
                 binding.missionImg3.visibility=View.INVISIBLE
+                binding.missionHeart3.visibility=View.GONE
+                binding.like3Txt.visibility=View.GONE
+                binding.constraintLayout3.background = ColorDrawable(Color.TRANSPARENT)
+                binding.view3.visibility=View.INVISIBLE
             }else{
                 Log.d("미션 리사이클러 이미지 확인",item.data3.filePath )
                 Glide.with(context)

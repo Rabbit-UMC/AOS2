@@ -23,6 +23,7 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
     private var boardId:Long=0
     private var isFinish:Boolean=false
     private var isCamera:Boolean=false
+    private val intent = Intent(this, MissionCertificationWriteActivity::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,6 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
 
         //뒤로 가기
         binding.missionCertBackBtn.setOnClickListener {
-            val intent= Intent(this, MissionCertificationWriteActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -55,7 +55,6 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
 
                 postImg(boardId, body)
                 if (isFinish) {
-                    val intent = Intent(this, MissionCertificationWriteActivity::class.java)
                     intent.putExtra("isFinish", true)
                     startActivity(intent)
                     finish()
@@ -93,6 +92,9 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
 
                 if(message=="작성하신 미션 인증 글이 저장되었어요."){
                     isFinish=true
+                    intent.putExtra("isFinish", true)
+                    startActivity(intent)
+                    finish()
                 }
 
                 // 스낵바 표시

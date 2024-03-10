@@ -58,6 +58,9 @@ class MissionPictureActivity : AppCompatActivity() {
         binding.missionCertTitleTxt.text=missioncertInfo.title
         binding.missionCertMemoTxt.text=missioncertInfo.memo
         binding.likeCntTxt.text=likeCount
+        if(likeCount.equals("null")){
+            binding.likeCntTxt.text="0"
+        }
 
         //이미지 설정
         Glide.with(this)

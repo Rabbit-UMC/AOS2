@@ -42,7 +42,8 @@ interface MissionCertRetrofitITFC {
     @Multipart
     @POST("app/main-mission/upload/{categoryId}")
     fun postImg(
-                @Path("categoryId") categoryId:Long,
-                @Part multipartFile: MultipartBody.Part?):Call<BaseResponse>
+        @Path("categoryId") categoryId: Long,
+        @Part multipartFile: MultipartBody.Part?
+    ): Call<BaseResponse>
 
 }
