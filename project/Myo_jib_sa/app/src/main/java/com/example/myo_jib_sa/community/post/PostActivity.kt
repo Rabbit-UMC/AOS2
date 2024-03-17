@@ -48,6 +48,8 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private var myPost:Boolean=false
     private lateinit var imageList: List<ArticleImage>
 
+    private lateinit var adapter:PostImgAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPostBinding.inflate(layoutInflater)
@@ -73,9 +75,6 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         postId=intent.getLongExtra("postId", 0L)
         Log.d("게시물 ID", "게시물 id : ${postId}")
         Log.d("게시판 아이디", boardId.toString())
-
-        //todo:지워
-        postId=416
 
         //게시글 뷰 설정
         setPostData(binding, boardId.toInt(), postId)
@@ -122,6 +121,15 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
     override fun onResume() {
         super.onResume()
+        adapter= PostImgAdapter(this, listOf())
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        binding.postImgRecyclr.layoutManager = layoutManager
+        binding.postImgRecyclr.adapter = adapter
+
+        adapter.setItemSpacing(binding.postImgRecyclr, 15)
+
+
         setPostData(binding, boardId.toInt(), postId)
     }
 
@@ -430,7 +438,7 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     //이미지 리사이클러뷰, 어댑터 연결
     private fun linkImgRecyclr(list:List<ArticleImage>){
         //이미지 뷰
-      val adapter = PostImgAdapter(this,list)
+        adapter = PostImgAdapter(this,list)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         binding.postImgRecyclr.layoutManager = layoutManager
