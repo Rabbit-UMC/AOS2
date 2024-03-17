@@ -74,6 +74,9 @@ class PostActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         Log.d("게시물 ID", "게시물 id : ${postId}")
         Log.d("게시판 아이디", boardId.toString())
 
+        //todo:지워
+        postId=416
+
         //게시글 뷰 설정
         setPostData(binding, boardId.toInt(), postId)
 

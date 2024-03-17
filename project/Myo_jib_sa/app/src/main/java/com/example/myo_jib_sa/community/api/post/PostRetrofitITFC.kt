@@ -22,8 +22,8 @@ interface PostRetrofitITFC {
     @Multipart
     @POST("app/article")
     fun postArticle(
-        @Body postArticleReq: PostCreateRequest,
-        @Part files: List<MultipartBody.Part>,
+        @Part("postArticleReq") postArticleReq: RequestBody,
+        @Part multipartFiles: List<MultipartBody.Part>,
         @Query("categoryId") categoryId: Long
     ):Call <SimpleResponse>
 

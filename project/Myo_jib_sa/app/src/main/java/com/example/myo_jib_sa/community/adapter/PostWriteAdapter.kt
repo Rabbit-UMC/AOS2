@@ -30,6 +30,7 @@ class PostWriteAdapter (
 
             // 이미지 클릭 이벤트
             binding.postImgImg.setOnClickListener {
+                Log.d("아이템 클릭됨", "position.toString()")
                 itemClickListener?.onImageClick(adapterPosition)
             }
 

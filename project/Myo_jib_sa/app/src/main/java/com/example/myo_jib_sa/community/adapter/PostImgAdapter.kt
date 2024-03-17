@@ -29,6 +29,7 @@ class PostImgAdapter(
         fun bind(item: List<ArticleImage>, position: Int){
 
             //이미지 설정
+            binding.postImgImg.clipToOutline=true
             if(item[position].filePath.isNotBlank()){
                 Glide.with(context)
                     .load(item[position].filePath)

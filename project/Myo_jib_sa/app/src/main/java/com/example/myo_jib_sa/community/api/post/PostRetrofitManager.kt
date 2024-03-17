@@ -3,7 +3,10 @@ package com.example.myo_jib_sa.community.api.post
 import android.content.Context
 import android.util.Log
 import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.sRetrofit
+import com.google.gson.Gson
+import okhttp3.MediaType
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
 
@@ -91,7 +94,14 @@ class PostRetrofitManager (context: Context){
 
     //게시물 생성, 생성 완료인지 반환(boolean)
     fun postCreate(images:List<MultipartBody.Part>, request:PostCreateRequest, categoryId:Long, completion: (isSucces:Boolean) -> Unit){
-        val call: Call<SimpleResponse> = retrofit?.postArticle(request, images, categoryId) ?: return
+
+        // PostCreateRequest를 RequestBody로 변환
+        val postArticleReqJson = Gson().toJson(request)
+        val postArticleReq = RequestBody.create(MediaType.get("application/json"), postArticleReqJson)
+
+        Log.d("이미지 확인", images.toString())
+
+        val call: Call<SimpleResponse> = retrofit?.postArticle(postArticleReq, images, categoryId) ?: return
 
         call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
