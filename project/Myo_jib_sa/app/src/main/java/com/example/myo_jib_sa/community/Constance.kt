@@ -1,6 +1,7 @@
 package com.example.myo_jib_sa.community
 
 import android.content.Context
+import com.example.myo_jib_sa.base.MyojibsaApplication.Companion.spfManager
 
 
 object Constance {
@@ -8,7 +9,7 @@ object Constance {
     const val EXERCISE_ID:Long=2 //운동 게시판 id
     const val FREE_ID:Long=1 //자유 게시판 ID
 
-    const val USER_ID:Long=1 //todo: 지우기
+    val USER_ID:Long=spfManager.getUserId()
 }
 
 
