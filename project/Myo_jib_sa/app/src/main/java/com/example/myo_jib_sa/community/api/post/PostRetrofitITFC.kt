@@ -22,17 +22,16 @@ interface PostRetrofitITFC {
     @Multipart
     @POST("app/article")
     fun postArticle(
-        @Body postArticleReq: PostCreateRequest,
-        @Part files: List<MultipartBody.Part>,
+        @Part("postArticleReq") postArticleReq: RequestBody,
+        @Part multipartFiles: List<MultipartBody.Part>,
         @Query("categoryId") categoryId: Long
     ):Call <SimpleResponse>
 
     //게시물 수정
     @PATCH("app/article/{articleID}")
     fun postEdit(
-        @Body request:PostEditRequest
-        , @Path("articleID") articleID: Long
-        , @Query("articleId")  queryArticleId:Long):
+        @Body patchArticleReq:PostEditRequest
+        , @Path("articleID") articleID: Long):
             Call<SimpleResponse>
 
     //게시물 신고

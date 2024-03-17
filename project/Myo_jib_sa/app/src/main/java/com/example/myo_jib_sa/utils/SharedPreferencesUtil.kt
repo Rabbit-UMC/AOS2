@@ -26,4 +26,10 @@ class SharedPreferencesUtil(context: Context) {
         Log.d("setRefreshToken", "${getRefreshToken()}")
     }
 
+    fun getUserId():Long = spfManager.getLong("userId", 0L)
+    fun setUserId(id:Long){
+        spfManager.edit().putLong("userId", id).apply()
+        Log.d("userId", "${getUserId()}")
+    }
+
 }

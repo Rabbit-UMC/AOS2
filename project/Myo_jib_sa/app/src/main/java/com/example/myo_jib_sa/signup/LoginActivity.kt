@@ -82,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
                         response.body()!!.result?.let {
                             spfManager.setAccessToken(it.jwtAccessToken)
                             spfManager.setRefreshToken(it.jwtRefreshToken)
+                            spfManager.setUserId(it.id)
                         }
                         // 메인 액티비티로 이동
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java))

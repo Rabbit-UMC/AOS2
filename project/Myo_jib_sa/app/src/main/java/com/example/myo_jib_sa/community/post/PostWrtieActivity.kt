@@ -38,12 +38,6 @@ class PostWrtieActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWritePostingBinding
 
-    private var imgList: List<String> = listOf()
-
-    private var imgListEdit:List<ImageList> = listOf(ImageList(0,""), ImageList(0, ""))
-
-    private var isEdit:Boolean=false
-    private var postId:Long=0 //수정할 때만 씀
     private var boardId:Long=0
 
     //이미지 uri 저장
@@ -55,7 +49,7 @@ class PostWrtieActivity : AppCompatActivity() {
     //이미지 포지션 저장
     private var imgPosition=0
 
-    var adapter = PostWriteAdapter(this, imgUriList)
+    private lateinit var adapter:PostWriteAdapter
 
 
     companion object {
@@ -71,6 +65,14 @@ class PostWrtieActivity : AppCompatActivity() {
 
         boardId=intent.getLongExtra("boardId", 0L)
         Log.d("게시판 아이디", boardId.toString())
+
+        //이미지 어댑터
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.postWriteImgRecy.layoutManager = layoutManager
+        adapter = PostWriteAdapter(this, imgUriList)
+        binding.postWriteImgRecy.adapter=adapter
+        adapter.setItemSpacing(binding.postWriteImgRecy, 15)
+
 
         //게시판 이름
         when(boardId){
@@ -91,15 +93,6 @@ class PostWrtieActivity : AppCompatActivity() {
         //게시글 쓰기, 수정 완료
         complete()
 
-        //이미지 어댑터
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.postWriteImgRecy.layoutManager = layoutManager
-        adapter = PostWriteAdapter(this, imgUriList)
-        binding.postWriteImgRecy.adapter=adapter
-        adapter.setItemSpacing(binding.postWriteImgRecy, 15)
-
-
-
         //뒤로가기 버튼
         binding.postWriteBackBtn.setOnClickListener {
             finish()
@@ -108,8 +101,10 @@ class PostWrtieActivity : AppCompatActivity() {
     }
 
     private fun itemClike(){
-        adapter.setOnItemClickListener(object : PostWriteAdapter.OnItemClickListener {
+        Log.d("아이템 클릭 함수", "position.toString()")
 
+
+        adapter.setOnItemClickListener(object : PostWriteAdapter.OnItemClickListener {
             override fun onDeleteClick(position: Int) {
                 if (position != 0) {
                     imgUriList = imgUriList.toMutableList().apply {
@@ -128,16 +123,20 @@ class PostWrtieActivity : AppCompatActivity() {
 
             override fun onImageClick(position: Int) {
                 imgPosition = position
+                Log.d("아이템 클릭됨", position.toString())
                 val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                galleryLauncher.launch(galleryIntent)
+                startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
             }
         })
     }
 
-    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            data?.data?.let { uri ->
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if ((requestCode == GALLERY_REQUEST_CODE)
+            && resultCode == Activity.RESULT_OK && data != null) {
+            val selectedImageUri: Uri? = data.data
+            // 선택한 이미지를 해당 이미지뷰에 표시
+            selectedImageUri?.let { uri ->
                 if (imgPosition == 0) {
                     imgUriList.add(uri)
                 } else {
@@ -147,6 +146,7 @@ class PostWrtieActivity : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
             }
         }
+
     }
 
     //todo : 사진 설정을 위한 onActivityResult
@@ -162,7 +162,7 @@ class PostWrtieActivity : AppCompatActivity() {
                 binding.postWritePostTextEtxt.text.toString().replace("\n", "<br>")
             )
 
-            posting(convertUriListToMultipart(imgUriList), request, boardId.toLong()){ isSuccess->
+            posting(convertUriListToMultipart(imgUriList), request, boardId){ isSuccess->
                     if(isSuccess){
                         finish()
                     }else{
@@ -196,15 +196,16 @@ class PostWrtieActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun convertUriListToMultipart(imgUriList: List<Uri>): List<MultipartBody.Part> {
-        val fileParts = imgUriList.stream()
+        val fileParts:List<MultipartBody.Part> = imgUriList.stream()
             .map { uri ->
                 val realPath = getRealPathFromURI(uri)
                 val file = File(realPath)
                 val requestBody = RequestBody.create(MediaType.parse("image/*"), file)
-                MultipartBody.Part.createFormData("file", file.name, requestBody)
+                MultipartBody.Part.createFormData("multipartFiles", file.name, requestBody)
             }
             .collect(Collectors.toList())
 
+        Log.d("이미지 멀티파트 변환 확인", fileParts.toString())
         return fileParts
     }
 

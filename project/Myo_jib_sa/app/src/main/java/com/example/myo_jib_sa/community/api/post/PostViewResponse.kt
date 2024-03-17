@@ -59,7 +59,8 @@ data class PostisSuccessResponse(
 data class PostEditRequest(
     val articleTitle: String,
     val articleContent: String,
-    val imageList: List<String>
+    val newImageIdList: List<Long>,
+    val deleteImageIdList: List<Long>
 )
 data class ImageList(
     val id:Long,

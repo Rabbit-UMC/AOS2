@@ -51,17 +51,17 @@ class imgUploadRetrofitManager(context: Context) {
                     Log.d("이미지 업로드 결과 RetrofitManager", "RetrofitManager 미션 화면 조회 onResponse \t :${response.code()} ")
                     val response: ImageUploadResponse? = response?.body()
                     if (response != null) {
-                        if (response.isSuccess=="true") {
+                        if (response.isSuccess) {
                             Log.d("이미지 업로드 결과 RetrofitManager",
-                                "RetrofitManager 미션 화면 조회 is Success\t :${response.code} ")
+                                "RetrofitManager 미션 화면 조회 is Success\t :${response.errorMessage} ")
                             Log.d("이미지 업로드 결과 RetrofitManager",
-                                "RetrofitManager 미션 화면 조회 is Success\t :${response.message} ")
+                                "RetrofitManager 미션 화면 조회 is Success\t :${response.errorCode} ")
                             completion(response)
                         } else {
                             Log.d("이미지 업로드 결과 RetrofitManager",
-                                "RetrofitManager 미션 화면 조회 is NOT Success\t :${response.code} ")
+                                "RetrofitManager 미션 화면 조회 is NOT Success\t :${response.errorMessage} ")
                             Log.d("이미지 업로드 결과 RetrofitManager",
-                                "RetrofitManager 미션 화면 조회 is NOT Success\t :${response.message} ")
+                                "RetrofitManager 미션 화면 조회 is NOT Success\t :${response.errorMessage} ")
                             completion(response)
                         }
                     } else {
