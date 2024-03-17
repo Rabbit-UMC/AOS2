@@ -2,7 +2,9 @@ package com.example.myo_jib_sa.community.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -50,6 +52,12 @@ class PostEditAdapter (
                 Glide.with(context)
                     .load(item[position-1])
                     .into(binding.postImgImg)
+                if(item[position-1].isEmpty()){
+                    binding.postImgImg.visibility=View.GONE
+                    binding.postImgDelete.visibility=View.GONE
+                    binding.postImgCamera.visibility=View.GONE
+                    binding.imgConstr.background = ColorDrawable(Color.TRANSPARENT)
+                }
             }else{
                 binding.postImgDelete.visibility=View.GONE
             }

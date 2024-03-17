@@ -1,5 +1,6 @@
 package com.example.myo_jib_sa.community.api.imgUpload
 
+import com.example.myo_jib_sa.base.BaseResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Multipart
@@ -16,8 +17,9 @@ interface ImgUploadRetrofitITFC{
 
 }
 data class ImageUploadResponse(
-    val isSuccess:String,
-    val code:Int,
-    val message:String,
-    val result:List<String>
+    val result:List<GenerateImageResDto>
+):BaseResponse()
+data class GenerateImageResDto(
+    val imageId:Long,
+    val imageUrl:String
 )

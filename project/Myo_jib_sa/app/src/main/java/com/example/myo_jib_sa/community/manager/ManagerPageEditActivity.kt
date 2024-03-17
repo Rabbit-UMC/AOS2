@@ -164,12 +164,12 @@ class ManagerPageEditActivity : AppCompatActivity() {
             if (response != null) {
                 val imageUrl = response.result[0]
                 val isSuccess = response.isSuccess
-                val message = response.message
+                val message = response.errorMessage
                 Log.d("이미지 업로드 결과", "$message")
                 Log.d("이미지 업로드 결과", "$imageUrl")
-                if(isSuccess=="true"){
+                if(isSuccess){
                     Log.d("이미지 업로드 결과", "isSuccess")
-                    imgUrl=imageUrl
+                    imgUrl=response.result[0].imageUrl
                     callback(true)
 
                 }else{

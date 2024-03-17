@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.ImgPath
 import com.example.myo_jib_sa.community.adapter.PostEditAdapter
+import com.example.myo_jib_sa.community.api.imgUpload.ImageUploadResponse
 import com.example.myo_jib_sa.community.api.imgUpload.imgUploadRetrofitManager
 import com.example.myo_jib_sa.community.api.post.ArticleImage
 import com.example.myo_jib_sa.community.api.post.ImageList
@@ -39,12 +40,17 @@ class PostEditActivity : AppCompatActivity() {
 
     //이미지 url 저장
     private var imgUrlList:MutableList<String> = mutableListOf()
+    private var editImgTemp:MutableList<Long> = mutableListOf()
 
     //이미지가 있는 지, 갤러리에서 첨부한 이미지만 api를 통해 업로드하기 위해 사용하는 변수
     private var isHasNewImg:Boolean=false
 
     //이미지 포지션 저장
     private var imgPosition=0
+
+    //삭제된 이미지, 추가된 이미지 저장
+    private var newImageIdList:MutableList<Long> = mutableListOf()
+    private var deleteImageIdList:MutableList<Long> = mutableListOf()
 
     var adapter = PostEditAdapter(this, imgUrlList)
 
@@ -102,6 +108,14 @@ class PostEditActivity : AppCompatActivity() {
                     imgUrlList = imgUrlList.toMutableList().apply {
                         removeAt(position-1)
                     }
+                    deleteImageIdList.add(editImgTemp[position-1]) //삭제한 이미지 아이디 추가
+                    editImgTemp = editImgTemp.toMutableList().apply {//이미지 아이디 저장
+                        removeAt(position-1)
+                    }
+                    Log.d("이미지 확인", editImgTemp.toString())
+                    Log.d("삭제 이미지 확인", deleteImageIdList.toString())
+                    Log.d("새로운 이미지 확인", newImageIdList.toString())
+
 
                     adapter = PostEditAdapter(this@PostEditActivity, imgUrlList)
                     val layoutManager = LinearLayoutManager(this@PostEditActivity, LinearLayoutManager.HORIZONTAL, false)
@@ -132,11 +146,22 @@ class PostEditActivity : AppCompatActivity() {
 
                 val imgPath=getRealPathFromURI(uri)
 
-                imgUpload(listOf(imgPath) as List<String>){fileUrl ->
+                imgUpload(listOf(imgPath) as List<String>){response ->
                     if(imgPosition==0){
-                        imgUrlList.add(fileUrl) //이미지 추가
+                        imgUrlList.add(response.result[0].imageUrl) //이미지 추가
+                        editImgTemp.add(response.result[0].imageId) //이미지 아이디 추가
+                        newImageIdList.add(response.result[0].imageId) //새로운 이미지 추가
+                        Log.d("이미지 확인", editImgTemp.toString())
+                        Log.d("삭제 이미지 확인", deleteImageIdList.toString())
+                        Log.d("새로운 이미지 확인", newImageIdList.toString())
                     }else{
-                        imgUrlList[imgPosition-1]=fileUrl //이미지 변경
+                        imgUrlList[imgPosition-1]=response.result[0].imageUrl //이미지 변경
+                        deleteImageIdList.add(editImgTemp[imgPosition-1]) //이미지 아이디 삭제
+                        editImgTemp[imgPosition-1]=response.result[0].imageId //이미지 추가
+                        newImageIdList.add(response.result[0].imageId) //새로운 이미지 추가
+                        Log.d("이미지 확인", editImgTemp.toString())
+                        Log.d("삭제 이미지 확인", deleteImageIdList.toString())
+                        Log.d("새로운 이미지 확인", newImageIdList.toString())
                     }
                     adapter.notifyDataSetChanged()
                 }
@@ -157,6 +182,9 @@ class PostEditActivity : AppCompatActivity() {
         imgUrlList= imageList.map{ articleImage ->
             articleImage.filePath
         } as MutableList<String>
+        editImgTemp=imageList.map{articleImage ->
+            articleImage.imageId
+        } as MutableList<Long>
         Log.d("이미지 URL 리스트", imgUrlList.toString())
 
         //이후 사용될 데이터 저장
@@ -177,7 +205,7 @@ class PostEditActivity : AppCompatActivity() {
             val title = binding.writePostTitleEtxt.text.toString()
             val postText = binding.postWritePostTextEtxt.text.toString().replace("\n", "\\n")
 
-            val request = PostEditRequest(title, postText, imgUrlList)
+            val request = PostEditRequest(title, postText, newImageIdList, deleteImageIdList)
 
 
                 editing(request, postId) { isSuccess ->
@@ -241,7 +269,7 @@ class PostEditActivity : AppCompatActivity() {
     }
 
     //이미지 업로드 api
-    private fun imgUpload(imgPath:List<String>, callback: (String) -> Unit){
+    private fun imgUpload(imgPath:List<String>, callback: (ImageUploadResponse) -> Unit){
         val imgList:MutableList<File> = mutableListOf()
         for(i in 1..imgPath.size){
             //있는 사진 부터 순차적으로
@@ -256,29 +284,31 @@ class PostEditActivity : AppCompatActivity() {
             if (response != null) {
                 val imageUrl = response.result[0]
                 val isSuccess = response.isSuccess
-                val message = response.message
+                val message = response.errorMessage
                 Log.d("이미지 업로드 결과", "$message")
                 Log.d("이미지 업로드 결과", "$imageUrl")
-                if(isSuccess=="true"){
+                if(isSuccess){
                     Log.d("이미지 업로드 결과", "isSuccess")
                     if(response.result.isNullOrEmpty()){
-                        callback("")
+                        callback(response)
                     }else{
                         //이미지 url 저장
-                        callback(response.result[0])
+                        callback(response)
                     }
 
                 }else{
                     Log.d("이미지 업로드 결과", "isSuccess이 false")
                     showToast("이미지 업로드 실패")
-                    callback("")
+                    callback(response)
                 }
 
             } else {
                 Log.d("이미지 업로드 결과", "실패")
                 showToast("이미지 업로드 실패")
 
-                callback("")
+                if (response != null) {
+                    callback(response)
+                }
             }
         }
     }
