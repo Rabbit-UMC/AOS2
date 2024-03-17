@@ -134,7 +134,7 @@ class PostRetrofitManager (context: Context){
 
     //게시물 수정, 수정 완료인지 봔환 (boolean)
     fun postEdit(request:PostEditRequest, articleId:Long, completion: (isSucces:Boolean) -> Unit){
-        val call: Call<SimpleResponse> = retrofit?.postEdit(request, articleId, articleId) ?: return
+        val call: Call<SimpleResponse> = retrofit?.postEdit(request, articleId) ?: return
 
         call.enqueue(object : retrofit2.Callback<SimpleResponse> {
             override fun onResponse(
