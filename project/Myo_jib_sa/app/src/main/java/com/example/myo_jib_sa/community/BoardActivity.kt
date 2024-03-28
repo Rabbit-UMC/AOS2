@@ -71,6 +71,7 @@ class BoardActivity : AppCompatActivity() {
         paging()
 
         setFABClickEvent()
+        setupOutsideTouchClose()
 
     }
 
@@ -274,6 +275,40 @@ class BoardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+    }
+
+    // onCreate() 메서드나 다른 곳에서 호출하여 사용할 수 있습니다.
+    private fun setupOutsideTouchClose() {
+        // 액티비티의 레이아웃에 대한 클릭 이벤트 처리
+
+        binding.boardExcsPostRecyclr.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    // 스크롤 다운 이벤트 처리
+                    if (isClick) {
+                        // 플로팅 버튼이 열려있는 상태라면 닫습니다.
+                        isClick = false
+                        toggleFab()
+                    }
+                } else {
+                    // 스크롤 업 이벤트 처리
+                    if (isClick) {
+                        // 플로팅 버튼이 열려있는 상태라면 닫습니다.
+                        isClick = false
+                        toggleFab()
+                    }
+                }
+            }
+        })
+
+        binding.boardExcsPostRecyclr.setOnClickListener {
+            if (isClick) {
+                // 플로팅 버튼이 열려있는 상태라면 닫습니다.
+                isClick = false
+                toggleFab()
+            }
+        }
     }
 
     //플로팅 버튼 꺼내기
