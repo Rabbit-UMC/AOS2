@@ -18,11 +18,13 @@ class BoardAdapter(
     private val boardId:Long)
     : RecyclerView.Adapter<BoardAdapter.ViewHolder>(){
 
+
     //뷰홀더
     inner class ViewHolder(
         private val binding: ItemPostBinding
     )
         : RecyclerView.ViewHolder(binding.root){
+
         fun bind(item: Articles){
             binding.postItemNameTxt.text=item.articleTitle
             binding.postItmeCommentCntTxt.text=item.commentCount.toString()
