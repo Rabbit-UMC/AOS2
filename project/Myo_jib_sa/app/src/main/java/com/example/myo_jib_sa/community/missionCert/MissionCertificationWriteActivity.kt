@@ -36,7 +36,7 @@ import java.util.Date
 
 class MissionCertificationWriteActivity: AppCompatActivity() {
     private lateinit var binding:ActivityMissionCertificationWriteBinding
-    private var boardId:Long=0
+    private var boardId:Long=0L
     private var isFinish:Boolean=false
 
     private var imgUri:Uri= Uri.EMPTY
@@ -46,6 +46,9 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         const val CAMERA_REQUEST_CODE = 1002
 
         const val CAMERA_PERMISSION_CODE = 100
+
+        const val REQUEST_CODE = 100
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,10 +57,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         boardId=intent.getLongExtra("boardId", 0L)
-        isFinish=intent.getBooleanExtra("isFinish", false)
-        if(isFinish){
-            finish()
-        }
+
         Log.d("게시판 아이디", boardId.toString())
 
         //binding.missionCertImg.clipToOutline=true //둥근 모서리 todo
@@ -83,7 +83,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
         binding.missionCertGalleryConstraint.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            galleryLauncher.launch(galleryIntent)
+            startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
         }
 
         //카메라로 사진 찍어서 올리기
@@ -93,18 +93,6 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
     }
 
-    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            val selectedImageUri: Uri = data?.data!!
-            val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
-            intent.putExtra("imgUri", selectedImageUri)
-            intent.putExtra("boardId", boardId)
-            startActivity(intent)
-        }
-    }
-
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -113,9 +101,17 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                     if (data != null && data.data != null) {
                         val selectedImageUri: Uri = data.data!!
                         val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
-                        intent.putExtra("imgUri", selectedImageUri)
+                        Log.d("전달할 이미지", selectedImageUri.toString())
+
+                        val bundle = Bundle().apply {
+                            putParcelable("imageUri", selectedImageUri)
+                        }
+                        Log.d("전달할 이미지 번들", bundle.toString())
+                        intent.putExtras(bundle)
+
                         intent.putExtra("boardId", boardId)
-                        startActivity(intent)
+                        Log.d("전달할 게시판 아이디", boardId.toString())
+                        startActivityForResult(intent, Activity.RESULT_OK)
                     }
                 } //카메라
                 CAMERA_REQUEST_CODE -> {
@@ -131,6 +127,14 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                         showToast("사진 촬영에 실패했습니다.")
                     }
                 }
+            }
+        }
+
+        if (requestCode == Activity.RESULT_OK && resultCode == Activity.RESULT_OK) {
+            val isFinish = data?.getBooleanExtra("isFinish", false) ?: false
+            // isFinish 값을 이용하여 처리
+            if(isFinish){
+                finish()
             }
         }
     }

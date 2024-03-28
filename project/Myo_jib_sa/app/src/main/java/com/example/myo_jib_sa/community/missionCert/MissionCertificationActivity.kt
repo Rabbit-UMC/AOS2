@@ -189,7 +189,7 @@ class MissionCertificationActivity: AppCompatActivity() {
                         Log.d("미션 인증 n일차", "$date")
 
                         //미션 시작 전일 경우
-                        if (day < 1) {
+                        if (day < 1 || response.result.dday=="미션 종료") {
                             beforeMission()
                         } else {
                             binding.missionCertNotMissionTxt.visibility = View.GONE
@@ -282,8 +282,17 @@ class MissionCertificationActivity: AppCompatActivity() {
     private fun beforeMission(){
         binding.missionCertDay.visibility=View.GONE
         binding.missionCertLeftDay.visibility=View.GONE
+        binding.missionCertRightDay.visibility=View.GONE
+        binding.missionCertDayV.visibility=View.GONE
+        binding.missionCertLeftV.visibility=View.GONE
+        binding.missionCertRightV.visibility=View.GONE
+
+        binding.missionCertVpr2.visibility=View.GONE
+
         binding.missionCertNotMissionTxt.visibility=View.VISIBLE
         binding.missionCertNotMissionTxt.text="진행 중인 미션이 없습니다."
+        binding.MissionCertPostingBtn.hide() //미션 올리기 버튼 숨기기
+        binding.textView10.visibility=View.INVISIBLE //"남은 기간"
     }
 }
 
