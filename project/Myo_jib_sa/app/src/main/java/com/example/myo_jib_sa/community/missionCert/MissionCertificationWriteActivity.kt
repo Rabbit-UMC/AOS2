@@ -46,6 +46,9 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         const val CAMERA_REQUEST_CODE = 1002
 
         const val CAMERA_PERMISSION_CODE = 100
+
+        const val REQUEST_CODE = 100
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,10 +57,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         boardId=intent.getLongExtra("boardId", 0L)
-        isFinish=intent.getBooleanExtra("isFinish", false)
-        if(isFinish){
-            finish()
-        }
+
         Log.d("게시판 아이디", boardId.toString())
 
         //binding.missionCertImg.clipToOutline=true //둥근 모서리 todo
@@ -101,11 +101,17 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                     if (data != null && data.data != null) {
                         val selectedImageUri: Uri = data.data!!
                         val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
-                        intent.putExtra("imgUri", selectedImageUri)
                         Log.d("전달할 이미지", selectedImageUri.toString())
+
+                        val bundle = Bundle().apply {
+                            putParcelable("imageUri", selectedImageUri)
+                        }
+                        Log.d("전달할 이미지 번들", bundle.toString())
+                        intent.putExtras(bundle)
+
                         intent.putExtra("boardId", boardId)
                         Log.d("전달할 게시판 아이디", boardId.toString())
-                        startActivity(intent)
+                        startActivityForResult(intent, Activity.RESULT_OK)
                     }
                 } //카메라
                 CAMERA_REQUEST_CODE -> {
@@ -121,6 +127,14 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                         showToast("사진 촬영에 실패했습니다.")
                     }
                 }
+            }
+        }
+
+        if (requestCode == Activity.RESULT_OK && resultCode == Activity.RESULT_OK) {
+            val isFinish = data?.getBooleanExtra("isFinish", false) ?: false
+            // isFinish 값을 이용하여 처리
+            if(isFinish){
+                finish()
             }
         }
     }
