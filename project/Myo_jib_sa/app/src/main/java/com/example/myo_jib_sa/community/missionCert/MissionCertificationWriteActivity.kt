@@ -36,7 +36,7 @@ import java.util.Date
 
 class MissionCertificationWriteActivity: AppCompatActivity() {
     private lateinit var binding:ActivityMissionCertificationWriteBinding
-    private var boardId:Long=0
+    private var boardId:Long=0L
     private var isFinish:Boolean=false
 
     private var imgUri:Uri= Uri.EMPTY
@@ -83,7 +83,7 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
 
         binding.missionCertGalleryConstraint.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            galleryLauncher.launch(galleryIntent)
+            startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
         }
 
         //카메라로 사진 찍어서 올리기
@@ -92,18 +92,6 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
         //}
 
     }
-
-    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            val selectedImageUri: Uri = data?.data!!
-            val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
-            intent.putExtra("imgUri", selectedImageUri)
-            intent.putExtra("boardId", boardId)
-            startActivity(intent)
-        }
-    }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -114,7 +102,9 @@ class MissionCertificationWriteActivity: AppCompatActivity() {
                         val selectedImageUri: Uri = data.data!!
                         val intent = Intent(this, MissionCertificationWriteCheckActivity::class.java)
                         intent.putExtra("imgUri", selectedImageUri)
+                        Log.d("전달할 이미지", selectedImageUri.toString())
                         intent.putExtra("boardId", boardId)
+                        Log.d("전달할 게시판 아이디", boardId.toString())
                         startActivity(intent)
                     }
                 } //카메라

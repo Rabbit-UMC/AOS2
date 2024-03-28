@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.example.myo_jib_sa.community.dialog.CommunityMissionCertPostDialog
 import com.example.myo_jib_sa.databinding.ActivityMissionCertificationWriteCheckBinding
 import com.example.myo_jib_sa.databinding.ToastRedBlackBinding
@@ -25,6 +27,7 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
     private var isCamera:Boolean=false
     private val intent = Intent(this, MissionCertificationWriteActivity::class.java)
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMissionCertificationWriteCheckBinding.inflate(layoutInflater)
@@ -35,7 +38,8 @@ class MissionCertificationWriteCheckActivity : AppCompatActivity() {
         Log.d("게시판 아이디", boardId.toString())
 
         //이미지 설정
-        val imgUri: Uri? = intent.getParcelableExtra("imgUri")
+        val imgUri: Uri? = intent.getParcelableExtra("imgUri", Uri::class.java)
+        Log.d("전달된 이미지", imgUri.toString())
         binding.missionCertImg.setImageURI(imgUri)
 
         //뒤로 가기
