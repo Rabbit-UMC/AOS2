@@ -230,8 +230,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/post_comment_recyclr"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/post_txt12" />
@@ -242,6 +243,19 @@
         android:layout_height="0.7dp"
         android:background="#DFDFDF"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout6" />
+    <TextView
+        android:id="@+id/post_txt12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="댓글 목록"
+        android:fontFamily="@font/font_paragraph_4"
+        android:textSize="14dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_template" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout6"
@@ -297,19 +311,6 @@
                 app:srcCompat="@drawable/ic_paperplane_fill" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/post_txt12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="댓글 목록"
-        android:fontFamily="@font/font_paragraph_4"
-        android:textSize="14dp"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_template" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
