@@ -282,6 +282,13 @@ class MissionCertificationActivity: AppCompatActivity() {
     private fun beforeMission(){
         binding.missionCertDay.visibility=View.GONE
         binding.missionCertLeftDay.visibility=View.GONE
+        binding.missionCertRightDay.visibility=View.GONE
+        binding.missionCertDayV.visibility=View.GONE
+        binding.missionCertLeftV.visibility=View.GONE
+        binding.missionCertRightV.visibility=View.GONE
+
+        binding.missionCertVpr2.visibility=View.GONE
+
         binding.missionCertNotMissionTxt.visibility=View.VISIBLE
         binding.missionCertNotMissionTxt.text="진행 중인 미션이 없습니다."
         binding.MissionCertPostingBtn.hide() //미션 올리기 버튼 숨기기
