@@ -24,6 +24,7 @@ class PostPictureActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPostPictureBinding
     private var filePath=""
+    private var current=0;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +52,8 @@ class PostPictureActivity : AppCompatActivity() {
         }
 
         binding.postPictureDownloadImg.setOnClickListener {
-            download()
+            Log.d("다운로드 눌림!", "다운로드 눌림 !!!")
+            download(item[current].filePath)
         }
 
     }
@@ -73,6 +75,7 @@ class PostPictureActivity : AppCompatActivity() {
                 val page = position + 1
                 binding.postPictureCurrentIndexTxt.text=page.toString()
                 filePath=item[position].filePath
+                current=position
 
             }
 
@@ -92,9 +95,9 @@ class PostPictureActivity : AppCompatActivity() {
     }
 
     //사진 다운로드
-    private fun download(){
+    private fun download(path:String){
         val request = Request.Builder()
-            .url(filePath)
+            .url(path)
             .build()
 
         val client = OkHttpClient()
@@ -102,35 +105,45 @@ class PostPictureActivity : AppCompatActivity() {
             override fun onFailure(call: Call, e: IOException) {
                 // 다운로드 실패 처리
                 runOnUiThread {
-                    // 토스트 메시지 출력
-                    showToast("사진 저장 실패")
+                    // 토스트 메시지 출력 (UI 스레드에서 실행되도록 보장)
+                    showToast("사진 저장 실패1")
                 }
 
             }
 
             override fun onResponse(call: Call, response: Response) {
                 if (response.isSuccessful) {
-                    val tempResponseBody = response.peekBody(Long.MAX_VALUE) // 임시 복사본 생성
-                    val inputStream = tempResponseBody.byteStream()
-                    if (inputStream != null) {
-                        val fileName = filePath.substringAfterLast("/") // 파일명 추출
-                        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), fileName)
-                        val outputStream = FileOutputStream(file)
-                        inputStream.copyTo(outputStream)
+                    response.body()?.let { responseBody ->
+                        val inputStream = responseBody.byteStream()
+                        val fileName = path.substringAfterLast("/")
+                        val picturesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                        val file = File(picturesDirectory, fileName)
 
-                        outputStream.close()
-                        inputStream.close()
+                        Log.d("파일", file.toString())
 
-                        runOnUiThread {
-                            // 토스트 메시지 출력
-                            showToast("사진 저장 완료")
+                        try {
+                            Log.d("트라이", file.toString())
+                            FileOutputStream(file).use { outputStream ->
+                                Log.d("카피  inputStream.copyTo(outputStream)", outputStream.toString())
+                                inputStream.copyTo(outputStream)
+                                Log.d("카피  inputStream.copyTo(outputStream)", outputStream.toString())
+                            }
+                            inputStream.close()
+
+                            runOnUiThread {
+                                showToast("사진 저장 완료")
+                            }
+                        } catch (e: IOException) {
+                            runOnUiThread {
+                                showToast("사진 저장 실패2")
+                            }
+                        } finally {
+                            inputStream.close()
                         }
                     }
                 } else {
-                    // 응답이 실패한 경우 처리
                     runOnUiThread {
-                        // 토스트 메시지 출력
-                        showToast("사진 저장 실패")
+                        showToast("사진 저장 실패3")
                     }
                 }
             }
