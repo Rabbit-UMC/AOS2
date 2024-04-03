@@ -26,7 +26,7 @@ class ManagerRetrofitManager (context: Context){
 
 
     //미션 대표 사진 바꾸기
-    fun missionImgEdit(filePath:String,boardId:Long, completion: (isSucces:Boolean) -> Unit){
+    fun missionImgEdit(filePath:String, boardId:Long, completion: (isSucces:Boolean) -> Unit){
         val request=PatchCategoryImageReq(filePath)
         val call: Call<BaseResponse> = retrofit?.EditPhoto(boardId, request) ?: return
         Log.d("RetrofitManager 미션 대표 사진 바꾸기", "데이터 확인 $filePath")

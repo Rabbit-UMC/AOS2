@@ -139,18 +139,6 @@ class ManagerPageEditActivity : AppCompatActivity() {
         return realPath
     }
 
-    //Base64로 인코딩하기
-    fun encodeImageToBase64(imagePath: String): String? {
-        val bitmap = BitmapFactory.decodeFile(imagePath)
-        if (bitmap != null) {
-            val baos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            val byteArray = baos.toByteArray()
-            return Base64.encodeToString(byteArray, Base64.DEFAULT)
-        }
-        return null
-    }
-
     //이미지 업로드 api
     private fun ImgUpload(callback: (Boolean) -> Unit){
         val imgpath = getRealPathFromURI(imgUri)
