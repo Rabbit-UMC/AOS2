@@ -1,10 +1,17 @@
 package com.example.myo_jib_sa.community.post
 
+import android.Manifest
+import android.content.ContentValues
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myo_jib_sa.community.adapter.PostPictureViewpagerAdapter
 import com.example.myo_jib_sa.community.api.post.ArticleImage
@@ -17,15 +24,20 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 
-class PostPictureActivity : AppCompatActivity() {
+class PostPictureActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
     private lateinit var binding: ActivityPostPictureBinding
     private var filePath=""
     private var current=0;
+    private var item: List<ArticleImage> = listOf()
 
+    companion object {
+        private const val REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,15 +46,15 @@ class PostPictureActivity : AppCompatActivity() {
 
         val itemListJson = intent.getStringExtra("itemListJson")
         val itemType = object : TypeToken<List<ArticleImage>>() {}.type
-        val item: List<ArticleImage> = Gson().fromJson(itemListJson, itemType)
-        val currentPosition = intent.getIntExtra("current", 0)
+        item = Gson().fromJson(itemListJson, itemType)
+        current = intent.getIntExtra("current", 0)
 
         binding.postPictureIndexTxt.text=item.size.toString()
 
         Log.d("post picture 확인 엑티비티 item", item.toString())
 
         if (item != null) {
-            linkViewpager(item , currentPosition)
+            linkViewpager(item , current)
             indexViewPager(item)
         }
 
@@ -52,8 +64,22 @@ class PostPictureActivity : AppCompatActivity() {
         }
 
         binding.postPictureDownloadImg.setOnClickListener {
-            Log.d("다운로드 눌림!", "다운로드 눌림 !!!")
-            download(item[current].filePath)
+
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION
+                )
+            } else {
+                // 이미 권한이 부여되어 있으면 이미지를 다운로드합니다.
+                download(item[current].filePath)
+            }
+
         }
 
     }
@@ -93,9 +119,10 @@ class PostPictureActivity : AppCompatActivity() {
         }
         binding.postPictureViewPager.registerOnPageChangeCallback(onPageChangeListener)
     }
+    // 이미지 다운로드 및 저장
+    // 이미지 다운로드 및 저장
+    private fun download(path: String) {
 
-    //사진 다운로드
-    private fun download(path:String){
         val request = Request.Builder()
             .url(path)
             .build()
@@ -105,52 +132,61 @@ class PostPictureActivity : AppCompatActivity() {
             override fun onFailure(call: Call, e: IOException) {
                 // 다운로드 실패 처리
                 runOnUiThread {
-                    // 토스트 메시지 출력 (UI 스레드에서 실행되도록 보장)
-                    showToast("사진 저장 실패1")
+                    showToast("이미지를 다운로드하는 중 오류가 발생했습니다.")
                 }
-
             }
 
             override fun onResponse(call: Call, response: Response) {
+                val fileName = path.substringAfterLast("/")
+                val imageRoot = File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+                    "$fileName.jpg"
+                ) // 이미지가 저장될 경로를 지정
+                Log.d("이미지 루트 imageRoot", imageRoot.toString())
+
                 if (response.isSuccessful) {
                     response.body()?.let { responseBody ->
-                        val inputStream = responseBody.byteStream()
-                        val fileName = path.substringAfterLast("/")
-                        val picturesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                        val file = File(picturesDirectory, fileName)
-
-                        Log.d("파일", file.toString())
-
                         try {
-                            Log.d("트라이", file.toString())
-                            FileOutputStream(file).use { outputStream ->
-                                Log.d("카피  inputStream.copyTo(outputStream)", outputStream.toString())
-                                inputStream.copyTo(outputStream)
-                                Log.d("카피  inputStream.copyTo(outputStream)", outputStream.toString())
+                            FileOutputStream(imageRoot).use { outputStream ->
+                                outputStream.write(responseBody.bytes())
+                                outputStream.close()
+                                runOnUiThread {
+                                    showToast("이미지가 다운로드되었습니다.")
+                                }
                             }
-                            inputStream.close()
-
+                        } catch (e: Exception) {
+                            Log.e("PostPictureActivity", "Error: ${e.message}", e)
                             runOnUiThread {
-                                showToast("사진 저장 완료")
+                                showToast("이미지 저장 중 오류가 발생했습니다.")
                             }
-                        } catch (e: IOException) {
-                            runOnUiThread {
-                                showToast("사진 저장 실패2")
-                            }
-                        } finally {
-                            inputStream.close()
                         }
                     }
                 } else {
                     runOnUiThread {
-                        showToast("사진 저장 실패3")
+                        showToast("이미지를 다운로드하는 중 오류가 발생했습니다.")
                     }
                 }
             }
         })
     }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-    //토스트 메시지
+        if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 권한이 부여되면 이미지를 다운로드합니다.
+                download(item[current].filePath)
+            } else {
+                showToast("외부 저장소 쓰기 권한이 거부되었습니다.")
+            }
+        }
+    }
+
+    // 토스트 메시지 출력
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
