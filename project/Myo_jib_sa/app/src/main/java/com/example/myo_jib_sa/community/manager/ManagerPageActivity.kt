@@ -20,6 +20,7 @@ class ManagerPageActivity : AppCompatActivity() {
     private lateinit var binding:ActivityManagerPageBinding
 
     private var missionId:Long=0
+    private var boardId:Long=0
 
 
     companion object {
@@ -31,7 +32,7 @@ class ManagerPageActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //관리자 페이지 이름 설정
-        val boardId= intent.getLongExtra("boardId",0L)
+        boardId= intent.getLongExtra("boardId",0L)
         missionId=intent.getLongExtra("missionId", 0)
 
         Log.d("관리자 페이지 미션 아이디", missionId.toString())
@@ -90,6 +91,7 @@ class ManagerPageActivity : AppCompatActivity() {
             selectedImageUri?.let { uri ->
                 val intent=Intent(this, ManagerImgActivity::class.java)
                 intent.putExtra("imgUri", uri.toString())
+                intent.putExtra("boardId", boardId)
                 startActivity(intent)
             }
         }
