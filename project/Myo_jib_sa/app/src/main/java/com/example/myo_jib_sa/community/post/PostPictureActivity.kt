@@ -64,12 +64,14 @@ class PostPictureActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
         }
 
         binding.postPictureDownloadImg.setOnClickListener {
+            download(item[current].filePath)
 
-            if (ContextCompat.checkSelfPermission(
+            /*if (ContextCompat.checkSelfPermission(
                     this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
+                Log.d("권한 설정", "설정 시이작")
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -78,7 +80,7 @@ class PostPictureActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
             } else {
                 // 이미 권한이 부여되어 있으면 이미지를 다운로드합니다.
                 download(item[current].filePath)
-            }
+            } */
 
         }
 
@@ -175,10 +177,12 @@ class PostPictureActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.d("권한 설정", "설정 결과")
 
         if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // 권한이 부여되면 이미지를 다운로드합니다.
+                Log.d("권한 설정", "설정 성공")
                 download(item[current].filePath)
             } else {
                 showToast("외부 저장소 쓰기 권한이 거부되었습니다.")
