@@ -597,6 +597,18 @@
     <string name="post_delete_yes">게시글을 삭제할래요.</string>
     <string name="post_delete_no">아니요, 취소할게요</string>
 
+    <string name="post_guid">
+        달토끼 미션 \n
+        1. 경쟁이지만, 즐기면서 인증샷을 서로 공유하기!\n
+        \n
+        커뮤니티\n
+        1. 작성시, 불쾌감을 주는 용어가 있는지 확인하기\n
+        \n
+        집사 미션\n
+        1. 달토끼 미션에 지쳤을 때는, 집사미션으로 협동 즐기기\n
+        2. 할 수 있는 만큼만 등록하기!
+    </string>
+
     <string name="mission_cert_post_title">인증샷을 게시하시겠어요?</string>
     <string name="mission_cert_post_decs">인증샷은 하루에 한번으로 제한합니다.\n업로드 전, 다시 확인 부탁드립니다.</string>
     <string name="mission_cert_post_yes">인증샷을 게시할게요.</string>

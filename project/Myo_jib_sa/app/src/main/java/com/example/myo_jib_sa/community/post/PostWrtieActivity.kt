@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.ImgPath
 import com.example.myo_jib_sa.community.adapter.PostEditAdapter
@@ -65,6 +66,8 @@ class PostWrtieActivity : AppCompatActivity() {
 
         boardId=intent.getLongExtra("boardId", 0L)
         Log.d("게시판 아이디", boardId.toString())
+
+        binding.postWritePostTextEtxt.hint=resources.getString(R.string.post_guid)
 
         //이미지 어댑터
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
