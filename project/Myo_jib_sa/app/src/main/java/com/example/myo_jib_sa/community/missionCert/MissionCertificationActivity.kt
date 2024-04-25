@@ -172,9 +172,12 @@ class MissionCertificationActivity: AppCompatActivity() {
                     //미션 인증 엑티비티 뷰 설정
                     binding.missionCertMissionNameTxt.text = response.result.mainMissionName
                     binding.missionCertDdayTxt.text = response.result.dday
+                    binding.missionCertMemoTxt.text = response.result.mainMissionContent
 
-                    missioncertInfo.title=response.result.mainMissionName
-                    missioncertInfo.memo=response.result.mainMissionContent
+                    missioncertInfo.title =response.result.mainMissionName
+                    missioncertInfo.memo =response.result.mainMissionContent
+
+                    Log.d("메모", response.result.mainMissionContent)
 
                     //랭킹 설정
                     setRankText(response)
