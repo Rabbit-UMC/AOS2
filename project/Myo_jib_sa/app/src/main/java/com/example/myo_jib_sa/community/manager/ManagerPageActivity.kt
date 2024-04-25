@@ -77,6 +77,7 @@ class ManagerPageActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        binding.managerMissionImg.setImageResource(0)
         join(missionId)
     }
 
