@@ -21,9 +21,6 @@ class BoardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBoardBinding
     private var hostId:Long=0
 
-    //버튼 클릭
-    private var isClick=false
-
     //아래 두개 관리자 페이지로 넘겨줌
     private var missionId:Long=0
     private var missionImg:String=""
@@ -70,8 +67,8 @@ class BoardActivity : AppCompatActivity() {
         //페이징
         paging()
 
-        setFABClickEvent()
         setupOutsideTouchClose()
+        setFABClickEvent()
 
     }
 
@@ -257,12 +254,11 @@ class BoardActivity : AppCompatActivity() {
 
         // 플로팅 버튼 클릭시 애니메이션 동작 기능
         binding.boardPostingBtn.setOnClickListener {
-            if(isClick){
+            if(isFabOpen){
                 val intent=Intent(this,PostWrtieActivity::class.java)
                 intent.putExtra("boardId", boardId)
                 startActivity(intent)
             }else{
-                isClick=!isClick
                 toggleFab()
             }
         }
@@ -286,16 +282,16 @@ class BoardActivity : AppCompatActivity() {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0) {
                     // 스크롤 다운 이벤트 처리
-                    if (isClick) {
+                    if (isFabOpen) {
                         // 플로팅 버튼이 열려있는 상태라면 닫습니다.
-                        isClick = false
+                        Log.d("리사이클러뷰 터치", "플로팅 버튼이 열려있는 상태라면 닫습니다.")
                         toggleFab()
                     }
                 } else {
                     // 스크롤 업 이벤트 처리
-                    if (isClick) {
+                    if (isFabOpen) {
                         // 플로팅 버튼이 열려있는 상태라면 닫습니다.
-                        isClick = false
+                        Log.d("리사이클러뷰 터치", "플로팅 버튼이 열려있는 상태라면 닫습니다.")
                         toggleFab()
                     }
                 }
@@ -303,9 +299,9 @@ class BoardActivity : AppCompatActivity() {
         })
 
         binding.boardExcsPostRecyclr.setOnClickListener {
-            if (isClick) {
+            if (isFabOpen) {
                 // 플로팅 버튼이 열려있는 상태라면 닫습니다.
-                isClick = false
+                Log.d("리사이클러뷰 터치", "플로팅 버튼이 열려있는 상태라면 닫습니다.")
                 toggleFab()
             }
         }
@@ -316,6 +312,7 @@ class BoardActivity : AppCompatActivity() {
 
         // 플로팅 액션 버튼 닫기 - 열려있는 플로팅 버튼 집어넣는 애니메이션
         if (isFabOpen) {
+            Log.d("플로팅 액션 버튼 닫기", "플로팅 액션 버튼 닫기")
             ObjectAnimator.ofFloat(binding.boardMissionBtn, "translationY", 0f).apply { start() }
             ObjectAnimator.ofFloat(binding.boardPostingBtn, View.ROTATION, 0f, 0f).apply { start() }
         } else { // 플로팅 액션 버튼 열기 - 닫혀있는 플로팅 버튼 꺼내는 애니메이션
