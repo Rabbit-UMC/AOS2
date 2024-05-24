@@ -1,19 +1,20 @@
 package com.example.myo_jib_sa.community.manager
 
+import android.R
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.myo_jib_sa.community.Constance
-import com.example.myo_jib_sa.community.api.manager.ManagerMissionJoinRequest
 import com.example.myo_jib_sa.community.adapter.ManagerPageViewpagerAdapter
 import com.example.myo_jib_sa.community.api.manager.ManagerRetrofitManager
 import com.example.myo_jib_sa.databinding.ActivityManagerPageBinding
+
 
 class ManagerPageActivity : AppCompatActivity() {
 
@@ -21,6 +22,8 @@ class ManagerPageActivity : AppCompatActivity() {
 
     private var missionId:Long=0
     private var boardId:Long=0
+
+    private val REQUEST_CODE = 1
 
 
     companion object {
@@ -94,6 +97,14 @@ class ManagerPageActivity : AppCompatActivity() {
                 intent.putExtra("imgUri", uri.toString())
                 intent.putExtra("boardId", boardId)
                 startActivity(intent)
+            }
+        }
+
+        if (requestCode === REQUEST_CODE) {
+            if (resultCode === Activity.RESULT_OK) {
+                // 관리자 이미지 바뀐 거 업데이트
+                binding.managerMissionImg.setImageResource(0)
+                join(missionId)
             }
         }
     }
