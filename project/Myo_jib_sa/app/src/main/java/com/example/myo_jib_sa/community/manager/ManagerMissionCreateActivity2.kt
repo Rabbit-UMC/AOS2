@@ -1,36 +1,25 @@
 package com.example.myo_jib_sa.community.manager
 
-import android.content.Context
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.util.TypedValue
-import android.view.Gravity
 import android.view.View
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import com.example.myo_jib_sa.R
 import com.example.myo_jib_sa.base.BaseResponse
 import com.example.myo_jib_sa.base.MyojibsaApplication
-import com.example.myo_jib_sa.community.Constance
 import com.example.myo_jib_sa.community.api.manager.ManagerRetrofitITFC
 import com.example.myo_jib_sa.community.api.manager.MissionCreateRequest
 import com.example.myo_jib_sa.databinding.ActivityMissionCreateBinding
 import com.example.myo_jib_sa.databinding.ToastMissionCreateBinding
-import com.example.myo_jib_sa.mission.api.MissionAPI
-import com.example.myo_jib_sa.mission.api.MissionCategoryListResponse
-import com.example.myo_jib_sa.mission.api.MissionCategoryListResult
-import com.example.myo_jib_sa.mission.api.MissionCreateRequests
-import com.example.myo_jib_sa.mission.api.MissionCreateResponse
 import com.example.myo_jib_sa.mission.dialog.MissionCreateCalendarDialogFragment
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -39,6 +28,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
 
 class ManagerMissionCreateActivity2 : AppCompatActivity(), MissionCreateCalendarDialogFragment.OnDateSelectedListener {
     private lateinit var binding: ActivityMissionCreateBinding
@@ -125,6 +115,8 @@ class ManagerMissionCreateActivity2 : AppCompatActivity(), MissionCreateCalendar
                     if (writeResponse != null) {
                         if(writeResponse.isSuccess){
                             showSnackbar(writeResponse.errorMessage)
+                            val resultIntent = Intent()
+                            setResult(Activity.RESULT_OK, resultIntent)
                             finish()
                         } else {
                             showSnackbar(writeResponse.errorMessage)
